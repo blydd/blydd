@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/page/3/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-spring-aop" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/04/spring-aop/" class="article-date">
+  <time class="dt-published" datetime="2020-12-04T02:10:17.000Z" itemprop="datePublished">2020-12-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/12/04/spring-aop/">spring-aop</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="1-AOP释义"><a href="#1-AOP释义" class="headerlink" title="1.AOP释义"></a>1.AOP释义</h1><p>AOP（Aspect Oriented Programming）意为面向切面编程，我们所熟悉的是面向对象编程（OOP），将程序中所有参与模块都抽象成对象，然后通过对象之间的相互调用关系来完成需求。</p>
+<p><strong>AOP 是对 OOP 的一个补充，是在另外一个维度上抽象出对象，具体是指程序运行时动态地将非业务代码切入到业务代码中，从而实现代码的解耦合，将非业务代码抽象成一个对象，对该对象进行编程这就是面向切面编程思想，</strong>如下图所示。</p>
+<p><img src="http://59.110.212.214/upload/20200819_14222783.png"></p>
+<h1 id="2-AOP-的优点："><a href="#2-AOP-的优点：" class="headerlink" title="2.AOP 的优点："></a>2.AOP 的优点：</h1><ul>
+<li>可大大降低模块之间的耦合性</li>
+<li>提高代码的维护性</li>
+<li>提高代码的复用性</li>
+<li>集中管理非业务代码，便于维护</li>
+<li>业务代码不受非业务代码的影响，逻辑更加清晰</li>
+</ul>
+<h1 id="3-代码说明–JDK动态代理实现AOP"><a href="#3-代码说明–JDK动态代理实现AOP" class="headerlink" title="3.代码说明–JDK动态代理实现AOP"></a>3.代码说明–JDK动态代理实现AOP</h1><p>（1）创建一个计算器接口 Cal，定义四个方法：加、减、乘、除。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Cal</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> num1,<span class="keyword">int</span> num2)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">sub</span><span class="params">(<span class="keyword">int</span> num1,<span class="keyword">int</span> num2)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">mul</span><span class="params">(<span class="keyword">int</span> num1,<span class="keyword">int</span> num2)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">div</span><span class="params">(<span class="keyword">int</span> num1,<span class="keyword">int</span> num2)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>（2）创建接口实现类 CalImpl，实现四个方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CalImpl</span> <span class="keyword">implements</span> <span class="title">Cal</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        <span class="keyword">int</span> result = num1+num2;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">sub</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        <span class="keyword">int</span> result = num1-num2;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">mul</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        <span class="keyword">int</span> result = num1*num2;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">div</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        <span class="keyword">int</span> result = num1/num2;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>（3）在测试方法中创建 CalImpl 对象，调用方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Cal cal = <span class="keyword">new</span> CalImpl();</span><br><span class="line">        cal.add(<span class="number">10</span>, <span class="number">3</span>);</span><br><span class="line">        cal.sub(<span class="number">10</span>, <span class="number">3</span>);</span><br><span class="line">        cal.mul(<span class="number">10</span>, <span class="number">3</span>);</span><br><span class="line">        cal.div(<span class="number">10</span>, <span class="number">3</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上这段代码很简单，现添加功能，在每一个方法执行的同时，打印日志信息：该方法的参数列表和该方法的计算结果。这个需求很简单，我们只需要在每一个方法体中，运算执行之前打印参数列表，运算结束之后打印计算结果即可，对代码做出如下修改。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CalImpl</span> <span class="keyword">implements</span> <span class="title">Cal</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        System.out.println(<span class="string">&quot;add方法的参数是[&quot;</span>+num1+<span class="string">&quot;,&quot;</span>+num2+<span class="string">&quot;]&quot;</span>);</span><br><span class="line">        <span class="keyword">int</span> result = num1+num2;</span><br><span class="line">        System.out.println(<span class="string">&quot;add方法的结果是&quot;</span>+result);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">sub</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        System.out.println(<span class="string">&quot;sub方法的参数是[&quot;</span>+num1+<span class="string">&quot;,&quot;</span>+num2+<span class="string">&quot;]&quot;</span>);</span><br><span class="line">        <span class="keyword">int</span> result = num1-num2;</span><br><span class="line">        System.out.println(<span class="string">&quot;sub方法的结果是&quot;</span>+result);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">mul</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        System.out.println(<span class="string">&quot;mul方法的参数是[&quot;</span>+num1+<span class="string">&quot;,&quot;</span>+num2+<span class="string">&quot;]&quot;</span>);</span><br><span class="line">        <span class="keyword">int</span> result = num1*num2;</span><br><span class="line">        System.out.println(<span class="string">&quot;mul方法的结果是&quot;</span>+result);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">div</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        System.out.println(<span class="string">&quot;div方法的参数是[&quot;</span>+num1+<span class="string">&quot;,&quot;</span>+num2+<span class="string">&quot;]&quot;</span>);</span><br><span class="line">        <span class="keyword">int</span> result = num1/num2;</span><br><span class="line">        System.out.println(<span class="string">&quot;div方法的结果是&quot;</span>+result);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再次运行代码，成功打印日志信息。</p>
+<p><img src="http://59.110.212.214/upload/20200819_14230586.png"></p>
+<p>功能已经实现了，但是我们会发现这种方式业务代码和打印日志代码的耦合性非常高，不利于代码的后期维护。</p>
+<p>如果需求改变，需要对打印的日志内容作出修改，那么我们就必须修改 4 个方法中的所有相关代码，如果是 100 个方法呢？每次就得需要手动去改 100 个方法中的代码。</p>
+<p>换个角度去分析，会发现 4 个方法中打印日志信息的代码基本相同，那么有没有可能将这部分代码提取出来进行封装，统一维护呢？同时也可以将日志代码和业务代码完全分离开，实现解耦合。</p>
+<p>按照这思路继续向下走，我们希望做的事情是把这 4 个方法的相同位置（业务方法执行前后）提取出来，形成一个横切面，并且将这个横切面抽象成一个对象，将所有的打印日志代码写到这个对象中，以实现与业务代码的分离。</p>
+<p>这就是 AOP 的思想。</p>
+<p>如何实现？使用动态代理的方式来实现。</p>
+<p>我们希望 CalImpl 只进行业务运算，不进行打印日志的工作，那么就需要有一个对象来替代 CalImpl 进行打印日志的工作，这就是代理对象。</p>
+<p>代理对象首先应该具备 CalImpl 的所有功能，并在此基础上，扩展出打印日志的功能，具体代码实现如下所示。</p>
+<p>（1）删除 CalImpl 方法中所有打印日志的代码，只保留业务代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CalImpl</span> <span class="keyword">implements</span> <span class="title">Cal</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        <span class="keyword">int</span> result = num1+num2;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">sub</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        <span class="keyword">int</span> result = num1-num2;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">mul</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        <span class="keyword">int</span> result = num1*num2;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">div</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        <span class="keyword">int</span> result = num1/num2;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>（2）创建 MyInvocationHandler 类，并实现 InvocationHandler 接口，成为一个动态代理类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyInvocationHandler</span> <span class="keyword">implements</span> <span class="title">InvocationHandler</span></span>&#123;</span><br><span class="line">    <span class="comment">//委托对象</span></span><br><span class="line">    <span class="keyword">private</span> Object obj = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//返回代理对象</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">bind</span><span class="params">(Object obj)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.obj = obj;</span><br><span class="line">        <span class="keyword">return</span> Proxy.newProxyInstance(obj.getClass().getClassLoader(), obj.getClass().getInterfaces(), <span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span></span></span><br><span class="line"><span class="function">            <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        System.out.println(method.getName()+<span class="string">&quot;的参数是:&quot;</span>+Arrays.toString(args));</span><br><span class="line">        Object result = method.invoke(<span class="keyword">this</span>.obj, args);</span><br><span class="line">        System.out.println(method.getName()+<span class="string">&quot;的结果是:&quot;</span>+result);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>bind 方法是 MyInvocationHandler 类提供给外部调用的方法，传入委托对象，bind 方法会返回一个代理对象，bind 方法完成了两项工作：</p>
+<p>（1）将外部传进来的委托对象保存到成员变量中，因为业务方法调用时需要用到委托对象。</p>
+<p>（2）通过 Proxy.newProxyInstance 方法创建一个代理对象，解释一下 Proxy.newProxyInstance 方法的参数：</p>
+<ul>
+<li>我们知道对象是 JVM 根据运行时类来创建的，此时需要动态创建一个代理对象的运行时类，同时需要将这个动态创建的运行时类加载到 JVM 中，这一步需要获取到类加载器才能实现，我们可以通过委托对象的运行时类来反向获取类加载器，obj.getClass().getClassLoader() 就是通过委托对象的运行时类来获取类加载器的具体实现；</li>
+<li>同时代理对象需要具备委托对象的所有功能，即需要拥有委托对象的所有接口，因此传入obj.getClass().getInterfaces()；</li>
+<li>this 指当前 MyInvocationHandler 对象。</li>
+</ul>
+<p>以上全部是反射的知识点。</p>
+<ul>
+<li>invoke 方法：method 是描述委托对象所有方法的对象，agrs 是描述委托对象方法参数列表的对象。</li>
+<li>method.invoke(this.obj,args) 是通过反射机制来调用委托对象的方法，即业务方法。</li>
+</ul>
+<p>因此在 method.invoke(this.obj, args) 前后添加打印日志信息，就等同于在委托对象的业务方法前后添加打印日志信息，并且已经做到了分类，业务方法在委托对象中，打印日志信息在代理对象中。</p>
+<p>测试方法中执行如下代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//委托对象</span></span><br><span class="line">        Cal cal = <span class="keyword">new</span> CalImpl();</span><br><span class="line">        MyInvocationHandler mh = <span class="keyword">new</span> MyInvocationHandler();</span><br><span class="line">        <span class="comment">//代理对象</span></span><br><span class="line">        Cal cal2 = (Cal) mh.bind(cal);</span><br><span class="line">        cal2.add(<span class="number">10</span>, <span class="number">3</span>);</span><br><span class="line">        cal2.sub(<span class="number">10</span>, <span class="number">3</span>);</span><br><span class="line">        cal2.mul(<span class="number">10</span>, <span class="number">3</span>);</span><br><span class="line">        cal2.div(<span class="number">10</span>, <span class="number">3</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果如下图所示。</p>
+<p><img src="https://images.gitbook.cn/1f919510-a852-11e9-b1f2-a974c71823fb" alt="enter image description here"></p>
+<p>成功，并且现在已经做到了代码分离，CalImpl 类中只有业务代码，打印日志的代码写在 MyInvocationHandler 类中。</p>
+<p>以上就是通过动态代理实现 AOP 的过程，我们在使用 Spring 框架的 AOP 时，并不需要这么复杂，Spring 已经对这个过程进行了封装，让开发者可以更加便捷地使用 AOP 进行开发。</p>
+<h1 id="4-代码说明—spring框架实现AOP"><a href="#4-代码说明—spring框架实现AOP" class="headerlink" title="4.代码说明—spring框架实现AOP"></a>4.代码说明—spring框架实现AOP</h1><p>接下来学习 Spring 框架的 AOP 如何使用。</p>
+<p>在 Spring 框架中，我们不需要创建 MyInvocationHandler 类，只需要创建一个切面类，Spring 底层会自动根据切面类以及目标类生成一个代理对象。</p>
+<h3 id="（1）创建切面类-LoggerAspect。"><a href="#（1）创建切面类-LoggerAspect。" class="headerlink" title="（1）创建切面类 LoggerAspect。"></a>（1）创建切面类 LoggerAspect。</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoggerAspect</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before(&quot;execution(public int com.southwind.aspect.CalImpl.*(..))&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">before</span><span class="params">(JoinPoint joinPoint)</span></span>&#123;</span><br><span class="line">        <span class="comment">//获取方法名</span></span><br><span class="line">        String name = joinPoint.getSignature().getName();</span><br><span class="line">        <span class="comment">//获取参数列表</span></span><br><span class="line">        String args = Arrays.toString(joinPoint.getArgs());</span><br><span class="line">        System.out.println(name+<span class="string">&quot;的参数是:&quot;</span>+args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@After(&quot;execution(public int com.southwind.aspect.CalImpl.*(..))&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">after</span><span class="params">(JoinPoint joinPoint)</span></span>&#123;</span><br><span class="line">        <span class="comment">//获取方法名</span></span><br><span class="line">        String name = joinPoint.getSignature().getName();</span><br><span class="line">        System.out.println(name+<span class="string">&quot;方法结束&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@AfterReturning(value=&quot;execution(public int com.southwind.aspect.CalImpl.*(..))&quot;,returning=&quot;result&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterReturn</span><span class="params">(JoinPoint joinPoint,Object result)</span></span>&#123;</span><br><span class="line">        <span class="comment">//获取方法名</span></span><br><span class="line">        String name = joinPoint.getSignature().getName();</span><br><span class="line">        System.out.println(name+<span class="string">&quot;方法的结果是&quot;</span>+result);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@AfterThrowing(value=&quot;execution(public int com.southwind.aspect.CalImpl.*(..))&quot;,throwing=&quot;ex&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterThrowing</span><span class="params">(JoinPoint joinPoint,Exception ex)</span></span>&#123;</span><br><span class="line">        <span class="comment">//获取方法名</span></span><br><span class="line">        String name = joinPoint.getSignature().getName();</span><br><span class="line">        System.out.println(name+<span class="string">&quot;方法抛出异常：&quot;</span>+ex);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>LoggerAspect 类名处添加两个注解：</p>
+<ul>
+<li>@Aspect，表示该类是切面类；</li>
+<li>@Component，将该类注入到 IOC 容器中。</li>
+</ul>
+<p>分别来说明类中的 4 个方法注解的含义。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Before(&quot;execution(public int com.southwind.aspect.CalImpl.*(..))&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">before</span><span class="params">(JoinPoint joinPoint)</span></span>&#123;</span><br><span class="line">  <span class="comment">//获取方法名</span></span><br><span class="line">  String name = joinPoint.getSignature().getName();</span><br><span class="line">  <span class="comment">//获取参数列表</span></span><br><span class="line">  String args = Arrays.toString(joinPoint.getArgs());</span><br><span class="line">  System.out.println(name+<span class="string">&quot;的参数是:&quot;</span>+args);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>@Before：表示 before 方法执行的时机。execution(public int com.southwind.aspect.CalImpl.*(..))：表示切入点是 com.southwind.aspect 包下 CalImpl 类中的所有方法。即 CalImpl 所有方法在执行之前会首先执行 LoggerAspect 类中的 before 方法。</li>
+<li>after 方法同理，表示 CalImpl 所有方法执行之后会执行 LoggerAspect 类中的 after 方法。</li>
+<li>afterReturn 方法表示 CalImpl 所有方法在 return 之后会执行 LoggerAspect 类中的 afterReturn 方法。</li>
+<li>afterThrowing 方法表示 CalImpl 所有方法在抛出异常时会执行 LoggerAspect 类中的 afterThrowing 方法。</li>
+</ul>
+<p>因此我们就可以根据具体需求，选择在 before、after、afterReturn、afterThrowing 方法中添加相应代码。</p>
+<h3 id="（2）目标类也需要添加-Component-注解，如下所示。"><a href="#（2）目标类也需要添加-Component-注解，如下所示。" class="headerlink" title="（2）目标类也需要添加 @Component 注解，如下所示。"></a>（2）目标类也需要添加 @Component 注解，如下所示。</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CalImpl</span> <span class="keyword">implements</span> <span class="title">Cal</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        <span class="keyword">return</span> num1+num2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">sub</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        <span class="keyword">return</span> num1-num2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">mul</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        <span class="keyword">return</span> num1*num2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">div</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        <span class="keyword">return</span> num1/num2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="（3）在-spring-xml-中进行配置。"><a href="#（3）在-spring-xml-中进行配置。" class="headerlink" title="（3）在 spring.xml 中进行配置。"></a>（3）在 spring.xml 中进行配置。</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:aop</span>=<span class="string">&quot;http://www.springframework.org/schema/aop&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:context</span>=<span class="string">&quot;http://www.springframework.org/schema/context&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 自动扫描 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">&quot;com.southwind.aspect&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">context:component-scan</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 使 Aspect 注解生效，为目标类自动生成代理对象 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:aspectj-autoproxy</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:aspectj-autoproxy</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>将 com.southwind.aspect 包中的类扫描到 IoC 容器中。</li>
+<li>添加 aop:aspectj-autoproxy 注解，Spring 容器会结合切面类和目标类自动生成动态代理对象，Spring 框架的 AOP 底层就是通过动态代理的方式完成 AOP。</li>
+</ul>
+<h3 id="（4）测试方法执行如下代码，从-IoC-容器中获取代理对象，执行方法。"><a href="#（4）测试方法执行如下代码，从-IoC-容器中获取代理对象，执行方法。" class="headerlink" title="（4）测试方法执行如下代码，从 IoC 容器中获取代理对象，执行方法。"></a>（4）测试方法执行如下代码，从 IoC 容器中获取代理对象，执行方法。</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//加载 spring.xml</span></span><br><span class="line">        ApplicationContext applicationContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">&quot;spring.xml&quot;</span>);</span><br><span class="line">        <span class="comment">//获取代理对象</span></span><br><span class="line">        Cal cal = (Cal) applicationContext.getBean(<span class="string">&quot;calImpl&quot;</span>);</span><br><span class="line">        <span class="comment">//执行方法</span></span><br><span class="line">        cal.add(<span class="number">10</span>, <span class="number">3</span>);</span><br><span class="line">        cal.sub(<span class="number">10</span>, <span class="number">3</span>);</span><br><span class="line">        cal.mul(<span class="number">10</span>, <span class="number">3</span>);</span><br><span class="line">        cal.div(<span class="number">10</span>, <span class="number">3</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果如下图所示。</p>
+<p><img src="http://59.110.212.214/upload/20200819_14232190.png"></p>
+<h1 id="5-总结"><a href="#5-总结" class="headerlink" title="5.总结"></a>5.总结</h1><p>成功，结合代码，回过头来说几个概念更好理解。</p>
+<ul>
+<li><strong>切面对象</strong>：根据切面抽象出来的对象，即 CalImpl 所有方法中需要加入日志的部分，抽象成一个切面对象 LoggerAspect。</li>
+<li><strong>通知</strong>：切面对象的具体代码，即非业务代码，LoggerAspect 对象打印日志的操作。</li>
+<li><strong>目标</strong>：被横切的对象，即 CalImpl 实例化对象，将通知加入其中。</li>
+<li><strong>代理</strong>：切面对象、通知、目标混合之后的内容，即我们用 JDK 动态代理机制创建的对象。</li>
+<li><strong>连接点</strong>：需要被横切的位置，即通知要插入业务代码的具体位置。</li>
+</ul>
+<p>本章节源码：<a target="_blank" rel="noopener" href="https://github.com/southwind9801/gcspringaop">https://github.com/southwind9801/gcspringaop</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/04/spring-aop/" data-id="ckke5nr3a001dcl8gc7eo75jo" data-title="spring-aop" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/aop/" rel="tag">aop</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/" rel="tag">spring</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-spring-ioc" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/04/spring-ioc/" class="article-date">
+  <time class="dt-published" datetime="2020-12-04T02:10:17.000Z" itemprop="datePublished">2020-12-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/12/04/spring-ioc/">spring ioc</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="IoC-也叫控制反转"><a href="#IoC-也叫控制反转" class="headerlink" title="IoC 也叫控制反转:"></a>IoC 也叫控制反转:</h2><p>在传统的程序开发中，需要获取对象时，通常由开发者来手动创建实例化对象，但是<strong>在 Spring 框架中创建对象的工作不再由开发者完成，而是交给 IoC 容器来创建</strong>，我们直接获取即可，整个流程完成反转，因此是控制反转。</p>
+<h2 id="IoC-容器实现步骤"><a href="#IoC-容器实现步骤" class="headerlink" title="IoC 容器实现步骤"></a>IoC 容器实现步骤</h2><ol>
+<li>在 pom.xml 中添加 Spring 依赖</li>
+<li>创建配置文件，可以自定义文件名 spring.xml</li>
+<li>在 spring.xml 中配置 bean 标签，IoC 容器通过加载 bean 标签来创建对象</li>
+<li>调用 API 获取 IoC 创建的对象</li>
+</ol>
+<h1 id="一-IoC-容器创建对象之无参构造"><a href="#一-IoC-容器创建对象之无参构造" class="headerlink" title="一:IoC 容器创建对象之无参构造"></a>一:IoC 容器创建对象之无参构造</h1><p>  <strong>1.配置bean标签:</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 配置 student 对象--&gt;</span></span><br><span class="line">&lt;bean id=&quot;stu&quot; class=&quot;com.southwind.entity.Student&quot;&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<p>  <strong>2.通过id获取对象:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1.加载 spring.xml 配置文件 生成 ApplicationContext 对象</span></span><br><span class="line">ApplicationContext applicationContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">&quot;spring.xml&quot;</span>);</span><br><span class="line"><span class="comment">//2.通过 id 值获取对象</span></span><br><span class="line"><span class="comment">//参数为配置文件中的 id 值。程序在加载 spring.xml 时创建 stu 对象，通过反射机制调用无参构造函数，所有要求交给 IoC 容器管理的类必须有无参构造函数。</span></span><br><span class="line">Student stu = (Student) applicationContext.getBean(<span class="string">&quot;stu&quot;</span>);</span><br><span class="line">System.out.println(stu);</span><br><span class="line"> </span><br><span class="line"><span class="comment">//运行结果</span></span><br><span class="line">Student [id-<span class="number">0</span>, name-<span class="keyword">null</span>, age=<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<p>可以看到，此时 stu 对象的属性全部为空，因为调用无参构造只会创建对象而不会进行赋值，如何赋值呢？只需要在 spring.xml 中进行相关配置即可，如下所示。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 配置 student 对象 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;stu&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.southwind.entity.Student&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;张三&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span> <span class="attr">value</span>=<span class="string">&quot;23&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>若包含特殊字符，比如 name=”&lt;张三&gt;”，使用 ]]&gt; 进行配置:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">value</span>&gt;</span>&lt;![CDATA[&lt;张三&gt;]]&gt;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Spring 通过调用每个属性的 setter 方法来完成属性的赋值，因此实体类必须有 setter 方法，否则加载时报错，getter 方法可省略。</p>
+<p><strong>还可以通过运行时类获取对象:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1.加载 spring.xml 配置文件</span></span><br><span class="line">ApplicationContext applicationContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">&quot;spring.xml&quot;</span>);</span><br><span class="line"><span class="comment">//2.通过运行时类获取对象</span></span><br><span class="line">Student stu = applicationContext.getBean(Student.class);</span><br><span class="line">System.out.println(stu);</span><br></pre></td></tr></table></figure>
+<p>此方法有一个弊端，当 spring.xml 中配置两个 Student 的 bean 时程序会抛出异常，因为此时两个 bean 都是由 Student 类生成的，IoC 容器无法将两个 bean 都返回，必须指定一个唯一的 bean。</p>
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="二-IoC-容器创建对象之有参构造"><a href="#二-IoC-容器创建对象之有参构造" class="headerlink" title="二:IoC 容器创建对象之有参构造"></a>二:IoC 容器创建对象之有参构造</h1><p><strong>1.在实体类中创建有参构造</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Student</span><span class="params">(<span class="keyword">int</span> id, String name, <span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>2.spring.xml 中进行配置</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 通过有参构造函数创建对象 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;stu3&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.hzit.entity.Student&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;3&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;小明&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span> <span class="attr">value</span>=<span class="string">&quot;22&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>（<strong>3）此时 IoC 容器会根据 constructor-arg 标签去加载对应的有参构造函数，创建对象并完成属性赋值。</strong>name 的值需要与有参构造的形参名对应，value 是对应的值。<strong>除了使用 name 对应参数外，还可以通过下标 index 对应</strong>，如下所示。</p>
+<p><strong>获取对象的方式同样包括ID获取和运行时类获取.</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 通过有参构造函数创建对象 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;stu3&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.hzit.entity.Student&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">&quot;0&quot;</span> <span class="attr">value</span>=<span class="string">&quot;3&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">&quot;1&quot;</span> <span class="attr">value</span>=<span class="string">&quot;小明&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">&quot;2&quot;</span> <span class="attr">value</span>=<span class="string">&quot;22&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="IOC容器管理有级联关系的多个对象"><a href="#IOC容器管理有级联关系的多个对象" class="headerlink" title="IOC容器管理有级联关系的多个对象:"></a>IOC容器管理有级联关系的多个对象:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 创建 classes 对象 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;classes&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.hzit.entity.Classes&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;Java班&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 创建 stu 对象 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;stu&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.hzit.entity.Student&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">value</span>&gt;</span>&lt;![CDATA[&lt;张三&gt;]]&gt;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span> <span class="attr">value</span>=<span class="string">&quot;23&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- 将 classes 对象赋给 stu 对象 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;classes&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;classes&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="在-spring-xml-中，通过-ref-属性将其他-bean-赋给当前-bean-对象，这种方式叫做依赖注入（DI），是-Spring-非常重要的机制，DI-是将不同对象进行关联的一种方式，是-IoC-的具体实现方式，通常-DI-和-IoC-是紧密结合在一起的，因此一般说的-IoC-包括-DI。"><a href="#在-spring-xml-中，通过-ref-属性将其他-bean-赋给当前-bean-对象，这种方式叫做依赖注入（DI），是-Spring-非常重要的机制，DI-是将不同对象进行关联的一种方式，是-IoC-的具体实现方式，通常-DI-和-IoC-是紧密结合在一起的，因此一般说的-IoC-包括-DI。" class="headerlink" title="\在 spring.xml 中，通过 ref 属性将其他 bean 赋给当前 bean 对象，这种方式叫做依赖注入（DI），是 Spring 非常重要的机制，DI 是将不同对象进行关联的一种方式，是 IoC 的具体实现方式，通常 DI 和 IoC 是紧密结合在一起的，因此一般说的 IoC 包括 DI。**"></a><strong><em>\</em>在 spring.xml 中，通过 ref 属性将其他 bean 赋给当前 bean 对象，这种方式叫做依赖注入（DI），是 Spring 非常重要的机制，DI 是将不同对象进行关联的一种方式，是 IoC 的具体实现方式，通常 DI 和 IoC 是紧密结合在一起的，因此一般说的 IoC 包括 DI。**</strong></h2><h1 id="集合属性通过-list-标签和-ref-标签完成注入"><a href="#集合属性通过-list-标签和-ref-标签完成注入" class="headerlink" title="集合属性通过 list 标签和 ref 标签完成注入:"></a>集合属性通过 list 标签和 ref 标签完成注入:</h1><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 配置 classes 对象 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;classes&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.hzit.entity.Classes&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;Java班&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;students&quot;</span>&gt;</span></span><br><span class="line">       <span class="comment">&lt;!-- 注入 student 对象 --&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">list</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">ref</span> <span class="attr">bean</span>=<span class="string">&quot;stu&quot;</span>/&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">ref</span> <span class="attr">bean</span>=<span class="string">&quot;stu2&quot;</span>/&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">list</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;stu&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.hzit.entity.Student&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>&lt;![CDATA[&lt;张三&gt;]]&gt;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span> <span class="attr">value</span>=<span class="string">&quot;23&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;stu2&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.hzit.entity.Student&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;李四&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span> <span class="attr">value</span>=<span class="string">&quot;23&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<h1 id="-1"><a href="#-1" class="headerlink" title=""></a></h1><h1 id="Spring-中的-bean"><a href="#Spring-中的-bean" class="headerlink" title="Spring 中的 bean"></a>Spring 中的 bean</h1><p>bean 是根据 scope 来生成的，表示 bean 的作用域，scope 有 4 种类型：</p>
+<ul>
+<li>singleton，单例，表示通过 Spring 容器获取的该对象是唯一的；</li>
+<li>prototype，原型，表示通过 Spring 容器获取的对象都是不同的；</li>
+<li>request，请求，表示在一次 HTTP 请求内有效；</li>
+<li>session，会话，表示在一个用户会话内有效。</li>
+</ul>
+<p>后两种只适用于 Web 项目，大多数情况下，我们只会使用 singleton 和 prototype 两种 scope，并且 scope 的默认值是 singleton。</p>
+<h1 id="Spring-的继承"><a href="#Spring-的继承" class="headerlink" title="Spring 的继承"></a>Spring 的继承</h1><p>Spring 的继承与 Java 的继承不一样，但思想很相似，子 bean 可以继承父 bean 中的属性。看到这里，你可能会有这样的疑问：<strong>子 bean 可以继承父 bean 中的方法吗？</strong></p>
+<p><strong>其实这里不存在方法的继承，Spring 的继承是在对象层面进行操作的，即两个 bean 来自同一个类，因此方法是一样的，不存在继承关系.</strong></p>
+<p>（1）在 spring.xml 中配置两个 User bean，并建立继承关系。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;user&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.southwind.entity.User&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;张三&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span> <span class="attr">value</span>=<span class="string">&quot;23&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;user2&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.southwind.entity.User&quot;</span> <span class="attr">parent</span>=<span class="string">&quot;user&quot;</span>&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- 覆盖 name 属性 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;李四&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>（2）运行代码，结果如下。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">User user2 = (User) applicationContext.getBean(<span class="string">&quot;user2&quot;</span>);</span><br><span class="line">System.out.println(user2);</span><br><span class="line"> </span><br><span class="line"><span class="comment">//打印如下</span></span><br><span class="line">创建了User对象</span><br><span class="line">创建了User对象</span><br><span class="line">User [id=<span class="number">1</span>, name=张三, age=<span class="number">23</span>]</span><br></pre></td></tr></table></figure>
+<p>可以看到，创建了两个 User 对象 user1 和 user2，并且 user2 继承了 user1 的所有属性。user2 在继承 user1 所有属性的基础之上，还可以对属性进行覆盖，直接在 spring.xml 中添加 property 即可。</p>
+<p><strong>Spring 中的 bean 能不能在不同类之间继承？</strong></p>
+<p>答案是可以的，但是需要这两个类的属性列表完全一致，否则会报错，实际开发中并不会使用到这种方式。</p>
+<h1 id="-2"><a href="#-2" class="headerlink" title=""></a></h1><h1 id="Spring-的依赖"><a href="#Spring-的依赖" class="headerlink" title="Spring 的依赖"></a>Spring 的依赖</h1><p>与继承类似，依赖也是 bean 和 bean 之间的一种关联方式，配置依赖关系后，被依赖的 bean 一定先创建，再创建依赖的 bean:</p>
+<p>1.设置依赖关系.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;user&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.southwind.entity.User&quot;</span> <span class="attr">depends-on</span>=<span class="string">&quot;car&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;张三&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span> <span class="attr">value</span>=<span class="string">&quot;23&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;car&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.southwind.entity.Car&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;brand&quot;</span> <span class="attr">value</span>=<span class="string">&quot;宝马&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>2.运行测试代码.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext applicationContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">&quot;spring.xml&quot;</span>);</span><br><span class="line">User user = (User) applicationContext.getBean(<span class="string">&quot;user&quot;</span>);</span><br><span class="line">Car car = (Car) applicationContext.getBean(<span class="string">&quot;car&quot;</span>);</span><br><span class="line"> </span><br><span class="line"><span class="comment">//输出结果</span></span><br><span class="line">创建了Car对象</span><br><span class="line">创建了User对象</span><br></pre></td></tr></table></figure>
+<p>spring创建对象的顺序默认是由spring.xml 中 bean 的配置顺序来决定的，先到先得,但由于此处设置了依赖关系(depends-on属性),因为 User 依赖于 Car，所以必须先创建 Car 对象，User 对象才能完成依赖。</p>
+<h1 id="-3"><a href="#-3" class="headerlink" title=""></a></h1><h1 id="Spring-读取外部资源"><a href="#Spring-读取外部资源" class="headerlink" title="Spring 读取外部资源"></a>Spring 读取外部资源</h1><p>读取properties文件中内容:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 导入外部的资源文件 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 使用 context:property-placeholder 标签，需要导入 context 命名空间。 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">context:property-placeholder</span> <span class="attr">location</span>=<span class="string">&quot;classpath:jdbc.properties&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">context:property-placeholder</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 创建 C3P0 数据源 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.mchange.v2.c3p0.ComboPooledDataSource&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;user&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;user&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;pwd&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driverClass&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;driverName&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;jdbcUrl&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;url&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<h1 id="-4"><a href="#-4" class="headerlink" title=""></a></h1><h1 id="p-命名空间"><a href="#p-命名空间" class="headerlink" title="p 命名空间"></a>p 命名空间</h1><p>p 命名空间可以简化 bean 的各种配置</p>
+<p>spring.xml 中创建 User bean 和 Car bean，并且通过 p 命名空间给属性赋值，同时完成依赖注入，注意需要引入 p 命名间:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;user&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.southwind.entity.User&quot;</span> <span class="attr">p:id</span>=<span class="string">&quot;1&quot;</span> <span class="attr">p:name</span>=<span class="string">&quot;张三&quot;</span> <span class="attr">p:age</span>=<span class="string">&quot;23&quot;</span> <span class="attr">p:car-ref</span>=<span class="string">&quot;car&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;car&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.southwind.entity.Car&quot;</span> <span class="attr">p:id</span>=<span class="string">&quot;1&quot;</span> <span class="attr">p:brand</span>=<span class="string">&quot;宝马&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="-5"><a href="#-5" class="headerlink" title=""></a></h1><h1 id="Spring-IoC-基于注解的开发"><a href="#Spring-IoC-基于注解的开发" class="headerlink" title="Spring IoC 基于注解的开发"></a>Spring IoC 基于注解的开发</h1><ol>
+<li><p>修改spring.xml,把包扫描到IOC容器.</p>
+<p>base-package=”com.southwind” 表示将 “com.blydd” 下所有子包的类全部扫描到 IoC 容器中，一步可将所有参与项目的类完成扫描注入。注意：配置文件需要引入 context 命名空间。</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 将类扫描到 IoC 容器中 --&gt;</span><br><span class="line">&lt;context:component-scan base-package&#x3D;&quot;com.blydd&quot;&gt;&lt;&#x2F;context:component-scan&gt;</span><br></pre></td></tr></table></figure>
+<p>2.修改 Controller,Service,Dao，添加注解</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">getUserById</span><span class="params">(<span class="keyword">int</span> id)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> userService.getUserById(id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在类名处添加 @Controller 注解，表示该类作为一个控制器；</li>
+<li>userService 属性处添加 @Autowired 注解，表示 IoC 容器自动完成装载，默认是 byType 的方式。</li>
+</ul>
+<p>3.运行测试代码:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext applicationContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">&quot;spring.xml&quot;</span>);</span><br><span class="line">UserController userController = (UserController) applicationContext.getBean(<span class="string">&quot;userController&quot;</span>);</span><br><span class="line">User user = userController.getUserById(<span class="number">1</span>);</span><br><span class="line">System.out.println(user);</span><br><span class="line"><span class="comment">//输出</span></span><br><span class="line">User [id=<span class="number">1</span>, name=张三]</span><br></pre></td></tr></table></figure>
+<p><strong>IoC 中可以给类添加的注解有 4 种：</strong></p>
+<ul>
+<li>@Controller</li>
+<li>@Service</li>
+<li>@Repository</li>
+<li>@Component</li>
+</ul>
+<p><strong>在实际开发中，我们使用 @Controller、@Service、@Repository 分别表示 Controller 层、Service 层、DAO 层。</strong>前面提到过，类中属性的自动装载默认是通过 byType 的方式实现的。<strong>自动装载除了 byType 的方式，还可以使用 byName，使用 byName 的方式，需要结合 @Qualifier 注解一起使用，具体操作如下所示。</strong></p>
+<p>**controller:</p>
+<p>**</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired()</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;userService&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">getUserById</span><span class="params">(<span class="keyword">int</span> id)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> userService.getUserById(id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们知道 byName 的方式是通过属性名去匹配对应 bean 的 id 属性值，但是基于注解的方式我们并没有给 bean 设置 id，如何完成的呢？</p>
+<p>其实<strong>在类中添加注解时，已经设置了默认的 id，即类名首字母小写之后的值就是 id 的默认值。</strong></p>
+<p>PS:</p>
+<p><em>如果手动赋值,即:</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service(&quot;myUserService&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceImpl</span> <span class="keyword">implements</span> <span class="title">UserService</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p><em>则controller中@Qualifier() 中的值必须与 @Service() 中的值一致，才能完成自动装载:</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired()</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;myUserService&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">getUserById</span><span class="params">(<span class="keyword">int</span> id)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> userService.getUserById(id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+<p>转载来源:<a target="_blank" rel="noopener" href="https://gitbook.cn/gitchat/column/5d2daffbb81adb3aa8cab878/topic/5d2de41eb81adb3aa8cab957">https://gitbook.cn/gitchat/column/5d2daffbb81adb3aa8cab878/topic/5d2de41eb81adb3aa8cab957</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/04/spring-ioc/" data-id="ckke5nr3b001icl8ge1qhheap" data-title="spring ioc" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ioc/" rel="tag">ioc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java%E5%9F%BA%E7%A1%80/" rel="tag">java基础</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/" rel="tag">spring</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-springboot的异常处理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/04/springboot%E7%9A%84%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" class="article-date">
+  <time class="dt-published" datetime="2020-12-04T02:10:17.000Z" itemprop="datePublished">2020-12-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/springboot/">springboot</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/12/04/springboot%E7%9A%84%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">springboot的异常处理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Spring Boot对异常的处理有一套默认的机制：当应用中产生异常时，Spring Boot根据发送请求头中的<code>accept</code>是否包含<code>text/html</code>来分别返回不同的响应信息。当从浏览器地址栏中访问应用接口时，请求头中的<code>accept</code>便会包含<code>text/html</code>信息，产生异常时，Spring Boot通过<code>org.springframework.web.servlet.ModelAndView</code>对象来装载异常信息，并以HTML的格式返回；而当从客户端访问应用接口产生异常时（客户端访问时，请求头中的<code>accept</code>不包含<code>text/html</code>），Spring Boot则以JSON的格式返回异常信息。下面来验证一下。</p>
+<h2 id="默认异常处理机制"><a href="#默认异常处理机制" class="headerlink" title="默认异常处理机制"></a>默认异常处理机制</h2><p>假设应用中有如下一个Controller：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">@RequestMapping(&quot;user&quot;)</span><br><span class="line">public class UserController &#123;</span><br><span class="line"></span><br><span class="line">    @GetMapping(&quot;&#x2F;&#123;id:\\d+&#125;&quot;)</span><br><span class="line">    public void get(@PathVariable String id) &#123;</span><br><span class="line">        throw new RuntimeException(&quot;user not exist&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>在代码中我们主动的抛出了一个<code>RuntimeException</code>，使用浏览器访问<a target="_blank" rel="noopener" href="http://localhost:8080/user/1%EF%BC%9A">http://localhost:8080/user/1：</a><br><img src="http://59.110.212.214/upload/20200717_14322111.png"><br>可看到页面返回了一些异常描述，并且请求头的<code>accpet</code>包含了<code>text/html</code>片段。</p>
+<p>接着使用模拟发送REST请求的Chrome插件<a target="_blank" rel="noopener" href="https://restlet.com/modules/client/">Restlet Client</a>发送<a target="_blank" rel="noopener" href="http://localhost:8080/user/1%EF%BC%9A">http://localhost:8080/user/1：</a></p>
+<p><img src="http://59.110.212.214/upload/20200717_14311981.png"></p>
+<p>可以看到请求头的<code>accept</code>值为<code>*/*</code>，并且返回一段JSON格式的信息。</p>
+<p>查看Spring Boot的<code>BasicErrorController</code>类便可看到这一默认机制的具体实现：</p>
+<p><img src="http://59.110.212.214/upload/20200717_14314466.png"></p>
+<p>可看到<code>errorHtml</code>和<code>error</code>方法的请求地址和方法是一样的，唯一的区别就是<code>errorHtml</code>通过<code>produces = &#123;&quot;text/html&quot;&#125;</code>判断请求头的<code>accpet</code>属性中是否包含<code>text/html</code>，如果包含，便走该方法。</p>
+<h2 id="自定义html异常页面"><a href="#自定义html异常页面" class="headerlink" title="自定义html异常页面"></a>自定义html异常页面</h2><p>我们可以通过在<code>src/main/resources/resources/error</code>路径下定义友好的异常页面，比如定义一个500.html页面：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>500<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    系统内部异常</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>然后再次通过浏览器访问:<a target="_blank" rel="noopener" href="http://localhost:8080/user/1%EF%BC%9A">http://localhost:8080/user/1：</a></p>
+<p><img src="http://59.110.212.214/upload/20200717_14302445.png"></p>
+<p>同样的，我们也可以定义404.html等常见的HTTP状态码对应的异常页面。</p>
+<p>通过自定义html异常页面并不会影响客户端发送请求异常返回的结果。</p>
+<h2 id="自定义异常处理"><a href="#自定义异常处理" class="headerlink" title="自定义异常处理"></a>自定义异常处理</h2><p>除了可以通过自定义html异常页面来改变浏览器访问接口时产生的异常信息，我们也可以自定义异常处理来改表默认的客户端访问接口产生的异常信息。</p>
+<p>我们手动定义一个<code>UserNotExistException</code>，继承<code>RuntimeException</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserNotExistException</span> <span class="keyword">extends</span> <span class="title">RuntimeException</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">1574716826948451793L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String id;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UserNotExistException</span><span class="params">(String id)</span></span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(<span class="string">&quot;user not exist&quot;</span>);</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(String id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>然后定义一个Controller异常处理类<code>ControllerExceptionHandler</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ControllerAdvice</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ControllerExceptionHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExceptionHandler(UserNotExistException.class)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="meta">@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String, Object&gt; <span class="title">handleUserNotExistsException</span><span class="params">(UserNotExistException e)</span> </span>&#123;</span><br><span class="line">        Map&lt;String, Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">&quot;id&quot;</span>, e.getId());</span><br><span class="line">        map.put(<span class="string">&quot;message&quot;</span>, e.getMessage());</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>其中注解<code>@ExceptionHandler</code>指定了要处理的异常类型，注解<code>@ResponseStatus</code>指定异常处理方法返回的HTTP状态码为<code>HttpStatus.INTERNAL_SERVER_ERROR</code>，即500。<code>HttpStatus</code>是一个spring自带的枚举类型，封装了常见的HTTP状态码及描述：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">HttpStatus</span> </span>&#123;</span><br><span class="line">    CONTINUE(<span class="number">100</span>, <span class="string">&quot;Continue&quot;</span>),</span><br><span class="line">    SWITCHING_PROTOCOLS(<span class="number">101</span>, <span class="string">&quot;Switching Protocols&quot;</span>),</span><br><span class="line">    PROCESSING(<span class="number">102</span>, <span class="string">&quot;Processing&quot;</span>),</span><br><span class="line">    CHECKPOINT(<span class="number">103</span>, <span class="string">&quot;Checkpoint&quot;</span>),</span><br><span class="line">    OK(<span class="number">200</span>, <span class="string">&quot;OK&quot;</span>),</span><br><span class="line">    CREATED(<span class="number">201</span>, <span class="string">&quot;Created&quot;</span>),</span><br><span class="line">    ACCEPTED(<span class="number">202</span>, <span class="string">&quot;Accepted&quot;</span>),</span><br><span class="line">    NON_AUTHORITATIVE_INFORMATION(<span class="number">203</span>, <span class="string">&quot;Non-Authoritative Information&quot;</span>),</span><br><span class="line">    NO_CONTENT(<span class="number">204</span>, <span class="string">&quot;No Content&quot;</span>),</span><br><span class="line">    RESET_CONTENT(<span class="number">205</span>, <span class="string">&quot;Reset Content&quot;</span>),</span><br><span class="line">    PARTIAL_CONTENT(<span class="number">206</span>, <span class="string">&quot;Partial Content&quot;</span>),</span><br><span class="line">    MULTI_STATUS(<span class="number">207</span>, <span class="string">&quot;Multi-Status&quot;</span>),</span><br><span class="line">    ALREADY_REPORTED(<span class="number">208</span>, <span class="string">&quot;Already Reported&quot;</span>),</span><br><span class="line">    IM_USED(<span class="number">226</span>, <span class="string">&quot;IM Used&quot;</span>),</span><br><span class="line">    MULTIPLE_CHOICES(<span class="number">300</span>, <span class="string">&quot;Multiple Choices&quot;</span>),</span><br><span class="line">    MOVED_PERMANENTLY(<span class="number">301</span>, <span class="string">&quot;Moved Permanently&quot;</span>),</span><br><span class="line">    FOUND(<span class="number">302</span>, <span class="string">&quot;Found&quot;</span>),</span><br><span class="line">    <span class="comment">/** <span class="doctag">@deprecated</span> */</span></span><br><span class="line">    <span class="meta">@Deprecated</span></span><br><span class="line">    MOVED_TEMPORARILY(<span class="number">302</span>, <span class="string">&quot;Moved Temporarily&quot;</span>),</span><br><span class="line">    SEE_OTHER(<span class="number">303</span>, <span class="string">&quot;See Other&quot;</span>),</span><br><span class="line">    NOT_MODIFIED(<span class="number">304</span>, <span class="string">&quot;Not Modified&quot;</span>),</span><br><span class="line">    <span class="comment">/** <span class="doctag">@deprecated</span> */</span></span><br><span class="line">    <span class="meta">@Deprecated</span></span><br><span class="line">    USE_PROXY(<span class="number">305</span>, <span class="string">&quot;Use Proxy&quot;</span>),</span><br><span class="line">    TEMPORARY_REDIRECT(<span class="number">307</span>, <span class="string">&quot;Temporary Redirect&quot;</span>),</span><br><span class="line">    PERMANENT_REDIRECT(<span class="number">308</span>, <span class="string">&quot;Permanent Redirect&quot;</span>),</span><br><span class="line">    BAD_REQUEST(<span class="number">400</span>, <span class="string">&quot;Bad Request&quot;</span>),</span><br><span class="line">    UNAUTHORIZED(<span class="number">401</span>, <span class="string">&quot;Unauthorized&quot;</span>),</span><br><span class="line">    PAYMENT_REQUIRED(<span class="number">402</span>, <span class="string">&quot;Payment Required&quot;</span>),</span><br><span class="line">    FORBIDDEN(<span class="number">403</span>, <span class="string">&quot;Forbidden&quot;</span>),</span><br><span class="line">    NOT_FOUND(<span class="number">404</span>, <span class="string">&quot;Not Found&quot;</span>),</span><br><span class="line">    METHOD_NOT_ALLOWED(<span class="number">405</span>, <span class="string">&quot;Method Not Allowed&quot;</span>),</span><br><span class="line">    NOT_ACCEPTABLE(<span class="number">406</span>, <span class="string">&quot;Not Acceptable&quot;</span>),</span><br><span class="line">    PROXY_AUTHENTICATION_REQUIRED(<span class="number">407</span>, <span class="string">&quot;Proxy Authentication Required&quot;</span>),</span><br><span class="line">    REQUEST_TIMEOUT(<span class="number">408</span>, <span class="string">&quot;Request Timeout&quot;</span>),</span><br><span class="line">    CONFLICT(<span class="number">409</span>, <span class="string">&quot;Conflict&quot;</span>),</span><br><span class="line">    GONE(<span class="number">410</span>, <span class="string">&quot;Gone&quot;</span>),</span><br><span class="line">    LENGTH_REQUIRED(<span class="number">411</span>, <span class="string">&quot;Length Required&quot;</span>),</span><br><span class="line">    PRECONDITION_FAILED(<span class="number">412</span>, <span class="string">&quot;Precondition Failed&quot;</span>),</span><br><span class="line">    PAYLOAD_TOO_LARGE(<span class="number">413</span>, <span class="string">&quot;Payload Too Large&quot;</span>),</span><br><span class="line">    <span class="comment">/** <span class="doctag">@deprecated</span> */</span></span><br><span class="line">    <span class="meta">@Deprecated</span></span><br><span class="line">    REQUEST_ENTITY_TOO_LARGE(<span class="number">413</span>, <span class="string">&quot;Request Entity Too Large&quot;</span>),</span><br><span class="line">    URI_TOO_LONG(<span class="number">414</span>, <span class="string">&quot;URI Too Long&quot;</span>),</span><br><span class="line">    <span class="comment">/** <span class="doctag">@deprecated</span> */</span></span><br><span class="line">    <span class="meta">@Deprecated</span></span><br><span class="line">    REQUEST_URI_TOO_LONG(<span class="number">414</span>, <span class="string">&quot;Request-URI Too Long&quot;</span>),</span><br><span class="line">    UNSUPPORTED_MEDIA_TYPE(<span class="number">415</span>, <span class="string">&quot;Unsupported Media Type&quot;</span>),</span><br><span class="line">    REQUESTED_RANGE_NOT_SATISFIABLE(<span class="number">416</span>, <span class="string">&quot;Requested range not satisfiable&quot;</span>),</span><br><span class="line">    EXPECTATION_FAILED(<span class="number">417</span>, <span class="string">&quot;Expectation Failed&quot;</span>),</span><br><span class="line">    I_AM_A_TEAPOT(<span class="number">418</span>, <span class="string">&quot;I&#x27;m a teapot&quot;</span>),</span><br><span class="line">    <span class="comment">/** <span class="doctag">@deprecated</span> */</span></span><br><span class="line">    <span class="meta">@Deprecated</span></span><br><span class="line">    INSUFFICIENT_SPACE_ON_RESOURCE(<span class="number">419</span>, <span class="string">&quot;Insufficient Space On Resource&quot;</span>),</span><br><span class="line">    <span class="comment">/** <span class="doctag">@deprecated</span> */</span></span><br><span class="line">    <span class="meta">@Deprecated</span></span><br><span class="line">    METHOD_FAILURE(<span class="number">420</span>, <span class="string">&quot;Method Failure&quot;</span>),</span><br><span class="line">    <span class="comment">/** <span class="doctag">@deprecated</span> */</span></span><br><span class="line">    <span class="meta">@Deprecated</span></span><br><span class="line">    DESTINATION_LOCKED(<span class="number">421</span>, <span class="string">&quot;Destination Locked&quot;</span>),</span><br><span class="line">    UNPROCESSABLE_ENTITY(<span class="number">422</span>, <span class="string">&quot;Unprocessable Entity&quot;</span>),</span><br><span class="line">    LOCKED(<span class="number">423</span>, <span class="string">&quot;Locked&quot;</span>),</span><br><span class="line">    FAILED_DEPENDENCY(<span class="number">424</span>, <span class="string">&quot;Failed Dependency&quot;</span>),</span><br><span class="line">    UPGRADE_REQUIRED(<span class="number">426</span>, <span class="string">&quot;Upgrade Required&quot;</span>),</span><br><span class="line">    PRECONDITION_REQUIRED(<span class="number">428</span>, <span class="string">&quot;Precondition Required&quot;</span>),</span><br><span class="line">    TOO_MANY_REQUESTS(<span class="number">429</span>, <span class="string">&quot;Too Many Requests&quot;</span>),</span><br><span class="line">    REQUEST_HEADER_FIELDS_TOO_LARGE(<span class="number">431</span>, <span class="string">&quot;Request Header Fields Too Large&quot;</span>),</span><br><span class="line">    UNAVAILABLE_FOR_LEGAL_REASONS(<span class="number">451</span>, <span class="string">&quot;Unavailable For Legal Reasons&quot;</span>),</span><br><span class="line">    INTERNAL_SERVER_ERROR(<span class="number">500</span>, <span class="string">&quot;Internal Server Error&quot;</span>),</span><br><span class="line">    NOT_IMPLEMENTED(<span class="number">501</span>, <span class="string">&quot;Not Implemented&quot;</span>),</span><br><span class="line">    BAD_GATEWAY(<span class="number">502</span>, <span class="string">&quot;Bad Gateway&quot;</span>),</span><br><span class="line">    SERVICE_UNAVAILABLE(<span class="number">503</span>, <span class="string">&quot;Service Unavailable&quot;</span>),</span><br><span class="line">    GATEWAY_TIMEOUT(<span class="number">504</span>, <span class="string">&quot;Gateway Timeout&quot;</span>),</span><br><span class="line">    HTTP_VERSION_NOT_SUPPORTED(<span class="number">505</span>, <span class="string">&quot;HTTP Version not supported&quot;</span>),</span><br><span class="line">    VARIANT_ALSO_NEGOTIATES(<span class="number">506</span>, <span class="string">&quot;Variant Also Negotiates&quot;</span>),</span><br><span class="line">    INSUFFICIENT_STORAGE(<span class="number">507</span>, <span class="string">&quot;Insufficient Storage&quot;</span>),</span><br><span class="line">    LOOP_DETECTED(<span class="number">508</span>, <span class="string">&quot;Loop Detected&quot;</span>),</span><br><span class="line">    BANDWIDTH_LIMIT_EXCEEDED(<span class="number">509</span>, <span class="string">&quot;Bandwidth Limit Exceeded&quot;</span>),</span><br><span class="line">    NOT_EXTENDED(<span class="number">510</span>, <span class="string">&quot;Not Extended&quot;</span>),</span><br><span class="line">    NETWORK_AUTHENTICATION_REQUIRED(<span class="number">511</span>, <span class="string">&quot;Network Authentication Required&quot;</span>);</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>编写完自定义异常处理逻辑后，我们将UserController中的方法抛出的异常改为<code>UserNotExistException</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">@GetMapping(&quot;/&#123;id:\\d+&#125;&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">get</span><span class="params">(<span class="meta">@PathVariable</span> String id)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> UserNotExistException(id);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>重启项目，使用Restlet Client再次访问<a target="_blank" rel="noopener" href="http://localhost:8080/user/1%EF%BC%8C%E5%93%8D%E5%BA%94%E5%A6%82%E4%B8%8B%EF%BC%9A">http://localhost:8080/user/1，响应如下：</a><br><img src="http://59.110.212.214/upload/20200717_14293955.png"></p>
+<blockquote>
+<p>源码链接 <a target="_blank" rel="noopener" href="https://github.com/wuyouzhuguli/Spring-Boot-Demos/tree/master/25.Spring-Boot-Exception">https://github.com/wuyouzhuguli/Spring-Boot-Demos/tree/master/25.Spring-Boot-Exception</a></p>
+</blockquote>
+<p>From:<a target="_blank" rel="noopener" href="https://mrbird.cc/Spring-Boot-Exception.html">https://mrbird.cc/Spring-Boot-Exception.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/04/springboot%E7%9A%84%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" data-id="ckke5nr3h001ncl8gb1ax1opv" data-title="springboot的异常处理" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/springboot/" rel="tag">springboot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%BC%82%E5%B8%B8/" rel="tag">异常</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-struts2中实现返回json格式请求" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/04/struts2%E4%B8%AD%E5%AE%9E%E7%8E%B0%E8%BF%94%E5%9B%9Ejson%E6%A0%BC%E5%BC%8F%E8%AF%B7%E6%B1%82/" class="article-date">
+  <time class="dt-published" datetime="2020-12-04T02:10:17.000Z" itemprop="datePublished">2020-12-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/12/04/struts2%E4%B8%AD%E5%AE%9E%E7%8E%B0%E8%BF%94%E5%9B%9Ejson%E6%A0%BC%E5%BC%8F%E8%AF%B7%E6%B1%82/">struts2实现返回json请求</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>struts2实现json请求，可以有两种方式：</p>
+<ul>
+<li>通过struts2-json-plugin插件，这种方式需要在struts.xml中配置action,而且package需要继承json-struts，另外还需要配置结果资源。</li>
+<li>传统的输出流，向ajax请求写结果。<h3 id="第一种方式，如果是maven工程，那么就需要在pom-xml中加入struts2-json-plugin依赖。第一种方式，如果是maven工程，那么就需要在pom-xml中加入struts2-json-plugin依赖。"><a href="#第一种方式，如果是maven工程，那么就需要在pom-xml中加入struts2-json-plugin依赖。第一种方式，如果是maven工程，那么就需要在pom-xml中加入struts2-json-plugin依赖。" class="headerlink" title="第一种方式，如果是maven工程，那么就需要在pom.xml中加入struts2-json-plugin依赖。第一种方式，如果是maven工程，那么就需要在pom.xml中加入struts2-json-plugin依赖。"></a>第一种方式，如果是maven工程，那么就需要在pom.xml中加入struts2-json-plugin依赖。第一种方式，如果是maven工程，那么就需要在pom.xml中加入struts2-json-plugin依赖。</h3><h4 id="1-引入依赖"><a href="#1-引入依赖" class="headerlink" title="1.引入依赖"></a>1.引入依赖</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.struts<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>struts2-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;struts2.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.struts<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>struts2-json-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;struts2.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-编写action-其中，方法返回结果不重要，也不需要指定资源，但是返回给ajax请求的结果需要声明在action中，并提供get-set方法。我们只需要给请求结果赋值。"><a href="#2-编写action-其中，方法返回结果不重要，也不需要指定资源，但是返回给ajax请求的结果需要声明在action中，并提供get-set方法。我们只需要给请求结果赋值。" class="headerlink" title="2.编写action,其中，方法返回结果不重要，也不需要指定资源，但是返回给ajax请求的结果需要声明在action中，并提供get,set方法。我们只需要给请求结果赋值。"></a>2.编写action,其中，方法返回结果不重要，也不需要指定资源，但是返回给ajax请求的结果需要声明在action中，并提供get,set方法。我们只需要给请求结果赋值。</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.xxx.struts.action;</span><br><span class="line"><span class="keyword">import</span> com.opensymphony.xwork2.Action;</span><br><span class="line"><span class="keyword">import</span> com.xxx.struts.entity.User;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ApiAction</span> </span>&#123;	</span><br><span class="line">	<span class="keyword">private</span> User user;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> User <span class="title">getUser</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> <span class="keyword">this</span>.user;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUser</span><span class="params">(User user)</span></span>&#123;<span class="keyword">this</span>.user = user;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">json</span><span class="params">()</span></span>&#123;</span><br><span class="line">		user  = <span class="keyword">new</span> User();</span><br><span class="line">		user.setId(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">		user.setUsername(<span class="string">&quot;ajax返回json&quot;</span>);</span><br><span class="line">		user.setPassword(<span class="string">&quot;123456&quot;</span>);</span><br><span class="line">		System.out.println(<span class="string">&quot;method get call.&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> Action.SUCCESS;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+这里，我们返回的是User对象的变量user,我们需要在json()方法中给user赋值。<br>或者<br>返回指定属性:<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.haier.tmsorder.order.cbs.action;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.commons.lang3.StringUtils;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.Logger;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.alibaba.fastjson.JSONObject;</span><br><span class="line"><span class="keyword">import</span> com.haier.tmsorder.basic.webapp.action.BaseBasicAction;</span><br><span class="line"><span class="keyword">import</span> com.haier.tmsorder.http.service.LogisticsCBSService;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpServiceAction</span>  <span class="keyword">extends</span> <span class="title">BaseBasicAction</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//日志</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Logger logger = LoggerFactory.getLogger(HttpServiceAction.class);</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">4352661852597387975L</span>;</span><br><span class="line">	<span class="keyword">private</span> LogisticsCBSService logisticsCBSService;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">boolean</span> flag;</span><br><span class="line">	<span class="keyword">private</span> String msg;</span><br><span class="line">	<span class="comment">//入参</span></span><br><span class="line">	<span class="keyword">private</span> String params;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 接收物流信息,存入物流表</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	 <span class="function"><span class="keyword">public</span> String <span class="title">receiveLogistics</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    	System.err.print(params);</span><br><span class="line">    	<span class="comment">//参数判空</span></span><br><span class="line">    	<span class="keyword">if</span> (StringUtils.isBlank(params)) &#123;</span><br><span class="line">			flag=<span class="keyword">false</span>;</span><br><span class="line">			msg=<span class="string">&quot;the params is empty,please check!&quot;</span>;</span><br><span class="line">			<span class="keyword">return</span> SUCCESS;</span><br><span class="line">		&#125;</span><br><span class="line">    	<span class="keyword">return</span> SUCCESS;</span><br><span class="line">	 &#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isFlag</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> flag;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFlag</span><span class="params">(<span class="keyword">boolean</span> flag)</span> </span>&#123;<span class="keyword">this</span>.flag = flag;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getMsg</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> msg;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMsg</span><span class="params">(String msg)</span> </span>&#123;<span class="keyword">this</span>.msg = msg;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getParams</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> params;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setParams</span><span class="params">(String params)</span> </span>&#123;<span class="keyword">this</span>.params = params;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> LogisticsCBSService <span class="title">getLogisticsCBSService</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> logisticsCBSService;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setLogisticsCBSService</span><span class="params">(LogisticsCBSService logisticsCBSService)</span> </span>&#123;<span class="keyword">this</span>.logisticsCBSService = logisticsCBSService;&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="3-配置struts-xml"><a href="#3-配置struts-xml" class="headerlink" title="3.配置struts.xml"></a>3.配置struts.xml</h4><img src="http://59.110.212.214/upload/20200805_11085476.png"><br>上图是返回对象转json时的配置<br>或者<br>返回指定几个属性:<br><img src="http://59.110.212.214/upload/20200805_11112025.png"></li>
+<li>package需要继承json-default</li>
+<li>result的type值是json</li>
+<li>param名为root的参数就是我们在 action中定义的user变量 / param名为includeProperties中的参数flag,msg就是我们要返回的json数据<h4 id="4-测试"><a href="#4-测试" class="headerlink" title="4.测试"></a>4.测试</h4><img src="http://59.110.212.214/upload/20200805_11132528.png"></li>
+</ul>
+<blockquote>
+<p>第二种方式见原文链接</p>
+</blockquote>
+<p>转自:<a target="_blank" rel="noopener" href="https://blog.csdn.net/feinifi/article/details/81114268" title="原文链接">原文链接</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/04/struts2%E4%B8%AD%E5%AE%9E%E7%8E%B0%E8%BF%94%E5%9B%9Ejson%E6%A0%BC%E5%BC%8F%E8%AF%B7%E6%B1%82/" data-id="ckke5nr3l001vcl8ge35egw6w" data-title="struts2实现返回json请求" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/json/" rel="tag">json</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/struts2/" rel="tag">struts2</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tomcat常用命令" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/04/tomcat%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="article-date">
+  <time class="dt-published" datetime="2020-12-04T02:10:17.000Z" itemprop="datePublished">2020-12-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/12/04/tomcat%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">日志关键词高亮显示</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ul>
+<li><strong>日志关键词高亮显示:</strong></li>
+</ul>
+<blockquote>
+<p>格式:tail -f 日志文件 | perl -pe ‘s/(关键词)/\e[1;颜色$1\e[0m/g’</p>
+</blockquote>
+<blockquote>
+<p>例如:tail -f catalina.out | perl -pe ‘s/(172.16.0.243)/\e[1;31m$1\e[0m/g’</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/04/tomcat%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" data-id="ckke5nr3m001xcl8g5udb4wr2" data-title="日志关键词高亮显示" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%97%A5%E5%BF%97/" rel="tag">日志</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-webservice接口生成客户端代码及使用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/04/webservice%E6%8E%A5%E5%8F%A3%E7%94%9F%E6%88%90%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BB%A3%E7%A0%81%E5%8F%8A%E4%BD%BF%E7%94%A8/" class="article-date">
+  <time class="dt-published" datetime="2020-12-04T02:10:17.000Z" itemprop="datePublished">2020-12-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/12/04/webservice%E6%8E%A5%E5%8F%A3%E7%94%9F%E6%88%90%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BB%A3%E7%A0%81%E5%8F%8A%E4%BD%BF%E7%94%A8/">cmd命令生成项目webservice客户端</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="1-webservice接口的检查"><a href="#1-webservice接口的检查" class="headerlink" title="1.webservice接口的检查"></a>1.webservice接口的检查</h3><p>能够正常调用的webservice接口是可以直接访问的。在浏览器中输入webservice接口的URL，注意：一定要带上“？wsdl”结尾。调用成功会返回一串xml格式的数据，该数据便是接口具体的方法和返回的类型，如下图所示：<br><img src="http://mele.cool//20200825_13151183.png"></p>
+<h3 id="2-cmd命令生成项目webservice客户端"><a href="#2-cmd命令生成项目webservice客户端" class="headerlink" title="2.cmd命令生成项目webservice客户端"></a>2.cmd命令生成项目webservice客户端</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">wsimport -s D:\Desktop\temp\s -p com.map -verbose -keep http://ws.webxml.com.cn/WebServices/MobileCodeWS.asmx?wsdl</span><br><span class="line"></span><br><span class="line">参数介绍：</span><br><span class="line">-keep：是否生成java源文件</span><br><span class="line">-d：指定.class文件的输出目录</span><br><span class="line">-s：指定.java文件的输出目录</span><br><span class="line">-p：定义生成类的包名，不定义的话有默认包名</span><br><span class="line">-verbose：在控制台显示输出信息</span><br><span class="line">-b：指定jaxws/jaxb绑定文件或额外的schemas</span><br><span class="line">-extension：使用扩展来支持SOAP1.2</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：<br>1.指定的文件输出目录一定是要先建好文件夹，不然会报找不到目录；<br>建议按着项目的路径把这里填上，方便直接复制到项目中。</p>
+</blockquote>
+<h3 id="3-客户端代码的使用"><a href="#3-客户端代码的使用" class="headerlink" title="3.客户端代码的使用"></a>3.客户端代码的使用</h3><p>1.执行完2.2的操作后，在指定目录中就会找到生成后的代码，可直接把其拷贝到项目中。<br>2.在生成的代码中找出接口调用的连接类。一般是WS或Service结尾。打开后会有下图红框的结构。<br><img src="http://mele.cool//20200825_13180869.png"><br>3.找出其调用类<br><img src="http://mele.cool//20200825_13182816.png"><br>4.另写一个Service，并在该Service中写一个单例来注入webservice接口的连接类。参考代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> MobileCodeWSSoap mobileCodeWSSoap;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> MobileCodeWSSoap <span class="title">getMobileCodeWSSoap</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	        <span class="keyword">if</span>(mobileCodeWSSoap != <span class="keyword">null</span>)&#123;</span><br><span class="line">	            <span class="keyword">return</span> mobileCodeWSSoap;</span><br><span class="line">	        &#125;</span><br><span class="line">	        <span class="keyword">try</span> &#123;</span><br><span class="line">	            URL uurl = <span class="keyword">new</span> URL(<span class="string">&quot;MobileTokenConstants.getValue(MobileTokenConstants.KEY_ADDRESS)&quot;</span>);<span class="comment">//URL在配置文件中动态配置</span></span><br><span class="line">	            MobileCodeWS mobileCodeWS = <span class="keyword">new</span> MobileCodeWS(uurl);</span><br><span class="line">	            mobileCodeWSSoap = mobileCodeWS.getMobileCodeWSSoap();</span><br><span class="line">	        &#125; <span class="keyword">catch</span> (MalformedURLException e) &#123; </span><br><span class="line">	            e.printStackTrace();</span><br><span class="line">	        &#125;</span><br><span class="line">	            <span class="keyword">return</span> mobileCodeWSSoap;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/04/webservice%E6%8E%A5%E5%8F%A3%E7%94%9F%E6%88%90%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BB%A3%E7%A0%81%E5%8F%8A%E4%BD%BF%E7%94%A8/" data-id="ckke5nr3n0020cl8gdbez8avi" data-title="cmd命令生成项目webservice客户端" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webservice/" rel="tag">webservice</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4/" rel="tag">命令</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-xml与对象转换工具类(JAXB)" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/04/xml%E4%B8%8E%E5%AF%B9%E8%B1%A1%E8%BD%AC%E6%8D%A2%E5%B7%A5%E5%85%B7%E7%B1%BB(JAXB)/" class="article-date">
+  <time class="dt-published" datetime="2020-12-04T02:10:17.000Z" itemprop="datePublished">2020-12-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%B7%A5%E5%85%B7%E7%B1%BB/">工具类</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/12/04/xml%E4%B8%8E%E5%AF%B9%E8%B1%A1%E8%BD%AC%E6%8D%A2%E5%B7%A5%E5%85%B7%E7%B1%BB(JAXB)/">xml和对象转换工具类（JAXB）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.haier.otcwms.util;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.StringReader;</span><br><span class="line"><span class="keyword">import</span> java.io.StringWriter;</span><br><span class="line"><span class="keyword">import</span> javax.xml.bind.JAXB;</span><br><span class="line"><span class="keyword">import</span> javax.xml.bind.JAXBException;</span><br><span class="line"><span class="comment">/***</span></span><br><span class="line"><span class="comment"> * xml与对象互转</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XmlUtil</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//xml字符串转化成对象</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">jaxbUnmarshalString</span><span class="params">(String xml, Class&lt;?&gt; type)</span> <span class="keyword">throws</span> JAXBException </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> JAXB.unmarshal(<span class="keyword">new</span> StringReader(xml), type);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//对象转化成xml字符串</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">jaxbMarshalString</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">		StringWriter stringWriter = <span class="keyword">new</span> StringWriter();</span><br><span class="line">		JAXB.marshal(obj, stringWriter);</span><br><span class="line">		<span class="keyword">return</span> stringWriter.toString();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/04/xml%E4%B8%8E%E5%AF%B9%E8%B1%A1%E8%BD%AC%E6%8D%A2%E5%B7%A5%E5%85%B7%E7%B1%BB(JAXB)/" data-id="ckke5nr3o0024cl8g76q235mn" data-title="xml和对象转换工具类（JAXB）" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xml/" rel="tag">xml</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-一个家越过越好的3个迹象" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/04/%E4%B8%80%E4%B8%AA%E5%AE%B6%E8%B6%8A%E8%BF%87%E8%B6%8A%E5%A5%BD%E7%9A%843%E4%B8%AA%E8%BF%B9%E8%B1%A1/" class="article-date">
+  <time class="dt-published" datetime="2020-12-04T02:10:17.000Z" itemprop="datePublished">2020-12-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/12/04/%E4%B8%80%E4%B8%AA%E5%AE%B6%E8%B6%8A%E8%BF%87%E8%B6%8A%E5%A5%BD%E7%9A%843%E4%B8%AA%E8%BF%B9%E8%B1%A1/">一个家越过越好的三个迹象</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>一是，小事不争对错。</p>
+<hr>
+<p>　　听过这样一个故事：一次，有个姑娘在朋友家留宿，晚上，她和朋友一起去吃了夜宵。饭后回到住处，朋友从冰箱里取出两盒鲜奶，二人正要喝，朋友的婆婆忽然喊道：“赶紧吃点东西，不能空腹喝牛奶！”</p>
+<p>　　姑娘刚想解释，朋友悄悄做了个制止的手势，很快拿出一片面包，分给了她一半。老太太见二人吃了面包，喜滋滋地忙别的事去了。</p>
+<p>　　朋友解释道：“如果她能在这件小事上获得成就感，我们又何必告诉她真相呢？真相对她不重要，对我们也没意义，不过是半口面包的事。”</p>
+<p>　　以前单位有个同事，每天早晨都要和我们说一下家里的鸡飞狗跳：婆婆今早做的饭不讲究营养搭配；老公不够认真，冲奶粉的比例不精确……她说得最多的话就是“那么做不对，我肯定得说他一顿啊……”终于有一天，她不再抱怨和唠叨，脸上也没有了神采和光芒。我们才知道，她的老公跟她提出了离婚。</p>
+<p>　　一个家庭，在鸡毛蒜皮的小事上争对错、在细枝末节里辩输赢，最容易产生怨气，也最容易耗尽热情。家是安乐窝，不是辩论场；家是避风港，不是角斗场。在无关痛痒的小事上彼此包容，在无伤大雅的细节里懂得退让，留得住爱，才守得住家。</p>
+<p>　　二是，大事有商有量。</p>
+<hr>
+<p>　　电视剧《都挺好》里，有这样一个情节：苏明成想投资，可妻子朱丽谨慎，拒绝了他的提议。苏明成表面打消了念头，私下里却偷偷卖了车，又借了一笔钱，还动用了家里的存款，最终凑够资金入了股。</p>
+<p>　　朱丽得知真相后，特别生气地问苏明成：“你有没有跟我商量过，我还是不是你老婆了？”小两口原本恩爱有加，却因此产生了隔阂，最终劳燕分飞。</p>
+<p>　　婚姻里，有一种心寒叫“我拿你当亲人，你把我当外人”。我对你坦诚相待，你却对我遮遮掩掩。所以，有人说，朱丽并不是小题大做，而是在大事面前，一方擅自做主，一方蒙在鼓里，这本身就是一种不公平。</p>
+<p>　　自作主张的决定，折射的是当事人的霸道和自私；先斩后奏的行为，伤害的是对方的颜面和信任。大事上，多多交流，才避得开风险和陷阱；努力沟通，才有机会磨合思想升华感情；学会商量，才找得到解决问题的最优解。一家人同舟共济、坦诚相待、以和为贵，才能不畏风浪、不惧骤雨。</p>
+<p>　　三是，往事不翻旧账。</p>
+<hr>
+<p>　　在我们身边，翻旧账的例子比比皆是：谈恋爱时少送了一次生日礼物，妻子唠叨了好些年；妻子有一件小事没做好，丈夫也不忘反复指责“都错过一次了，怎么还不长记性！”</p>
+<p>　　陈年旧账，就像“案底”，一笔笔记下的都是对方的“罪行”。翻旧账的人，更像拿着一把尖刀，他知道你的软肋，所以例无虚发、刀刀见血。但其实，真正聪明的人都懂得：旧事翻篇，才能拥有崭新而美好的人生。</p>
+<p>　　如果非要和最亲的人说最狠的话，那好好的家可能就会在陈芝麻烂谷子的旧账里失守了幸福。</p>
+<p>　　 “人非圣贤，孰能无过。”结痂的伤疤不必再揭，曾经的错误无需再苛责。从容过活，就是谅己；把握当下，就是珍惜。</p>
+<p>　　余生，愿我们都能明白：小事不争不辩，彼此越理解，感情越和睦；大事有商有量，双方越信任，生活越幸福；往事看轻看淡，家人越包容，家庭越兴旺。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/04/%E4%B8%80%E4%B8%AA%E5%AE%B6%E8%B6%8A%E8%BF%87%E8%B6%8A%E5%A5%BD%E7%9A%843%E4%B8%AA%E8%BF%B9%E8%B1%A1/" data-id="ckke5nr3p0028cl8gcz5qhwmc" data-title="一个家越过越好的三个迹象" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-不重启清空catalina.out" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/04/%E4%B8%8D%E9%87%8D%E5%90%AF%E6%B8%85%E7%A9%BAcatalina.out/" class="article-date">
+  <time class="dt-published" datetime="2020-12-04T02:10:17.000Z" itemprop="datePublished">2020-12-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/12/04/%E4%B8%8D%E9%87%8D%E5%90%AF%E6%B8%85%E7%A9%BAcatalina.out/">不重启清空catalina.out</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="1-重定向方法清空文件"><a href="#1-重定向方法清空文件" class="headerlink" title="1.重定向方法清空文件"></a>1.重定向方法清空文件</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost logs]# du -h catalina.out  查看文件大小</span><br><span class="line">17M catalina.out</span><br><span class="line">[root@localhost logs]# &gt; catalina.out             重定向清空文件</span><br><span class="line">[root@localhost logs]# du -h catalina.out       查看文件大小</span><br><span class="line">0 catalina.out </span><br></pre></td></tr></table></figure>
+<h2 id="2-使用true命令重定向清空文件"><a href="#2-使用true命令重定向清空文件" class="headerlink" title="2.使用true命令重定向清空文件"></a>2.使用true命令重定向清空文件</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost logs]# du -h catalina.out</span><br><span class="line">448K catalina.out</span><br><span class="line">[root@localhost logs]# true &gt; catalina.out </span><br><span class="line">[root@localhost logs]# du -h catalina.out </span><br><span class="line">0 catalina.out</span><br></pre></td></tr></table></figure>
+<h2 id="3、使用cat-cp-dd命令及-dev-null设备来清空文件"><a href="#3、使用cat-cp-dd命令及-dev-null设备来清空文件" class="headerlink" title="3、使用cat/cp/dd命令及/dev/null设备来清空文件"></a>3、使用cat/cp/dd命令及/dev/null设备来清空文件</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cat /dev/null &gt; catalina.out</span><br><span class="line"></span><br><span class="line">cp  /dev/null &gt; catalina.out</span><br><span class="line"></span><br><span class="line">dd if=/dev/null of=catalina.out</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="4、使用echo命令清空文件"><a href="#4、使用echo命令清空文件" class="headerlink" title="4、使用echo命令清空文件"></a>4、使用echo命令清空文件</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo -n  &quot; &quot; &gt; catalina.out   </span><br></pre></td></tr></table></figure>
+<p>==》加上”-n”参数，默认情况下会”\n”，也就是回车符</p>
+<h2 id="5、使用truncate命令清空文件"><a href="#5、使用truncate命令清空文件" class="headerlink" title="5、使用truncate命令清空文件"></a>5、使用truncate命令清空文件</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">truncate -s 0 catalina.out   </span><br></pre></td></tr></table></figure>
+<p>-s参数是设置文件的大小，清空文件的话，就设定为0</p>
+<p>from  <a target="_blank" rel="noopener" href="https://www.cnblogs.com/centos2017/p/9922959.html">https://www.cnblogs.com/centos2017/p/9922959.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/04/%E4%B8%8D%E9%87%8D%E5%90%AF%E6%B8%85%E7%A9%BAcatalina.out/" data-id="ckke5nr3q002bcl8g2u9jdqn2" data-title="不重启清空catalina.out" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%97%A5%E5%BF%97/" rel="tag">日志</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-事务隔离级别" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/04/%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/" class="article-date">
+  <time class="dt-published" datetime="2020-12-04T02:10:17.000Z" itemprop="datePublished">2020-12-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/db/">db</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/12/04/%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">事务隔离级别</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="1-事务的特性？"><a href="#1-事务的特性？" class="headerlink" title="1.事务的特性？"></a>1.事务的特性？</h1><p>任何支持<strong>事务</strong>的数据库，都必须具备<strong>四个特性</strong>，分别是：原子性（Atomicity）、一致性（Consistency）、隔离性（Isolation）、持久性（Durability），也就是我们常说的事务ACID，这样才能保证事务（（Transaction）中数据的正确性。</p>
+<h1 id="2-隔离性"><a href="#2-隔离性" class="headerlink" title="2.隔离性"></a>2.隔离性</h1><p><strong>隔离性</strong>是指，多个并发的事务同时访问一个数据库时，一个事务不应该被另一个事务所干扰，每个并发的事务间要相互进行隔离。</p>
+<p>如果没有事务隔离，会出现什么样的情况呢？</p>
+<p>假设我们现在有这样一张表（T），里面记录了很多牛人的名字，我们不进行事务的隔离看看会发生什么呢？</p>
+<ul>
+<li><h3 id="脏读—A事务读取B事务尚未提交的数据，此时如果B事务发生错误并执行回滚操作，那么A事务读取到的数据就是脏数据"><a href="#脏读—A事务读取B事务尚未提交的数据，此时如果B事务发生错误并执行回滚操作，那么A事务读取到的数据就是脏数据" class="headerlink" title="脏读—A事务读取B事务尚未提交的数据，此时如果B事务发生错误并执行回滚操作，那么A事务读取到的数据就是脏数据"></a>脏读—A事务读取B事务尚未提交的数据，此时如果B事务发生错误并执行回滚操作，那么A事务读取到的数据就是脏数据</h3></li>
+</ul>
+<blockquote>
+<p><strong>第一天，</strong>事务A访问了数据库，它干了一件事情，往数据库里加上了新来的牛人的名字，但是没有提交事务。</p>
+<p>insert into T values (4, ‘牛D’);</p>
+<p>这时，来了另一个事务B，他要查询所有牛人的名字。</p>
+<p>select Name from T;</p>
+<p>这时，如果没有事务之间没有有效隔离，那么事务B返回的结果中就会出现“牛D”的名字。这就是“<strong>脏读（dirty read）</strong>”。</p>
+</blockquote>
+<ul>
+<li><h3 id="不可重复度—前后多次读取，数据内容不一致"><a href="#不可重复度—前后多次读取，数据内容不一致" class="headerlink" title="不可重复度—前后多次读取，数据内容不一致"></a>不可重复度—前后多次读取，数据内容不一致</h3></li>
+</ul>
+<blockquote>
+<p><strong>第二天，</strong>事务A访问了数据库，他要查看ID是1的牛人的名字，于是执行了</p>
+<p>select Name from T where ID = 1;</p>
+<p>这时，事务B来了，因为ID是1的牛人改名字了，所以要更新一下，然后提交了事务。</p>
+<p>update T set Name = ‘不牛’ where ID = 1;</p>
+<p>接着，事务A还想再看看ID是1的牛人的名字，于是又执行了</p>
+<p>select Name from T where ID = 1;</p>
+<p>结果，两次读出来的ID是1的牛人名字竟然不相同，这就是<strong>不可重复读（unrepeatable read）</strong>。</p>
+</blockquote>
+<ul>
+<li><h3 id="幻读—前后多次读取，数据总量不一致"><a href="#幻读—前后多次读取，数据总量不一致" class="headerlink" title="幻读—前后多次读取，数据总量不一致"></a>幻读—前后多次读取，数据总量不一致</h3></li>
+</ul>
+<blockquote>
+<p><strong>第三天，</strong>事务A访问了数据库，他想要看看数据库的牛人都有哪些，于是执行了</p>
+<p>select * from T;</p>
+<p>这时候，事务B来了，往数据库加入了一个新的牛人。</p>
+<p>insert into T values(4, ‘牛D’);</p>
+<p>这时候，事务A忘了刚才的牛人都有哪些了，于是又执行了。</p>
+<p>select * from T;</p>
+<p>结果，第一次有三个牛人，第二次有四个牛人。</p>
+<p>相信这个时候事务A就蒙了，刚才发生了什么？这种情况就叫“<strong>幻读（phantom problem）</strong>”。</p>
+</blockquote>
+<h1 id="3-隔离级别"><a href="#3-隔离级别" class="headerlink" title="3.隔离级别"></a>3.隔离级别</h1><p>一般的数据库，都包括以下四种隔离级别：</p>
+<ul>
+<li><p>读未提交（Read Uncommitted）</p>
+</li>
+<li><p>读提交（Read Committed）</p>
+</li>
+<li><p>可重复读（Repeated Read）</p>
+</li>
+<li><p>串行化（Serializable）</p>
+</li>
+<li><h3 id="读未提交（Read-Uncommitted）"><a href="#读未提交（Read-Uncommitted）" class="headerlink" title="读未提交（Read Uncommitted）"></a><strong>读未提交（Read Uncommitted）</strong></h3></li>
+</ul>
+<blockquote>
+<p>读未提交，顾名思义，就是<strong>可以读到未提交的内容。</strong></p>
+<p>因此，在这种隔离级别下，查询是不会加锁的，也由于查询的不加锁，所以这种隔离级别的一致性是最差的，可能会产生“脏读”、“不可重复读”、“幻读”。</p>
+<p>如无特殊情况，基本是不会使用这种隔离级别的。</p>
+</blockquote>
+<ul>
+<li><h3 id="读提交（Read-Committed）"><a href="#读提交（Read-Committed）" class="headerlink" title="读提交（Read Committed）"></a><strong>读提交（Read Committed）</strong></h3></li>
+</ul>
+<blockquote>
+<p>读提交，顾名思义，就是<strong>只能读到已经提交了的内容。</strong></p>
+<p>这是各种系统中最常用的一种隔离级别，也<strong>是SQL Server和Oracle的默认隔离级别</strong>。这种隔离级别能够有效的避免脏读，但除非在查询中显示的加锁，如：</p>
+<p>select * from T where ID=2 lock in share mode;</p>
+<p>select * from T where ID=2 for update;</p>
+<p>不然，普通的查询是不会加锁的。</p>
+<p>那为什么“读提交”同“读未提交”一样，都没有查询加锁，但是却能够避免脏读呢？</p>
+<p>这就要说道另一个机制“快照（snapshot）”，而这种既能保证一致性又不加锁的读也被称为“快照读（Snapshot Read）”</p>
+<p>假设没有“快照读”，那么当一个更新的事务没有提交时，另一个对更新数据进行查询的事务会因为无法查询而被阻塞，这种情况下，并发能力就相当的差。</p>
+<p>而“快照读”就可以完成高并发的查询，不过，“读提交”只能避免“脏读”，并不能避免“不可重复读”和“幻读”。</p>
+</blockquote>
+<ul>
+<li><h3 id="可重复读-Repeated-Read"><a href="#可重复读-Repeated-Read" class="headerlink" title="可重复读(Repeated Read)"></a><strong>可重复读(Repeated Read)</strong></h3></li>
+</ul>
+<blockquote>
+<p>可重复读，顾名思义，就是专门针对“不可重复读”这种情况而制定的隔离级别，自然，它就可以有效的避免“不可重复读”。而它也<strong>是MySql的默认隔离级别。</strong></p>
+<p>在这个级别下，普通的查询同样是使用的“快照读”，但是，和“读提交”不同的是，当事务启动时，就不允许进行“修改操作（Update）”了，而“不可重复读”恰恰是因为两次读取之间进行了数据的修改，因此，“可重复读”能够有效的避免“不可重复读”，但却避免不了“幻读”，因为幻读是由于“插入或者删除操作（Insert or Delete）”而产生的。</p>
+</blockquote>
+<ul>
+<li><h3 id="串行化（Serializable）"><a href="#串行化（Serializable）" class="headerlink" title="串行化（Serializable）"></a><strong>串行化（Serializable）</strong></h3></li>
+</ul>
+<blockquote>
+<p><strong>这是数据库最高的隔离级别，这种级别下，事务“串行化顺序执行”，也就是一个一个排队执行。</strong></p>
+<p>这种级别下，“脏读”、“不可重复读”、“幻读”都可以被避免，但是执行效率奇差，性能开销也最大，所以基本没人会用。</p>
+</blockquote>
+<h1 id="4-总结一下"><a href="#4-总结一下" class="headerlink" title="4.总结一下"></a>4.总结一下</h1><blockquote>
+<p><strong>为什么会出现“脏读”？</strong>因为“select”操作没有规矩。</p>
+<p><strong>为什么会出现“不可重复读”？</strong>因为“update”操作没有规矩。</p>
+<p><strong>为什么会出现“幻读”？</strong>因为“insert”和“delete”操作没有规矩。</p>
+<p><strong>“读未提（Read Uncommitted）”能预防啥？</strong>啥都预防不了。</p>
+<p><strong>“读提交（Read Committed）”能预防啥？</strong>使用“快照读（Snapshot Read）”，避免“脏读”，但是可能出现“不可重复读”和“幻读”。</p>
+<p><strong>“可重复读（Repeated Red）”能预防啥？</strong>使用“快照读（Snapshot Read）”，锁住被读取记录，避免出现“脏读”、“不可重复读”，但是可能出现“幻读”。</p>
+<p><strong>“串行化（Serializable）”能预防啥？</strong>排排坐，吃果果，有效避免“脏读”、“不可重复读”、“幻读”，不过效果谁用谁知道。</p>
+</blockquote>
+<p>转自:  <a target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1611918898724887602&amp;wfr=spider&amp;for=pc">https://baijiahao.baidu.com/s?id=1611918898724887602&amp;wfr=spider&amp;for=pc</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/04/%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/" data-id="ckke5nr3q002ecl8g1dxd50cu" data-title="事务隔离级别" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/acid/" rel="tag">acid</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BA%8B%E5%8A%A1/" rel="tag">事务</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bug/">bug</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/db/">db</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hello-world/">hello world</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac/">mac</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mele/">mele</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mq/">mq</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/springCloud/">springCloud</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/springboot/">springboot</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E7%B1%BB/">工具类</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/">版本控制</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/acid/" rel="tag">acid</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/aop/" rel="tag">aop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/baby/" rel="tag">baby</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bug/" rel="tag">bug</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/" rel="tag">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/excel/" rel="tag">excel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/executors/" rel="tag">executors</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/explain/" rel="tag">explain</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/filter/" rel="tag">filter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/freemarker/" rel="tag">freemarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/" rel="tag">html</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/httpServerletRequest/" rel="tag">httpServerletRequest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/httpclient/" rel="tag">httpclient</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/idea/" rel="tag">idea</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interceptor/" rel="tag">interceptor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ioc/" rel="tag">ioc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ip/" rel="tag">ip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java%E5%9F%BA%E7%A1%80/" rel="tag">java基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdbcTemplate/" rel="tag">jdbcTemplate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdk8-java/" rel="tag">jdk8 - java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/" rel="tag">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/" rel="tag">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/" rel="tag">mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/md/" rel="tag">md</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mele/" rel="tag">mele</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mq/" rel="tag">mq</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ms/" rel="tag">ms</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oracle/" rel="tag">oracle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pagehelper-%E5%88%86%E9%A1%B5/" rel="tag">pagehelper - 分页</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/photo/" rel="tag">photo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rabbitmq-mq/" rel="tag">rabbitmq - mq</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis-db/" rel="tag">redis - db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springApplication/" rel="tag">springApplication</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springCloud/" rel="tag">springCloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/" rel="tag">springboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql%E4%BC%98%E5%8C%96/" rel="tag">sql优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stream/" rel="tag">stream</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/struts2/" rel="tag">struts2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swagger/" rel="tag">swagger</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/threadPollExecutor/" rel="tag">threadPollExecutor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thymeleaf/" rel="tag">thymeleaf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/war/" rel="tag">war</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webservice/" rel="tag">webservice</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/word/" rel="tag">word</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xml/" rel="tag">xml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%BB%E9%94%AE/" rel="tag">主键</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8B%E5%8A%A1/" rel="tag">事务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81/" rel="tag">代码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%A5%E5%8F%A3%E7%B1%BB/" rel="tag">入口类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%A5%E9%97%A8/" rel="tag">入门</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%AC%E9%92%A5/" rel="tag">公钥</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E9%A1%B5/" rel="tag">分页</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" rel="tag">单元测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8E%9F%E7%90%86/" rel="tag">原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4/" rel="tag">命令</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-java/" rel="tag">多线程 - java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AF%BC%E5%87%BA/" rel="tag">导出</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="tag">工具类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B8%B8%E7%94%A8/" rel="tag">常用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E5%B8%B8/" rel="tag">异常</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E6%AD%A5%E8%B0%83%E7%94%A8/" rel="tag">异步调用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8A%BD%E8%B1%A1%E7%B1%BB/" rel="tag">抽象类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8B%A6%E6%88%AA%E5%99%A8/" rel="tag">拦截器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%A5%E5%8F%A3/" rel="tag">接口</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A5%E5%BF%97/" rel="tag">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF/" rel="tag">模板</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B3%A8%E8%A7%A3/" rel="tag">注解</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B3%A8%E9%87%8A/" rel="tag">注释</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%83%AD%E9%83%A8%E7%BD%B2/" rel="tag">热部署</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%91%E6%8E%A7/" rel="tag">监控</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0/" rel="tag">箭头函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" rel="tag">线程池</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/" rel="tag">自动装配</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" rel="tag">过滤器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%82%AE%E4%BB%B6/" rel="tag">邮件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9B%86%E5%90%88/" rel="tag">集合</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95/" rel="tag">雪花算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/acid/" style="font-size: 11.67px;">acid</a> <a href="/tags/aop/" style="font-size: 10px;">aop</a> <a href="/tags/baby/" style="font-size: 10px;">baby</a> <a href="/tags/bug/" style="font-size: 11.67px;">bug</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/excel/" style="font-size: 10px;">excel</a> <a href="/tags/executors/" style="font-size: 10px;">executors</a> <a href="/tags/explain/" style="font-size: 10px;">explain</a> <a href="/tags/filter/" style="font-size: 10px;">filter</a> <a href="/tags/freemarker/" style="font-size: 10px;">freemarker</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/html/" style="font-size: 10px;">html</a> <a href="/tags/httpServerletRequest/" style="font-size: 10px;">httpServerletRequest</a> <a href="/tags/httpclient/" style="font-size: 10px;">httpclient</a> <a href="/tags/idea/" style="font-size: 10px;">idea</a> <a href="/tags/interceptor/" style="font-size: 10px;">interceptor</a> <a href="/tags/ioc/" style="font-size: 10px;">ioc</a> <a href="/tags/ip/" style="font-size: 10px;">ip</a> <a href="/tags/java/" style="font-size: 18.33px;">java</a> <a href="/tags/java%E5%9F%BA%E7%A1%80/" style="font-size: 11.67px;">java基础</a> <a href="/tags/jdbcTemplate/" style="font-size: 10px;">jdbcTemplate</a> <a href="/tags/jdk8-java/" style="font-size: 10px;">jdk8 - java</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 13.33px;">linux</a> <a href="/tags/mac/" style="font-size: 10px;">mac</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/md/" style="font-size: 10px;">md</a> <a href="/tags/mele/" style="font-size: 10px;">mele</a> <a href="/tags/mq/" style="font-size: 11.67px;">mq</a> <a href="/tags/ms/" style="font-size: 11.67px;">ms</a> <a href="/tags/mybatis/" style="font-size: 15px;">mybatis</a> <a href="/tags/oracle/" style="font-size: 11.67px;">oracle</a> <a href="/tags/pagehelper-%E5%88%86%E9%A1%B5/" style="font-size: 10px;">pagehelper - 分页</a> <a href="/tags/photo/" style="font-size: 10px;">photo</a> <a href="/tags/rabbitmq-mq/" style="font-size: 10px;">rabbitmq - mq</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/redis-db/" style="font-size: 10px;">redis - db</a> <a href="/tags/spring/" style="font-size: 11.67px;">spring</a> <a href="/tags/springApplication/" style="font-size: 10px;">springApplication</a> <a href="/tags/springCloud/" style="font-size: 11.67px;">springCloud</a> <a href="/tags/springboot/" style="font-size: 20px;">springboot</a> <a href="/tags/sql%E4%BC%98%E5%8C%96/" style="font-size: 10px;">sql优化</a> <a href="/tags/stream/" style="font-size: 10px;">stream</a> <a href="/tags/struts2/" style="font-size: 10px;">struts2</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/threadPollExecutor/" style="font-size: 10px;">threadPollExecutor</a> <a href="/tags/thymeleaf/" style="font-size: 10px;">thymeleaf</a> <a href="/tags/tomcat/" style="font-size: 11.67px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.33px;">tool</a> <a href="/tags/war/" style="font-size: 10px;">war</a> <a href="/tags/webservice/" style="font-size: 10px;">webservice</a> <a href="/tags/word/" style="font-size: 10px;">word</a> <a href="/tags/xml/" style="font-size: 11.67px;">xml</a> <a href="/tags/%E4%B8%BB%E9%94%AE/" style="font-size: 10px;">主键</a> <a href="/tags/%E4%BA%8B%E5%8A%A1/" style="font-size: 11.67px;">事务</a> <a href="/tags/%E4%BB%A3%E7%A0%81/" style="font-size: 10px;">代码</a> <a href="/tags/%E5%85%A5%E5%8F%A3%E7%B1%BB/" style="font-size: 10px;">入口类</a> <a href="/tags/%E5%85%A5%E9%97%A8/" style="font-size: 11.67px;">入门</a> <a href="/tags/%E5%85%AC%E9%92%A5/" style="font-size: 10px;">公钥</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 11.67px;">分布式</a> <a href="/tags/%E5%88%86%E9%A1%B5/" style="font-size: 10px;">分页</a> <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" style="font-size: 10px;">单元测试</a> <a href="/tags/%E5%8E%9F%E7%90%86/" style="font-size: 10px;">原理</a> <a href="/tags/%E5%91%BD%E4%BB%A4/" style="font-size: 10px;">命令</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-java/" style="font-size: 10px;">多线程 - java</a> <a href="/tags/%E5%AF%BC%E5%87%BA/" style="font-size: 10px;">导出</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" style="font-size: 16.67px;">工具类</a> <a href="/tags/%E5%B8%B8%E7%94%A8/" style="font-size: 10px;">常用</a> <a href="/tags/%E5%BC%82%E5%B8%B8/" style="font-size: 10px;">异常</a> <a href="/tags/%E5%BC%82%E6%AD%A5%E8%B0%83%E7%94%A8/" style="font-size: 10px;">异步调用</a> <a href="/tags/%E6%8A%BD%E8%B1%A1%E7%B1%BB/" style="font-size: 10px;">抽象类</a> <a href="/tags/%E6%8B%A6%E6%88%AA%E5%99%A8/" style="font-size: 10px;">拦截器</a> <a href="/tags/%E6%8E%A5%E5%8F%A3/" style="font-size: 10px;">接口</a> <a href="/tags/%E6%97%A5%E5%BF%97/" style="font-size: 11.67px;">日志</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 10px;">模板</a> <a href="/tags/%E6%B3%A8%E8%A7%A3/" style="font-size: 10px;">注解</a> <a href="/tags/%E6%B3%A8%E9%87%8A/" style="font-size: 10px;">注释</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 10px;">消息队列</a> <a href="/tags/%E7%83%AD%E9%83%A8%E7%BD%B2/" style="font-size: 10px;">热部署</a> <a href="/tags/%E7%9B%91%E6%8E%A7/" style="font-size: 10px;">监控</a> <a href="/tags/%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0/" style="font-size: 10px;">箭头函数</a> <a href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" style="font-size: 11.67px;">线程池</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 10px;">缓存</a> <a href="/tags/%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/" style="font-size: 10px;">自动装配</a> <a href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" style="font-size: 10px;">过滤器</a> <a href="/tags/%E9%82%AE%E4%BB%B6/" style="font-size: 10px;">邮件</a> <a href="/tags/%E9%9B%86%E5%90%88/" style="font-size: 10px;">集合</a> <a href="/tags/%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95/" style="font-size: 10px;">雪花算法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/23/redis%E6%95%99%E7%A8%8B%E6%95%88%E7%8E%87%E7%89%88/">redis入门效率版</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/22/%E5%BC%80%E5%8F%91%E6%B3%A8%E6%84%8F%E4%BB%A3%E7%A0%81%E6%95%B4%E7%90%86/">开发中注意的小问题</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/02/SQL%E8%AF%AD%E5%8F%A5%E6%80%A7%E8%83%BD%E6%8F%90%E5%8D%87/">SQL语句性能提升</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/15/%E9%9B%86%E5%90%88%E5%88%86%E9%A1%B5%E5%B7%A5%E5%85%B7%E7%B1%BB/">集合分页工具类</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/10/%E5%8F%AA%E4%BF%AE%E6%94%B9%E5%87%A0%E8%A1%8C%EF%BC%8Cgit%E5%8D%B4%E6%98%BE%E7%A4%BA%E6%95%B4%E4%B8%AA%E6%96%87%E4%BB%B6%E9%83%BD%E8%A2%AB%E4%BF%AE%E6%94%B9/">只修改几行，git却显示整个文件都被修改</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

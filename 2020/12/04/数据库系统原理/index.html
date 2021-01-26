@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>数据库系统原理 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="数据库系统原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库系统原理">
+<meta property="og:url" content="http://example.com/2020/12/04/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="数据库系统原理">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://59.110.212.214/upload/20200708_16571956.png">
+<meta property="og:image" content="http://59.110.212.214/upload/20200708_16472219.png">
+<meta property="og:image" content="http://59.110.212.214/upload/20200708_16461824.png">
+<meta property="og:image" content="http://59.110.212.214/upload/20200708_16451235.png">
+<meta property="og:image" content="http://59.110.212.214/upload/20200708_16445542.png">
+<meta property="og:image" content="http://59.110.212.214/upload/20200708_16443677.png">
+<meta property="og:image" content="http://59.110.212.214/upload/20200708_16440671.png">
+<meta property="article:published_time" content="2020-12-04T02:10:17.000Z">
+<meta property="article:modified_time" content="2020-12-04T12:00:21.130Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="事务">
+<meta property="article:tag" content="acid">
+<meta property="article:tag" content="原理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://59.110.212.214/upload/20200708_16571956.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-数据库系统原理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/04/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86/" class="article-date">
+  <time class="dt-published" datetime="2020-12-04T02:10:17.000Z" itemprop="datePublished">2020-12-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/db/">db</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      数据库系统原理
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="一、事务"><a href="#一、事务" class="headerlink" title="一、事务"></a>一、事务</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>事务指的是满足 ACID 特性的一组操作，可以通过 Commit 提交一个事务，也可以使用 Rollback 进行回滚。</p>
+<p><img src="http://59.110.212.214/upload/20200708_16571956.png"></p>
+<h2 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h2><h3 id="1-原子性（Atomicity）"><a href="#1-原子性（Atomicity）" class="headerlink" title="1. 原子性（Atomicity）"></a>1. 原子性（Atomicity）</h3><p>事务被视为不可分割的最小单元，事务的所有操作要么全部提交成功，要么全部失败回滚。</p>
+<p>回滚可以用回滚日志（Undo Log）来实现，回滚日志记录着事务所执行的修改操作，在回滚时反向执行这些修改操作即可。</p>
+<h3 id="2-一致性（Consistency）"><a href="#2-一致性（Consistency）" class="headerlink" title="2. 一致性（Consistency）"></a>2. 一致性（Consistency）</h3><p>数据库在事务执行前后都保持一致性状态。在一致性状态下，所有事务对同一个数据的读取结果都是相同的。</p>
+<h3 id="3-隔离性（Isolation）"><a href="#3-隔离性（Isolation）" class="headerlink" title="3. 隔离性（Isolation）"></a>3. 隔离性（Isolation）</h3><p>一个事务所做的修改在最终提交以前，对其它事务是不可见的。</p>
+<h3 id="4-持久性（Durability）"><a href="#4-持久性（Durability）" class="headerlink" title="4. 持久性（Durability）"></a>4. 持久性（Durability）</h3><p>一旦事务提交，则其所做的修改将会永远保存到数据库中。即使系统发生崩溃，事务执行的结果也不能丢失。</p>
+<p>系统发生奔溃可以用重做日志（Redo Log）进行恢复，从而实现持久性。与回滚日志记录数据的逻辑修改不同，重做日志记录的是数据页的物理修改。</p>
+<hr>
+<p>事务的 ACID 特性概念简单，但不是很好理解，主要是因为这几个特性不是一种平级关系：</p>
+<ul>
+<li>只有满足一致性，事务的执行结果才是正确的。</li>
+<li>在无并发的情况下，事务串行执行，隔离性一定能够满足。此时只要能满足原子性，就一定能满足一致性。</li>
+<li>在并发的情况下，多个事务并行执行，事务不仅要满足原子性，还需要满足隔离性，才能满足一致性。</li>
+<li>事务满足持久化是为了能应对系统崩溃的情况。</li>
+</ul>
+<h2 id="AUTOCOMMIT"><a href="#AUTOCOMMIT" class="headerlink" title="AUTOCOMMIT"></a>AUTOCOMMIT</h2><p>MySQL 默认采用自动提交模式。也就是说，如果不显式使用<code>START TRANSACTION</code>语句来开始一个事务，那么每个查询操作都会被当做一个事务并自动提交。</p>
+<h1 id="二、并发一致性问题"><a href="#二、并发一致性问题" class="headerlink" title="二、并发一致性问题"></a>二、并发一致性问题</h1><p>在并发环境下，事务的隔离性很难保证，因此会出现很多并发一致性问题。</p>
+<h2 id="丢失修改"><a href="#丢失修改" class="headerlink" title="丢失修改"></a>丢失修改</h2><p>丢失修改指一个事务的更新操作被另外一个事务的更新操作替换。一般在现实生活中常会遇到，例如：T1 和 T2 两个事务都对一个数据进行修改，T1 先修改并提交生效，T2 随后修改，T2 的修改覆盖了 T1 的修改。</p>
+<h2 id="读脏数据"><a href="#读脏数据" class="headerlink" title="读脏数据"></a>读脏数据</h2><p>读脏数据指在不同的事务下，当前事务可以读到另外事务未提交的数据。例如：T1 修改一个数据但未提交，T2 随后读取这个数据。如果 T1 撤销了这次修改，那么 T2 读取的数据是脏数据。</p>
+<h2 id="不可重复读"><a href="#不可重复读" class="headerlink" title="不可重复读"></a>不可重复读</h2><p>不可重复读指在一个事务内多次读取同一数据集合。在这一事务还未结束前，另一事务也访问了该同一数据集合并做了修改，由于第二个事务的修改，第一次事务的两次读取的数据可能不一致。例如：T2 读取一个数据，T1 对该数据做了修改。如果 T2 再次读取这个数据，此时读取的结果和第一次读取的结果不同。</p>
+<h2 id="幻影读"><a href="#幻影读" class="headerlink" title="幻影读"></a>幻影读</h2><p>幻读本质上也属于不可重复读的情况，T1 读取某个范围的数据，T2 在这个范围内插入新的数据，T1 再次读取这个范围的数据，此时读取的结果和和第一次读取的结果不同。</p>
+<hr>
+<p>产生并发不一致性问题的主要原因是破坏了事务的隔离性，解决方法是通过并发控制来保证隔离性。并发控制可以通过封锁来实现，但是封锁操作需要用户自己控制，相当复杂。数据库管理系统提供了事务的隔离级别，让用户以一种更轻松的方式处理并发一致性问题。</p>
+<h1 id="三、封锁"><a href="#三、封锁" class="headerlink" title="三、封锁"></a>三、封锁</h1><h2 id="封锁粒度"><a href="#封锁粒度" class="headerlink" title="封锁粒度"></a>封锁粒度</h2><p>MySQL 中提供了两种封锁粒度：行级锁以及表级锁。</p>
+<p>应该尽量只锁定需要修改的那部分数据，而不是所有的资源。<strong>锁定的数据量越少，发生锁争用的可能就越小，系统的并发程度就越高。</strong></p>
+<p><strong>但是加锁需要消耗资源</strong>，锁的各种操作（包括获取锁、释放锁、以及检查锁状态）都会增加系统开销。因此封锁粒度越小，系统开销就越大。</p>
+<p><strong>在选择封锁粒度时，需要在锁开销和并发程度之间做一个权衡。</strong></p>
+<h2 id="封锁类型"><a href="#封锁类型" class="headerlink" title="封锁类型"></a>封锁类型</h2><h3 id="1-读写锁"><a href="#1-读写锁" class="headerlink" title="1. 读写锁"></a>1. 读写锁</h3><ul>
+<li>互斥锁（Exclusive），简写为 X 锁，又称写锁。</li>
+<li>共享锁（Shared），简写为 S 锁，又称读锁。</li>
+</ul>
+<p>有以下两个规定：</p>
+<ul>
+<li>一个事务对数据对象 A 加了 X 锁，就可以对 A 进行读取和更新。加锁期间其它事务不能对 A 加任何锁。</li>
+<li>一个事务对数据对象 A 加了 S 锁，可以对 A 进行读取操作，但是不能进行更新操作。加锁期间其它事务能对 A 加 S 锁，但是不能加 X 锁。</li>
+</ul>
+<p>锁的兼容关系如下：</p>
+<p>![image-20200708162307968](/Users/boguotong/Library/Application Support/typora-user-images/image-20200708162307968.png)</p>
+<h3 id="2-意向锁"><a href="#2-意向锁" class="headerlink" title="2. 意向锁"></a>2. 意向锁</h3><p>使用意向锁（Intention Locks）可以更容易地支持多粒度封锁。</p>
+<p>在存在行级锁和表级锁的情况下，事务 T 想要对表 A 加 X 锁，就需要先检测是否有其它事务对表 A 或者表 A 中的任意一行加了锁，那么就需要对表 A 的每一行都检测一次，这是非常耗时的。</p>
+<p><strong>意向锁在原来的 X/S 锁之上引入了 IX/IS，IX/IS 都是表锁，用来表示一个事务想要在表中的某个数据行上加 X 锁或 S 锁。</strong>有以下两个规定：</p>
+<ul>
+<li>一个事务在获得某个数据行对象的 S 锁之前，必须先获得表的 IS 锁或者更强的锁；</li>
+<li>一个事务在获得某个数据行对象的 X 锁之前，必须先获得表的 IX 锁。</li>
+</ul>
+<p>通过引入意向锁，事务 T 想要对表 A 加 X 锁，只需要先检测是否有其它事务对表 A 加了 X/IX/S/IS 锁，如果加了就表示有其它事务正在使用这个表或者表中某一行的锁，因此事务 T 加 X 锁失败。</p>
+<p>各种锁的兼容关系如下：</p>
+<p><img src="http://59.110.212.214/upload/20200708_16472219.png"></p>
+<p>解释如下：</p>
+<ul>
+<li>任意 IS/IX 锁之间都是兼容的，因为它们只表示想要对表加锁，而不是真正加锁；</li>
+<li>这里兼容关系针对的是表级锁，而表级的 IX 锁和行级的 X 锁兼容，两个事务可以对两个数据行加 X 锁。（事务 T1 想要对数据行 R1 加 X 锁，事务 T2 想要对同一个表的数据行 R2 加 X 锁，两个事务都需要对该表加 IX 锁，但是 IX 锁是兼容的，并且 IX 锁与行级的 X 锁也是兼容的，因此两个事务都能加锁成功，对同一个表中的两个数据行做修改。）</li>
+</ul>
+<h2 id="封锁协议"><a href="#封锁协议" class="headerlink" title="封锁协议"></a>封锁协议</h2><h3 id="1-三级封锁协议"><a href="#1-三级封锁协议" class="headerlink" title="1. 三级封锁协议"></a>1. 三级封锁协议</h3><p><strong>一级封锁协议</strong></p>
+<p>事务 T 要修改数据 A 时必须加 X 锁，直到 T 结束才释放锁。</p>
+<p>可以解决丢失修改问题，因为不能同时有两个事务对同一个数据进行修改，那么事务的修改就不会被覆盖。</p>
+<p><strong>二级封锁协议</strong></p>
+<p>在一级的基础上，要求读取数据 A 时必须加 S 锁，读取完马上释放 S 锁。</p>
+<p>可以解决读脏数据问题，因为如果一个事务在对数据 A 进行修改，根据 1 级封锁协议，会加 X 锁，那么就不能再加 S 锁了，也就是不会读入数据。</p>
+<p><strong>三级封锁协议</strong></p>
+<p>在二级的基础上，要求读取数据 A 时必须加 S 锁，直到事务结束了才能释放 S 锁。</p>
+<p>可以解决不可重复读的问题，因为读 A 时，其它事务不能对 A 加 X 锁，从而避免了在读的期间数据发生改变。</p>
+<h3 id="2-两段锁协议"><a href="#2-两段锁协议" class="headerlink" title="2. 两段锁协议"></a>2. 两段锁协议</h3><p>加锁和解锁分为两个阶段进行。</p>
+<p>可串行化调度是指，通过并发控制，使得并发执行的事务结果与某个串行执行的事务结果相同。串行执行的事务互不干扰，不会出现并发一致性问题。</p>
+<p>事务遵循两段锁协议是保证可串行化调度的充分条件。例如以下操作满足两段锁协议，它是可串行化调度。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lock-x(A)...lock-s(B)...lock-s(C)...unlock(A)...unlock(C)...unlock(B)</span><br></pre></td></tr></table></figure>
+<p>但不是必要条件，例如以下操作不满足两段锁协议，但它还是可串行化调度。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lock-x(A)...unlock(A)...lock-s(B)...unlock(B)...lock-s(C)...unlock(C)</span><br></pre></td></tr></table></figure>
+<h2 id="MySQL-隐式与显示锁定"><a href="#MySQL-隐式与显示锁定" class="headerlink" title="MySQL 隐式与显示锁定"></a>MySQL 隐式与显示锁定</h2><p>MySQL 的 InnoDB 存储引擎采用两段锁协议，会根据隔离级别在需要的时候自动加锁，并且所有的锁都是在同一时刻被释放，这被称为隐式锁定。</p>
+<p>InnoDB 也可以使用特定的语句进行显示锁定：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT ... LOCK In SHARE MODE;</span><br><span class="line">SELECT ... FOR UPDATE;</span><br></pre></td></tr></table></figure>
+<h1 id="四、隔离级别"><a href="#四、隔离级别" class="headerlink" title="四、隔离级别"></a>四、隔离级别</h1><h2 id="未提交读（READ-UNCOMMITTED）"><a href="#未提交读（READ-UNCOMMITTED）" class="headerlink" title="未提交读（READ UNCOMMITTED）"></a>未提交读（READ UNCOMMITTED）</h2><p>事务中的修改，即使没有提交，对其它事务也是可见的。</p>
+<h2 id="提交读（READ-COMMITTED）"><a href="#提交读（READ-COMMITTED）" class="headerlink" title="提交读（READ COMMITTED）"></a>提交读（READ COMMITTED）</h2><p>一个事务只能读取已经提交的事务所做的修改。换句话说，一个事务所做的修改在提交之前对其它事务是不可见的。</p>
+<h2 id="可重复读（REPEATABLE-READ）"><a href="#可重复读（REPEATABLE-READ）" class="headerlink" title="可重复读（REPEATABLE READ）"></a>可重复读（REPEATABLE READ）</h2><p>保证在同一个事务中多次读取同一数据的结果是一样的。</p>
+<h2 id="可串行化（SERIALIZABLE）"><a href="#可串行化（SERIALIZABLE）" class="headerlink" title="可串行化（SERIALIZABLE）"></a>可串行化（SERIALIZABLE）</h2><p>强制事务串行执行，这样多个事务互不干扰，不会出现并发一致性问题。</p>
+<p>该隔离级别需要加锁实现，因为要使用加锁机制保证同一时间只有一个事务执行，也就是保证事务串行执行。</p>
+<hr>
+<p><img src="http://59.110.212.214/upload/20200708_16461824.png"></p>
+<h1 id="五、多版本并发控制"><a href="#五、多版本并发控制" class="headerlink" title="五、多版本并发控制"></a>五、多版本并发控制</h1><p>多版本并发控制（Multi-Version Concurrency Control, MVCC）是 MySQL 的 InnoDB 存储引擎实现隔离级别的一种具体方式，用于实现提交读和可重复读这两种隔离级别。而未提交读隔离级别总是读取最新的数据行，要求很低，无需使用 MVCC。可串行化隔离级别需要对所有读取的行都加锁，单纯使用 MVCC 无法实现。</p>
+<h2 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h2><p>在封锁一节中提到，加锁能解决多个事务同时执行时出现的并发一致性问题。在实际场景中读操作往往多于写操作，因此又引入了读写锁来避免不必要的加锁操作，例如读和读没有互斥关系。读写锁中读和写操作仍然是互斥的，而 MVCC 利用了多版本的思想，写操作更新最新的版本快照，而读操作去读旧版本快照，没有互斥关系，这一点和 CopyOnWrite 类似。</p>
+<p>在 MVCC 中事务的修改操作（DELETE、INSERT、UPDATE）会为数据行新增一个版本快照。</p>
+<p>脏读和不可重复读最根本的原因是事务读取到其它事务未提交的修改。在事务进行读取操作时，为了解决脏读和不可重复读问题，MVCC 规定只能读取已经提交的快照。当然一个事务可以读取自身未提交的快照，这不算是脏读。</p>
+<h2 id="版本号"><a href="#版本号" class="headerlink" title="版本号"></a>版本号</h2><ul>
+<li>系统版本号 SYS_ID：是一个递增的数字，每开始一个新的事务，系统版本号就会自动递增。</li>
+<li>事务版本号 TRX_ID ：事务开始时的系统版本号。</li>
+</ul>
+<h2 id="Undo-日志"><a href="#Undo-日志" class="headerlink" title="Undo 日志"></a>Undo 日志</h2><p>MVCC 的多版本指的是多个版本的快照，快照存储在 Undo 日志中，该日志通过回滚指针 ROLL_PTR 把一个数据行的所有快照连接起来。</p>
+<p>例如在 MySQL 创建一个表 t，包含主键 id 和一个字段 x。我们先插入一个数据行，然后对该数据行执行两次更新操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO t(id, x) VALUES(1, &quot;a&quot;);</span><br><span class="line">UPDATE t SET x&#x3D;&quot;b&quot; WHERE id&#x3D;1;</span><br><span class="line">UPDATE t SET x&#x3D;&quot;c&quot; WHERE id&#x3D;1;</span><br></pre></td></tr></table></figure>
+<p>因为没有使用 <code>START TRANSACTION</code> 将上面的操作当成一个事务来执行，根据 MySQL 的 AUTOCOMMIT 机制，每个操作都会被当成一个事务来执行，所以上面的操作总共涉及到三个事务。快照中除了记录事务版本号 TRX_ID 和操作之外，还记录了一个 bit 的 DEL 字段，用于标记是否被删除。</p>
+<p>INSERT、UPDATE、DELETE 操作会创建一个日志，并将事务版本号 TRX_ID 写入。DELETE 可以看成是一个特殊的 UPDATE，还会额外将 DEL 字段设置为 1。</p>
+<h2 id="ReadView"><a href="#ReadView" class="headerlink" title="ReadView"></a>ReadView</h2><p>MVCC 维护了一个 ReadView 结构，主要包含了当前系统未提交的事务列表 TRX_IDs {TRX_ID_1, TRX_ID_2, …}，还有该列表的最小值 TRX_ID_MIN 和 TRX_ID_MAX。</p>
+<p>在进行 SELECT 操作时，根据数据行快照的 TRX_ID 与 TRX_ID_MIN 和 TRX_ID_MAX 之间的关系，从而判断数据行快照是否可以使用：</p>
+<ul>
+<li>TRX_ID &lt; TRX_ID_MIN，表示该数据行快照时在当前所有未提交事务之前进行更改的，因此可以使用。</li>
+<li>TRX_ID &gt; TRX_ID_MAX，表示该数据行快照是在事务启动之后被更改的，因此不可使用。</li>
+<li>TRX_ID_MIN &lt;= TRX_ID &lt;= TRX_ID_MAX，需要根据隔离级别再进行判断：<ul>
+<li>提交读：如果 TRX_ID 在 TRX_IDs 列表中，表示该数据行快照对应的事务还未提交，则该快照不可使用。否则表示已经提交，可以使用。</li>
+<li>可重复读：都不可以使用。因为如果可以使用的话，那么其它事务也可以读到这个数据行快照并进行修改，那么当前事务再去读这个数据行得到的值就会发生改变，也就是出现了不可重复读问题。</li>
+</ul>
+</li>
+</ul>
+<p>在数据行快照不可使用的情况下，需要沿着 Undo Log 的回滚指针 ROLL_PTR 找到下一个快照，再进行上面的判断。</p>
+<h2 id="快照读与当前读"><a href="#快照读与当前读" class="headerlink" title="快照读与当前读"></a>快照读与当前读</h2><h3 id="1-快照读"><a href="#1-快照读" class="headerlink" title="1. 快照读"></a>1. 快照读</h3><p>MVCC 的 SELECT 操作是快照中的数据，不需要进行加锁操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM table ...;</span><br></pre></td></tr></table></figure>
+<h3 id="2-当前读"><a href="#2-当前读" class="headerlink" title="2. 当前读"></a>2. 当前读</h3><p>MVCC 其它会对数据库进行修改的操作（INSERT、UPDATE、DELETE）需要进行加锁操作，从而读取最新的数据。可以看到 MVCC 并不是完全不用加锁，而只是避免了 SELECT 的加锁操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">INSERT;</span><br><span class="line">UPDATE;</span><br><span class="line">DELETE;</span><br></pre></td></tr></table></figure>
+<p>在进行 SELECT 操作时，可以强制指定进行加锁操作。以下第一个语句需要加 S 锁，第二个需要加 X 锁。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM table WHERE ? lock in share mode;</span><br><span class="line">SELECT * FROM table WHERE ? for update;</span><br></pre></td></tr></table></figure>
+<h1 id="六、Next-Key-Locks"><a href="#六、Next-Key-Locks" class="headerlink" title="六、Next-Key Locks"></a>六、Next-Key Locks</h1><p>Next-Key Locks 是 MySQL 的 InnoDB 存储引擎的一种锁实现。</p>
+<p>MVCC 不能解决幻影读问题，Next-Key Locks 就是为了解决这个问题而存在的。在可重复读（REPEATABLE READ）隔离级别下，使用 MVCC + Next-Key Locks 可以解决幻读问题。</p>
+<h2 id="Record-Locks"><a href="#Record-Locks" class="headerlink" title="Record Locks"></a>Record Locks</h2><p>锁定一个记录上的索引，而不是记录本身。</p>
+<p>如果表没有设置索引，InnoDB 会自动在主键上创建隐藏的聚簇索引，因此 Record Locks 依然可以使用。</p>
+<h2 id="Gap-Locks"><a href="#Gap-Locks" class="headerlink" title="Gap Locks"></a>Gap Locks</h2><p>锁定索引之间的间隙，但是不包含索引本身。例如当一个事务执行以下语句，其它事务就不能在 t.c 中插入 15。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT c FROM t WHERE c BETWEEN 10 and 20 FOR UPDATE;</span><br></pre></td></tr></table></figure>
+<h2 id="Next-Key-Locks"><a href="#Next-Key-Locks" class="headerlink" title="Next-Key Locks"></a>Next-Key Locks</h2><p>它是 Record Locks 和 Gap Locks 的结合，不仅锁定一个记录上的索引，也锁定索引之间的间隙。它锁定一个前开后闭区间，例如一个索引包含以下值：10, 11, 13, and 20，那么就需要锁定以下区间：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(-∞, 10]</span><br><span class="line">(10, 11]</span><br><span class="line">(11, 13]</span><br><span class="line">(13, 20]</span><br><span class="line">(20, +∞)</span><br></pre></td></tr></table></figure>
+<h1 id="七、关系数据库设计理论"><a href="#七、关系数据库设计理论" class="headerlink" title="七、关系数据库设计理论"></a>七、关系数据库设计理论</h1><h2 id="函数依赖"><a href="#函数依赖" class="headerlink" title="函数依赖"></a>函数依赖</h2><p>记 A-&gt;B 表示 A 函数决定 B，也可以说 B 函数依赖于 A。</p>
+<p>如果 {A1，A2，… ，An} 是关系的一个或多个属性的集合，该集合函数决定了关系的其它所有属性并且是最小的，那么该集合就称为键码。</p>
+<p>对于 A-&gt;B，如果能找到 A 的真子集 A’，使得 A’-&gt; B，那么 A-&gt;B 就是部分函数依赖，否则就是完全函数依赖。</p>
+<p>对于 A-&gt;B，B-&gt;C，则 A-&gt;C 是一个传递函数依赖。</p>
+<h2 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h2><p>以下的学生课程关系的函数依赖为 {Sno, Cname} -&gt; {Sname, Sdept, Mname, Grade}，键码为 {Sno, Cname}。也就是说，确定学生和课程之后，就能确定其它信息。</p>
+<table>
+<thead>
+<tr>
+<th>Sno</th>
+<th>Sname</th>
+<th>Sdept</th>
+<th>Mname</th>
+<th>Cname</th>
+<th>Grade</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>学生-1</td>
+<td>学院-1</td>
+<td>院长-1</td>
+<td>课程-1</td>
+<td>90</td>
+</tr>
+<tr>
+<td>2</td>
+<td>学生-2</td>
+<td>学院-2</td>
+<td>院长-2</td>
+<td>课程-2</td>
+<td>80</td>
+</tr>
+<tr>
+<td>2</td>
+<td>学生-2</td>
+<td>学院-2</td>
+<td>院长-2</td>
+<td>课程-1</td>
+<td>100</td>
+</tr>
+<tr>
+<td>3</td>
+<td>学生-3</td>
+<td>学院-2</td>
+<td>院长-2</td>
+<td>课程-2</td>
+<td>95</td>
+</tr>
+</tbody></table>
+<p>不符合范式的关系，会产生很多异常，主要有以下四种异常：</p>
+<ul>
+<li>冗余数据：例如 <code>学生-2</code> 出现了两次。</li>
+<li>修改异常：修改了一个记录中的信息，但是另一个记录中相同的信息却没有被修改。</li>
+<li>删除异常：删除一个信息，那么也会丢失其它信息。例如删除了 <code>课程-1</code> 需要删除第一行和第三行，那么 <code>学生-1</code> 的信息就会丢失。</li>
+<li>插入异常：例如想要插入一个学生的信息，如果这个学生还没选课，那么就无法插入。</li>
+</ul>
+<h2 id="范式"><a href="#范式" class="headerlink" title="范式"></a>范式</h2><p>范式理论是为了解决以上提到四种异常。</p>
+<p>高级别范式的依赖于低级别的范式，1NF 是最低级别的范式。</p>
+<h3 id="1-第一范式-1NF"><a href="#1-第一范式-1NF" class="headerlink" title="1. 第一范式 (1NF)"></a>1. 第一范式 (1NF)</h3><p>属性不可分。</p>
+<h3 id="2-第二范式-2NF"><a href="#2-第二范式-2NF" class="headerlink" title="2. 第二范式 (2NF)"></a>2. 第二范式 (2NF)</h3><p>每个非主属性完全函数依赖于键码。</p>
+<p>可以通过分解来满足。</p>
+<p><strong>分解前</strong></p>
+<table>
+<thead>
+<tr>
+<th>Sno</th>
+<th>Sname</th>
+<th>Sdept</th>
+<th>Mname</th>
+<th>Cname</th>
+<th>Grade</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>学生-1</td>
+<td>学院-1</td>
+<td>院长-1</td>
+<td>课程-1</td>
+<td>90</td>
+</tr>
+<tr>
+<td>2</td>
+<td>学生-2</td>
+<td>学院-2</td>
+<td>院长-2</td>
+<td>课程-2</td>
+<td>80</td>
+</tr>
+<tr>
+<td>2</td>
+<td>学生-2</td>
+<td>学院-2</td>
+<td>院长-2</td>
+<td>课程-1</td>
+<td>100</td>
+</tr>
+<tr>
+<td>3</td>
+<td>学生-3</td>
+<td>学院-2</td>
+<td>院长-2</td>
+<td>课程-2</td>
+<td>95</td>
+</tr>
+</tbody></table>
+<p>以上学生课程关系中，{Sno, Cname} 为键码，有如下函数依赖：</p>
+<ul>
+<li>Sno -&gt; Sname, Sdept</li>
+<li>Sdept -&gt; Mname</li>
+<li>Sno, Cname-&gt; Grade</li>
+</ul>
+<p>Grade 完全函数依赖于键码，它没有任何冗余数据，每个学生的每门课都有特定的成绩。</p>
+<p>Sname, Sdept 和 Mname 都部分依赖于键码，当一个学生选修了多门课时，这些数据就会出现多次，造成大量冗余数据。</p>
+<p><strong>分解后</strong></p>
+<p>关系-1</p>
+<table>
+<thead>
+<tr>
+<th>Sno</th>
+<th>Sname</th>
+<th>Sdept</th>
+<th>Mname</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>学生-1</td>
+<td>学院-1</td>
+<td>院长-1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>学生-2</td>
+<td>学院-2</td>
+<td>院长-2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>学生-3</td>
+<td>学院-2</td>
+<td>院长-2</td>
+</tr>
+</tbody></table>
+<p>有以下函数依赖：</p>
+<ul>
+<li>Sno -&gt; Sname, Sdept</li>
+<li>Sdept -&gt; Mname</li>
+</ul>
+<p>关系-2</p>
+<table>
+<thead>
+<tr>
+<th>Sno</th>
+<th>Cname</th>
+<th>Grade</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>课程-1</td>
+<td>90</td>
+</tr>
+<tr>
+<td>2</td>
+<td>课程-2</td>
+<td>80</td>
+</tr>
+<tr>
+<td>2</td>
+<td>课程-1</td>
+<td>100</td>
+</tr>
+<tr>
+<td>3</td>
+<td>课程-2</td>
+<td>95</td>
+</tr>
+</tbody></table>
+<p>有以下函数依赖：</p>
+<ul>
+<li>Sno, Cname -&gt; Grade</li>
+</ul>
+<h3 id="3-第三范式-3NF"><a href="#3-第三范式-3NF" class="headerlink" title="3. 第三范式 (3NF)"></a>3. 第三范式 (3NF)</h3><p>非主属性不传递函数依赖于键码。</p>
+<p>上面的 关系-1 中存在以下传递函数依赖：</p>
+<ul>
+<li>Sno -&gt; Sdept -&gt; Mname</li>
+</ul>
+<p>可以进行以下分解：</p>
+<p>关系-11</p>
+<table>
+<thead>
+<tr>
+<th>Sno</th>
+<th>Sname</th>
+<th>Sdept</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>学生-1</td>
+<td>学院-1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>学生-2</td>
+<td>学院-2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>学生-3</td>
+<td>学院-2</td>
+</tr>
+</tbody></table>
+<p>关系-12</p>
+<table>
+<thead>
+<tr>
+<th>Sdept</th>
+<th>Mname</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>学院-1</td>
+<td>院长-1</td>
+</tr>
+<tr>
+<td>学院-2</td>
+<td>院长-2</td>
+</tr>
+</tbody></table>
+<h1 id="八、ER-图"><a href="#八、ER-图" class="headerlink" title="八、ER 图"></a>八、ER 图</h1><p>Entity-Relationship，有三个组成部分：实体、属性、联系。</p>
+<p>用来进行关系型数据库系统的概念设计。</p>
+<h2 id="实体的三种联系"><a href="#实体的三种联系" class="headerlink" title="实体的三种联系"></a>实体的三种联系</h2><p>包含一对一，一对多，多对多三种。</p>
+<ul>
+<li>如果 A 到 B 是一对多关系，那么画个带箭头的线段指向 B；</li>
+<li>如果是一对一，画两个带箭头的线段；</li>
+<li>如果是多对多，画两个不带箭头的线段。</li>
+</ul>
+<p>下图的 Course 和 Student 是一对多的关系。</p>
+<p><img src="http://59.110.212.214/upload/20200708_16451235.png"></p>
+<h2 id="表示出现多次的关系"><a href="#表示出现多次的关系" class="headerlink" title="表示出现多次的关系"></a>表示出现多次的关系</h2><p>一个实体在联系出现几次，就要用几条线连接。</p>
+<p>下图表示一个课程的先修关系，先修关系出现两个 Course 实体，第一个是先修课程，后一个是后修课程，因此需要用两条线来表示这种关系。</p>
+<p><img src="http://59.110.212.214/upload/20200708_16445542.png"></p>
+<h2 id="联系的多向性"><a href="#联系的多向性" class="headerlink" title="联系的多向性"></a>联系的多向性</h2><p>虽然老师可以开设多门课，并且可以教授多名学生，但是对于特定的学生和课程，只有一个老师教授，这就构成了一个三元联系。</p>
+<p><img src="http://59.110.212.214/upload/20200708_16443677.png"></p>
+<h2 id="表示子类"><a href="#表示子类" class="headerlink" title="表示子类"></a>表示子类</h2><p>用一个三角形和两条线来连接类和子类，与子类有关的属性和联系都连到子类上，而与父类和子类都有关的连到父类上。<br><img src="http://59.110.212.214/upload/20200708_16440671.png"></p>
+<ul>
+<li>转自:<a target="_blank" rel="noopener" href="https://github.com/CyC2018/CS-Notes/blob/master/docs/notes/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86.md">https://github.com/CyC2018/CS-Notes/blob/master/docs/notes/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86.md</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/04/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86/" data-id="ckke5nr5b009zcl8gehg37v44" data-title="数据库系统原理" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/acid/" rel="tag">acid</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BA%8B%E5%8A%A1/" rel="tag">事务</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8E%9F%E7%90%86/" rel="tag">原理</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/12/04/%E5%88%86%E5%B8%83%E5%BC%8F%E6%A1%86%E6%9E%B6%E9%9D%A2%E8%AF%95%E9%A2%98%E5%90%88%E9%9B%86/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Java 分布式框架面试题合集
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/12/04/%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0Spring%20Boot%E4%B8%AD%E7%9A%84SpringApplication/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">深入学习springboot中的SpringApplication</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bug/">bug</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/db/">db</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hello-world/">hello world</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac/">mac</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mele/">mele</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mq/">mq</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/springCloud/">springCloud</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/springboot/">springboot</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E7%B1%BB/">工具类</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/">版本控制</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/acid/" rel="tag">acid</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/aop/" rel="tag">aop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/baby/" rel="tag">baby</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bug/" rel="tag">bug</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/" rel="tag">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/excel/" rel="tag">excel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/executors/" rel="tag">executors</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/explain/" rel="tag">explain</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/filter/" rel="tag">filter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/freemarker/" rel="tag">freemarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/" rel="tag">html</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/httpServerletRequest/" rel="tag">httpServerletRequest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/httpclient/" rel="tag">httpclient</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/idea/" rel="tag">idea</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interceptor/" rel="tag">interceptor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ioc/" rel="tag">ioc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ip/" rel="tag">ip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java%E5%9F%BA%E7%A1%80/" rel="tag">java基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdbcTemplate/" rel="tag">jdbcTemplate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdk8-java/" rel="tag">jdk8 - java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/" rel="tag">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/" rel="tag">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/" rel="tag">mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/md/" rel="tag">md</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mele/" rel="tag">mele</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mq/" rel="tag">mq</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ms/" rel="tag">ms</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oracle/" rel="tag">oracle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pagehelper-%E5%88%86%E9%A1%B5/" rel="tag">pagehelper - 分页</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/photo/" rel="tag">photo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rabbitmq-mq/" rel="tag">rabbitmq - mq</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis-db/" rel="tag">redis - db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springApplication/" rel="tag">springApplication</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springCloud/" rel="tag">springCloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/" rel="tag">springboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql%E4%BC%98%E5%8C%96/" rel="tag">sql优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stream/" rel="tag">stream</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/struts2/" rel="tag">struts2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swagger/" rel="tag">swagger</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/threadPollExecutor/" rel="tag">threadPollExecutor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thymeleaf/" rel="tag">thymeleaf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/war/" rel="tag">war</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webservice/" rel="tag">webservice</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/word/" rel="tag">word</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xml/" rel="tag">xml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%BB%E9%94%AE/" rel="tag">主键</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8B%E5%8A%A1/" rel="tag">事务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81/" rel="tag">代码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%A5%E5%8F%A3%E7%B1%BB/" rel="tag">入口类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%A5%E9%97%A8/" rel="tag">入门</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%AC%E9%92%A5/" rel="tag">公钥</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E9%A1%B5/" rel="tag">分页</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" rel="tag">单元测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8E%9F%E7%90%86/" rel="tag">原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4/" rel="tag">命令</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-java/" rel="tag">多线程 - java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AF%BC%E5%87%BA/" rel="tag">导出</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="tag">工具类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B8%B8%E7%94%A8/" rel="tag">常用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E5%B8%B8/" rel="tag">异常</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E6%AD%A5%E8%B0%83%E7%94%A8/" rel="tag">异步调用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8A%BD%E8%B1%A1%E7%B1%BB/" rel="tag">抽象类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8B%A6%E6%88%AA%E5%99%A8/" rel="tag">拦截器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%A5%E5%8F%A3/" rel="tag">接口</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A5%E5%BF%97/" rel="tag">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF/" rel="tag">模板</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B3%A8%E8%A7%A3/" rel="tag">注解</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B3%A8%E9%87%8A/" rel="tag">注释</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%83%AD%E9%83%A8%E7%BD%B2/" rel="tag">热部署</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%91%E6%8E%A7/" rel="tag">监控</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0/" rel="tag">箭头函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" rel="tag">线程池</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/" rel="tag">自动装配</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" rel="tag">过滤器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%82%AE%E4%BB%B6/" rel="tag">邮件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9B%86%E5%90%88/" rel="tag">集合</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95/" rel="tag">雪花算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/acid/" style="font-size: 11.67px;">acid</a> <a href="/tags/aop/" style="font-size: 10px;">aop</a> <a href="/tags/baby/" style="font-size: 10px;">baby</a> <a href="/tags/bug/" style="font-size: 11.67px;">bug</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/excel/" style="font-size: 10px;">excel</a> <a href="/tags/executors/" style="font-size: 10px;">executors</a> <a href="/tags/explain/" style="font-size: 10px;">explain</a> <a href="/tags/filter/" style="font-size: 10px;">filter</a> <a href="/tags/freemarker/" style="font-size: 10px;">freemarker</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/html/" style="font-size: 10px;">html</a> <a href="/tags/httpServerletRequest/" style="font-size: 10px;">httpServerletRequest</a> <a href="/tags/httpclient/" style="font-size: 10px;">httpclient</a> <a href="/tags/idea/" style="font-size: 10px;">idea</a> <a href="/tags/interceptor/" style="font-size: 10px;">interceptor</a> <a href="/tags/ioc/" style="font-size: 10px;">ioc</a> <a href="/tags/ip/" style="font-size: 10px;">ip</a> <a href="/tags/java/" style="font-size: 18.33px;">java</a> <a href="/tags/java%E5%9F%BA%E7%A1%80/" style="font-size: 11.67px;">java基础</a> <a href="/tags/jdbcTemplate/" style="font-size: 10px;">jdbcTemplate</a> <a href="/tags/jdk8-java/" style="font-size: 10px;">jdk8 - java</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 13.33px;">linux</a> <a href="/tags/mac/" style="font-size: 10px;">mac</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/md/" style="font-size: 10px;">md</a> <a href="/tags/mele/" style="font-size: 10px;">mele</a> <a href="/tags/mq/" style="font-size: 11.67px;">mq</a> <a href="/tags/ms/" style="font-size: 11.67px;">ms</a> <a href="/tags/mybatis/" style="font-size: 15px;">mybatis</a> <a href="/tags/oracle/" style="font-size: 11.67px;">oracle</a> <a href="/tags/pagehelper-%E5%88%86%E9%A1%B5/" style="font-size: 10px;">pagehelper - 分页</a> <a href="/tags/photo/" style="font-size: 10px;">photo</a> <a href="/tags/rabbitmq-mq/" style="font-size: 10px;">rabbitmq - mq</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/redis-db/" style="font-size: 10px;">redis - db</a> <a href="/tags/spring/" style="font-size: 11.67px;">spring</a> <a href="/tags/springApplication/" style="font-size: 10px;">springApplication</a> <a href="/tags/springCloud/" style="font-size: 11.67px;">springCloud</a> <a href="/tags/springboot/" style="font-size: 20px;">springboot</a> <a href="/tags/sql%E4%BC%98%E5%8C%96/" style="font-size: 10px;">sql优化</a> <a href="/tags/stream/" style="font-size: 10px;">stream</a> <a href="/tags/struts2/" style="font-size: 10px;">struts2</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/threadPollExecutor/" style="font-size: 10px;">threadPollExecutor</a> <a href="/tags/thymeleaf/" style="font-size: 10px;">thymeleaf</a> <a href="/tags/tomcat/" style="font-size: 11.67px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.33px;">tool</a> <a href="/tags/war/" style="font-size: 10px;">war</a> <a href="/tags/webservice/" style="font-size: 10px;">webservice</a> <a href="/tags/word/" style="font-size: 10px;">word</a> <a href="/tags/xml/" style="font-size: 11.67px;">xml</a> <a href="/tags/%E4%B8%BB%E9%94%AE/" style="font-size: 10px;">主键</a> <a href="/tags/%E4%BA%8B%E5%8A%A1/" style="font-size: 11.67px;">事务</a> <a href="/tags/%E4%BB%A3%E7%A0%81/" style="font-size: 10px;">代码</a> <a href="/tags/%E5%85%A5%E5%8F%A3%E7%B1%BB/" style="font-size: 10px;">入口类</a> <a href="/tags/%E5%85%A5%E9%97%A8/" style="font-size: 11.67px;">入门</a> <a href="/tags/%E5%85%AC%E9%92%A5/" style="font-size: 10px;">公钥</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 11.67px;">分布式</a> <a href="/tags/%E5%88%86%E9%A1%B5/" style="font-size: 10px;">分页</a> <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" style="font-size: 10px;">单元测试</a> <a href="/tags/%E5%8E%9F%E7%90%86/" style="font-size: 10px;">原理</a> <a href="/tags/%E5%91%BD%E4%BB%A4/" style="font-size: 10px;">命令</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-java/" style="font-size: 10px;">多线程 - java</a> <a href="/tags/%E5%AF%BC%E5%87%BA/" style="font-size: 10px;">导出</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" style="font-size: 16.67px;">工具类</a> <a href="/tags/%E5%B8%B8%E7%94%A8/" style="font-size: 10px;">常用</a> <a href="/tags/%E5%BC%82%E5%B8%B8/" style="font-size: 10px;">异常</a> <a href="/tags/%E5%BC%82%E6%AD%A5%E8%B0%83%E7%94%A8/" style="font-size: 10px;">异步调用</a> <a href="/tags/%E6%8A%BD%E8%B1%A1%E7%B1%BB/" style="font-size: 10px;">抽象类</a> <a href="/tags/%E6%8B%A6%E6%88%AA%E5%99%A8/" style="font-size: 10px;">拦截器</a> <a href="/tags/%E6%8E%A5%E5%8F%A3/" style="font-size: 10px;">接口</a> <a href="/tags/%E6%97%A5%E5%BF%97/" style="font-size: 11.67px;">日志</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 10px;">模板</a> <a href="/tags/%E6%B3%A8%E8%A7%A3/" style="font-size: 10px;">注解</a> <a href="/tags/%E6%B3%A8%E9%87%8A/" style="font-size: 10px;">注释</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 10px;">消息队列</a> <a href="/tags/%E7%83%AD%E9%83%A8%E7%BD%B2/" style="font-size: 10px;">热部署</a> <a href="/tags/%E7%9B%91%E6%8E%A7/" style="font-size: 10px;">监控</a> <a href="/tags/%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0/" style="font-size: 10px;">箭头函数</a> <a href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" style="font-size: 11.67px;">线程池</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 10px;">缓存</a> <a href="/tags/%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/" style="font-size: 10px;">自动装配</a> <a href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" style="font-size: 10px;">过滤器</a> <a href="/tags/%E9%82%AE%E4%BB%B6/" style="font-size: 10px;">邮件</a> <a href="/tags/%E9%9B%86%E5%90%88/" style="font-size: 10px;">集合</a> <a href="/tags/%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95/" style="font-size: 10px;">雪花算法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/23/redis%E6%95%99%E7%A8%8B%E6%95%88%E7%8E%87%E7%89%88/">redis入门效率版</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/22/%E5%BC%80%E5%8F%91%E6%B3%A8%E6%84%8F%E4%BB%A3%E7%A0%81%E6%95%B4%E7%90%86/">开发中注意的小问题</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/02/SQL%E8%AF%AD%E5%8F%A5%E6%80%A7%E8%83%BD%E6%8F%90%E5%8D%87/">SQL语句性能提升</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/15/%E9%9B%86%E5%90%88%E5%88%86%E9%A1%B5%E5%B7%A5%E5%85%B7%E7%B1%BB/">集合分页工具类</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/10/%E5%8F%AA%E4%BF%AE%E6%94%B9%E5%87%A0%E8%A1%8C%EF%BC%8Cgit%E5%8D%B4%E6%98%BE%E7%A4%BA%E6%95%B4%E4%B8%AA%E6%96%87%E4%BB%B6%E9%83%BD%E8%A2%AB%E4%BF%AE%E6%94%B9/">只修改几行，git却显示整个文件都被修改</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

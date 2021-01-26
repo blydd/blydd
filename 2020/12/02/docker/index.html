@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>docker | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker">
+<meta property="og:url" content="http://example.com/2020/12/02/docker/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="docker">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://mele.cool//image-20201021214847134.png">
+<meta property="og:image" content="http://mele.cool//image-20201022211759290.png">
+<meta property="og:image" content="http://mele.cool//image-20201022213849355.png">
+<meta property="og:image" content="http://mele.cool//image-20201022213909059.png">
+<meta property="og:image" content="http://mele.cool//image-20201022213802622.png">
+<meta property="og:image" content="http://mele.cool//image-20201022213815702.png">
+<meta property="og:image" content="http://mele.cool//image-20201022214001837.png">
+<meta property="og:image" content="http://mele.cool//image-20201022214245204.png">
+<meta property="og:image" content="http://mele.cool//image-20201022214403864.png">
+<meta property="og:image" content="http://mele.cool//image-20201022214502044.png">
+<meta property="og:image" content="http://mele.cool//image-20201022215958996.png">
+<meta property="og:image" content="http://mele.cool//image-20201022215642031.png">
+<meta property="og:image" content="http://mele.cool//image-20201022221019216.png">
+<meta property="og:image" content="http://mele.cool//image-20201022222401357.png">
+<meta property="article:published_time" content="2020-12-02T14:56:17.000Z">
+<meta property="article:modified_time" content="2020-12-03T14:40:58.100Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://mele.cool//image-20201021214847134.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-docker" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/02/docker/" class="article-date">
+  <time class="dt-published" datetime="2020-12-02T14:56:17.000Z" itemprop="datePublished">2020-12-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/docker/">docker</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      docker
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="1-镜像相关命令"><a href="#1-镜像相关命令" class="headerlink" title="1.镜像相关命令"></a>1.镜像相关命令</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">查看镜像</span></span><br><span class="line">docker images</span><br><span class="line"><span class="meta">#</span><span class="bash">搜索镜像</span></span><br><span class="line">docker search centos7</span><br><span class="line"><span class="meta">#</span><span class="bash"> 拉取镜像</span></span><br><span class="line">docker pull centos:7</span><br><span class="line"><span class="meta">#</span><span class="bash">删除镜像</span></span><br><span class="line">docker rmi 镜像ID</span><br><span class="line"><span class="meta">#</span><span class="bash">删除本地全部镜像 慎用</span></span><br><span class="line">docker rmi `docker images -q`</span><br></pre></td></tr></table></figure>
+<h1 id="2-容器相关命令"><a href="#2-容器相关命令" class="headerlink" title="2.容器相关命令"></a>2.容器相关命令</h1><h2 id="2-1-创建并启动交互式容器"><a href="#2-1-创建并启动交互式容器" class="headerlink" title="2.1 创建并启动交互式容器"></a>2.1 创建并启动交互式容器</h2><blockquote>
+<p> docker交互式容器:(启动容器之后会直接进入容器的命令行终端,如果退出则容器停止运行）</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看正在运行的容器</span></span><br><span class="line">docker ps</span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看全部容器</span></span><br><span class="line">docker ps -a</span><br><span class="line"><span class="meta">#</span><span class="bash">创建并启动容器</span></span><br><span class="line">docker run</span><br><span class="line"><span class="meta">#</span><span class="bash">创建并启动交互式容器 退出:<span class="built_in">exit</span>,退出则容器停止运行</span></span><br><span class="line">docker run -it --name=mycentos7 centos:7 /bin/bash</span><br></pre></td></tr></table></figure>
+<p><img src="http://mele.cool//image-20201021214847134.png" alt="image-20201021214847134"></p>
+<h2 id="2-2-创建并启动守护式容器"><a href="#2-2-创建并启动守护式容器" class="headerlink" title="2.2 创建并启动守护式容器"></a>2.2 创建并启动守护式容器</h2><blockquote>
+<p>创建启动docker容器,可以在后台运行;</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">创建并启动守护式容器</span></span><br><span class="line">docker run -di --name=mycentos2 centos:7</span><br><span class="line"><span class="meta">#</span><span class="bash">登陆进入已启动的容器 退出:<span class="built_in">exit</span>,退出后容器仍在运行</span></span><br><span class="line">docker exec -it mycentos2 /bin/bash</span><br></pre></td></tr></table></figure>
+<h2 id="2-3-容器常用命令"><a href="#2-3-容器常用命令" class="headerlink" title="2.3 容器常用命令"></a>2.3 容器常用命令</h2><blockquote>
+<p>容器的停止 启动 、拷贝文件</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">停止</span></span><br><span class="line">docker stop 容器名称</span><br><span class="line"><span class="meta">#</span><span class="bash">启动</span></span><br><span class="line">docker start 容器名称</span><br><span class="line"><span class="meta">#</span><span class="bash">复制宿主机文件到docker 在docker中运行命令</span></span><br><span class="line">docker cp abc.txt mycentos2:/</span><br><span class="line"><span class="meta">#</span><span class="bash">复制docker文件到宿主机 在宿主机中运行命令</span></span><br><span class="line">docker cp mycentos2:/abc.txt /root</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>目录挂载:可以在创建容器的时候,将宿主机的目录与容器内的目录进行映射,这样我们就可以通过修改宿主机某个目录的文件从而去影响容器。<br>创建容器时添加-v参数,后边为宿主机目录:容器目录,例如: </p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker run -di -v /usr/local/test:/usr/local/test --name=mycentos3 centos:7</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">在linux宿主机下查看mycentos3的ip</span></span><br><span class="line">docker inspect mycentos3</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">删除容器(非运行状态)</span></span><br><span class="line">docker rm mycentos7</span><br><span class="line"><span class="meta">#</span><span class="bash">删除全部容器(包括运行的与非运行的)</span></span><br><span class="line">docker rm `docker ps -a -q\`</span><br></pre></td></tr></table></figure>
+<h2 id="2-4-mysql容器部署"><a href="#2-4-mysql容器部署" class="headerlink" title="2.4 mysql容器部署"></a>2.4 mysql容器部署</h2><blockquote>
+<ol>
+<li>拉取mysql镜像;</li>
+<li>创建并启动守护式容器；</li>
+<li>在容器中操作mysql;</li>
+<li>使用图形界面工具(windows )操作在docker中安装的mysql ;在创建mysql容器的时候使用-p指定端口映射实现连接.<br>在创建容器的时候mysql的root用户可以指定远程访问的密码。</li>
+</ol>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"> #</span><span class="bash">拉取</span></span><br><span class="line"> docker search mysql</span><br><span class="line"> docker pull centos/mysql-57-centos7</span><br><span class="line"><span class="meta"> #</span><span class="bash">创建并启动守护式容器,指定端口映射</span> </span><br><span class="line"> docker run -di --name=mysql5.7 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root centos/mysql-57-centos7</span><br><span class="line"><span class="meta"> #</span><span class="bash">进入容器</span></span><br><span class="line"> docker exec -it mysql5.7 /bin/bash</span><br><span class="line"> mysql -u root -p #此处密码是空,直接enter登陆</span><br><span class="line"><span class="meta"> #</span><span class="bash">远程连接操作:</span></span><br><span class="line"> 宿主机ip:3306  因为已经指定端口映射了</span><br><span class="line"><span class="meta"> #</span><span class="bash">授权</span></span><br><span class="line">GRANT ALL PRIVILEGES ON *.* TO root@&quot;%&quot; IDENTIFIED BY &quot;密码&quot;;</span><br><span class="line">flush privileges;</span><br><span class="line"><span class="meta">#</span><span class="bash">进入mysql，然后编辑/etc/mysql/mysql.conf.d/mysqld.cnf,然后重启docker</span></span><br><span class="line"><span class="meta">#</span><span class="bash">参考:https://zhuanlan.zhihu.com/p/46207256</span></span><br><span class="line">bind-address 0.0.0.0</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">解决mysql容器中没有vim命令</span></span><br><span class="line"><span class="meta">#</span><span class="bash">进入运行中的mysql容器，执行如下语句：docker <span class="built_in">exec</span> -it dd75f390a5df /bin/bash,其中dd75f390a5df是容器ID</span></span><br><span class="line">apt-get install vim</span><br><span class="line"><span class="meta">#</span><span class="bash">若出现报错的输出语句，就执行：apt-get update,然后重新执行apt-get install vim</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>总结:在创建容器的时候指定环境变量MYSQL-ROOT-PASSWORD表示使用root进行远程连接时候的密码。如果需要进行远程连接的话可以使用-p进行端口映射。</p>
+</blockquote>
+<h2 id="2-5-tomcat容器部署"><a href="#2-5-tomcat容器部署" class="headerlink" title="2.5 tomcat容器部署"></a>2.5 tomcat容器部署</h2><ul>
+<li><p>将项目文件上传到容器中的tomcat目录(webapps)</p>
+<p>创建容器的时候可以指定-进行目录挂载, tomcat在容器中的目录(/usr/local/tomcat/webapps )</p>
+</li>
+<li><p>可以通过外部浏览器访问容器中的项目</p>
+<p>创建容器的时候可以指定-p进行端口映射</p>
+</li>
+</ul>
+<p>1,拉取tomcat镜像; docker pu11 tomcat</p>
+<p>2.创建并启动tomcat容器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">docker run -di --name=mytomcat -p 9000:8080 -v /usr/1ocal/tomcat/webapps:/usr/local/tomcat/webapps tomcat</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">如果出现WARNING: IPv4 forwarding is disabled. Networking wil1 not work.</span></span><br><span class="line"><span class="meta">#</span><span class="bash">执行如下操作</span></span><br><span class="line"><span class="meta">#</span><span class="bash">1、编辑sysct1.conf</span></span><br><span class="line">vi /etc/sysctl.conf</span><br><span class="line"><span class="meta">#</span><span class="bash">2、在上述打开的文件中后面添加</span></span><br><span class="line">net.ipv4.ip_forward=1</span><br><span class="line"><span class="meta">#</span><span class="bash">3、重启network</span></span><br><span class="line">systemctl restart network</span><br></pre></td></tr></table></figure>
+<p>3,访问容器中tomcat<br>    <a target="_blank" rel="noopener" href="http://192.168.76.128:9000/">http://192.168.76.128:9000</a> 显示404说明部署成功</p>
+<h2 id="2-6-Nginx容器部署"><a href="#2-6-Nginx容器部署" class="headerlink" title="2.6 Nginx容器部署"></a>2.6 Nginx容器部署</h2><blockquote>
+<p>nginx默认端口是80</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">拉取nginx</span></span><br><span class="line">docker pull nginx</span><br><span class="line"><span class="meta">#</span><span class="bash">创建并启动nginx</span></span><br><span class="line">docker run -di --name=mynginx -p 80:80 nginx</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>测试,</p>
+<h2 id="2-7-redis容器部署"><a href="#2-7-redis容器部署" class="headerlink" title="2.7 redis容器部署"></a>2.7 redis容器部署</h2><blockquote>
+<p>默认端口:6379</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">拉取</span></span><br><span class="line">docker pull redis</span><br><span class="line"><span class="meta">#</span><span class="bash">创建并启动容器</span></span><br><span class="line">docker run -di --name=myredis -p 6379:6379 redis</span><br><span class="line"><span class="meta">#</span><span class="bash"> 进入容器</span></span><br><span class="line">docker exec -it myredis /bin/bash</span><br><span class="line"><span class="meta">#</span><span class="bash"> 进入命令目录,启动redis</span></span><br><span class="line">cd /usr/local/bin</span><br><span class="line">./redis-cli</span><br><span class="line"><span class="meta">#</span><span class="bash">在redis中输入ping,返回pong说明启动成功</span></span><br></pre></td></tr></table></figure>
+<p>测试:使用redis图形化工具 Redis Desktop Manager连接redis容器:</p>
+<p><img src="http://mele.cool//image-20201022211759290.png" alt="image-20201022211759290"></p>
+<h1 id="3-Docker-Compose"><a href="#3-Docker-Compose" class="headerlink" title="3.Docker Compose"></a>3.Docker Compose</h1><blockquote>
+<p>Compose项目是Docker官方的开源项目,负责实现对Docker容器集群的快速编排。它是一个定义和运行多容器的docker应用工具。使用compose,你能通过YMAL文件配置你自己的服务,然后通过一个命令,你能使用配置文件创建和运行所有的服务。</p>
+<p><strong>docker-compose是一个应用工具;可以通过配置docker-compose.yml文件同时启动多个容器。</strong></p>
+</blockquote>
+<h2 id="组成"><a href="#组成" class="headerlink" title="组成:"></a>组成:</h2><p>Docker-Compose将所管理的容器分为三层,分别是工程(project) ,服务(service)以及容器(container) .<br>Docker-Compose运行目录下的所有文件(docker-compose.yml, extends文件或环境变量文件等)组成一个工程,若无特殊指定工程名即为当前目录名。一个工程当中可包含多个服务,每个服务钟定义了容器运行的镜像,参数,依赖。一个服务当中可包括多个容器实例。</p>
+<p>Docker-Compose的工程配置文件默认为docker-compose.yml,可通过环境变量COMPOSE-FILE或-参数自定义配置文件,其定义了多个有依赖关系的服务及每个服务运行的容器。</p>
+<p>使用一个Dockerfile模板文件,可以让用户很方便的定义一个单独的应用容器。在工作中,经常会碰到需要多个容器相互配合来完成某项任务的情况。例如:要部署一个Web项目,除了Web服务容器,往往还需要再加上后端的数据库服务容器,甚至还包括负载均衡容器等。</p>
+<h2 id="安装与卸载"><a href="#安装与卸载" class="headerlink" title="安装与卸载:"></a>安装与卸载:</h2><p>Compose目前已经完全支持Linux, Mac OS和Windows,在我们安装Compose之前,需要先安装Docker,下面我们以编译好的二进制包方式安装在Linux系统中。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">安装</span></span><br><span class="line">curl -L &quot;https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/1ocal/bin/docker-compose</span><br><span class="line"><span class="meta">#</span><span class="bash">设置文件可执行权限</span></span><br><span class="line">chmod +x /usr/local/bin/docker-compose</span><br><span class="line"><span class="meta">#</span><span class="bash">查看版本信息</span></span><br><span class="line">docker-compose -version</span><br><span class="line"><span class="meta">#</span><span class="bash">卸载</span></span><br><span class="line">rm -rf /usr/local/bin/docker-compose </span><br></pre></td></tr></table></figure>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用:"></a>应用:</h2><blockquote>
+<p>模板文件是使用Compose的核心,涉及的指令关键字也比较多,大部分指令与docker run相关参数的含义都是类似的。默认的模板文件名称为docker-compose.yml,格式为YAML格式。</p>
+</blockquote>
+<p>Compose命令的基本的使用格式为:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker-compose [-f 參数..] [options] [COMMAND] [ARGS...]</span><br><span class="line">-f, -file FILE指定使用的compose模板文件,默认为docker-compose.yml,可以多次指定。</span><br><span class="line">-p,-project-name NAME指定项目名称,默认将使用所在目录名称作为项目名。</span><br><span class="line">-x-network-driver 使用Docker的可拔插网络后端特性(需要Docker 1.9及以后版本)</span><br><span class="line">-x-network-driver DRIVER指定网络后端的驱动,默认为bridge (需要Docker 1.9及以后版本)</span><br><span class="line">-verbose输出更多调试信息</span><br><span class="line">-v,-version打印版本并退出</span><br></pre></td></tr></table></figure>
+<p>使用Compose前,可以通过执行docker-compose –help|-h来查看Compose基本命令用法。<br>也可以通过执行docker-compose [COMMAND] –help或者docker-compose –help [COMMAND]来查看某个具体的使用格式。</p>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令:"></a>常用命令:</h2><p>up</p>
+<p>ps</p>
+<blockquote>
+<p>格式:docker-compose ps [options] [SERVICE …]<br>作用:列出项目中目前的所有容器。<br>选项包括：<br>    -q 只打印容器的ID信息</p>
+</blockquote>
+<p>stop</p>
+<blockquote>
+<p>格式为:docker-compose stop [options] [SERVICE…]</p>
+<p>作用:停止已经处于运行状态的容器,但不删除它</p>
+<p>选项包括:</p>
+<p>​    -t, –timeout TIMEOUT 停止容器时候的超时(默认为10秒)</p>
+</blockquote>
+<p>down</p>
+<p><img src="http://mele.cool//image-20201022213849355.png" alt="image-20201022213849355"><img src="http://mele.cool//image-20201022213909059.png" alt="image-20201022213909059"></p>
+<p>restart</p>
+<p>rm </p>
+<p><img src="http://mele.cool//image-20201022213802622.png" alt="image-20201022213802622"></p>
+<p>start</p>
+<p><img src="http://mele.cool//image-20201022213815702.png" alt="image-20201022213815702"></p>
+<p>run</p>
+<p>config</p>
+<p>kill</p>
+<p>create</p>
+<p>exec</p>
+<p><img src="http://mele.cool//image-20201022214001837.png" alt="image-20201022214001837"></p>
+<h2 id="Compose模板文件"><a href="#Compose模板文件" class="headerlink" title="Compose模板文件:"></a>Compose模板文件:</h2><p><img src="http://mele.cool//image-20201022214245204.png" alt="image-20201022214245204"></p>
+<p>Docker Compose常用模板文件主要命令:</p>
+<p><img src="http://mele.cool//image-20201022214403864.png" alt="image-20201022214403864">![image-20201022214437985](/Users/boguotong/Library/Application Support/typora-user-images/image-20201022214437985.png)<img src="http://mele.cool//image-20201022214502044.png" alt="image-20201022214502044"></p>
+<h2 id="compose应用"><a href="#compose应用" class="headerlink" title="compose应用:"></a>compose应用:</h2><blockquote>
+<p><strong>需求</strong>:编写compose模版文件,实现同时启动tomcat, mysql和redis容器。</p>
+<p><strong>分析</strong>: do cker-compose可以实现一次启动多个容器;通过配置docker-compose模板文件( docker-compose.yml ),在这个配置文件中去配置各个容器及其相关的依赖。<br>1,编写模板文件;<br>2.创建并启动docker-compose项目(模板文件所在的目录, docker-compose.yml )<br>3.测试</p>
+</blockquote>
+<h3 id="1-编写模板文件"><a href="#1-编写模板文件" class="headerlink" title="1.编写模板文件"></a>1.编写模板文件</h3><p>#创建文件夹<br>mkdir -p /usr/local/mycompose<br>#进入文件夹<br>cd /usr/local/mycompose<br>#创建docker-compose.yml文件;内容如下<br>vi docker-compose.yml</p>
+<p><img src="http://mele.cool//image-20201022215958996.png" alt="image-20201022215958996"></p>
+<p> <img src="http://mele.cool//image-20201022215642031.png" alt="image-20201022215642031"></p>
+<h3 id="2-启动docker-compose"><a href="#2-启动docker-compose" class="headerlink" title="2.启动docker-compose"></a>2.启动docker-compose</h3><p> 编写完配置文件,由于之前启动了容器,为了避免重复启动,可以重启docker之后再启动docker-compose</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">重启docker</span></span><br><span class="line">systemctl restart docker</span><br><span class="line">pwd</span><br><span class="line">/usr/local/mycompose</span><br><span class="line"><span class="meta">#</span><span class="bash">后台启动docker-compose</span></span><br><span class="line">docker-compose up -d</span><br><span class="line"><span class="meta">#</span><span class="bash">启动完成后查看正在运行的容器,发现web1 mysql1 redis1都成功运行了</span></span><br><span class="line">docker ps</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">如果要停止 down会删除容器和网络 stop不会</span></span><br><span class="line">docker-compose down </span><br><span class="line"><span class="meta">#</span><span class="bash">查看都有哪些网络 可以发现</span></span><br><span class="line">docker network ls</span><br></pre></td></tr></table></figure>
+<p>打开浏览器,测试访问已启动的那些容器.</p>
+<h1 id="4-迁移和备份"><a href="#4-迁移和备份" class="headerlink" title="4.迁移和备份"></a>4.迁移和备份</h1><blockquote>
+<p> <strong>目标:**能够将容器保存为镜像,备份,恢复镜像再启动以恢复的镜像作为基础的容器<br>**分析：</strong>在当前的容器中安装了各种组件;期望在其他服务器上也能快速拥有该容器的一切环境;可以将当前的容器制作为一个镜像,再将该镜像复制到其他服务器,其他服务器再基于镜像运行容器。</p>
+</blockquote>
+<p><img src="http://mele.cool//image-20201022221019216.png" alt="image-20201022221019216"></p>
+<p><strong>其中涉及到的命令有:</strong></p>
+<ul>
+<li>docker commit将容器保存为镜像</li>
+<li>docker save将镜像备份为tar文件</li>
+<li>docker load根据tar文件恢复为镜像</li>
+</ul>
+<p><strong>步骤:</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">把容器名为mynginx的容器打包成一个镜像,命名镜像名为mynginx</span> </span><br><span class="line">docker commit mynginx mynginx</span><br><span class="line"><span class="meta">#</span><span class="bash">把myninx镜像保存为mynginx.tar文件,保存到本地路径.保存完可以ll查看tar文件</span></span><br><span class="line">docker save -o mynginx.tar mynginx</span><br><span class="line"><span class="meta">#</span><span class="bash">tar包复制到另一个服务器后进行恢复,后可以docker images查看此镜像,然后根据镜像运行容器</span></span><br><span class="line">docker load -i mynginx.tar</span><br><span class="line"><span class="meta">#</span><span class="bash">启动</span></span><br><span class="line">docker run -di --name=mynginx -p 80:80 mynginx</span><br></pre></td></tr></table></figure>
+<h1 id="5-使用Dockerfile创建镜像"><a href="#5-使用Dockerfile创建镜像" class="headerlink" title="5.使用Dockerfile创建镜像"></a>5.使用Dockerfile创建镜像</h1><blockquote>
+<p>已经知道了,要获得镜像,可以从Docker仓库中进行下载。那如果我们想自己开发一个镜像,那该如何做呢?答案是:Dockerfile<br>Dockerfile其实就是一个文本文件,由一系列命令和参数构成, Docker可以读取Dockerfile文件并根据Dockerfile文件的描述来构建镜像。</p>
+<p><strong>Dockerfile文件内容一般分为4部分:</strong></p>
+<ul>
+<li>基础镜像信息</li>
+<li>维护者信息</li>
+<li>镜像操作指令</li>
+<li>容器启动时执行的指令</li>
+</ul>
+</blockquote>
+<p>Dockerfile常用命令:</p>
+<p><img src="http://mele.cool//image-20201022222401357.png" alt="image-20201022222401357"></p>
+<p>**DEMO:**在centos7作为基础镜像上;添加idk1.8并构建一个包含idk1.8的centos7新镜像。</p>
+<p>实现步骤：</p>
+<ol>
+<li><p>拉取centos7镜像;</p>
+</li>
+<li><p>上传jdk1.8;</p>
+</li>
+<li><p>编写Dockerfile文件;</p>
+</li>
+<li><p>构建镜像;</p>
+</li>
+<li><p>5测试(基于新镜像创建并运行容器,运行java-version)</p>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">docker pull centos7</span><br><span class="line"><span class="meta">#</span><span class="bash">创建jdk放置目录,并把jdk8文件上传进去,在此目录下执行以下命令</span></span><br><span class="line">mkdir -p /usr/local/dockerjdk8</span><br><span class="line"><span class="meta">#</span><span class="bash">创建Dockerfile文件</span></span><br><span class="line">vi Dockerfile</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">Dockerfile内容begin</span></span><br><span class="line">FROM centos:7</span><br><span class="line">MAINTAINER myname</span><br><span class="line">WORKDIR /usr</span><br><span class="line">RUN mkdir /usr/local/java</span><br><span class="line">ADD jdk-8u202-1inux-x64.tar.gz /usr/local/java/</span><br><span class="line">ENV JAVA-HOME /usr/local/java/jdk1.8.0_202</span><br><span class="line">ENV JRE_HOME $JAVA_HOME/jre</span><br><span class="line">ENV CLASSPATH $JAVA-HOME/1ib/dt.jar:$JAVA-HOME/1ib/tools.jar:$JRE_HOME/1ib:$CLASSPATH</span><br><span class="line">ENV PATH $JAVA_HOME/bin:$PATH</span><br><span class="line"><span class="meta">#</span><span class="bash">Dockerfile内容end</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">构建镜像.注意最后一个点,表示在当前目录下构建镜像,镜像名为jdk1.8</span></span><br><span class="line">docker build -t=&#x27;jdk1.8&#x27; .</span><br><span class="line"><span class="meta">#</span><span class="bash">查看镜像是否建立完成</span></span><br><span class="line">docker images</span><br><span class="line"><span class="meta">#</span><span class="bash">创建并启动容器 启动后会默认进入文件中设置的工作目录/usr</span></span><br><span class="line">docker run -it --name=testjdk jdk1.8 /bin/bash</span><br><span class="line"><span class="meta">#</span><span class="bash">验证java版本是否显示</span></span><br><span class="line">java -verison</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="6-私有仓库搭建与配置"><a href="#6-私有仓库搭建与配置" class="headerlink" title="6.私有仓库搭建与配置"></a>6.私有仓库搭建与配置</h1><blockquote>
+<p>Docker官方的Docker hub (<a target="_blank" rel="noopener" href="http://hub.docker.com)是一个用于管理公共镜像的仓库,我们可以从上面拉取镜像到本地,也可以把我们自己的镜像推送上去.但是,有时候我们的服务器无法访问互联网,或者你不希望将自己的镜像放到公网当中,那么我们就需要搭建自己的私有仓库来存储和管理自己的镜像./">http://hub.docker.com)是一个用于管理公共镜像的仓库,我们可以从上面拉取镜像到本地,也可以把我们自己的镜像推送上去。但是,有时候我们的服务器无法访问互联网,或者你不希望将自己的镜像放到公网当中,那么我们就需要搭建自己的私有仓库来存储和管理自己的镜像。</a></p>
+</blockquote>
+<p>私有仓库搭建步骤:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">1、拉取私有仓库镜像</span></span><br><span class="line">docker pull registry</span><br><span class="line"><span class="meta">#</span><span class="bash">2、启动私有仓库容器</span></span><br><span class="line">docker run -di --name=registry -p 5000:5000 registry</span><br><span class="line"><span class="meta">#</span><span class="bash">3、打开浏览器输入地址http://宿主机ip: 5000/v2/_catalog,看到&#123;<span class="string">&quot;repositories&quot;</span>:[]&#125;表示私有仓库搭建成功</span></span><br><span class="line"><span class="meta">#</span><span class="bash">4、修改daemon.json</span></span><br><span class="line">vi /etc/docker/daemon.json</span><br><span class="line"><span class="meta">#</span><span class="bash">在上述文件中添加一个key,保存退出。此步用于让docker信任私有仓库地址;注意将宿主机ip修改为自己宿主机真实ip</span></span><br><span class="line">&#123;&quot;insecure-registries&quot; : [&quot;宿主机ip: 5000&quot;]&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash">5、重启docker服务</span></span><br><span class="line">systemctl restart docker</span><br><span class="line"></span><br><span class="line">docker start registry</span><br><span class="line"><span class="meta">#</span><span class="bash">打开浏览器输入地址http://宿主机ip: 5000/v2/_catalog,看到&#123;<span class="string">&quot;repositories&quot;</span>:[]&#125;表示私有仓库搭建成功</span></span><br></pre></td></tr></table></figure>
+<h2 id="将镜像上传至私有仓库"><a href="#将镜像上传至私有仓库" class="headerlink" title="将镜像上传至私有仓库"></a>将镜像上传至私有仓库</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">1、标记镜像为私有仓库的镜像</span></span><br><span class="line">docker tag jdk1.8 宿主机IP:5000/jdk1.8</span><br><span class="line"><span class="meta">#</span><span class="bash">2、再次启动私有仓库容器</span></span><br><span class="line">docker restart registry</span><br><span class="line"><span class="meta">#</span><span class="bash">3、上传标记的镜像</span></span><br><span class="line">docker push 宿主机IP:5000/jdk1.8</span><br><span class="line"><span class="meta">#</span><span class="bash">4、输入网址查看仓库效果</span></span><br></pre></td></tr></table></figure>
+<h2 id="从私有仓库拉取镜像"><a href="#从私有仓库拉取镜像" class="headerlink" title="从私有仓库拉取镜像"></a>从私有仓库拉取镜像</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">若是在私有仓库所在的服务器上去拉取镜像;那么直接执行如下命令:</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">因为私有仓库所在的服务器上已经存在相关镜像;所以先删除;请指定镜像名,不是id</span></span><br><span class="line">docker rmi 服务器ip:5000/jdk1.8</span><br><span class="line"><span class="meta">#</span><span class="bash">拉取镜像</span></span><br><span class="line">docker pul1 服务器ip:5000/jdk1.8</span><br><span class="line"><span class="meta">#</span><span class="bash">可以通过如下命令查看docker的信息;了解到私有仓库地址</span></span><br><span class="line">docker info</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">大多数情况下,都是某台服务器部署了私有镜像仓库之后;到其它服务器上从私有仓库中拉取镜像,若要拉取私有仓库镜像需要去修改docker的配置文件,设置启动时候的仓库地址。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">打开配置文件</span></span><br><span class="line">vi /usr/lib/systemd/system/docker.service</span><br><span class="line"><span class="meta">#</span><span class="bash">在打开的上述文件中按照下面的图,添加如下的内容;注意修改下面内容中的ip地址</span></span><br><span class="line">--add-registry=192.168.12.135:5000 --insecure-registry=192.168.12.135:5000</span><br><span class="line"><span class="meta">#</span><span class="bash">修改完后需要重新加载docker配置文件并重启docker</span></span><br><span class="line">systemctl daemon-reload </span><br><span class="line">systemctl restart docker</span><br><span class="line"><span class="meta">#</span><span class="bash">在重启之后;那么则可以去拉取私有仓库中的镜像:</span></span><br><span class="line"><span class="meta">#</span><span class="bash">执行拉取镜像命令并查看</span></span><br><span class="line">docker pull jdk1.8 </span><br><span class="line">docker images</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/02/docker/" data-id="ckke5nr32000ncl8g6u38cyvb" data-title="docker" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/12/02/SpringBoot%E9%A1%B9%E7%9B%AE%E6%89%93%E5%8C%85%E6%88%90war%E5%8C%85/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          springboot项目打包成war包
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/12/02/git/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">git</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bug/">bug</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/db/">db</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hello-world/">hello world</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac/">mac</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mele/">mele</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mq/">mq</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/springCloud/">springCloud</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/springboot/">springboot</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E7%B1%BB/">工具类</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/">版本控制</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/acid/" rel="tag">acid</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/aop/" rel="tag">aop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/baby/" rel="tag">baby</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bug/" rel="tag">bug</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/" rel="tag">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/excel/" rel="tag">excel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/executors/" rel="tag">executors</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/explain/" rel="tag">explain</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/filter/" rel="tag">filter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/freemarker/" rel="tag">freemarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/" rel="tag">html</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/httpServerletRequest/" rel="tag">httpServerletRequest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/httpclient/" rel="tag">httpclient</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/idea/" rel="tag">idea</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interceptor/" rel="tag">interceptor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ioc/" rel="tag">ioc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ip/" rel="tag">ip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java%E5%9F%BA%E7%A1%80/" rel="tag">java基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdbcTemplate/" rel="tag">jdbcTemplate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdk8-java/" rel="tag">jdk8 - java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/" rel="tag">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/" rel="tag">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/" rel="tag">mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/md/" rel="tag">md</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mele/" rel="tag">mele</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mq/" rel="tag">mq</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ms/" rel="tag">ms</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oracle/" rel="tag">oracle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pagehelper-%E5%88%86%E9%A1%B5/" rel="tag">pagehelper - 分页</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/photo/" rel="tag">photo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rabbitmq-mq/" rel="tag">rabbitmq - mq</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis-db/" rel="tag">redis - db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springApplication/" rel="tag">springApplication</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springCloud/" rel="tag">springCloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/" rel="tag">springboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql%E4%BC%98%E5%8C%96/" rel="tag">sql优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stream/" rel="tag">stream</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/struts2/" rel="tag">struts2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swagger/" rel="tag">swagger</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/threadPollExecutor/" rel="tag">threadPollExecutor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thymeleaf/" rel="tag">thymeleaf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/war/" rel="tag">war</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webservice/" rel="tag">webservice</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/word/" rel="tag">word</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xml/" rel="tag">xml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%BB%E9%94%AE/" rel="tag">主键</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8B%E5%8A%A1/" rel="tag">事务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81/" rel="tag">代码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%A5%E5%8F%A3%E7%B1%BB/" rel="tag">入口类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%A5%E9%97%A8/" rel="tag">入门</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%AC%E9%92%A5/" rel="tag">公钥</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E9%A1%B5/" rel="tag">分页</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" rel="tag">单元测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8E%9F%E7%90%86/" rel="tag">原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4/" rel="tag">命令</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-java/" rel="tag">多线程 - java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AF%BC%E5%87%BA/" rel="tag">导出</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="tag">工具类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B8%B8%E7%94%A8/" rel="tag">常用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E5%B8%B8/" rel="tag">异常</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E6%AD%A5%E8%B0%83%E7%94%A8/" rel="tag">异步调用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8A%BD%E8%B1%A1%E7%B1%BB/" rel="tag">抽象类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8B%A6%E6%88%AA%E5%99%A8/" rel="tag">拦截器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%A5%E5%8F%A3/" rel="tag">接口</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A5%E5%BF%97/" rel="tag">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF/" rel="tag">模板</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B3%A8%E8%A7%A3/" rel="tag">注解</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B3%A8%E9%87%8A/" rel="tag">注释</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%83%AD%E9%83%A8%E7%BD%B2/" rel="tag">热部署</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%91%E6%8E%A7/" rel="tag">监控</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0/" rel="tag">箭头函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" rel="tag">线程池</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/" rel="tag">自动装配</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" rel="tag">过滤器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%82%AE%E4%BB%B6/" rel="tag">邮件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9B%86%E5%90%88/" rel="tag">集合</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95/" rel="tag">雪花算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/acid/" style="font-size: 11.67px;">acid</a> <a href="/tags/aop/" style="font-size: 10px;">aop</a> <a href="/tags/baby/" style="font-size: 10px;">baby</a> <a href="/tags/bug/" style="font-size: 11.67px;">bug</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/excel/" style="font-size: 10px;">excel</a> <a href="/tags/executors/" style="font-size: 10px;">executors</a> <a href="/tags/explain/" style="font-size: 10px;">explain</a> <a href="/tags/filter/" style="font-size: 10px;">filter</a> <a href="/tags/freemarker/" style="font-size: 10px;">freemarker</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/html/" style="font-size: 10px;">html</a> <a href="/tags/httpServerletRequest/" style="font-size: 10px;">httpServerletRequest</a> <a href="/tags/httpclient/" style="font-size: 10px;">httpclient</a> <a href="/tags/idea/" style="font-size: 10px;">idea</a> <a href="/tags/interceptor/" style="font-size: 10px;">interceptor</a> <a href="/tags/ioc/" style="font-size: 10px;">ioc</a> <a href="/tags/ip/" style="font-size: 10px;">ip</a> <a href="/tags/java/" style="font-size: 18.33px;">java</a> <a href="/tags/java%E5%9F%BA%E7%A1%80/" style="font-size: 11.67px;">java基础</a> <a href="/tags/jdbcTemplate/" style="font-size: 10px;">jdbcTemplate</a> <a href="/tags/jdk8-java/" style="font-size: 10px;">jdk8 - java</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 13.33px;">linux</a> <a href="/tags/mac/" style="font-size: 10px;">mac</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/md/" style="font-size: 10px;">md</a> <a href="/tags/mele/" style="font-size: 10px;">mele</a> <a href="/tags/mq/" style="font-size: 11.67px;">mq</a> <a href="/tags/ms/" style="font-size: 11.67px;">ms</a> <a href="/tags/mybatis/" style="font-size: 15px;">mybatis</a> <a href="/tags/oracle/" style="font-size: 11.67px;">oracle</a> <a href="/tags/pagehelper-%E5%88%86%E9%A1%B5/" style="font-size: 10px;">pagehelper - 分页</a> <a href="/tags/photo/" style="font-size: 10px;">photo</a> <a href="/tags/rabbitmq-mq/" style="font-size: 10px;">rabbitmq - mq</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/redis-db/" style="font-size: 10px;">redis - db</a> <a href="/tags/spring/" style="font-size: 11.67px;">spring</a> <a href="/tags/springApplication/" style="font-size: 10px;">springApplication</a> <a href="/tags/springCloud/" style="font-size: 11.67px;">springCloud</a> <a href="/tags/springboot/" style="font-size: 20px;">springboot</a> <a href="/tags/sql%E4%BC%98%E5%8C%96/" style="font-size: 10px;">sql优化</a> <a href="/tags/stream/" style="font-size: 10px;">stream</a> <a href="/tags/struts2/" style="font-size: 10px;">struts2</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/threadPollExecutor/" style="font-size: 10px;">threadPollExecutor</a> <a href="/tags/thymeleaf/" style="font-size: 10px;">thymeleaf</a> <a href="/tags/tomcat/" style="font-size: 11.67px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.33px;">tool</a> <a href="/tags/war/" style="font-size: 10px;">war</a> <a href="/tags/webservice/" style="font-size: 10px;">webservice</a> <a href="/tags/word/" style="font-size: 10px;">word</a> <a href="/tags/xml/" style="font-size: 11.67px;">xml</a> <a href="/tags/%E4%B8%BB%E9%94%AE/" style="font-size: 10px;">主键</a> <a href="/tags/%E4%BA%8B%E5%8A%A1/" style="font-size: 11.67px;">事务</a> <a href="/tags/%E4%BB%A3%E7%A0%81/" style="font-size: 10px;">代码</a> <a href="/tags/%E5%85%A5%E5%8F%A3%E7%B1%BB/" style="font-size: 10px;">入口类</a> <a href="/tags/%E5%85%A5%E9%97%A8/" style="font-size: 11.67px;">入门</a> <a href="/tags/%E5%85%AC%E9%92%A5/" style="font-size: 10px;">公钥</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 11.67px;">分布式</a> <a href="/tags/%E5%88%86%E9%A1%B5/" style="font-size: 10px;">分页</a> <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" style="font-size: 10px;">单元测试</a> <a href="/tags/%E5%8E%9F%E7%90%86/" style="font-size: 10px;">原理</a> <a href="/tags/%E5%91%BD%E4%BB%A4/" style="font-size: 10px;">命令</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-java/" style="font-size: 10px;">多线程 - java</a> <a href="/tags/%E5%AF%BC%E5%87%BA/" style="font-size: 10px;">导出</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" style="font-size: 16.67px;">工具类</a> <a href="/tags/%E5%B8%B8%E7%94%A8/" style="font-size: 10px;">常用</a> <a href="/tags/%E5%BC%82%E5%B8%B8/" style="font-size: 10px;">异常</a> <a href="/tags/%E5%BC%82%E6%AD%A5%E8%B0%83%E7%94%A8/" style="font-size: 10px;">异步调用</a> <a href="/tags/%E6%8A%BD%E8%B1%A1%E7%B1%BB/" style="font-size: 10px;">抽象类</a> <a href="/tags/%E6%8B%A6%E6%88%AA%E5%99%A8/" style="font-size: 10px;">拦截器</a> <a href="/tags/%E6%8E%A5%E5%8F%A3/" style="font-size: 10px;">接口</a> <a href="/tags/%E6%97%A5%E5%BF%97/" style="font-size: 11.67px;">日志</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 10px;">模板</a> <a href="/tags/%E6%B3%A8%E8%A7%A3/" style="font-size: 10px;">注解</a> <a href="/tags/%E6%B3%A8%E9%87%8A/" style="font-size: 10px;">注释</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 10px;">消息队列</a> <a href="/tags/%E7%83%AD%E9%83%A8%E7%BD%B2/" style="font-size: 10px;">热部署</a> <a href="/tags/%E7%9B%91%E6%8E%A7/" style="font-size: 10px;">监控</a> <a href="/tags/%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0/" style="font-size: 10px;">箭头函数</a> <a href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" style="font-size: 11.67px;">线程池</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 10px;">缓存</a> <a href="/tags/%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/" style="font-size: 10px;">自动装配</a> <a href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" style="font-size: 10px;">过滤器</a> <a href="/tags/%E9%82%AE%E4%BB%B6/" style="font-size: 10px;">邮件</a> <a href="/tags/%E9%9B%86%E5%90%88/" style="font-size: 10px;">集合</a> <a href="/tags/%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95/" style="font-size: 10px;">雪花算法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/23/redis%E6%95%99%E7%A8%8B%E6%95%88%E7%8E%87%E7%89%88/">redis入门效率版</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/22/%E5%BC%80%E5%8F%91%E6%B3%A8%E6%84%8F%E4%BB%A3%E7%A0%81%E6%95%B4%E7%90%86/">开发中注意的小问题</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/02/SQL%E8%AF%AD%E5%8F%A5%E6%80%A7%E8%83%BD%E6%8F%90%E5%8D%87/">SQL语句性能提升</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/15/%E9%9B%86%E5%90%88%E5%88%86%E9%A1%B5%E5%B7%A5%E5%85%B7%E7%B1%BB/">集合分页工具类</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/10/%E5%8F%AA%E4%BF%AE%E6%94%B9%E5%87%A0%E8%A1%8C%EF%BC%8Cgit%E5%8D%B4%E6%98%BE%E7%A4%BA%E6%95%B4%E4%B8%AA%E6%96%87%E4%BB%B6%E9%83%BD%E8%A2%AB%E4%BF%AE%E6%94%B9/">只修改几行，git却显示整个文件都被修改</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

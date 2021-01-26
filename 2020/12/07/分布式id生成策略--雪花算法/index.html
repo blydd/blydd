@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>分布式id生成策略--雪花算法 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="分布式id生成策略--雪花算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式id生成策略--雪花算法">
+<meta property="og:url" content="http://example.com/2020/12/07/%E5%88%86%E5%B8%83%E5%BC%8Fid%E7%94%9F%E6%88%90%E7%AD%96%E7%95%A5--%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="分布式id生成策略--雪花算法">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-12-07T02:10:17.000Z">
+<meta property="article:modified_time" content="2021-01-02T12:17:26.355Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="工具类">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="雪花算法">
+<meta property="article:tag" content="分布式">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-分布式id生成策略--雪花算法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/07/%E5%88%86%E5%B8%83%E5%BC%8Fid%E7%94%9F%E6%88%90%E7%AD%96%E7%95%A5--%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2020-12-07T02:10:17.000Z" itemprop="datePublished">2020-12-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      分布式id生成策略--雪花算法
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="1-概论"><a href="#1-概论" class="headerlink" title="1.概论"></a>1.概论</h2><p>UUID 能保证保证时空唯一，但是过长且是字符，雪花算法由Twitter发明，是一串数字。<br>Snowflake是一种约定，它把时间戳、工作组 ID、工作机器 ID、自增序列号组合在一起，生成一个 64bits 的整数<br>ID，能够使用 (2^41)/(1000606024365) = 69.7 年，每台机器每毫秒理论最多生成 2^12 个 ID</p>
+<p><strong>1 bit：固定为0</strong><br>二进制里第一个bit如果是 1，表示负数，但是我们生成的 id都是正数，所以第一个 bit 统一都是 0。<br><strong>41 bit：时间戳，单位毫秒</strong><br>41 bit 可以表示的数字多达 2^41 - 1，也就是可以标识 2 ^ 41 - 1 个毫秒值。<br>注意！这个时间不是绝对时间戳，而是相对值，所以需要定义一个系统开始上线的起始时间<br><strong>10 bit：哪台机器产生的</strong><br>代表的是这个服务最多可以部署在 2^10 台机器上，也就是 1024 台机器。<br>官方定义，前5 个 bit 代表机房 id，后5 个 bit 代表机器 id。<br>这10位是机器维度，可以根据公司的实际情况自由定制。<br><strong>12 bit：自增序列</strong><br>同1毫秒内，同一机器，可以产生2 ^ 12 - 1 = 4096个不同的 id。</p>
+<p><strong>优缺点：</strong></p>
+<ul>
+<li>不依赖第三方介质例如 Redis、数据库，本地程序生成分布式自增 ID</li>
+<li>只能保证在工作组中的机器生成的 ID 唯一，不同组下可能会重复</li>
+<li>时间回拨后，生成的 ID 就会重复，所以需要保持时间是网络同步的。</li>
+</ul>
+<p>##2. 实现</p>
+<p>###2.1自己用java代码实现</p>
+<p>工具类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.itheima.sharding.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.commons.lang3.StringUtils;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Snowflake</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 序列的掩码，12个1，也就是(0B111111111111=0xFFF=4095) */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> SEQUENCE_MASK = <span class="number">0xFFF</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**系统起始时间，这里取2020-01-01 **/</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> startTimeStamp = <span class="number">1577836800000L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 上次生成 ID 的时间截 */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> lastTimestamp = -<span class="number">1L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 工作机器 ID(0~31) */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> workerId;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 数据中心 ID(0~31) */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> datacenterId;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 毫秒内序列(0~4095) */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> sequence = <span class="number">0L</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> datacenterId 数据中心 ID (0~31)</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> workerId     工作机器 ID (0~31)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Snowflake</span><span class="params">(<span class="meta">@Value(&quot;$&#123;snowflake.datacenterId&#125;&quot;)</span> <span class="keyword">long</span> datacenterId, <span class="meta">@Value(&quot;$&#123;snowflake.workerId&#125;&quot;)</span> <span class="keyword">long</span> workerId)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (workerId &gt; <span class="number">31</span> || workerId &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;workId必须在0-31之间，当前=&quot;</span>+workerId);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (datacenterId &gt; <span class="number">31</span> || datacenterId &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;datacenterId必须在0-31之间，当前=&quot;</span>+datacenterId);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.workerId = workerId;</span><br><span class="line">        <span class="keyword">this</span>.datacenterId = datacenterId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 加锁，线程安全</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> long 类型的 ID</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">long</span> <span class="title">nextId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> timestamp = currentTime();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 如果当前时间小于上一次 ID 生成的时间戳，说明系统时钟回退过这个时候应当抛出异常</span></span><br><span class="line">        <span class="keyword">if</span> (timestamp &lt; lastTimestamp) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">&quot;时钟回退！时间差=&quot;</span>+(lastTimestamp - timestamp));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 同一毫秒内，序列增加</span></span><br><span class="line">        <span class="keyword">if</span> (lastTimestamp == timestamp) &#123;</span><br><span class="line">            <span class="comment">//超出阈值。思考下为什么这么运算？</span></span><br><span class="line">            sequence = (sequence + <span class="number">1</span>) &amp; SEQUENCE_MASK;</span><br><span class="line">            <span class="comment">// 毫秒内序列溢出</span></span><br><span class="line">            <span class="keyword">if</span> (sequence == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">//自旋等待下一毫秒</span></span><br><span class="line">                <span class="keyword">while</span> ((timestamp= currentTime()) &lt;= lastTimestamp);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">//已经进入下一毫秒，从0开始计数</span></span><br><span class="line">            sequence = <span class="number">0L</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//赋值为新的时间戳</span></span><br><span class="line">        lastTimestamp = timestamp;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//移位拼接</span></span><br><span class="line">        <span class="keyword">long</span> id = ((timestamp - startTimeStamp) &lt;&lt; <span class="number">22</span>)</span><br><span class="line">                | (datacenterId &lt;&lt; <span class="number">17</span>)</span><br><span class="line">                | (workerId &lt;&lt; <span class="number">12</span>)</span><br><span class="line">                | sequence;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;new id = &quot;</span>+id);</span><br><span class="line">        System.out.println(<span class="string">&quot;bit id = &quot;</span>+toBit(id));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回当前时间，以毫秒为单位</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">long</span> <span class="title">currentTime</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> System.currentTimeMillis();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 转成二进制展示</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">toBit</span><span class="params">(<span class="keyword">long</span> id)</span></span>&#123;</span><br><span class="line">        String bit = StringUtils.leftPad(Long.toBinaryString(id), <span class="number">64</span>, <span class="string">&quot;0&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> bit.substring(<span class="number">0</span>,<span class="number">1</span>) +</span><br><span class="line">                <span class="string">&quot; - &quot;</span> +</span><br><span class="line">                bit.substring(<span class="number">1</span>,<span class="number">42</span>) +</span><br><span class="line">                <span class="string">&quot; - &quot;</span> +</span><br><span class="line">                bit.substring(<span class="number">42</span>,<span class="number">52</span>)+</span><br><span class="line">                <span class="string">&quot; - &quot;</span> +</span><br><span class="line">                bit.substring(<span class="number">52</span>,<span class="number">64</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Snowflake idWorker = <span class="keyword">new</span> Snowflake(<span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">long</span> id = idWorker.nextId();</span><br><span class="line">            System.out.println(id);</span><br><span class="line">            System.out.println(toBit(id));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>springboot启动参数，指定机器编号：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">snowflake.datacenterId</span>=<span class="string">1</span></span><br><span class="line"><span class="meta">snowflake.workerId</span>=<span class="string">1</span></span><br></pre></td></tr></table></figure>
+
+
+<p>业务部分：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自定义雪花算法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@GetMapping(&quot;/myflake&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Strorder <span class="title">myflake</span><span class="params">(<span class="keyword">int</span> userid)</span></span>&#123;</span><br><span class="line">    Strorder order = <span class="keyword">new</span> Strorder();</span><br><span class="line">    order.setId(String.valueOf(snowflake.nextId()));</span><br><span class="line">    order.setUserid(userid);</span><br><span class="line">    strorderMapper.save(order);</span><br><span class="line">    <span class="keyword">return</span> order;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>代码启动生成，分析位数</li>
+<li>更改机器id，分析位数</li>
+</ul>
+<h3 id="2-2借助sharding配置"><a href="#2-2借助sharding配置" class="headerlink" title="2.2借助sharding配置"></a>2.2借助sharding配置</h3><p>配置信息，非常简单</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">spring.shardingsphere.sharding.tables.strorder.key-generator.column</span>=<span class="string">id</span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.tables.strorder.key-generator.type</span>=<span class="string">SNOWFLAKE</span></span><br><span class="line"><span class="meta">spring.shardingsphere.sharding.tables.strorder.key-generator.props.worker.id</span>=<span class="string">3</span></span><br></pre></td></tr></table></figure>
+
+
+<p>Mapper代码</p>
+<blockquote>
+<p>注意：before=false</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Insert(&#123;</span></span><br><span class="line"><span class="meta">        &quot;insert into strorder (userid)&quot;,</span></span><br><span class="line"><span class="meta">        &quot;values (#&#123;userid,jdbcType=INTEGER&#125;)&quot;</span></span><br><span class="line"><span class="meta">&#125;)</span></span><br><span class="line"><span class="meta">@SelectKey(statement=&quot;SELECT max(id) from strorder where userid=#&#123;userid,jdbcType=INTEGER&#125;&quot;, keyProperty=&quot;id&quot;, before=false, resultType=String.class)</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shardingIdSave</span><span class="params">(Strorder record)</span></span>;</span><br></pre></td></tr></table></figure>
+
+
+<p>业务代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * sharding的雪花算法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@GetMapping(&quot;/shardingFlake&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Strorder <span class="title">shardingFlake</span><span class="params">(<span class="keyword">int</span> userid)</span></span>&#123;</span><br><span class="line">    Strorder order = <span class="keyword">new</span> Strorder();</span><br><span class="line">    order.setUserid(userid);</span><br><span class="line">    strorderMapper.shardingIdSave(order);</span><br><span class="line">    System.out.println(Snowflake.toBit(Long.valueOf(order.getId())));</span><br><span class="line">    <span class="keyword">return</span> order;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果分析</p>
+<ul>
+<li>生成的id号由sharding-jdbc自动添加到maper的sql中</li>
+<li>机器编号为3，所以打印的bit中机器为 00011，修改为其他机器，测试结果</li>
+</ul>
+<p><strong>sharding源码分析：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.apache.shardingsphere.core.strategy.keygen;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.google.common.base.Preconditions;</span><br><span class="line"><span class="keyword">import</span> java.util.Calendar;</span><br><span class="line"><span class="keyword">import</span> java.util.Properties;</span><br><span class="line"><span class="keyword">import</span> lombok.Generated;</span><br><span class="line"><span class="keyword">import</span> org.apache.shardingsphere.spi.keygen.ShardingKeyGenerator;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">SnowflakeShardingKeyGenerator</span> <span class="keyword">implements</span> <span class="title">ShardingKeyGenerator</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> EPOCH;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> SEQUENCE_BITS = <span class="number">12L</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> WORKER_ID_BITS = <span class="number">10L</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> SEQUENCE_MASK = <span class="number">4095L</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> WORKER_ID_LEFT_SHIFT_BITS = <span class="number">12L</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> TIMESTAMP_LEFT_SHIFT_BITS = <span class="number">22L</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> WORKER_ID_MAX_VALUE = <span class="number">1024L</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> WORKER_ID = <span class="number">0L</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_VIBRATION_VALUE = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX_TOLERATE_TIME_DIFFERENCE_MILLISECONDS = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> TimeService timeService = <span class="keyword">new</span> TimeService();</span><br><span class="line">    <span class="keyword">private</span> Properties properties = <span class="keyword">new</span> Properties();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> sequenceOffset = -<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> sequence;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> lastMilliseconds;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SnowflakeShardingKeyGenerator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;SNOWFLAKE&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">synchronized</span> Comparable&lt;?&gt; generateKey() &#123;</span><br><span class="line">        <span class="keyword">long</span> currentMilliseconds = timeService.getCurrentMillis();</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.waitTolerateTimeDifferenceIfNeed(currentMilliseconds)) &#123;</span><br><span class="line">            currentMilliseconds = timeService.getCurrentMillis();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.lastMilliseconds == currentMilliseconds) &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="number">0L</span> == (<span class="keyword">this</span>.sequence = <span class="keyword">this</span>.sequence + <span class="number">1L</span> &amp; <span class="number">4095L</span>)) &#123;</span><br><span class="line">                currentMilliseconds = <span class="keyword">this</span>.waitUntilNextTime(currentMilliseconds);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.vibrateSequenceOffset();</span><br><span class="line">            <span class="keyword">this</span>.sequence = (<span class="keyword">long</span>)<span class="keyword">this</span>.sequenceOffset;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.lastMilliseconds = currentMilliseconds;</span><br><span class="line">        <span class="keyword">return</span> currentMilliseconds - EPOCH &lt;&lt; <span class="number">22</span> | <span class="keyword">this</span>.getWorkerId() &lt;&lt; <span class="number">12</span> | <span class="keyword">this</span>.sequence;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//获取机器编号</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">long</span> <span class="title">getWorkerId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> result = Long.valueOf(<span class="keyword">this</span>.properties.getProperty(<span class="string">&quot;worker.id&quot;</span>, String.valueOf(<span class="number">0L</span>)));</span><br><span class="line">        Preconditions.checkArgument(result &gt;= <span class="number">0L</span> &amp;&amp; result &lt; <span class="number">1024L</span>);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">//...</span></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="comment">//序列上限，等候下一毫秒</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">long</span> <span class="title">waitUntilNextTime</span><span class="params">(<span class="keyword">long</span> lastTime)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> result;</span><br><span class="line">        <span class="keyword">for</span>(result = timeService.getCurrentMillis(); </span><br><span class="line">            result &lt;= lastTime; </span><br><span class="line">            result = timeService.getCurrentMillis()) &#123;</span><br><span class="line">            ;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        Calendar calendar = Calendar.getInstance();</span><br><span class="line">        calendar.set(<span class="number">2016</span>, <span class="number">10</span>, <span class="number">1</span>);</span><br><span class="line">        calendar.set(<span class="number">11</span>, <span class="number">0</span>);</span><br><span class="line">        calendar.set(<span class="number">12</span>, <span class="number">0</span>);</span><br><span class="line">        calendar.set(<span class="number">13</span>, <span class="number">0</span>);</span><br><span class="line">        calendar.set(<span class="number">14</span>, <span class="number">0</span>);</span><br><span class="line">        EPOCH = calendar.getTimeInMillis();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="2-3-时钟回退问题"><a href="#2-3-时钟回退问题" class="headerlink" title="2.3 时钟回退问题"></a>2.3 时钟回退问题</h3><p>关于snowflake算法的缺陷（时钟回拨问题），sharding-jdbc没有给出解决方案</p>
+<h2 id="3-第三方实现"><a href="#3-第三方实现" class="headerlink" title="3.第三方实现"></a>3.第三方实现</h2><p>###3.1 百度UidGenerator<br><a target="_blank" rel="noopener" href="https://github.com/baidu/uid-generator/blob/master/README.zh_cn.md">https://github.com/baidu/uid-generator/blob/master/README.zh_cn.md</a></p>
+<ul>
+<li><p>位数不太一样，1-28-22-13</p>
+</li>
+<li><p>需要mysql数据库建表，来自动配置工作节点</p>
+</li>
+<li><p>支持spring配置与集成</p>
+</li>
+<li><p>支持bit位自定义，及bit分配相关建议<br>###3.2 美团Leaf-snowflake<br><a target="_blank" rel="noopener" href="https://tech.meituan.com/2017/04/21/mt-leaf.html">https://tech.meituan.com/2017/04/21/mt-leaf.html</a></p>
+</li>
+<li><p>位数沿用snowflake方案的bit位设计</p>
+</li>
+<li><p>使用Zookeeper持久顺序节点的特性自动对snowflake节点配置wokerID</p>
+</li>
+<li><p>解决了时钟回退问题</p>
+</li>
+<li><p>线上可靠性验证，美团的金融、支付交易、餐饮、外卖、酒店旅游、猫眼电影等众多业务</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/07/%E5%88%86%E5%B8%83%E5%BC%8Fid%E7%94%9F%E6%88%90%E7%AD%96%E7%95%A5--%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95/" data-id="ckke5nr3t002pcl8g67c7hndc" data-title="分布式id生成策略--雪花算法" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="tag">工具类</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95/" rel="tag">雪花算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/12/10/%E5%AF%BC%E5%87%BAword/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          使用freemarker导出word
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/12/04/AES-128-ECB%E5%8A%A0%E5%AF%86%E5%B7%A5%E5%85%B7%E7%B1%BB/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">AES-128-ECB加密工具类</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bug/">bug</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/db/">db</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hello-world/">hello world</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac/">mac</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mele/">mele</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mq/">mq</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/springCloud/">springCloud</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/springboot/">springboot</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E7%B1%BB/">工具类</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/">版本控制</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/acid/" rel="tag">acid</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/aop/" rel="tag">aop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/baby/" rel="tag">baby</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bug/" rel="tag">bug</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/" rel="tag">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/excel/" rel="tag">excel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/executors/" rel="tag">executors</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/explain/" rel="tag">explain</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/filter/" rel="tag">filter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/freemarker/" rel="tag">freemarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/" rel="tag">html</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/httpServerletRequest/" rel="tag">httpServerletRequest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/httpclient/" rel="tag">httpclient</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/idea/" rel="tag">idea</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interceptor/" rel="tag">interceptor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ioc/" rel="tag">ioc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ip/" rel="tag">ip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java%E5%9F%BA%E7%A1%80/" rel="tag">java基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdbcTemplate/" rel="tag">jdbcTemplate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdk8-java/" rel="tag">jdk8 - java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/" rel="tag">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/" rel="tag">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/" rel="tag">mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/md/" rel="tag">md</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mele/" rel="tag">mele</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mq/" rel="tag">mq</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ms/" rel="tag">ms</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oracle/" rel="tag">oracle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pagehelper-%E5%88%86%E9%A1%B5/" rel="tag">pagehelper - 分页</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/photo/" rel="tag">photo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rabbitmq-mq/" rel="tag">rabbitmq - mq</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis-db/" rel="tag">redis - db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springApplication/" rel="tag">springApplication</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springCloud/" rel="tag">springCloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/" rel="tag">springboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql%E4%BC%98%E5%8C%96/" rel="tag">sql优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stream/" rel="tag">stream</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/struts2/" rel="tag">struts2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swagger/" rel="tag">swagger</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/threadPollExecutor/" rel="tag">threadPollExecutor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thymeleaf/" rel="tag">thymeleaf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/war/" rel="tag">war</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webservice/" rel="tag">webservice</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/word/" rel="tag">word</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xml/" rel="tag">xml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%BB%E9%94%AE/" rel="tag">主键</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8B%E5%8A%A1/" rel="tag">事务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81/" rel="tag">代码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%A5%E5%8F%A3%E7%B1%BB/" rel="tag">入口类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%A5%E9%97%A8/" rel="tag">入门</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%AC%E9%92%A5/" rel="tag">公钥</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E9%A1%B5/" rel="tag">分页</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" rel="tag">单元测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8E%9F%E7%90%86/" rel="tag">原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4/" rel="tag">命令</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-java/" rel="tag">多线程 - java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AF%BC%E5%87%BA/" rel="tag">导出</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="tag">工具类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B8%B8%E7%94%A8/" rel="tag">常用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E5%B8%B8/" rel="tag">异常</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E6%AD%A5%E8%B0%83%E7%94%A8/" rel="tag">异步调用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8A%BD%E8%B1%A1%E7%B1%BB/" rel="tag">抽象类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8B%A6%E6%88%AA%E5%99%A8/" rel="tag">拦截器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%A5%E5%8F%A3/" rel="tag">接口</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A5%E5%BF%97/" rel="tag">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF/" rel="tag">模板</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B3%A8%E8%A7%A3/" rel="tag">注解</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B3%A8%E9%87%8A/" rel="tag">注释</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%83%AD%E9%83%A8%E7%BD%B2/" rel="tag">热部署</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%91%E6%8E%A7/" rel="tag">监控</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0/" rel="tag">箭头函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" rel="tag">线程池</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/" rel="tag">自动装配</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" rel="tag">过滤器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%82%AE%E4%BB%B6/" rel="tag">邮件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9B%86%E5%90%88/" rel="tag">集合</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95/" rel="tag">雪花算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/acid/" style="font-size: 11.67px;">acid</a> <a href="/tags/aop/" style="font-size: 10px;">aop</a> <a href="/tags/baby/" style="font-size: 10px;">baby</a> <a href="/tags/bug/" style="font-size: 11.67px;">bug</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/excel/" style="font-size: 10px;">excel</a> <a href="/tags/executors/" style="font-size: 10px;">executors</a> <a href="/tags/explain/" style="font-size: 10px;">explain</a> <a href="/tags/filter/" style="font-size: 10px;">filter</a> <a href="/tags/freemarker/" style="font-size: 10px;">freemarker</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/html/" style="font-size: 10px;">html</a> <a href="/tags/httpServerletRequest/" style="font-size: 10px;">httpServerletRequest</a> <a href="/tags/httpclient/" style="font-size: 10px;">httpclient</a> <a href="/tags/idea/" style="font-size: 10px;">idea</a> <a href="/tags/interceptor/" style="font-size: 10px;">interceptor</a> <a href="/tags/ioc/" style="font-size: 10px;">ioc</a> <a href="/tags/ip/" style="font-size: 10px;">ip</a> <a href="/tags/java/" style="font-size: 18.33px;">java</a> <a href="/tags/java%E5%9F%BA%E7%A1%80/" style="font-size: 11.67px;">java基础</a> <a href="/tags/jdbcTemplate/" style="font-size: 10px;">jdbcTemplate</a> <a href="/tags/jdk8-java/" style="font-size: 10px;">jdk8 - java</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 13.33px;">linux</a> <a href="/tags/mac/" style="font-size: 10px;">mac</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/md/" style="font-size: 10px;">md</a> <a href="/tags/mele/" style="font-size: 10px;">mele</a> <a href="/tags/mq/" style="font-size: 11.67px;">mq</a> <a href="/tags/ms/" style="font-size: 11.67px;">ms</a> <a href="/tags/mybatis/" style="font-size: 15px;">mybatis</a> <a href="/tags/oracle/" style="font-size: 11.67px;">oracle</a> <a href="/tags/pagehelper-%E5%88%86%E9%A1%B5/" style="font-size: 10px;">pagehelper - 分页</a> <a href="/tags/photo/" style="font-size: 10px;">photo</a> <a href="/tags/rabbitmq-mq/" style="font-size: 10px;">rabbitmq - mq</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/redis-db/" style="font-size: 10px;">redis - db</a> <a href="/tags/spring/" style="font-size: 11.67px;">spring</a> <a href="/tags/springApplication/" style="font-size: 10px;">springApplication</a> <a href="/tags/springCloud/" style="font-size: 11.67px;">springCloud</a> <a href="/tags/springboot/" style="font-size: 20px;">springboot</a> <a href="/tags/sql%E4%BC%98%E5%8C%96/" style="font-size: 10px;">sql优化</a> <a href="/tags/stream/" style="font-size: 10px;">stream</a> <a href="/tags/struts2/" style="font-size: 10px;">struts2</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/threadPollExecutor/" style="font-size: 10px;">threadPollExecutor</a> <a href="/tags/thymeleaf/" style="font-size: 10px;">thymeleaf</a> <a href="/tags/tomcat/" style="font-size: 11.67px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.33px;">tool</a> <a href="/tags/war/" style="font-size: 10px;">war</a> <a href="/tags/webservice/" style="font-size: 10px;">webservice</a> <a href="/tags/word/" style="font-size: 10px;">word</a> <a href="/tags/xml/" style="font-size: 11.67px;">xml</a> <a href="/tags/%E4%B8%BB%E9%94%AE/" style="font-size: 10px;">主键</a> <a href="/tags/%E4%BA%8B%E5%8A%A1/" style="font-size: 11.67px;">事务</a> <a href="/tags/%E4%BB%A3%E7%A0%81/" style="font-size: 10px;">代码</a> <a href="/tags/%E5%85%A5%E5%8F%A3%E7%B1%BB/" style="font-size: 10px;">入口类</a> <a href="/tags/%E5%85%A5%E9%97%A8/" style="font-size: 11.67px;">入门</a> <a href="/tags/%E5%85%AC%E9%92%A5/" style="font-size: 10px;">公钥</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 11.67px;">分布式</a> <a href="/tags/%E5%88%86%E9%A1%B5/" style="font-size: 10px;">分页</a> <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" style="font-size: 10px;">单元测试</a> <a href="/tags/%E5%8E%9F%E7%90%86/" style="font-size: 10px;">原理</a> <a href="/tags/%E5%91%BD%E4%BB%A4/" style="font-size: 10px;">命令</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-java/" style="font-size: 10px;">多线程 - java</a> <a href="/tags/%E5%AF%BC%E5%87%BA/" style="font-size: 10px;">导出</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" style="font-size: 16.67px;">工具类</a> <a href="/tags/%E5%B8%B8%E7%94%A8/" style="font-size: 10px;">常用</a> <a href="/tags/%E5%BC%82%E5%B8%B8/" style="font-size: 10px;">异常</a> <a href="/tags/%E5%BC%82%E6%AD%A5%E8%B0%83%E7%94%A8/" style="font-size: 10px;">异步调用</a> <a href="/tags/%E6%8A%BD%E8%B1%A1%E7%B1%BB/" style="font-size: 10px;">抽象类</a> <a href="/tags/%E6%8B%A6%E6%88%AA%E5%99%A8/" style="font-size: 10px;">拦截器</a> <a href="/tags/%E6%8E%A5%E5%8F%A3/" style="font-size: 10px;">接口</a> <a href="/tags/%E6%97%A5%E5%BF%97/" style="font-size: 11.67px;">日志</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 10px;">模板</a> <a href="/tags/%E6%B3%A8%E8%A7%A3/" style="font-size: 10px;">注解</a> <a href="/tags/%E6%B3%A8%E9%87%8A/" style="font-size: 10px;">注释</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 10px;">消息队列</a> <a href="/tags/%E7%83%AD%E9%83%A8%E7%BD%B2/" style="font-size: 10px;">热部署</a> <a href="/tags/%E7%9B%91%E6%8E%A7/" style="font-size: 10px;">监控</a> <a href="/tags/%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0/" style="font-size: 10px;">箭头函数</a> <a href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" style="font-size: 11.67px;">线程池</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 10px;">缓存</a> <a href="/tags/%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/" style="font-size: 10px;">自动装配</a> <a href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" style="font-size: 10px;">过滤器</a> <a href="/tags/%E9%82%AE%E4%BB%B6/" style="font-size: 10px;">邮件</a> <a href="/tags/%E9%9B%86%E5%90%88/" style="font-size: 10px;">集合</a> <a href="/tags/%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95/" style="font-size: 10px;">雪花算法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/23/redis%E6%95%99%E7%A8%8B%E6%95%88%E7%8E%87%E7%89%88/">redis入门效率版</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/22/%E5%BC%80%E5%8F%91%E6%B3%A8%E6%84%8F%E4%BB%A3%E7%A0%81%E6%95%B4%E7%90%86/">开发中注意的小问题</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/02/SQL%E8%AF%AD%E5%8F%A5%E6%80%A7%E8%83%BD%E6%8F%90%E5%8D%87/">SQL语句性能提升</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/15/%E9%9B%86%E5%90%88%E5%88%86%E9%A1%B5%E5%B7%A5%E5%85%B7%E7%B1%BB/">集合分页工具类</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/10/%E5%8F%AA%E4%BF%AE%E6%94%B9%E5%87%A0%E8%A1%8C%EF%BC%8Cgit%E5%8D%B4%E6%98%BE%E7%A4%BA%E6%95%B4%E4%B8%AA%E6%96%87%E4%BB%B6%E9%83%BD%E8%A2%AB%E4%BF%AE%E6%94%B9/">只修改几行，git却显示整个文件都被修改</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
