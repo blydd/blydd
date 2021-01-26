@@ -1,443 +1,695 @@
 <!DOCTYPE html>
-<html lang="zh_CN">
+<html  lang="zh_CN" >
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.3.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="theme-color" content="#fff" id="theme-color">
+  <meta name="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+  <link rel="icon" href="/img/Kaze.png">
+  <title>开发中注意的小问题</title>
+  
+  
+  <meta property="og:title" content="开发中注意的小问题">
+  
+  
+  <meta property="og:url" content="https://www.mele.cool/2021/01/22/%E5%BC%80%E5%8F%91%E6%B3%A8%E6%84%8F%E4%BB%A3%E7%A0%81%E6%95%B4%E7%90%86/index.html">
+  
+  
+  <meta property="og:img" content="/img/Kaze.png">
+  
+  
+  <meta property="og:img" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+  
+  
+  <meta property="og:type" content="article">
+  <meta property="og:article:published_time" content="2021-01-22">
+  <meta property="og:article:modified_time" content="2021-01-24">
+  <meta property="og:article:author" content="theme-kaze">
+  
+  
+  <meta property="og:article:tag" content="mybatis">
+  
+  <meta property="og:article:tag" content="java">
+  
+  <meta property="og:article:tag" content="bug">
+  
+  <meta property="og:article:tag" content="常用">
+  
+  <meta property="og:article:tag" content="代码">
+  
+  <meta property="og:article:tag" content="excel">
+  
+  <meta property="og:article:tag" content="stream">
+  
+  <meta property="og:article:tag" content="注解">
+  
+  <meta property="og:article:tag" content="swagger">
+  
+  
+  
+  
+  <script>
+    // control reverse button
+    var reverseDarkList = {
+      dark: 'light',
+      light: 'dark'
+    };
+    var themeColor = {
+      dark: '#1c1c1e',
+      light: '#fff'
+    }
+    // get the data of css prefers-color-scheme
+    var getCssMediaQuery = function() {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    };
+    // reverse current darkmode setting function
+    var reverseDarkModeSetting = function() {
+      var setting = localStorage.getItem('user-color-scheme');
+      if(reverseDarkList[setting]) {
+        setting = reverseDarkList[setting];
+      } else if(setting === null) {
+        setting = reverseDarkList[getCssMediaQuery()];
+      } else {
+        return;
+      }
+      localStorage.setItem('user-color-scheme', setting);
+      return setting;
+    };
+    // apply current darkmode setting
+    var setDarkmode = function(mode) {
+      var setting = mode || localStorage.getItem('user-color-scheme');
+      if(setting === getCssMediaQuery()) {
+        document.documentElement.removeAttribute('data-user-color-scheme');
+        localStorage.removeItem('user-color-scheme');
+        document.getElementById('theme-color').content = themeColor[setting];
+      } else if(reverseDarkList[setting]) {
+        document.documentElement.setAttribute('data-user-color-scheme', setting);
+        document.getElementById('theme-color').content = themeColor[setting];
+      } else {
+        document.documentElement.removeAttribute('data-user-color-scheme');
+        localStorage.removeItem('user-color-scheme');
+        document.getElementById('theme-color').content = themeColor[getCssMediaQuery()];
+      }
+    };
+    setDarkmode();
+  </script>
+  <script>
+    function loadScript(url, cb) {
+      var script = document.createElement('script');
+      script.src = url;
+      if (cb) script.onload = cb;
+      script.async = true;
+      document.body.appendChild(script);
+    }
+  </script>
+  
+  <link rel="preload" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css" as="style" >
+  <link rel="preload" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css" as="style" >
+  
+  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.js" as="script">
+  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.css" as="style" >
+  
+  
+  <link rel="preload" href="/js/lib/lozad.min.js" as="script">
+  
+  
+  
+  
+  
+  
+  
+  
 <link rel="stylesheet" href="/css/main.css">
 
-
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"www.mele.cool","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
-  </script>
-
-  <meta name="description" content="开发中注意的小问题，需要注意的小细节，一些常用的代码。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="开发中注意的小问题">
-<meta property="og:url" content="https://www.mele.cool/2021/01/22/%E5%BC%80%E5%8F%91%E6%B3%A8%E6%84%8F%E4%BB%A3%E7%A0%81%E6%95%B4%E7%90%86/index.html">
-<meta property="og:site_name" content="米乐博客">
-<meta property="og:description" content="开发中注意的小问题，需要注意的小细节，一些常用的代码。">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-01-22T05:10:17.000Z">
-<meta property="article:modified_time" content="2021-01-23T16:18:02.383Z">
-<meta property="article:author" content="blydd">
-<meta property="article:tag" content="mybatis">
-<meta property="article:tag" content="java">
-<meta property="article:tag" content="bug">
-<meta property="article:tag" content="常用">
-<meta property="article:tag" content="代码">
-<meta property="article:tag" content="excel">
-<meta property="article:tag" content="stream">
-<meta property="article:tag" content="注解">
-<meta property="article:tag" content="swagger">
-<meta name="twitter:card" content="summary">
-
-<link rel="canonical" href="https://www.mele.cool/2021/01/22/%E5%BC%80%E5%8F%91%E6%B3%A8%E6%84%8F%E4%BB%A3%E7%A0%81%E6%95%B4%E7%90%86/">
-
-
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh_CN'
-  };
-</script>
-
-  <title>开发中注意的小问题 | 米乐博客</title>
-  
-
-
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
-
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">米乐博客</h1>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-      <p class="site-subtitle" itemprop="description">积跬步至千里</p>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-    </div>
-  </div>
-</div>
-
-
-
-
-<nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
-
-  </li>
-  </ul>
-</nav>
-
-
-
-
-</div>
-    </header>
-
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
-            
-
-    
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh_CN">
-    <link itemprop="mainEntityOfPage" href="https://www.mele.cool/2021/01/22/%E5%BC%80%E5%8F%91%E6%B3%A8%E6%84%8F%E4%BB%A3%E7%A0%81%E6%95%B4%E7%90%86/">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="blydd">
-      <meta itemprop="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
-    </span>
+  
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css">
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="米乐博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          开发中注意的小问题
-        </h1>
+  
+  
+<link rel="stylesheet" href="/js/lib/lightbox/baguetteBox.min.css">
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
 
-              <time title="Created: 2021-01-22 13:10:17" itemprop="dateCreated datePublished" datetime="2021-01-22T13:10:17+08:00">2021-01-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-01-24 00:18:02" itemprop="dateModified" datetime="2021-01-24T00:18:02+08:00">2021-01-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-                </span>
-            </span>
 
-          
-            <div class="post-description">开发中注意的小问题，需要注意的小细节，一些常用的代码。</div>
-
-        </div>
-      </header>
-
+<body>
+  <div class="wrapper">
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+    <nav class="navbar">
+  <div class="navbar-logo">
+    <span class="navbar-logo-main">
       
-        <h4 id="拼接in字段"><a href="#拼接in字段" class="headerlink" title="拼接in字段"></a>拼接in字段</h4><p>String mergeString = list.stream().map(demo -&gt; “‘“ + demo.getUserCode() + “‘“).distinct().collect(Collectors.joining(“,”));</p>
-<h4 id="stream操作集合时注意判空-否则遇空会报错"><a href="#stream操作集合时注意判空-否则遇空会报错" class="headerlink" title="stream操作集合时注意判空,否则遇空会报错"></a>stream操作集合时注意判空,否则遇空会报错</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">usercodess = users.stream().filter(map -&gt; StringUtils.isNotBlank((String) map.get(<span class="string">&quot;userCode&quot;</span>))).collect(Collectors.groupingBy(map -&gt; (String) map.get(<span class="string">&quot;userCode&quot;</span>)));</span><br></pre></td></tr></table></figure>
-<h4 id="stream的group操作1-value是集合"><a href="#stream的group操作1-value是集合" class="headerlink" title="stream的group操作1:value是集合"></a>stream的group操作1:value是集合</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String, List&lt;Map&lt;String, Object&gt;&gt;&gt; usercodess = users.stream().filter(map -&gt; StringUtils.isNotBlank((String) map.get(<span class="string">&quot;userCode&quot;</span>))).collect(Collectors.groupingBy(map -&gt; (String) map.get(<span class="string">&quot;userCode&quot;</span>)));</span><br></pre></td></tr></table></figure>
-<h4 id="stream的group操作2-value是集合中对象某字段的和"><a href="#stream的group操作2-value是集合中对象某字段的和" class="headerlink" title="stream的group操作2:value是集合中对象某字段的和"></a>stream的group操作2:value是集合中对象某字段的和</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String, Integer&gt; collect1 = resultList.stream().filter(item -&gt; StringUtils.isNotBlank(item.getGroupCode()))</span><br><span class="line">	.collect(Collectors.groupingBy(ComplCountVO::getGroupCode, Collectors.summingInt(ComplCountVO::getComplAmount)));</span><br></pre></td></tr></table></figure>
-<h4 id="controller类或方法加注解防止跨域"><a href="#controller类或方法加注解防止跨域" class="headerlink" title="controller类或方法加注解防止跨域"></a>controller类或方法加注解防止跨域</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@CrossOrigin</span></span><br></pre></td></tr></table></figure>
+      <img class="navbar-logo-img" src="/img/Kaze.png" alt="logo">
+      
+      <span class="navbar-logo-dsc">theme-kaze demo</span>
+    </span>
+  </div>
+  <div class="navbar-menu">
+    
+    <a href="/" class="navbar-menu-item">
+    
+    首页
+    
+    </a>
+    
+    <a href="/archives" class="navbar-menu-item">
+    
+    归档
+    
+    </a>
+    
+    <a href="/tags" class="navbar-menu-item">
+    
+    标签
+    
+    </a>
+    
+    <a href="/categories" class="navbar-menu-item">
+    
+    分类
+    
+    </a>
+    
+    <a href="/about" class="navbar-menu-item">
+    
+    关于
+    
+    </a>
+    
+    <a href="/links" class="navbar-menu-item">
+    
+    友链
+    
+    </a>
+    
+    <a class="navbar-menu-item darknavbar" id="dark"><i class="iconfont icon-weather"></i></a>
+    <a class="navbar-menu-item searchnavbar" id="search"><i class="iconfont icon-search" style="font-size: 1.2rem; font-weight: 400;"></i></a>
+  </div>
+</nav>
+    
+    <div id="local-search" style="display: none;">
+      <input class="navbar-menu-item" id="search-input" placeholder="请输入搜索内容...">
+      <div id="search-content"></div>
+    </div>
+    
+    <div class="section-wrap">
+      <div class="container">
+        <div class="columns">
+          <main class="main-column">
+<article class="card card-content">
+  <header>
+    <h1 class="post-title">
+      开发中注意的小问题
+    </h1>
+  </header>
+  <div class="post-meta post-show-meta">
+    <time datetime="2021-01-22T05:10:17.000Z">
+      <i class="iconfont icon-calendar" style="margin-right: 2px;"></i>
+      <span>2021-01-22</span>
+    </time>
+    
+    <span class="dot"></span>
+    
+    <a href="/categories/java/" class="post-meta-link">java</a>
+    
+    
+    
+    <span class="dot"></span>
+    <span>828 字</span>
+    
+  </div>
+  
+  <div class="post-meta post-show-meta" style="margin-top: -10px;">
+    <div style="display: flex; align-items: center;">
+      <i class="iconfont icon-biaoqian" style="margin-right: 2px; font-size: 1.15rem;"></i>
+      
+      
+        <a href="/tags/mybatis/" class="post-meta-link">mybatis</a>
+      
+      
+      <span class="dot"></span>
+      
+        <a href="/tags/java/" class="post-meta-link">java</a>
+      
+      
+      <span class="dot"></span>
+      
+        <a href="/tags/bug/" class="post-meta-link">bug</a>
+      
+      
+      <span class="dot"></span>
+      
+        <a href="/tags/常用/" class="post-meta-link">常用</a>
+      
+      
+      <span class="dot"></span>
+      
+        <a href="/tags/代码/" class="post-meta-link">代码</a>
+      
+      
+      <span class="dot"></span>
+      
+        <a href="/tags/excel/" class="post-meta-link">excel</a>
+      
+      
+      <span class="dot"></span>
+      
+        <a href="/tags/stream/" class="post-meta-link">stream</a>
+      
+      
+      <span class="dot"></span>
+      
+        <a href="/tags/注解/" class="post-meta-link">注解</a>
+      
+      
+      <span class="dot"></span>
+      
+        <a href="/tags/swagger/" class="post-meta-link">swagger</a>
+      
+    </div>
+  </div>
+  
+  </header>
+  <div id="section" class="post-content">
+    <h4 id="拼接in字段"><a href="#拼接in字段" class="headerlink" title="拼接in字段"></a>拼接in字段</h4><p>String mergeString = list.stream().map(demo -&gt; “‘“ + demo.getUserCode() + “‘“).distinct().collect(Collectors.joining(“,”));</p>
+<h4 id="stream操作集合时注意判空-否则遇空会报错"><a href="#stream操作集合时注意判空-否则遇空会报错" class="headerlink" title="stream操作集合时注意判空,否则遇空会报错"></a>stream操作集合时注意判空,否则遇空会报错</h4><pre class="highlight"><span class="line">usercodess = users.stream().filter(map -&gt; StringUtils.isNotBlank((String) map.get(<span class="string">&quot;userCode&quot;</span>))).collect(Collectors.groupingBy(map -&gt; (String) map.get(<span class="string">&quot;userCode&quot;</span>)));</span><br></pre>
+<h4 id="stream的group操作1-value是集合"><a href="#stream的group操作1-value是集合" class="headerlink" title="stream的group操作1:value是集合"></a>stream的group操作1:value是集合</h4><pre class="highlight"><span class="line">Map&lt;String, List&lt;Map&lt;String, Object&gt;&gt;&gt; usercodess = users.stream().filter(map -&gt; StringUtils.isNotBlank((String) map.get(<span class="string">&quot;userCode&quot;</span>))).collect(Collectors.groupingBy(map -&gt; (String) map.get(<span class="string">&quot;userCode&quot;</span>)));</span><br></pre>
+<h4 id="stream的group操作2-value是集合中对象某字段的和"><a href="#stream的group操作2-value是集合中对象某字段的和" class="headerlink" title="stream的group操作2:value是集合中对象某字段的和"></a>stream的group操作2:value是集合中对象某字段的和</h4><pre class="highlight"><span class="line">Map&lt;String, Integer&gt; collect1 = resultList.stream().filter(item -&gt; StringUtils.isNotBlank(item.getGroupCode()))</span><br><span class="line">	.collect(Collectors.groupingBy(ComplCountVO::getGroupCode, Collectors.summingInt(ComplCountVO::getComplAmount)));</span><br></pre>
+<h4 id="controller类或方法加注解防止跨域"><a href="#controller类或方法加注解防止跨域" class="headerlink" title="controller类或方法加注解防止跨域"></a>controller类或方法加注解防止跨域</h4><pre class="highlight"><span class="line"><span class="meta">@CrossOrigin</span></span><br></pre>
 
-<h4 id="使用Sharding-JDBC多线程补偿"><a href="#使用Sharding-JDBC多线程补偿" class="headerlink" title="使用Sharding-JDBC多线程补偿"></a>使用Sharding-JDBC多线程补偿</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">HintManager.clear();</span><br><span class="line">HintManager hintManager = HintManager.getInstance();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">	hintManager.setDatabaseShardingValue(customerserviceRoomUserVO.getRootDeptCode());</span><br><span class="line">	<span class="comment">//业务代码</span></span><br><span class="line">   </span><br><span class="line">&#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">	<span class="keyword">throw</span> e;</span><br><span class="line">&#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">	hintManager.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="集合拆分："><a href="#集合拆分：" class="headerlink" title="集合拆分："></a>集合拆分：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">List&lt;List&lt;String&gt;&gt; partition = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"><span class="keyword">if</span> (roomCodeList.size()&gt;<span class="number">500</span>)&#123;</span><br><span class="line">	partition = Lists.partition(roomCodeList, <span class="number">500</span>);</span><br><span class="line">&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">	partition.add(roomCodeList);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="使用Sharding-JDBC多线程补偿"><a href="#使用Sharding-JDBC多线程补偿" class="headerlink" title="使用Sharding-JDBC多线程补偿"></a>使用Sharding-JDBC多线程补偿</h4><pre class="highlight"><span class="line">HintManager.clear();</span><br><span class="line">HintManager hintManager = HintManager.getInstance();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">	hintManager.setDatabaseShardingValue(customerserviceRoomUserVO.getRootDeptCode());</span><br><span class="line">	<span class="comment">//业务代码</span></span><br><span class="line">   </span><br><span class="line">&#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">	<span class="keyword">throw</span> e;</span><br><span class="line">&#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">	hintManager.close();</span><br><span class="line">&#125;</span><br></pre>
+<h4 id="集合拆分："><a href="#集合拆分：" class="headerlink" title="集合拆分："></a>集合拆分：</h4><pre class="highlight"><span class="line">List&lt;List&lt;String&gt;&gt; partition = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"><span class="keyword">if</span> (roomCodeList.size()&gt;<span class="number">500</span>)&#123;</span><br><span class="line">	partition = Lists.partition(roomCodeList, <span class="number">500</span>);</span><br><span class="line">&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">	partition.add(roomCodeList);</span><br><span class="line">&#125;</span><br></pre>
 <h4 id="mybatis参数条件集合"><a href="#mybatis参数条件集合" class="headerlink" title="mybatis参数条件集合"></a>mybatis参数条件集合</h4><blockquote>
 <p>if条件判断时需注意，如果字段类型是Integer，则不能使用<if test="roomCode!='' and roomCode !=null">,因为Integer无法和空字符串做比较。</p>
 </blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">if</span> test=<span class="string">&quot;roomCodeList!= null and roomCodeList.size&gt;0&quot;</span>&gt;</span><br><span class="line">	and b.room_code in</span><br><span class="line">	&lt;foreach collection=<span class="string">&quot;roomCodeList&quot;</span> index=<span class="string">&quot;index&quot;</span> open=<span class="string">&quot;(&quot;</span> close=<span class="string">&quot;)&quot;</span> separator=<span class="string">&quot;,&quot;</span> item=<span class="string">&quot;item&quot;</span> &gt;</span><br><span class="line">		#&#123;item&#125;</span><br><span class="line">	&lt;/foreach&gt;</span><br><span class="line">&lt;/if&gt;</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line">&lt;<span class="keyword">if</span> test=<span class="string">&quot;roomCodeList!= null and roomCodeList.size&gt;0&quot;</span>&gt;</span><br><span class="line">	and b.room_code in</span><br><span class="line">	&lt;foreach collection=<span class="string">&quot;roomCodeList&quot;</span> index=<span class="string">&quot;index&quot;</span> open=<span class="string">&quot;(&quot;</span> close=<span class="string">&quot;)&quot;</span> separator=<span class="string">&quot;,&quot;</span> item=<span class="string">&quot;item&quot;</span> &gt;</span><br><span class="line">		#&#123;item&#125;</span><br><span class="line">	&lt;/foreach&gt;</span><br><span class="line">&lt;/if&gt;</span><br></pre>
 <h4 id="feign调用注解"><a href="#feign调用注解" class="headerlink" title="feign调用注解"></a>feign调用注解</h4><blockquote>
 <p>GET方式传参为对象或map时加注解 @SpringQueryMap<br>POST方式传参记得加注解 @RequestBody</p>
 </blockquote>
-<h4 id="点击eureka中服务自动到swagger界面"><a href="#点击eureka中服务自动到swagger界面" class="headerlink" title="点击eureka中服务自动到swagger界面"></a>点击eureka中服务自动到swagger界面</h4><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">eureka.instance.status-page-url</span>=<span class="string">http://$&#123;spring.cloud.client.ip-address&#125;:$&#123;server.port&#125;/swagger-ui.html#/</span></span><br></pre></td></tr></table></figure>
+<h4 id="点击eureka中服务自动到swagger界面"><a href="#点击eureka中服务自动到swagger界面" class="headerlink" title="点击eureka中服务自动到swagger界面"></a>点击eureka中服务自动到swagger界面</h4><pre class="highlight"><span class="line"><span class="meta">eureka.instance.status-page-url</span>=<span class="string">http://$&#123;spring.cloud.client.ip-address&#125;:$&#123;server.port&#125;/swagger-ui.html#/</span></span><br></pre>
 <h4 id="写swagger代码"><a href="#写swagger代码" class="headerlink" title="写swagger代码"></a>写swagger代码</h4><ul>
-<li>对象入参<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ApiOperation(value = &quot;方法功能&quot;)</span></span><br><span class="line">   <span class="meta">@ApiImplicitParams(&#123;</span></span><br><span class="line"><span class="meta">           @ApiImplicitParam(name = &quot;paramDTO&quot;, required = true, dataType = &quot;ParamDTO&quot;, value = &quot;字段含义&quot;, paramType = &quot;body&quot;),</span></span><br><span class="line"><span class="meta">   &#125;)</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@Accessors(chain = true)</span></span><br><span class="line"><span class="meta">@ApiModel(description = &quot;参数对象说明&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FeeOrderDTO</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty(value = &quot;字段名称&quot;, example = &quot;传参示例&quot;, required = true)</span></span><br><span class="line">    <span class="meta">@NotBlank(message = &quot;业主编码不能为空&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String  ownerCode;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>零散入参<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ApiOperation(value = &quot;方法功能&quot;)</span></span><br><span class="line"><span class="meta">@ApiImplicitParams(&#123;</span></span><br><span class="line"><span class="meta">        @ApiImplicitParam(name = &quot;levelCode&quot;, required = true, dataType = &quot;String&quot;, value = &quot;参数名称&quot;, paramType = &quot;header&quot;),</span></span><br><span class="line"><span class="meta">        @ApiImplicitParam(name = &quot;userName&quot;, required = true, dataType = &quot;String&quot;, value = &quot;参数名称&quot;, paramType = &quot;query&quot;),</span></span><br><span class="line"><span class="meta">&#125;)</span></span><br></pre></td></tr></table></figure>
+<li>对象入参<pre class="highlight"><span class="line"><span class="meta">@ApiOperation(value = &quot;方法功能&quot;)</span></span><br><span class="line">   <span class="meta">@ApiImplicitParams(&#123;</span></span><br><span class="line"><span class="meta">           @ApiImplicitParam(name = &quot;paramDTO&quot;, required = true, dataType = &quot;ParamDTO&quot;, value = &quot;字段含义&quot;, paramType = &quot;body&quot;),</span></span><br><span class="line"><span class="meta">   &#125;)</span></span><br></pre>
+<pre class="highlight"><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@Accessors(chain = true)</span></span><br><span class="line"><span class="meta">@ApiModel(description = &quot;参数对象说明&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FeeOrderDTO</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty(value = &quot;字段名称&quot;, example = &quot;传参示例&quot;, required = true)</span></span><br><span class="line">    <span class="meta">@NotBlank(message = &quot;业主编码不能为空&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String  ownerCode;</span><br><span class="line">&#125;</span><br></pre></li>
+<li>零散入参<pre class="highlight"><span class="line"><span class="meta">@ApiOperation(value = &quot;方法功能&quot;)</span></span><br><span class="line"><span class="meta">@ApiImplicitParams(&#123;</span></span><br><span class="line"><span class="meta">        @ApiImplicitParam(name = &quot;levelCode&quot;, required = true, dataType = &quot;String&quot;, value = &quot;参数名称&quot;, paramType = &quot;header&quot;),</span></span><br><span class="line"><span class="meta">        @ApiImplicitParam(name = &quot;userName&quot;, required = true, dataType = &quot;String&quot;, value = &quot;参数名称&quot;, paramType = &quot;query&quot;),</span></span><br><span class="line"><span class="meta">&#125;)</span></span><br></pre>
 <h4 id="easyExcel导出excel"><a href="#easyExcel导出excel" class="headerlink" title="easyExcel导出excel"></a>easyExcel导出excel</h4></li>
 </ul>
-<h5 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h5><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--alibaba easy excel--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>easyexcel<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h5 id="实现代码"><a href="#实现代码" class="headerlink" title="实现代码"></a>实现代码</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.alibaba.excel.EasyExcel;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exportExcel</span><span class="params">(HttpServletResponse response, ParamVO paramVO)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">       Assert.isBlank(paramVO.getUserCode(), <span class="string">&quot;用户编码不能为空&quot;</span>);</span><br><span class="line">	SimpleDateFormat df = <span class="keyword">new</span> SimpleDateFormat(<span class="string">&quot;yyyyMMddHHmmssSSS&quot;</span>);</span><br><span class="line">       <span class="comment">// 组装导出数据</span></span><br><span class="line">       List&lt;ExportData&gt; recordExportData = testDaoGetList(paramVO);</span><br><span class="line">       <span class="keyword">if</span> (CollectionUtils.isEmpty(recordExportData)) &#123;</span><br><span class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> ServiceException(<span class="string">&quot;不存在要导出的数据&quot;</span>);</span><br><span class="line">       &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           response.setContentType(<span class="string">&quot;application/vnd.ms-excel&quot;</span>);</span><br><span class="line">           response.setCharacterEncoding(<span class="string">&quot;utf-8&quot;</span>);</span><br><span class="line">           String tempName = <span class="string">&quot;文件名&quot;</span> + df.format(<span class="keyword">new</span> Date());</span><br><span class="line">           log.info(<span class="string">&quot;导出文件名是:&quot;</span> + tempName);</span><br><span class="line">           String fileName = URLEncoder.encode(tempName, <span class="string">&quot;UTF-8&quot;</span>).replaceAll(<span class="string">&quot;\\+&quot;</span>, <span class="string">&quot;%20&quot;</span>);</span><br><span class="line">           response.setHeader(<span class="string">&quot;Content-disposition&quot;</span>, <span class="string">&quot;attachment;filename*=utf-8&#x27;&#x27;&quot;</span> + fileName + <span class="string">&quot;.xlsx&quot;</span>);</span><br><span class="line">           <span class="comment">// 获取要导出的模板数据</span></span><br><span class="line">           EasyExcel.write(response.getOutputStream(), ExportData.class).sheet(<span class="string">&quot;template&quot;</span>).doWrite(recordExportData);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<h5 id="模板类"><a href="#模板类" class="headerlink" title="模板类"></a>模板类</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.alibaba.excel.annotation.ExcelProperty;</span><br><span class="line"><span class="keyword">import</span> com.alibaba.excel.annotation.write.style.ColumnWidth;</span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.math.BigDecimal;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 功能描述：导出模板</span></span><br><span class="line"><span class="comment"> *	生成excel列顺序由类中字段顺序决定。</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: admin</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 2020/11/24 10:36</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="comment">//单元格宽度</span></span><br><span class="line"><span class="meta">@ColumnWidth(value = 20)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExportData</span> </span>&#123;</span><br><span class="line">    <span class="meta">@ExcelProperty(value = &quot;列名1&quot;)</span></span><br><span class="line">	<span class="keyword">private</span> BigDecimal money;</span><br><span class="line">    <span class="meta">@ExcelProperty(value = &quot;列名2&quot;)</span></span><br><span class="line">	<span class="keyword">private</span> String name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-    </div>
-
-    
-    
-    
-
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/mybatis/" rel="tag"># mybatis</a>
-              <a href="/tags/java/" rel="tag"># java</a>
-              <a href="/tags/bug/" rel="tag"># bug</a>
-              <a href="/tags/%E5%B8%B8%E7%94%A8/" rel="tag"># 常用</a>
-              <a href="/tags/%E4%BB%A3%E7%A0%81/" rel="tag"># 代码</a>
-              <a href="/tags/excel/" rel="tag"># excel</a>
-              <a href="/tags/stream/" rel="tag"># stream</a>
-              <a href="/tags/%E6%B3%A8%E8%A7%A3/" rel="tag"># 注解</a>
-              <a href="/tags/swagger/" rel="tag"># swagger</a>
-          </div>
-
+<h5 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h5><pre class="highlight"><span class="line"><span class="comment">&lt;!--alibaba easy excel--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>easyexcel<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre>
+<h5 id="实现代码"><a href="#实现代码" class="headerlink" title="实现代码"></a>实现代码</h5><pre class="highlight"><span class="line"><span class="keyword">import</span> com.alibaba.excel.EasyExcel;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exportExcel</span><span class="params">(HttpServletResponse response, ParamVO paramVO)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">       Assert.isBlank(paramVO.getUserCode(), <span class="string">&quot;用户编码不能为空&quot;</span>);</span><br><span class="line">	SimpleDateFormat df = <span class="keyword">new</span> SimpleDateFormat(<span class="string">&quot;yyyyMMddHHmmssSSS&quot;</span>);</span><br><span class="line">       <span class="comment">// 组装导出数据</span></span><br><span class="line">       List&lt;ExportData&gt; recordExportData = testDaoGetList(paramVO);</span><br><span class="line">       <span class="keyword">if</span> (CollectionUtils.isEmpty(recordExportData)) &#123;</span><br><span class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> ServiceException(<span class="string">&quot;不存在要导出的数据&quot;</span>);</span><br><span class="line">       &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           response.setContentType(<span class="string">&quot;application/vnd.ms-excel&quot;</span>);</span><br><span class="line">           response.setCharacterEncoding(<span class="string">&quot;utf-8&quot;</span>);</span><br><span class="line">           String tempName = <span class="string">&quot;文件名&quot;</span> + df.format(<span class="keyword">new</span> Date());</span><br><span class="line">           log.info(<span class="string">&quot;导出文件名是:&quot;</span> + tempName);</span><br><span class="line">           String fileName = URLEncoder.encode(tempName, <span class="string">&quot;UTF-8&quot;</span>).replaceAll(<span class="string">&quot;\\+&quot;</span>, <span class="string">&quot;%20&quot;</span>);</span><br><span class="line">           response.setHeader(<span class="string">&quot;Content-disposition&quot;</span>, <span class="string">&quot;attachment;filename*=utf-8&#x27;&#x27;&quot;</span> + fileName + <span class="string">&quot;.xlsx&quot;</span>);</span><br><span class="line">           <span class="comment">// 获取要导出的模板数据</span></span><br><span class="line">           EasyExcel.write(response.getOutputStream(), ExportData.class).sheet(<span class="string">&quot;template&quot;</span>).doWrite(recordExportData);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre>
+<h5 id="模板类"><a href="#模板类" class="headerlink" title="模板类"></a>模板类</h5><pre class="highlight"><span class="line"><span class="keyword">package</span> com.test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.alibaba.excel.annotation.ExcelProperty;</span><br><span class="line"><span class="keyword">import</span> com.alibaba.excel.annotation.write.style.ColumnWidth;</span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.math.BigDecimal;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 功能描述：导出模板</span></span><br><span class="line"><span class="comment"> *	生成excel列顺序由类中字段顺序决定。</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: admin</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 2020/11/24 10:36</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="comment">//单元格宽度</span></span><br><span class="line"><span class="meta">@ColumnWidth(value = 20)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExportData</span> </span>&#123;</span><br><span class="line">    <span class="meta">@ExcelProperty(value = &quot;列名1&quot;)</span></span><br><span class="line">	<span class="keyword">private</span> BigDecimal money;</span><br><span class="line">    <span class="meta">@ExcelProperty(value = &quot;列名2&quot;)</span></span><br><span class="line">	<span class="keyword">private</span> String name;</span><br><span class="line">&#125;</span><br></pre>
+  </div>
+  <div>
+  
+  <div class="post-note note-warning copyright" style="margin-top: 42px">
+    <p><span style="font-weight: bold;">作者：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/about">theme-kaze</a></p>
+    <p><span style="font-weight: bold;">文章链接：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/2021/01/22/%E5%BC%80%E5%8F%91%E6%B3%A8%E6%84%8F%E4%BB%A3%E7%A0%81%E6%95%B4%E7%90%86/">https://www.mele.cool/2021/01/22/%E5%BC%80%E5%8F%91%E6%B3%A8%E6%84%8F%E4%BB%A3%E7%A0%81%E6%95%B4%E7%90%86/</a></p>
+    <p><span style="font-weight: bold;">版权声明：</span>本博客所有文章除特别声明外，均采用<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0 协议</a>。转载请注明出处！</p>
+  </div>
+  
+  </div>
+</article>
+<div class="nav">
+  
+  <div class="nav-item-prev">
+    <a href="/2021/01/23/redis教程效率版/" class="nav-link">
+      <i class="iconfont icon-left nav-prev-icon"></i>
+      <div>
+        <div class="nav-label">上一篇</div>
         
-
-
+        <div class="nav-title">redis入门效率版 </div>
         
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2021/01/02/SQL%E8%AF%AD%E5%8F%A5%E6%80%A7%E8%83%BD%E6%8F%90%E5%8D%87/" rel="prev" title="SQL语句性能提升">
-      <i class="fa fa-chevron-left"></i> SQL语句性能提升
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/01/23/redis%E6%95%99%E7%A8%8B%E6%95%88%E7%8E%87%E7%89%88/" rel="next" title="redis入门效率版">
-      redis入门效率版 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      </div>
+    </a>
+  </div>
+  
+  
+  <div class="nav-item-next">
+    <a href="/2021/01/02/SQL语句性能提升/" class="nav-link">
+      <div>
+        <div class="nav-label">下一篇</div>
+        
+        <div class="nav-title">SQL语句性能提升 </div>
+        
+      </div>
+      <i class="iconfont icon-right nav-next-icon"></i>
+    </a>
+  </div>
+  
+</div>
+
+<div class="card card-content toc-card" id="mobiletoc">
+  <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
+<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%BC%E6%8E%A5in%E5%AD%97%E6%AE%B5"><span class="toc-text">拼接in字段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#stream%E6%93%8D%E4%BD%9C%E9%9B%86%E5%90%88%E6%97%B6%E6%B3%A8%E6%84%8F%E5%88%A4%E7%A9%BA-%E5%90%A6%E5%88%99%E9%81%87%E7%A9%BA%E4%BC%9A%E6%8A%A5%E9%94%99"><span class="toc-text">stream操作集合时注意判空,否则遇空会报错</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#stream%E7%9A%84group%E6%93%8D%E4%BD%9C1-value%E6%98%AF%E9%9B%86%E5%90%88"><span class="toc-text">stream的group操作1:value是集合</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#stream%E7%9A%84group%E6%93%8D%E4%BD%9C2-value%E6%98%AF%E9%9B%86%E5%90%88%E4%B8%AD%E5%AF%B9%E8%B1%A1%E6%9F%90%E5%AD%97%E6%AE%B5%E7%9A%84%E5%92%8C"><span class="toc-text">stream的group操作2:value是集合中对象某字段的和</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#controller%E7%B1%BB%E6%88%96%E6%96%B9%E6%B3%95%E5%8A%A0%E6%B3%A8%E8%A7%A3%E9%98%B2%E6%AD%A2%E8%B7%A8%E5%9F%9F"><span class="toc-text">controller类或方法加注解防止跨域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Sharding-JDBC%E5%A4%9A%E7%BA%BF%E7%A8%8B%E8%A1%A5%E5%81%BF"><span class="toc-text">使用Sharding-JDBC多线程补偿</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E6%8B%86%E5%88%86%EF%BC%9A"><span class="toc-text">集合拆分：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mybatis%E5%8F%82%E6%95%B0%E6%9D%A1%E4%BB%B6%E9%9B%86%E5%90%88"><span class="toc-text">mybatis参数条件集合</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#feign%E8%B0%83%E7%94%A8%E6%B3%A8%E8%A7%A3"><span class="toc-text">feign调用注解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%82%B9%E5%87%BBeureka%E4%B8%AD%E6%9C%8D%E5%8A%A1%E8%87%AA%E5%8A%A8%E5%88%B0swagger%E7%95%8C%E9%9D%A2"><span class="toc-text">点击eureka中服务自动到swagger界面</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%99swagger%E4%BB%A3%E7%A0%81"><span class="toc-text">写swagger代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#easyExcel%E5%AF%BC%E5%87%BAexcel"><span class="toc-text">easyExcel导出excel</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96"><span class="toc-text">依赖</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81"><span class="toc-text">实现代码</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF%E7%B1%BB"><span class="toc-text">模板类</span></a></li></ol></li></ol>
+</div></main>
+          <aside class="left-column">
+            
+            <div class="card card-author">
+              
+<img src="/img/Kaze.png" class="author-img">
+
+<p class="author-name">theme-kaze</p>
+<p class="author-description">designed by theme-kaze</p>
+<div class="author-message">
+  <a class="author-posts-count" href="/archives">
+    <span>66</span>
+    <span>文章</span>
+  </a>
+  <a class="author-categories-count" href="/categories">
+    <span>15</span>
+    <span>分类</span>
+  </a>
+  <a class="author-tags-count" href="/tags">
+    <span>91</span>
+    <span>标签</span>
+  </a>
+</div>
+
+            </div>
+            
+            <div class="sticky-tablet">
+  
+  
+  <article class="display-when-two-columns spacer">
+    <div class="card card-content toc-card">
+      <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
+<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%BC%E6%8E%A5in%E5%AD%97%E6%AE%B5"><span class="toc-text">拼接in字段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#stream%E6%93%8D%E4%BD%9C%E9%9B%86%E5%90%88%E6%97%B6%E6%B3%A8%E6%84%8F%E5%88%A4%E7%A9%BA-%E5%90%A6%E5%88%99%E9%81%87%E7%A9%BA%E4%BC%9A%E6%8A%A5%E9%94%99"><span class="toc-text">stream操作集合时注意判空,否则遇空会报错</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#stream%E7%9A%84group%E6%93%8D%E4%BD%9C1-value%E6%98%AF%E9%9B%86%E5%90%88"><span class="toc-text">stream的group操作1:value是集合</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#stream%E7%9A%84group%E6%93%8D%E4%BD%9C2-value%E6%98%AF%E9%9B%86%E5%90%88%E4%B8%AD%E5%AF%B9%E8%B1%A1%E6%9F%90%E5%AD%97%E6%AE%B5%E7%9A%84%E5%92%8C"><span class="toc-text">stream的group操作2:value是集合中对象某字段的和</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#controller%E7%B1%BB%E6%88%96%E6%96%B9%E6%B3%95%E5%8A%A0%E6%B3%A8%E8%A7%A3%E9%98%B2%E6%AD%A2%E8%B7%A8%E5%9F%9F"><span class="toc-text">controller类或方法加注解防止跨域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Sharding-JDBC%E5%A4%9A%E7%BA%BF%E7%A8%8B%E8%A1%A5%E5%81%BF"><span class="toc-text">使用Sharding-JDBC多线程补偿</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E6%8B%86%E5%88%86%EF%BC%9A"><span class="toc-text">集合拆分：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mybatis%E5%8F%82%E6%95%B0%E6%9D%A1%E4%BB%B6%E9%9B%86%E5%90%88"><span class="toc-text">mybatis参数条件集合</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#feign%E8%B0%83%E7%94%A8%E6%B3%A8%E8%A7%A3"><span class="toc-text">feign调用注解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%82%B9%E5%87%BBeureka%E4%B8%AD%E6%9C%8D%E5%8A%A1%E8%87%AA%E5%8A%A8%E5%88%B0swagger%E7%95%8C%E9%9D%A2"><span class="toc-text">点击eureka中服务自动到swagger界面</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%99swagger%E4%BB%A3%E7%A0%81"><span class="toc-text">写swagger代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#easyExcel%E5%AF%BC%E5%87%BAexcel"><span class="toc-text">easyExcel导出excel</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96"><span class="toc-text">依赖</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81"><span class="toc-text">实现代码</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF%E7%B1%BB"><span class="toc-text">模板类</span></a></li></ol></li></ol>
     </div>
-      </footer>
-    
   </article>
   
   
+  <article class="card card-content categories-widget">
+    <div class="categories-card">
+  <div class="categories-header"><i class="iconfont icon-fenlei" style="padding-right: 2px;"></i>分类</div>
+  <div class="categories-list">
+    
+      <a href="/categories/工具类">
+        <div class="categories-list-item">
+          工具类
+          <span class="categories-list-item-badge">8</span>
+        </div>
+      </a>
+    
+      <a href="/categories/linux">
+        <div class="categories-list-item">
+          linux
+          <span class="categories-list-item-badge">3</span>
+        </div>
+      </a>
+    
+      <a href="/categories/mac">
+        <div class="categories-list-item">
+          mac
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/java">
+        <div class="categories-list-item">
+          java
+          <span class="categories-list-item-badge">19</span>
+        </div>
+      </a>
+    
+      <a href="/categories/springboot">
+        <div class="categories-list-item">
+          springboot
+          <span class="categories-list-item-badge">13</span>
+        </div>
+      </a>
+    
+      <a href="/categories/docker">
+        <div class="categories-list-item">
+          docker
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/版本控制">
+        <div class="categories-list-item">
+          版本控制
+          <span class="categories-list-item-badge">2</span>
+        </div>
+      </a>
+    
+      <a href="/categories/hello world">
+        <div class="categories-list-item">
+          hello world
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/mele">
+        <div class="categories-list-item">
+          mele
+          <span class="categories-list-item-badge">2</span>
+        </div>
+      </a>
+    
+      <a href="/categories/db">
+        <div class="categories-list-item">
+          db
+          <span class="categories-list-item-badge">7</span>
+        </div>
+      </a>
+    
+      <a href="/categories/其他">
+        <div class="categories-list-item">
+          其他
+          <span class="categories-list-item-badge">2</span>
+        </div>
+      </a>
+    
+      <a href="/categories/bug">
+        <div class="categories-list-item">
+          bug
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/js">
+        <div class="categories-list-item">
+          js
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/mq">
+        <div class="categories-list-item">
+          mq
+          <span class="categories-list-item-badge">3</span>
+        </div>
+      </a>
+    
+      <a href="/categories/springCloud">
+        <div class="categories-list-item">
+          springCloud
+          <span class="categories-list-item-badge">2</span>
+        </div>
+      </a>
+    
+  </div>
+</div>
+  </article>
   
-
-
-
-          </div>
+  <article class="card card-content tags-widget">
+    <div class="tags-card">
+  <div class="tags-header"><i class="iconfont icon-biaoqian" style="padding-right: 2px;"></i>热门标签</div>
+  <div class="tags-list">
+    
+    <a href="\tags\springboot" title="springboot"><div class="tags-list-item">springboot</div></a>
+    
+    <a href="\tags\java" title="java"><div class="tags-list-item">java</div></a>
+    
+    <a href="\tags\工具类" title="工具类"><div class="tags-list-item">工具类</div></a>
+    
+    <a href="\tags\mybatis" title="mybatis"><div class="tags-list-item">mybatis</div></a>
+    
+    <a href="\tags\tool" title="tool"><div class="tags-list-item">tool</div></a>
+    
+    <a href="\tags\git" title="git"><div class="tags-list-item">git</div></a>
+    
+    <a href="\tags\linux" title="linux"><div class="tags-list-item">linux</div></a>
+    
+    <a href="\tags\springCloud" title="springCloud"><div class="tags-list-item">springCloud</div></a>
+    
+    <a href="\tags\线程池" title="线程池"><div class="tags-list-item">线程池</div></a>
+    
+    <a href="\tags\ms" title="ms"><div class="tags-list-item">ms</div></a>
+    
+    <a href="\tags\mq" title="mq"><div class="tags-list-item">mq</div></a>
+    
+    <a href="\tags\常用" title="常用"><div class="tags-list-item">常用</div></a>
+    
+    <a href="\tags\bug" title="bug"><div class="tags-list-item">bug</div></a>
+    
+    <a href="\tags\分布式" title="分布式"><div class="tags-list-item">分布式</div></a>
+    
+    <a href="\tags\acid" title="acid"><div class="tags-list-item">acid</div></a>
+    
+    <a href="\tags\事务" title="事务"><div class="tags-list-item">事务</div></a>
+    
+  </div>
+</div>
+  </article>
+  
+  
+</div>
+          </aside>
+          <aside class="right-column">
+            <div class="sticky-widescreen">
+  
+  
+  <article class="card card-content toc-card">
+    <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
+<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%BC%E6%8E%A5in%E5%AD%97%E6%AE%B5"><span class="toc-text">拼接in字段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#stream%E6%93%8D%E4%BD%9C%E9%9B%86%E5%90%88%E6%97%B6%E6%B3%A8%E6%84%8F%E5%88%A4%E7%A9%BA-%E5%90%A6%E5%88%99%E9%81%87%E7%A9%BA%E4%BC%9A%E6%8A%A5%E9%94%99"><span class="toc-text">stream操作集合时注意判空,否则遇空会报错</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#stream%E7%9A%84group%E6%93%8D%E4%BD%9C1-value%E6%98%AF%E9%9B%86%E5%90%88"><span class="toc-text">stream的group操作1:value是集合</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#stream%E7%9A%84group%E6%93%8D%E4%BD%9C2-value%E6%98%AF%E9%9B%86%E5%90%88%E4%B8%AD%E5%AF%B9%E8%B1%A1%E6%9F%90%E5%AD%97%E6%AE%B5%E7%9A%84%E5%92%8C"><span class="toc-text">stream的group操作2:value是集合中对象某字段的和</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#controller%E7%B1%BB%E6%88%96%E6%96%B9%E6%B3%95%E5%8A%A0%E6%B3%A8%E8%A7%A3%E9%98%B2%E6%AD%A2%E8%B7%A8%E5%9F%9F"><span class="toc-text">controller类或方法加注解防止跨域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Sharding-JDBC%E5%A4%9A%E7%BA%BF%E7%A8%8B%E8%A1%A5%E5%81%BF"><span class="toc-text">使用Sharding-JDBC多线程补偿</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E6%8B%86%E5%88%86%EF%BC%9A"><span class="toc-text">集合拆分：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mybatis%E5%8F%82%E6%95%B0%E6%9D%A1%E4%BB%B6%E9%9B%86%E5%90%88"><span class="toc-text">mybatis参数条件集合</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#feign%E8%B0%83%E7%94%A8%E6%B3%A8%E8%A7%A3"><span class="toc-text">feign调用注解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%82%B9%E5%87%BBeureka%E4%B8%AD%E6%9C%8D%E5%8A%A1%E8%87%AA%E5%8A%A8%E5%88%B0swagger%E7%95%8C%E9%9D%A2"><span class="toc-text">点击eureka中服务自动到swagger界面</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%99swagger%E4%BB%A3%E7%A0%81"><span class="toc-text">写swagger代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#easyExcel%E5%AF%BC%E5%87%BAexcel"><span class="toc-text">easyExcel导出excel</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96"><span class="toc-text">依赖</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81"><span class="toc-text">实现代码</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF%E7%B1%BB"><span class="toc-text">模板类</span></a></li></ol></li></ol>
+  </article>
+  
+  
+  <article class="card card-content">
+    <div class="recent-posts-card">
+  <div class="recent-posts-header"><i class="iconfont icon-wenzhang_huaban" style="padding-right: 2px;"></i>最近文章</div>
+  <div class="recent-posts-list">
+    
+      <div class="recent-posts-item">
+        <div class="recent-posts-item-title">2021-01-26</div>
+        <a href="/2021/01/26/编写优雅高效的java代码/"><div class="recent-posts-item-content">编写高效优雅java代码</div></a>
+      </div>
+    
+      <div class="recent-posts-item">
+        <div class="recent-posts-item-title">2021-01-23</div>
+        <a href="/2021/01/23/redis教程效率版/"><div class="recent-posts-item-content">redis入门效率版</div></a>
+      </div>
+    
+      <div class="recent-posts-item">
+        <div class="recent-posts-item-title">2021-01-22</div>
+        <a href="/2021/01/22/开发注意代码整理/"><div class="recent-posts-item-content">开发中注意的小问题</div></a>
+      </div>
+    
+      <div class="recent-posts-item">
+        <div class="recent-posts-item-title">2021-01-02</div>
+        <a href="/2021/01/02/SQL语句性能提升/"><div class="recent-posts-item-content">SQL语句性能提升</div></a>
+      </div>
+    
+  </div>
+</div>
+  </article>
+  
+  
+</div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer class="footer">
+  <div class="footer-container">
+    <div>
+      <div class="footer-dsc">
+        <span>Copyright ©
           
+          2020 -
+          
+          2021
+        </span>
+        &nbsp;
+        <a href="/" class="footer-link">theme-kaze demo </a>
+      </div>
+    </div>
 
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
+    
+    <div class="footer-dsc">
+      
+      Powered by
+      <a href="https://hexo.io/" class="footer-link" target="_blank" rel="nofollow noopener noreferrer">&nbsp;Hexo </a>
+      
+      
+      <span>&nbsp;|&nbsp;</span>
+      
+      
+      Theme -
+      <a href="https://github.com/theme-kaze" class="footer-link" target="_blank"
+        rel="nofollow noopener noreferrer">&nbsp;Kaze</a>
+      
+    </div>
+    
+    
+    
+    
+</footer>
+  <a role="button" id="scrollbutton" class="basebutton"  aria-label="回到顶部">
+  <i class="iconfont icon-arrowleft button-icon"></i>
+</a>
+<a role="button" id="menubutton" class="basebutton">
+  <i class="iconfont icon-menu button-icon"></i>
+</a>
+<a role="button" id="popbutton" class="basebutton" aria-label="控制中心">
+  <i class="iconfont icon-expand button-icon"></i>
+</a>
+<a role="button" id="darkbutton" class="basebutton darkwidget" aria-label="夜色模式">
+  <i class="iconfont icon-weather button-icon"></i>
+</a>
+<a role="button" id="searchbutton" class="basebutton searchwidget" aria-label="搜索">
+  <i class="iconfont icon-search button-icon"></i>
+</a>
+
+  
+  
+  
+  <script>
+  var addImgLayout = function () {
+    var img = document.querySelectorAll('.post-content img');
+    var i;
+    for (i = 0; i < img.length; i++) {
+      var wrapper = document.createElement('a');
+      wrapper.setAttribute('href', img[i].getAttribute('data-src'));
+      wrapper.setAttribute('aria-label', 'illustration');
+      wrapper.style.cssText = 'width: 100%; display: flex; justify-content: center;';
+      if (img[i].alt) wrapper.dataset.caption = img[i].alt;
+      wrapper.dataset.nolink = true;
+      img[i].before(wrapper);
+      wrapper.append(img[i]);
+      var divWrap = document.createElement('div');
+      divWrap.classList.add('gallery');
+      wrapper.before(divWrap);
+      divWrap.append(wrapper);
     }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
+    baguetteBox.run('.gallery');
   }
 </script>
-
-        </div>
-          
+<script>loadScript("/js/lib/lightbox/baguetteBox.min.js", addImgLayout)</script>
   
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          Table of Contents
-        </li>
-        <li class="sidebar-nav-overview">
-          Overview
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8B%BC%E6%8E%A5in%E5%AD%97%E6%AE%B5"><span class="nav-number">1.</span> <span class="nav-text">拼接in字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#stream%E6%93%8D%E4%BD%9C%E9%9B%86%E5%90%88%E6%97%B6%E6%B3%A8%E6%84%8F%E5%88%A4%E7%A9%BA-%E5%90%A6%E5%88%99%E9%81%87%E7%A9%BA%E4%BC%9A%E6%8A%A5%E9%94%99"><span class="nav-number">2.</span> <span class="nav-text">stream操作集合时注意判空,否则遇空会报错</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#stream%E7%9A%84group%E6%93%8D%E4%BD%9C1-value%E6%98%AF%E9%9B%86%E5%90%88"><span class="nav-number">3.</span> <span class="nav-text">stream的group操作1:value是集合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#stream%E7%9A%84group%E6%93%8D%E4%BD%9C2-value%E6%98%AF%E9%9B%86%E5%90%88%E4%B8%AD%E5%AF%B9%E8%B1%A1%E6%9F%90%E5%AD%97%E6%AE%B5%E7%9A%84%E5%92%8C"><span class="nav-number">4.</span> <span class="nav-text">stream的group操作2:value是集合中对象某字段的和</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#controller%E7%B1%BB%E6%88%96%E6%96%B9%E6%B3%95%E5%8A%A0%E6%B3%A8%E8%A7%A3%E9%98%B2%E6%AD%A2%E8%B7%A8%E5%9F%9F"><span class="nav-number">5.</span> <span class="nav-text">controller类或方法加注解防止跨域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Sharding-JDBC%E5%A4%9A%E7%BA%BF%E7%A8%8B%E8%A1%A5%E5%81%BF"><span class="nav-number">6.</span> <span class="nav-text">使用Sharding-JDBC多线程补偿</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E6%8B%86%E5%88%86%EF%BC%9A"><span class="nav-number">7.</span> <span class="nav-text">集合拆分：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mybatis%E5%8F%82%E6%95%B0%E6%9D%A1%E4%BB%B6%E9%9B%86%E5%90%88"><span class="nav-number">8.</span> <span class="nav-text">mybatis参数条件集合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#feign%E8%B0%83%E7%94%A8%E6%B3%A8%E8%A7%A3"><span class="nav-number">9.</span> <span class="nav-text">feign调用注解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%82%B9%E5%87%BBeureka%E4%B8%AD%E6%9C%8D%E5%8A%A1%E8%87%AA%E5%8A%A8%E5%88%B0swagger%E7%95%8C%E9%9D%A2"><span class="nav-number">10.</span> <span class="nav-text">点击eureka中服务自动到swagger界面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%99swagger%E4%BB%A3%E7%A0%81"><span class="nav-number">11.</span> <span class="nav-text">写swagger代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#easyExcel%E5%AF%BC%E5%87%BAexcel"><span class="nav-number">12.</span> <span class="nav-text">easyExcel导出excel</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96"><span class="nav-number">12.1.</span> <span class="nav-text">依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81"><span class="nav-number">12.2.</span> <span class="nav-text">实现代码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E7%B1%BB"><span class="nav-number">12.3.</span> <span class="nav-text">模板类</span></a></li></ol></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">blydd</p>
-  <div class="site-description" itemprop="description">米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.</div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">66</span>
-          <span class="site-state-item-name">posts</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">15</span>
-        <span class="site-state-item-name">categories</span>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">91</span>
-        <span class="site-state-item-name">tags</span>
-      </div>
-  </nav>
-</div>
-
-
-
-      </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
   
-  &copy; 
-  <span itemprop="copyrightYear">2021</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">blydd</span>
-</div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
-  </div>
-
-        
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
-  </div>
+  
+<script src="/js/main.js"></script>
 
   
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/muse.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-
-
   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  <script>
+    var addLazyload = function () {
+      var observer = lozad('.lozad', {
+        load: function (el) {
+          el.srcset = el.getAttribute('data-src');
+        },
+        loaded: function (el) {
+          el.classList.add('loaded');
+        }
+      });
+      observer.observe();
+    }
+  </script>
+  <script>loadScript("/js/lib/lozad.min.js", addLazyload)</script>
   
-
   
-
 </body>
+
 </html>

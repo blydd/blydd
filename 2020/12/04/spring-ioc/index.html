@@ -1,209 +1,252 @@
 <!DOCTYPE html>
-<html lang="zh_CN">
+<html  lang="zh_CN" >
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.3.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="theme-color" content="#fff" id="theme-color">
+  <meta name="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+  <link rel="icon" href="/img/Kaze.png">
+  <title>spring ioc</title>
+  
+  
+  <meta property="og:title" content="spring ioc">
+  
+  
+  <meta property="og:url" content="https://www.mele.cool/2020/12/04/spring-ioc/index.html">
+  
+  
+  <meta property="og:img" content="/img/Kaze.png">
+  
+  
+  <meta property="og:img" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+  
+  
+  <meta property="og:type" content="article">
+  <meta property="og:article:published_time" content="2020-12-04">
+  <meta property="og:article:modified_time" content="2020-12-04">
+  <meta property="og:article:author" content="theme-kaze">
+  
+  
+  <meta property="og:article:tag" content="spring">
+  
+  <meta property="og:article:tag" content="java">
+  
+  <meta property="og:article:tag" content="ioc">
+  
+  <meta property="og:article:tag" content="java基础">
+  
+  
+  
+  
+  <script>
+    // control reverse button
+    var reverseDarkList = {
+      dark: 'light',
+      light: 'dark'
+    };
+    var themeColor = {
+      dark: '#1c1c1e',
+      light: '#fff'
+    }
+    // get the data of css prefers-color-scheme
+    var getCssMediaQuery = function() {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    };
+    // reverse current darkmode setting function
+    var reverseDarkModeSetting = function() {
+      var setting = localStorage.getItem('user-color-scheme');
+      if(reverseDarkList[setting]) {
+        setting = reverseDarkList[setting];
+      } else if(setting === null) {
+        setting = reverseDarkList[getCssMediaQuery()];
+      } else {
+        return;
+      }
+      localStorage.setItem('user-color-scheme', setting);
+      return setting;
+    };
+    // apply current darkmode setting
+    var setDarkmode = function(mode) {
+      var setting = mode || localStorage.getItem('user-color-scheme');
+      if(setting === getCssMediaQuery()) {
+        document.documentElement.removeAttribute('data-user-color-scheme');
+        localStorage.removeItem('user-color-scheme');
+        document.getElementById('theme-color').content = themeColor[setting];
+      } else if(reverseDarkList[setting]) {
+        document.documentElement.setAttribute('data-user-color-scheme', setting);
+        document.getElementById('theme-color').content = themeColor[setting];
+      } else {
+        document.documentElement.removeAttribute('data-user-color-scheme');
+        localStorage.removeItem('user-color-scheme');
+        document.getElementById('theme-color').content = themeColor[getCssMediaQuery()];
+      }
+    };
+    setDarkmode();
+  </script>
+  <script>
+    function loadScript(url, cb) {
+      var script = document.createElement('script');
+      script.src = url;
+      if (cb) script.onload = cb;
+      script.async = true;
+      document.body.appendChild(script);
+    }
+  </script>
+  
+  <link rel="preload" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css" as="style" >
+  <link rel="preload" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css" as="style" >
+  
+  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.js" as="script">
+  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.css" as="style" >
+  
+  
+  <link rel="preload" href="/js/lib/lozad.min.js" as="script">
+  
+  
+  
+  
+  
+  
+  
+  
 <link rel="stylesheet" href="/css/main.css">
 
-
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"www.mele.cool","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
-  </script>
-
-  <meta name="description" content="spring ioc">
-<meta property="og:type" content="article">
-<meta property="og:title" content="spring ioc">
-<meta property="og:url" content="https://www.mele.cool/2020/12/04/spring-ioc/index.html">
-<meta property="og:site_name" content="米乐博客">
-<meta property="og:description" content="spring ioc">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-12-04T02:10:17.000Z">
-<meta property="article:modified_time" content="2020-12-04T12:00:18.239Z">
-<meta property="article:author" content="blydd">
-<meta property="article:tag" content="spring">
-<meta property="article:tag" content="java">
-<meta property="article:tag" content="ioc">
-<meta property="article:tag" content="java基础">
-<meta name="twitter:card" content="summary">
-
-<link rel="canonical" href="https://www.mele.cool/2020/12/04/spring-ioc/">
-
-
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh_CN'
-  };
-</script>
-
-  <title>spring ioc | 米乐博客</title>
-  
-
-
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
-
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">米乐博客</h1>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-      <p class="site-subtitle" itemprop="description">积跬步至千里</p>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-    </div>
-  </div>
-</div>
-
-
-
-
-<nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
-
-  </li>
-  </ul>
-</nav>
-
-
-
-
-</div>
-    </header>
-
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
-            
-
-    
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh_CN">
-    <link itemprop="mainEntityOfPage" href="https://www.mele.cool/2020/12/04/spring-ioc/">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="blydd">
-      <meta itemprop="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
-    </span>
+  
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css">
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="米乐博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          spring ioc
-        </h1>
+  
+  
+<link rel="stylesheet" href="/js/lib/lightbox/baguetteBox.min.css">
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
 
-              <time title="Created: 2020-12-04 10:10:17 / Modified: 20:00:18" itemprop="dateCreated datePublished" datetime="2020-12-04T10:10:17+08:00">2020-12-04</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-                </span>
-            </span>
 
-          
-            <div class="post-description">spring ioc</div>
-
-        </div>
-      </header>
-
+<body>
+  <div class="wrapper">
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+    <nav class="navbar">
+  <div class="navbar-logo">
+    <span class="navbar-logo-main">
       
-        <h2 id="IoC-也叫控制反转"><a href="#IoC-也叫控制反转" class="headerlink" title="IoC 也叫控制反转:"></a>IoC 也叫控制反转:</h2><p>在传统的程序开发中，需要获取对象时，通常由开发者来手动创建实例化对象，但是<strong>在 Spring 框架中创建对象的工作不再由开发者完成，而是交给 IoC 容器来创建</strong>，我们直接获取即可，整个流程完成反转，因此是控制反转。</p>
+      <img class="navbar-logo-img" src="/img/Kaze.png" alt="logo">
+      
+      <span class="navbar-logo-dsc">theme-kaze demo</span>
+    </span>
+  </div>
+  <div class="navbar-menu">
+    
+    <a href="/" class="navbar-menu-item">
+    
+    首页
+    
+    </a>
+    
+    <a href="/archives" class="navbar-menu-item">
+    
+    归档
+    
+    </a>
+    
+    <a href="/tags" class="navbar-menu-item">
+    
+    标签
+    
+    </a>
+    
+    <a href="/categories" class="navbar-menu-item">
+    
+    分类
+    
+    </a>
+    
+    <a href="/about" class="navbar-menu-item">
+    
+    关于
+    
+    </a>
+    
+    <a href="/links" class="navbar-menu-item">
+    
+    友链
+    
+    </a>
+    
+    <a class="navbar-menu-item darknavbar" id="dark"><i class="iconfont icon-weather"></i></a>
+    <a class="navbar-menu-item searchnavbar" id="search"><i class="iconfont icon-search" style="font-size: 1.2rem; font-weight: 400;"></i></a>
+  </div>
+</nav>
+    
+    <div id="local-search" style="display: none;">
+      <input class="navbar-menu-item" id="search-input" placeholder="请输入搜索内容...">
+      <div id="search-content"></div>
+    </div>
+    
+    <div class="section-wrap">
+      <div class="container">
+        <div class="columns">
+          <main class="main-column">
+<article class="card card-content">
+  <header>
+    <h1 class="post-title">
+      spring ioc
+    </h1>
+  </header>
+  <div class="post-meta post-show-meta">
+    <time datetime="2020-12-04T02:10:17.000Z">
+      <i class="iconfont icon-calendar" style="margin-right: 2px;"></i>
+      <span>2020-12-04</span>
+    </time>
+    
+    <span class="dot"></span>
+    
+    <a href="/categories/java/" class="post-meta-link">java</a>
+    
+    
+    
+    <span class="dot"></span>
+    <span>3.1k 字</span>
+    
+  </div>
+  
+  <div class="post-meta post-show-meta" style="margin-top: -10px;">
+    <div style="display: flex; align-items: center;">
+      <i class="iconfont icon-biaoqian" style="margin-right: 2px; font-size: 1.15rem;"></i>
+      
+      
+        <a href="/tags/spring/" class="post-meta-link">spring</a>
+      
+      
+      <span class="dot"></span>
+      
+        <a href="/tags/java/" class="post-meta-link">java</a>
+      
+      
+      <span class="dot"></span>
+      
+        <a href="/tags/ioc/" class="post-meta-link">ioc</a>
+      
+      
+      <span class="dot"></span>
+      
+        <a href="/tags/java基础/" class="post-meta-link">java基础</a>
+      
+    </div>
+  </div>
+  
+  </header>
+  <div id="section" class="post-content">
+    <h2 id="IoC-也叫控制反转"><a href="#IoC-也叫控制反转" class="headerlink" title="IoC 也叫控制反转:"></a>IoC 也叫控制反转:</h2><p>在传统的程序开发中，需要获取对象时，通常由开发者来手动创建实例化对象，但是<strong>在 Spring 框架中创建对象的工作不再由开发者完成，而是交给 IoC 容器来创建</strong>，我们直接获取即可，整个流程完成反转，因此是控制反转。</p>
 <h2 id="IoC-容器实现步骤"><a href="#IoC-容器实现步骤" class="headerlink" title="IoC 容器实现步骤"></a>IoC 容器实现步骤</h2><ol>
 <li>在 pom.xml 中添加 Spring 依赖</li>
 <li>创建配置文件，可以自定义文件名 spring.xml</li>
@@ -211,26 +254,26 @@
 <li>调用 API 获取 IoC 创建的对象</li>
 </ol>
 <h1 id="一-IoC-容器创建对象之无参构造"><a href="#一-IoC-容器创建对象之无参构造" class="headerlink" title="一:IoC 容器创建对象之无参构造"></a>一:IoC 容器创建对象之无参构造</h1><p>  <strong>1.配置bean标签:</strong></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 配置 student 对象--&gt;</span></span><br><span class="line">&lt;bean id=&quot;stu&quot; class=&quot;com.southwind.entity.Student&quot;&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="comment">&lt;!-- 配置 student 对象--&gt;</span></span><br><span class="line">&lt;bean id=&quot;stu&quot; class=&quot;com.southwind.entity.Student&quot;&lt;/bean&gt;</span><br></pre>
 <p>  <strong>2.通过id获取对象:</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1.加载 spring.xml 配置文件 生成 ApplicationContext 对象</span></span><br><span class="line">ApplicationContext applicationContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">&quot;spring.xml&quot;</span>);</span><br><span class="line"><span class="comment">//2.通过 id 值获取对象</span></span><br><span class="line"><span class="comment">//参数为配置文件中的 id 值。程序在加载 spring.xml 时创建 stu 对象，通过反射机制调用无参构造函数，所有要求交给 IoC 容器管理的类必须有无参构造函数。</span></span><br><span class="line">Student stu = (Student) applicationContext.getBean(<span class="string">&quot;stu&quot;</span>);</span><br><span class="line">System.out.println(stu);</span><br><span class="line"> </span><br><span class="line"><span class="comment">//运行结果</span></span><br><span class="line">Student [id-<span class="number">0</span>, name-<span class="keyword">null</span>, age=<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="comment">//1.加载 spring.xml 配置文件 生成 ApplicationContext 对象</span></span><br><span class="line">ApplicationContext applicationContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">&quot;spring.xml&quot;</span>);</span><br><span class="line"><span class="comment">//2.通过 id 值获取对象</span></span><br><span class="line"><span class="comment">//参数为配置文件中的 id 值。程序在加载 spring.xml 时创建 stu 对象，通过反射机制调用无参构造函数，所有要求交给 IoC 容器管理的类必须有无参构造函数。</span></span><br><span class="line">Student stu = (Student) applicationContext.getBean(<span class="string">&quot;stu&quot;</span>);</span><br><span class="line">System.out.println(stu);</span><br><span class="line"> </span><br><span class="line"><span class="comment">//运行结果</span></span><br><span class="line">Student [id-<span class="number">0</span>, name-<span class="keyword">null</span>, age=<span class="number">0</span>]</span><br></pre>
 <p>可以看到，此时 stu 对象的属性全部为空，因为调用无参构造只会创建对象而不会进行赋值，如何赋值呢？只需要在 spring.xml 中进行相关配置即可，如下所示。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 配置 student 对象 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;stu&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.southwind.entity.Student&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;张三&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span> <span class="attr">value</span>=<span class="string">&quot;23&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="comment">&lt;!-- 配置 student 对象 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;stu&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.southwind.entity.Student&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;张三&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span> <span class="attr">value</span>=<span class="string">&quot;23&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre>
 <p>若包含特殊字符，比如 name=”&lt;张三&gt;”，使用 ]]&gt; 进行配置:</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">value</span>&gt;</span>&lt;![CDATA[&lt;张三&gt;]]&gt;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">value</span>&gt;</span>&lt;![CDATA[&lt;张三&gt;]]&gt;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre>
 <p>Spring 通过调用每个属性的 setter 方法来完成属性的赋值，因此实体类必须有 setter 方法，否则加载时报错，getter 方法可省略。</p>
 <p><strong>还可以通过运行时类获取对象:</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1.加载 spring.xml 配置文件</span></span><br><span class="line">ApplicationContext applicationContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">&quot;spring.xml&quot;</span>);</span><br><span class="line"><span class="comment">//2.通过运行时类获取对象</span></span><br><span class="line">Student stu = applicationContext.getBean(Student.class);</span><br><span class="line">System.out.println(stu);</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="comment">//1.加载 spring.xml 配置文件</span></span><br><span class="line">ApplicationContext applicationContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">&quot;spring.xml&quot;</span>);</span><br><span class="line"><span class="comment">//2.通过运行时类获取对象</span></span><br><span class="line">Student stu = applicationContext.getBean(Student.class);</span><br><span class="line">System.out.println(stu);</span><br></pre>
 <p>此方法有一个弊端，当 spring.xml 中配置两个 Student 的 bean 时程序会抛出异常，因为此时两个 bean 都是由 Student 类生成的，IoC 容器无法将两个 bean 都返回，必须指定一个唯一的 bean。</p>
 <h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="二-IoC-容器创建对象之有参构造"><a href="#二-IoC-容器创建对象之有参构造" class="headerlink" title="二:IoC 容器创建对象之有参构造"></a>二:IoC 容器创建对象之有参构造</h1><p><strong>1.在实体类中创建有参构造</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Student</span><span class="params">(<span class="keyword">int</span> id, String name, <span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Student</span><span class="params">(<span class="keyword">int</span> id, String name, <span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">&#125;</span><br></pre>
 <p><strong>2.spring.xml 中进行配置</strong></p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 通过有参构造函数创建对象 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;stu3&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.hzit.entity.Student&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;3&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;小明&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span> <span class="attr">value</span>=<span class="string">&quot;22&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="comment">&lt;!-- 通过有参构造函数创建对象 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;stu3&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.hzit.entity.Student&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;3&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;小明&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span> <span class="attr">value</span>=<span class="string">&quot;22&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre>
 <p>（<strong>3）此时 IoC 容器会根据 constructor-arg 标签去加载对应的有参构造函数，创建对象并完成属性赋值。</strong>name 的值需要与有参构造的形参名对应，value 是对应的值。<strong>除了使用 name 对应参数外，还可以通过下标 index 对应</strong>，如下所示。</p>
 <p><strong>获取对象的方式同样包括ID获取和运行时类获取.</strong></p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 通过有参构造函数创建对象 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;stu3&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.hzit.entity.Student&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">&quot;0&quot;</span> <span class="attr">value</span>=<span class="string">&quot;3&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">&quot;1&quot;</span> <span class="attr">value</span>=<span class="string">&quot;小明&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">&quot;2&quot;</span> <span class="attr">value</span>=<span class="string">&quot;22&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="IOC容器管理有级联关系的多个对象"><a href="#IOC容器管理有级联关系的多个对象" class="headerlink" title="IOC容器管理有级联关系的多个对象:"></a>IOC容器管理有级联关系的多个对象:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 创建 classes 对象 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;classes&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.hzit.entity.Classes&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;Java班&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 创建 stu 对象 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;stu&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.hzit.entity.Student&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">value</span>&gt;</span>&lt;![CDATA[&lt;张三&gt;]]&gt;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span> <span class="attr">value</span>=<span class="string">&quot;23&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- 将 classes 对象赋给 stu 对象 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;classes&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;classes&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="在-spring-xml-中，通过-ref-属性将其他-bean-赋给当前-bean-对象，这种方式叫做依赖注入（DI），是-Spring-非常重要的机制，DI-是将不同对象进行关联的一种方式，是-IoC-的具体实现方式，通常-DI-和-IoC-是紧密结合在一起的，因此一般说的-IoC-包括-DI。"><a href="#在-spring-xml-中，通过-ref-属性将其他-bean-赋给当前-bean-对象，这种方式叫做依赖注入（DI），是-Spring-非常重要的机制，DI-是将不同对象进行关联的一种方式，是-IoC-的具体实现方式，通常-DI-和-IoC-是紧密结合在一起的，因此一般说的-IoC-包括-DI。" class="headerlink" title="\在 spring.xml 中，通过 ref 属性将其他 bean 赋给当前 bean 对象，这种方式叫做依赖注入（DI），是 Spring 非常重要的机制，DI 是将不同对象进行关联的一种方式，是 IoC 的具体实现方式，通常 DI 和 IoC 是紧密结合在一起的，因此一般说的 IoC 包括 DI。**"></a><strong><em>\</em>在 spring.xml 中，通过 ref 属性将其他 bean 赋给当前 bean 对象，这种方式叫做依赖注入（DI），是 Spring 非常重要的机制，DI 是将不同对象进行关联的一种方式，是 IoC 的具体实现方式，通常 DI 和 IoC 是紧密结合在一起的，因此一般说的 IoC 包括 DI。**</strong></h2><h1 id="集合属性通过-list-标签和-ref-标签完成注入"><a href="#集合属性通过-list-标签和-ref-标签完成注入" class="headerlink" title="集合属性通过 list 标签和 ref 标签完成注入:"></a>集合属性通过 list 标签和 ref 标签完成注入:</h1><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 配置 classes 对象 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;classes&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.hzit.entity.Classes&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;Java班&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;students&quot;</span>&gt;</span></span><br><span class="line">       <span class="comment">&lt;!-- 注入 student 对象 --&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">list</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">ref</span> <span class="attr">bean</span>=<span class="string">&quot;stu&quot;</span>/&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">ref</span> <span class="attr">bean</span>=<span class="string">&quot;stu2&quot;</span>/&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">list</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;stu&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.hzit.entity.Student&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>&lt;![CDATA[&lt;张三&gt;]]&gt;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span> <span class="attr">value</span>=<span class="string">&quot;23&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;stu2&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.hzit.entity.Student&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;李四&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span> <span class="attr">value</span>=<span class="string">&quot;23&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="comment">&lt;!-- 通过有参构造函数创建对象 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;stu3&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.hzit.entity.Student&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">&quot;0&quot;</span> <span class="attr">value</span>=<span class="string">&quot;3&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">&quot;1&quot;</span> <span class="attr">value</span>=<span class="string">&quot;小明&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">&quot;2&quot;</span> <span class="attr">value</span>=<span class="string">&quot;22&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre>
+<h2 id="IOC容器管理有级联关系的多个对象"><a href="#IOC容器管理有级联关系的多个对象" class="headerlink" title="IOC容器管理有级联关系的多个对象:"></a>IOC容器管理有级联关系的多个对象:</h2><pre class="highlight"><span class="line"><span class="comment">&lt;!-- 创建 classes 对象 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;classes&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.hzit.entity.Classes&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;Java班&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 创建 stu 对象 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;stu&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.hzit.entity.Student&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">value</span>&gt;</span>&lt;![CDATA[&lt;张三&gt;]]&gt;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span> <span class="attr">value</span>=<span class="string">&quot;23&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- 将 classes 对象赋给 stu 对象 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;classes&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;classes&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre>
+<h2 id="在-spring-xml-中，通过-ref-属性将其他-bean-赋给当前-bean-对象，这种方式叫做依赖注入（DI），是-Spring-非常重要的机制，DI-是将不同对象进行关联的一种方式，是-IoC-的具体实现方式，通常-DI-和-IoC-是紧密结合在一起的，因此一般说的-IoC-包括-DI。"><a href="#在-spring-xml-中，通过-ref-属性将其他-bean-赋给当前-bean-对象，这种方式叫做依赖注入（DI），是-Spring-非常重要的机制，DI-是将不同对象进行关联的一种方式，是-IoC-的具体实现方式，通常-DI-和-IoC-是紧密结合在一起的，因此一般说的-IoC-包括-DI。" class="headerlink" title="\在 spring.xml 中，通过 ref 属性将其他 bean 赋给当前 bean 对象，这种方式叫做依赖注入（DI），是 Spring 非常重要的机制，DI 是将不同对象进行关联的一种方式，是 IoC 的具体实现方式，通常 DI 和 IoC 是紧密结合在一起的，因此一般说的 IoC 包括 DI。**"></a><strong><em>\</em>在 spring.xml 中，通过 ref 属性将其他 bean 赋给当前 bean 对象，这种方式叫做依赖注入（DI），是 Spring 非常重要的机制，DI 是将不同对象进行关联的一种方式，是 IoC 的具体实现方式，通常 DI 和 IoC 是紧密结合在一起的，因此一般说的 IoC 包括 DI。**</strong></h2><h1 id="集合属性通过-list-标签和-ref-标签完成注入"><a href="#集合属性通过-list-标签和-ref-标签完成注入" class="headerlink" title="集合属性通过 list 标签和 ref 标签完成注入:"></a>集合属性通过 list 标签和 ref 标签完成注入:</h1><pre class="highlight"><span class="line"><span class="comment">&lt;!-- 配置 classes 对象 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;classes&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.hzit.entity.Classes&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;Java班&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;students&quot;</span>&gt;</span></span><br><span class="line">       <span class="comment">&lt;!-- 注入 student 对象 --&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">list</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">ref</span> <span class="attr">bean</span>=<span class="string">&quot;stu&quot;</span>/&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">ref</span> <span class="attr">bean</span>=<span class="string">&quot;stu2&quot;</span>/&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">list</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;stu&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.hzit.entity.Student&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>&lt;![CDATA[&lt;张三&gt;]]&gt;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span> <span class="attr">value</span>=<span class="string">&quot;23&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;stu2&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.hzit.entity.Student&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;李四&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span> <span class="attr">value</span>=<span class="string">&quot;23&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre>
 
 
 
@@ -246,39 +289,39 @@
 <h1 id="Spring-的继承"><a href="#Spring-的继承" class="headerlink" title="Spring 的继承"></a>Spring 的继承</h1><p>Spring 的继承与 Java 的继承不一样，但思想很相似，子 bean 可以继承父 bean 中的属性。看到这里，你可能会有这样的疑问：<strong>子 bean 可以继承父 bean 中的方法吗？</strong></p>
 <p><strong>其实这里不存在方法的继承，Spring 的继承是在对象层面进行操作的，即两个 bean 来自同一个类，因此方法是一样的，不存在继承关系.</strong></p>
 <p>（1）在 spring.xml 中配置两个 User bean，并建立继承关系。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;user&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.southwind.entity.User&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;张三&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span> <span class="attr">value</span>=<span class="string">&quot;23&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;user2&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.southwind.entity.User&quot;</span> <span class="attr">parent</span>=<span class="string">&quot;user&quot;</span>&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- 覆盖 name 属性 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;李四&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;user&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.southwind.entity.User&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;张三&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span> <span class="attr">value</span>=<span class="string">&quot;23&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;user2&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.southwind.entity.User&quot;</span> <span class="attr">parent</span>=<span class="string">&quot;user&quot;</span>&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- 覆盖 name 属性 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;李四&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre>
 <p>（2）运行代码，结果如下。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">User user2 = (User) applicationContext.getBean(<span class="string">&quot;user2&quot;</span>);</span><br><span class="line">System.out.println(user2);</span><br><span class="line"> </span><br><span class="line"><span class="comment">//打印如下</span></span><br><span class="line">创建了User对象</span><br><span class="line">创建了User对象</span><br><span class="line">User [id=<span class="number">1</span>, name=张三, age=<span class="number">23</span>]</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line">User user2 = (User) applicationContext.getBean(<span class="string">&quot;user2&quot;</span>);</span><br><span class="line">System.out.println(user2);</span><br><span class="line"> </span><br><span class="line"><span class="comment">//打印如下</span></span><br><span class="line">创建了User对象</span><br><span class="line">创建了User对象</span><br><span class="line">User [id=<span class="number">1</span>, name=张三, age=<span class="number">23</span>]</span><br></pre>
 <p>可以看到，创建了两个 User 对象 user1 和 user2，并且 user2 继承了 user1 的所有属性。user2 在继承 user1 所有属性的基础之上，还可以对属性进行覆盖，直接在 spring.xml 中添加 property 即可。</p>
 <p><strong>Spring 中的 bean 能不能在不同类之间继承？</strong></p>
 <p>答案是可以的，但是需要这两个类的属性列表完全一致，否则会报错，实际开发中并不会使用到这种方式。</p>
 <h1 id="-2"><a href="#-2" class="headerlink" title=""></a></h1><h1 id="Spring-的依赖"><a href="#Spring-的依赖" class="headerlink" title="Spring 的依赖"></a>Spring 的依赖</h1><p>与继承类似，依赖也是 bean 和 bean 之间的一种关联方式，配置依赖关系后，被依赖的 bean 一定先创建，再创建依赖的 bean:</p>
 <p>1.设置依赖关系.</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;user&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.southwind.entity.User&quot;</span> <span class="attr">depends-on</span>=<span class="string">&quot;car&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;张三&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span> <span class="attr">value</span>=<span class="string">&quot;23&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;car&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.southwind.entity.Car&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;brand&quot;</span> <span class="attr">value</span>=<span class="string">&quot;宝马&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;user&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.southwind.entity.User&quot;</span> <span class="attr">depends-on</span>=<span class="string">&quot;car&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;张三&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span> <span class="attr">value</span>=<span class="string">&quot;23&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;car&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.southwind.entity.Car&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;brand&quot;</span> <span class="attr">value</span>=<span class="string">&quot;宝马&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre>
 <p>2.运行测试代码.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext applicationContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">&quot;spring.xml&quot;</span>);</span><br><span class="line">User user = (User) applicationContext.getBean(<span class="string">&quot;user&quot;</span>);</span><br><span class="line">Car car = (Car) applicationContext.getBean(<span class="string">&quot;car&quot;</span>);</span><br><span class="line"> </span><br><span class="line"><span class="comment">//输出结果</span></span><br><span class="line">创建了Car对象</span><br><span class="line">创建了User对象</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line">ApplicationContext applicationContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">&quot;spring.xml&quot;</span>);</span><br><span class="line">User user = (User) applicationContext.getBean(<span class="string">&quot;user&quot;</span>);</span><br><span class="line">Car car = (Car) applicationContext.getBean(<span class="string">&quot;car&quot;</span>);</span><br><span class="line"> </span><br><span class="line"><span class="comment">//输出结果</span></span><br><span class="line">创建了Car对象</span><br><span class="line">创建了User对象</span><br></pre>
 <p>spring创建对象的顺序默认是由spring.xml 中 bean 的配置顺序来决定的，先到先得,但由于此处设置了依赖关系(depends-on属性),因为 User 依赖于 Car，所以必须先创建 Car 对象，User 对象才能完成依赖。</p>
 <h1 id="-3"><a href="#-3" class="headerlink" title=""></a></h1><h1 id="Spring-读取外部资源"><a href="#Spring-读取外部资源" class="headerlink" title="Spring 读取外部资源"></a>Spring 读取外部资源</h1><p>读取properties文件中内容:</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 导入外部的资源文件 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 使用 context:property-placeholder 标签，需要导入 context 命名空间。 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">context:property-placeholder</span> <span class="attr">location</span>=<span class="string">&quot;classpath:jdbc.properties&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">context:property-placeholder</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 创建 C3P0 数据源 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.mchange.v2.c3p0.ComboPooledDataSource&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;user&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;user&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;pwd&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driverClass&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;driverName&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;jdbcUrl&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;url&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="comment">&lt;!-- 导入外部的资源文件 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 使用 context:property-placeholder 标签，需要导入 context 命名空间。 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">context:property-placeholder</span> <span class="attr">location</span>=<span class="string">&quot;classpath:jdbc.properties&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">context:property-placeholder</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 创建 C3P0 数据源 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.mchange.v2.c3p0.ComboPooledDataSource&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;user&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;user&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;pwd&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driverClass&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;driverName&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;jdbcUrl&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;url&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre>
 
 
 <h1 id="-4"><a href="#-4" class="headerlink" title=""></a></h1><h1 id="p-命名空间"><a href="#p-命名空间" class="headerlink" title="p 命名空间"></a>p 命名空间</h1><p>p 命名空间可以简化 bean 的各种配置</p>
 <p>spring.xml 中创建 User bean 和 Car bean，并且通过 p 命名空间给属性赋值，同时完成依赖注入，注意需要引入 p 命名间:</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;user&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.southwind.entity.User&quot;</span> <span class="attr">p:id</span>=<span class="string">&quot;1&quot;</span> <span class="attr">p:name</span>=<span class="string">&quot;张三&quot;</span> <span class="attr">p:age</span>=<span class="string">&quot;23&quot;</span> <span class="attr">p:car-ref</span>=<span class="string">&quot;car&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;car&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.southwind.entity.Car&quot;</span> <span class="attr">p:id</span>=<span class="string">&quot;1&quot;</span> <span class="attr">p:brand</span>=<span class="string">&quot;宝马&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;user&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.southwind.entity.User&quot;</span> <span class="attr">p:id</span>=<span class="string">&quot;1&quot;</span> <span class="attr">p:name</span>=<span class="string">&quot;张三&quot;</span> <span class="attr">p:age</span>=<span class="string">&quot;23&quot;</span> <span class="attr">p:car-ref</span>=<span class="string">&quot;car&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;car&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.southwind.entity.Car&quot;</span> <span class="attr">p:id</span>=<span class="string">&quot;1&quot;</span> <span class="attr">p:brand</span>=<span class="string">&quot;宝马&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre>
 <h1 id="-5"><a href="#-5" class="headerlink" title=""></a></h1><h1 id="Spring-IoC-基于注解的开发"><a href="#Spring-IoC-基于注解的开发" class="headerlink" title="Spring IoC 基于注解的开发"></a>Spring IoC 基于注解的开发</h1><ol>
 <li><p>修改spring.xml,把包扫描到IOC容器.</p>
 <p>base-package=”com.southwind” 表示将 “com.blydd” 下所有子包的类全部扫描到 IoC 容器中，一步可将所有参与项目的类完成扫描注入。注意：配置文件需要引入 context 命名空间。</p>
 </li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 将类扫描到 IoC 容器中 --&gt;</span><br><span class="line">&lt;context:component-scan base-package&#x3D;&quot;com.blydd&quot;&gt;&lt;&#x2F;context:component-scan&gt;</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line">&lt;!-- 将类扫描到 IoC 容器中 --&gt;</span><br><span class="line">&lt;context:component-scan base-package&#x3D;&quot;com.blydd&quot;&gt;&lt;&#x2F;context:component-scan&gt;</span><br></pre>
 <p>2.修改 Controller,Service,Dao，添加注解</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">getUserById</span><span class="params">(<span class="keyword">int</span> id)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> userService.getUserById(id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">getUserById</span><span class="params">(<span class="keyword">int</span> id)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> userService.getUserById(id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre>
 <ul>
 <li>在类名处添加 @Controller 注解，表示该类作为一个控制器；</li>
 <li>userService 属性处添加 @Autowired 注解，表示 IoC 容器自动完成装载，默认是 byType 的方式。</li>
 </ul>
 <p>3.运行测试代码:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext applicationContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">&quot;spring.xml&quot;</span>);</span><br><span class="line">UserController userController = (UserController) applicationContext.getBean(<span class="string">&quot;userController&quot;</span>);</span><br><span class="line">User user = userController.getUserById(<span class="number">1</span>);</span><br><span class="line">System.out.println(user);</span><br><span class="line"><span class="comment">//输出</span></span><br><span class="line">User [id=<span class="number">1</span>, name=张三]</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line">ApplicationContext applicationContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">&quot;spring.xml&quot;</span>);</span><br><span class="line">UserController userController = (UserController) applicationContext.getBean(<span class="string">&quot;userController&quot;</span>);</span><br><span class="line">User user = userController.getUserById(<span class="number">1</span>);</span><br><span class="line">System.out.println(user);</span><br><span class="line"><span class="comment">//输出</span></span><br><span class="line">User [id=<span class="number">1</span>, name=张三]</span><br></pre>
 <p><strong>IoC 中可以给类添加的注解有 4 种：</strong></p>
 <ul>
 <li>@Controller</li>
@@ -289,14 +332,14 @@
 <p><strong>在实际开发中，我们使用 @Controller、@Service、@Repository 分别表示 Controller 层、Service 层、DAO 层。</strong>前面提到过，类中属性的自动装载默认是通过 byType 的方式实现的。<strong>自动装载除了 byType 的方式，还可以使用 byName，使用 byName 的方式，需要结合 @Qualifier 注解一起使用，具体操作如下所示。</strong></p>
 <p>**controller:</p>
 <p>**</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired()</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;userService&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">getUserById</span><span class="params">(<span class="keyword">int</span> id)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> userService.getUserById(id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired()</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;userService&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">getUserById</span><span class="params">(<span class="keyword">int</span> id)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> userService.getUserById(id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre>
 <p>我们知道 byName 的方式是通过属性名去匹配对应 bean 的 id 属性值，但是基于注解的方式我们并没有给 bean 设置 id，如何完成的呢？</p>
 <p>其实<strong>在类中添加注解时，已经设置了默认的 id，即类名首字母小写之后的值就是 id 的默认值。</strong></p>
 <p>PS:</p>
 <p><em>如果手动赋值,即:</em></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service(&quot;myUserService&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceImpl</span> <span class="keyword">implements</span> <span class="title">UserService</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="meta">@Service(&quot;myUserService&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceImpl</span> <span class="keyword">implements</span> <span class="title">UserService</span></span>&#123;&#125;</span><br></pre>
 <p><em>则controller中@Qualifier() 中的值必须与 @Service() 中的值一致，才能完成自动装载:</em></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired()</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;myUserService&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">getUserById</span><span class="params">(<span class="keyword">int</span> id)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> userService.getUserById(id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired()</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;myUserService&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">getUserById</span><span class="params">(<span class="keyword">int</span> id)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> userService.getUserById(id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre>
 
 
 
@@ -305,200 +348,390 @@
 
 <p>转载来源:<a target="_blank" rel="noopener" href="https://gitbook.cn/gitchat/column/5d2daffbb81adb3aa8cab878/topic/5d2de41eb81adb3aa8cab957">https://gitbook.cn/gitchat/column/5d2daffbb81adb3aa8cab878/topic/5d2de41eb81adb3aa8cab957</a></p>
 
-    </div>
-
-    
-    
-    
-
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/spring/" rel="tag"># spring</a>
-              <a href="/tags/java/" rel="tag"># java</a>
-              <a href="/tags/ioc/" rel="tag"># ioc</a>
-              <a href="/tags/java%E5%9F%BA%E7%A1%80/" rel="tag"># java基础</a>
-          </div>
-
+  </div>
+  <div>
+  
+  <div class="post-note note-warning copyright" style="margin-top: 42px">
+    <p><span style="font-weight: bold;">作者：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/about">theme-kaze</a></p>
+    <p><span style="font-weight: bold;">文章链接：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/2020/12/04/spring-ioc/">https://www.mele.cool/2020/12/04/spring-ioc/</a></p>
+    <p><span style="font-weight: bold;">版权声明：</span>本博客所有文章除特别声明外，均采用<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0 协议</a>。转载请注明出处！</p>
+  </div>
+  
+  </div>
+</article>
+<div class="nav">
+  
+  <div class="nav-item-prev">
+    <a href="/2020/12/04/spring-aop/" class="nav-link">
+      <i class="iconfont icon-left nav-prev-icon"></i>
+      <div>
+        <div class="nav-label">上一篇</div>
         
-
-
+        <div class="nav-title">spring-aop </div>
         
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2020/12/04/springboot%E7%9A%84%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" rel="prev" title="springboot的异常处理">
-      <i class="fa fa-chevron-left"></i> springboot的异常处理
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/12/04/spring-aop/" rel="next" title="spring-aop">
-      spring-aop <i class="fa fa-chevron-right"></i>
-    </a></div>
+      </div>
+    </a>
+  </div>
+  
+  
+  <div class="nav-item-next">
+    <a href="/2020/12/04/springboot的异常处理/" class="nav-link">
+      <div>
+        <div class="nav-label">下一篇</div>
+        
+        <div class="nav-title">springboot的异常处理 </div>
+        
+      </div>
+      <i class="iconfont icon-right nav-next-icon"></i>
+    </a>
+  </div>
+  
+</div>
+
+<div class="card card-content toc-card" id="mobiletoc">
+  <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#IoC-%E4%B9%9F%E5%8F%AB%E6%8E%A7%E5%88%B6%E5%8F%8D%E8%BD%AC"><span class="toc-text">IoC 也叫控制反转:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IoC-%E5%AE%B9%E5%99%A8%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4"><span class="toc-text">IoC 容器实现步骤</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80-IoC-%E5%AE%B9%E5%99%A8%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E4%B9%8B%E6%97%A0%E5%8F%82%E6%9E%84%E9%80%A0"><span class="toc-text">一:IoC 容器创建对象之无参构造</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C-IoC-%E5%AE%B9%E5%99%A8%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E4%B9%8B%E6%9C%89%E5%8F%82%E6%9E%84%E9%80%A0"><span class="toc-text">二:IoC 容器创建对象之有参构造</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#IOC%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E6%9C%89%E7%BA%A7%E8%81%94%E5%85%B3%E7%B3%BB%E7%9A%84%E5%A4%9A%E4%B8%AA%E5%AF%B9%E8%B1%A1"><span class="toc-text">IOC容器管理有级联关系的多个对象:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8-spring-xml-%E4%B8%AD%EF%BC%8C%E9%80%9A%E8%BF%87-ref-%E5%B1%9E%E6%80%A7%E5%B0%86%E5%85%B6%E4%BB%96-bean-%E8%B5%8B%E7%BB%99%E5%BD%93%E5%89%8D-bean-%E5%AF%B9%E8%B1%A1%EF%BC%8C%E8%BF%99%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%8F%AB%E5%81%9A%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%EF%BC%88DI%EF%BC%89%EF%BC%8C%E6%98%AF-Spring-%E9%9D%9E%E5%B8%B8%E9%87%8D%E8%A6%81%E7%9A%84%E6%9C%BA%E5%88%B6%EF%BC%8CDI-%E6%98%AF%E5%B0%86%E4%B8%8D%E5%90%8C%E5%AF%B9%E8%B1%A1%E8%BF%9B%E8%A1%8C%E5%85%B3%E8%81%94%E7%9A%84%E4%B8%80%E7%A7%8D%E6%96%B9%E5%BC%8F%EF%BC%8C%E6%98%AF-IoC-%E7%9A%84%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%EF%BC%8C%E9%80%9A%E5%B8%B8-DI-%E5%92%8C-IoC-%E6%98%AF%E7%B4%A7%E5%AF%86%E7%BB%93%E5%90%88%E5%9C%A8%E4%B8%80%E8%B5%B7%E7%9A%84%EF%BC%8C%E5%9B%A0%E6%AD%A4%E4%B8%80%E8%88%AC%E8%AF%B4%E7%9A%84-IoC-%E5%8C%85%E6%8B%AC-DI%E3%80%82"><span class="toc-text">\在 spring.xml 中，通过 ref 属性将其他 bean 赋给当前 bean 对象，这种方式叫做依赖注入（DI），是 Spring 非常重要的机制，DI 是将不同对象进行关联的一种方式，是 IoC 的具体实现方式，通常 DI 和 IoC 是紧密结合在一起的，因此一般说的 IoC 包括 DI。**</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E5%B1%9E%E6%80%A7%E9%80%9A%E8%BF%87-list-%E6%A0%87%E7%AD%BE%E5%92%8C-ref-%E6%A0%87%E7%AD%BE%E5%AE%8C%E6%88%90%E6%B3%A8%E5%85%A5"><span class="toc-text">集合属性通过 list 标签和 ref 标签完成注入:</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#-1"><span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-%E4%B8%AD%E7%9A%84-bean"><span class="toc-text">Spring 中的 bean</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-%E7%9A%84%E7%BB%A7%E6%89%BF"><span class="toc-text">Spring 的继承</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#-2"><span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-%E7%9A%84%E4%BE%9D%E8%B5%96"><span class="toc-text">Spring 的依赖</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#-3"><span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-%E8%AF%BB%E5%8F%96%E5%A4%96%E9%83%A8%E8%B5%84%E6%BA%90"><span class="toc-text">Spring 读取外部资源</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#-4"><span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#p-%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="toc-text">p 命名空间</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#-5"><span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-IoC-%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%BC%80%E5%8F%91"><span class="toc-text">Spring IoC 基于注解的开发</span></a>
+</div></main>
+          <aside class="left-column">
+            
+            <div class="card card-author">
+              
+<img src="/img/Kaze.png" class="author-img">
+
+<p class="author-name">theme-kaze</p>
+<p class="author-description">designed by theme-kaze</p>
+<div class="author-message">
+  <a class="author-posts-count" href="/archives">
+    <span>66</span>
+    <span>文章</span>
+  </a>
+  <a class="author-categories-count" href="/categories">
+    <span>15</span>
+    <span>分类</span>
+  </a>
+  <a class="author-tags-count" href="/tags">
+    <span>91</span>
+    <span>标签</span>
+  </a>
+</div>
+
+            </div>
+            
+            <div class="sticky-tablet">
+  
+  
+  <article class="display-when-two-columns spacer">
+    <div class="card card-content toc-card">
+      <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#IoC-%E4%B9%9F%E5%8F%AB%E6%8E%A7%E5%88%B6%E5%8F%8D%E8%BD%AC"><span class="toc-text">IoC 也叫控制反转:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IoC-%E5%AE%B9%E5%99%A8%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4"><span class="toc-text">IoC 容器实现步骤</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80-IoC-%E5%AE%B9%E5%99%A8%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E4%B9%8B%E6%97%A0%E5%8F%82%E6%9E%84%E9%80%A0"><span class="toc-text">一:IoC 容器创建对象之无参构造</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C-IoC-%E5%AE%B9%E5%99%A8%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E4%B9%8B%E6%9C%89%E5%8F%82%E6%9E%84%E9%80%A0"><span class="toc-text">二:IoC 容器创建对象之有参构造</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#IOC%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E6%9C%89%E7%BA%A7%E8%81%94%E5%85%B3%E7%B3%BB%E7%9A%84%E5%A4%9A%E4%B8%AA%E5%AF%B9%E8%B1%A1"><span class="toc-text">IOC容器管理有级联关系的多个对象:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8-spring-xml-%E4%B8%AD%EF%BC%8C%E9%80%9A%E8%BF%87-ref-%E5%B1%9E%E6%80%A7%E5%B0%86%E5%85%B6%E4%BB%96-bean-%E8%B5%8B%E7%BB%99%E5%BD%93%E5%89%8D-bean-%E5%AF%B9%E8%B1%A1%EF%BC%8C%E8%BF%99%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%8F%AB%E5%81%9A%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%EF%BC%88DI%EF%BC%89%EF%BC%8C%E6%98%AF-Spring-%E9%9D%9E%E5%B8%B8%E9%87%8D%E8%A6%81%E7%9A%84%E6%9C%BA%E5%88%B6%EF%BC%8CDI-%E6%98%AF%E5%B0%86%E4%B8%8D%E5%90%8C%E5%AF%B9%E8%B1%A1%E8%BF%9B%E8%A1%8C%E5%85%B3%E8%81%94%E7%9A%84%E4%B8%80%E7%A7%8D%E6%96%B9%E5%BC%8F%EF%BC%8C%E6%98%AF-IoC-%E7%9A%84%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%EF%BC%8C%E9%80%9A%E5%B8%B8-DI-%E5%92%8C-IoC-%E6%98%AF%E7%B4%A7%E5%AF%86%E7%BB%93%E5%90%88%E5%9C%A8%E4%B8%80%E8%B5%B7%E7%9A%84%EF%BC%8C%E5%9B%A0%E6%AD%A4%E4%B8%80%E8%88%AC%E8%AF%B4%E7%9A%84-IoC-%E5%8C%85%E6%8B%AC-DI%E3%80%82"><span class="toc-text">\在 spring.xml 中，通过 ref 属性将其他 bean 赋给当前 bean 对象，这种方式叫做依赖注入（DI），是 Spring 非常重要的机制，DI 是将不同对象进行关联的一种方式，是 IoC 的具体实现方式，通常 DI 和 IoC 是紧密结合在一起的，因此一般说的 IoC 包括 DI。**</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E5%B1%9E%E6%80%A7%E9%80%9A%E8%BF%87-list-%E6%A0%87%E7%AD%BE%E5%92%8C-ref-%E6%A0%87%E7%AD%BE%E5%AE%8C%E6%88%90%E6%B3%A8%E5%85%A5"><span class="toc-text">集合属性通过 list 标签和 ref 标签完成注入:</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#-1"><span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-%E4%B8%AD%E7%9A%84-bean"><span class="toc-text">Spring 中的 bean</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-%E7%9A%84%E7%BB%A7%E6%89%BF"><span class="toc-text">Spring 的继承</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#-2"><span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-%E7%9A%84%E4%BE%9D%E8%B5%96"><span class="toc-text">Spring 的依赖</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#-3"><span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-%E8%AF%BB%E5%8F%96%E5%A4%96%E9%83%A8%E8%B5%84%E6%BA%90"><span class="toc-text">Spring 读取外部资源</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#-4"><span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#p-%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="toc-text">p 命名空间</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#-5"><span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-IoC-%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%BC%80%E5%8F%91"><span class="toc-text">Spring IoC 基于注解的开发</span></a>
     </div>
-      </footer>
-    
   </article>
   
   
+  <article class="card card-content categories-widget">
+    <div class="categories-card">
+  <div class="categories-header"><i class="iconfont icon-fenlei" style="padding-right: 2px;"></i>分类</div>
+  <div class="categories-list">
+    
+      <a href="/categories/工具类">
+        <div class="categories-list-item">
+          工具类
+          <span class="categories-list-item-badge">8</span>
+        </div>
+      </a>
+    
+      <a href="/categories/linux">
+        <div class="categories-list-item">
+          linux
+          <span class="categories-list-item-badge">3</span>
+        </div>
+      </a>
+    
+      <a href="/categories/mac">
+        <div class="categories-list-item">
+          mac
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/java">
+        <div class="categories-list-item">
+          java
+          <span class="categories-list-item-badge">19</span>
+        </div>
+      </a>
+    
+      <a href="/categories/springboot">
+        <div class="categories-list-item">
+          springboot
+          <span class="categories-list-item-badge">13</span>
+        </div>
+      </a>
+    
+      <a href="/categories/docker">
+        <div class="categories-list-item">
+          docker
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/版本控制">
+        <div class="categories-list-item">
+          版本控制
+          <span class="categories-list-item-badge">2</span>
+        </div>
+      </a>
+    
+      <a href="/categories/hello world">
+        <div class="categories-list-item">
+          hello world
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/mele">
+        <div class="categories-list-item">
+          mele
+          <span class="categories-list-item-badge">2</span>
+        </div>
+      </a>
+    
+      <a href="/categories/db">
+        <div class="categories-list-item">
+          db
+          <span class="categories-list-item-badge">7</span>
+        </div>
+      </a>
+    
+      <a href="/categories/其他">
+        <div class="categories-list-item">
+          其他
+          <span class="categories-list-item-badge">2</span>
+        </div>
+      </a>
+    
+      <a href="/categories/bug">
+        <div class="categories-list-item">
+          bug
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/js">
+        <div class="categories-list-item">
+          js
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/mq">
+        <div class="categories-list-item">
+          mq
+          <span class="categories-list-item-badge">3</span>
+        </div>
+      </a>
+    
+      <a href="/categories/springCloud">
+        <div class="categories-list-item">
+          springCloud
+          <span class="categories-list-item-badge">2</span>
+        </div>
+      </a>
+    
+  </div>
+</div>
+  </article>
   
-
-
-
-          </div>
+  <article class="card card-content tags-widget">
+    <div class="tags-card">
+  <div class="tags-header"><i class="iconfont icon-biaoqian" style="padding-right: 2px;"></i>热门标签</div>
+  <div class="tags-list">
+    
+    <a href="\tags\springboot" title="springboot"><div class="tags-list-item">springboot</div></a>
+    
+    <a href="\tags\java" title="java"><div class="tags-list-item">java</div></a>
+    
+    <a href="\tags\工具类" title="工具类"><div class="tags-list-item">工具类</div></a>
+    
+    <a href="\tags\mybatis" title="mybatis"><div class="tags-list-item">mybatis</div></a>
+    
+    <a href="\tags\tool" title="tool"><div class="tags-list-item">tool</div></a>
+    
+    <a href="\tags\git" title="git"><div class="tags-list-item">git</div></a>
+    
+    <a href="\tags\linux" title="linux"><div class="tags-list-item">linux</div></a>
+    
+    <a href="\tags\springCloud" title="springCloud"><div class="tags-list-item">springCloud</div></a>
+    
+    <a href="\tags\线程池" title="线程池"><div class="tags-list-item">线程池</div></a>
+    
+    <a href="\tags\ms" title="ms"><div class="tags-list-item">ms</div></a>
+    
+    <a href="\tags\mq" title="mq"><div class="tags-list-item">mq</div></a>
+    
+    <a href="\tags\常用" title="常用"><div class="tags-list-item">常用</div></a>
+    
+    <a href="\tags\bug" title="bug"><div class="tags-list-item">bug</div></a>
+    
+    <a href="\tags\分布式" title="分布式"><div class="tags-list-item">分布式</div></a>
+    
+    <a href="\tags\acid" title="acid"><div class="tags-list-item">acid</div></a>
+    
+    <a href="\tags\事务" title="事务"><div class="tags-list-item">事务</div></a>
+    
+  </div>
+</div>
+  </article>
+  
+  
+</div>
+          </aside>
+          <aside class="right-column">
+            <div class="sticky-widescreen">
+  
+  
+  <article class="card card-content toc-card">
+    <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#IoC-%E4%B9%9F%E5%8F%AB%E6%8E%A7%E5%88%B6%E5%8F%8D%E8%BD%AC"><span class="toc-text">IoC 也叫控制反转:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IoC-%E5%AE%B9%E5%99%A8%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4"><span class="toc-text">IoC 容器实现步骤</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80-IoC-%E5%AE%B9%E5%99%A8%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E4%B9%8B%E6%97%A0%E5%8F%82%E6%9E%84%E9%80%A0"><span class="toc-text">一:IoC 容器创建对象之无参构造</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C-IoC-%E5%AE%B9%E5%99%A8%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E4%B9%8B%E6%9C%89%E5%8F%82%E6%9E%84%E9%80%A0"><span class="toc-text">二:IoC 容器创建对象之有参构造</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#IOC%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E6%9C%89%E7%BA%A7%E8%81%94%E5%85%B3%E7%B3%BB%E7%9A%84%E5%A4%9A%E4%B8%AA%E5%AF%B9%E8%B1%A1"><span class="toc-text">IOC容器管理有级联关系的多个对象:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8-spring-xml-%E4%B8%AD%EF%BC%8C%E9%80%9A%E8%BF%87-ref-%E5%B1%9E%E6%80%A7%E5%B0%86%E5%85%B6%E4%BB%96-bean-%E8%B5%8B%E7%BB%99%E5%BD%93%E5%89%8D-bean-%E5%AF%B9%E8%B1%A1%EF%BC%8C%E8%BF%99%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%8F%AB%E5%81%9A%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%EF%BC%88DI%EF%BC%89%EF%BC%8C%E6%98%AF-Spring-%E9%9D%9E%E5%B8%B8%E9%87%8D%E8%A6%81%E7%9A%84%E6%9C%BA%E5%88%B6%EF%BC%8CDI-%E6%98%AF%E5%B0%86%E4%B8%8D%E5%90%8C%E5%AF%B9%E8%B1%A1%E8%BF%9B%E8%A1%8C%E5%85%B3%E8%81%94%E7%9A%84%E4%B8%80%E7%A7%8D%E6%96%B9%E5%BC%8F%EF%BC%8C%E6%98%AF-IoC-%E7%9A%84%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%EF%BC%8C%E9%80%9A%E5%B8%B8-DI-%E5%92%8C-IoC-%E6%98%AF%E7%B4%A7%E5%AF%86%E7%BB%93%E5%90%88%E5%9C%A8%E4%B8%80%E8%B5%B7%E7%9A%84%EF%BC%8C%E5%9B%A0%E6%AD%A4%E4%B8%80%E8%88%AC%E8%AF%B4%E7%9A%84-IoC-%E5%8C%85%E6%8B%AC-DI%E3%80%82"><span class="toc-text">\在 spring.xml 中，通过 ref 属性将其他 bean 赋给当前 bean 对象，这种方式叫做依赖注入（DI），是 Spring 非常重要的机制，DI 是将不同对象进行关联的一种方式，是 IoC 的具体实现方式，通常 DI 和 IoC 是紧密结合在一起的，因此一般说的 IoC 包括 DI。**</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E5%B1%9E%E6%80%A7%E9%80%9A%E8%BF%87-list-%E6%A0%87%E7%AD%BE%E5%92%8C-ref-%E6%A0%87%E7%AD%BE%E5%AE%8C%E6%88%90%E6%B3%A8%E5%85%A5"><span class="toc-text">集合属性通过 list 标签和 ref 标签完成注入:</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#-1"><span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-%E4%B8%AD%E7%9A%84-bean"><span class="toc-text">Spring 中的 bean</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-%E7%9A%84%E7%BB%A7%E6%89%BF"><span class="toc-text">Spring 的继承</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#-2"><span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-%E7%9A%84%E4%BE%9D%E8%B5%96"><span class="toc-text">Spring 的依赖</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#-3"><span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-%E8%AF%BB%E5%8F%96%E5%A4%96%E9%83%A8%E8%B5%84%E6%BA%90"><span class="toc-text">Spring 读取外部资源</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#-4"><span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#p-%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="toc-text">p 命名空间</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#-5"><span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-IoC-%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%BC%80%E5%8F%91"><span class="toc-text">Spring IoC 基于注解的开发</span></a>
+  </article>
+  
+  
+  <article class="card card-content">
+    <div class="recent-posts-card">
+  <div class="recent-posts-header"><i class="iconfont icon-wenzhang_huaban" style="padding-right: 2px;"></i>最近文章</div>
+  <div class="recent-posts-list">
+    
+      <div class="recent-posts-item">
+        <div class="recent-posts-item-title">2021-01-26</div>
+        <a href="/2021/01/26/编写优雅高效的java代码/"><div class="recent-posts-item-content">编写高效优雅java代码</div></a>
+      </div>
+    
+      <div class="recent-posts-item">
+        <div class="recent-posts-item-title">2021-01-23</div>
+        <a href="/2021/01/23/redis教程效率版/"><div class="recent-posts-item-content">redis入门效率版</div></a>
+      </div>
+    
+      <div class="recent-posts-item">
+        <div class="recent-posts-item-title">2021-01-22</div>
+        <a href="/2021/01/22/开发注意代码整理/"><div class="recent-posts-item-content">开发中注意的小问题</div></a>
+      </div>
+    
+      <div class="recent-posts-item">
+        <div class="recent-posts-item-title">2021-01-02</div>
+        <a href="/2021/01/02/SQL语句性能提升/"><div class="recent-posts-item-content">SQL语句性能提升</div></a>
+      </div>
+    
+  </div>
+</div>
+  </article>
+  
+  
+</div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer class="footer">
+  <div class="footer-container">
+    <div>
+      <div class="footer-dsc">
+        <span>Copyright ©
           
+          2020 -
+          
+          2021
+        </span>
+        &nbsp;
+        <a href="/" class="footer-link">theme-kaze demo </a>
+      </div>
+    </div>
 
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
+    
+    <div class="footer-dsc">
+      
+      Powered by
+      <a href="https://hexo.io/" class="footer-link" target="_blank" rel="nofollow noopener noreferrer">&nbsp;Hexo </a>
+      
+      
+      <span>&nbsp;|&nbsp;</span>
+      
+      
+      Theme -
+      <a href="https://github.com/theme-kaze" class="footer-link" target="_blank"
+        rel="nofollow noopener noreferrer">&nbsp;Kaze</a>
+      
+    </div>
+    
+    
+    
+    
+</footer>
+  <a role="button" id="scrollbutton" class="basebutton"  aria-label="回到顶部">
+  <i class="iconfont icon-arrowleft button-icon"></i>
+</a>
+<a role="button" id="menubutton" class="basebutton">
+  <i class="iconfont icon-menu button-icon"></i>
+</a>
+<a role="button" id="popbutton" class="basebutton" aria-label="控制中心">
+  <i class="iconfont icon-expand button-icon"></i>
+</a>
+<a role="button" id="darkbutton" class="basebutton darkwidget" aria-label="夜色模式">
+  <i class="iconfont icon-weather button-icon"></i>
+</a>
+<a role="button" id="searchbutton" class="basebutton searchwidget" aria-label="搜索">
+  <i class="iconfont icon-search button-icon"></i>
+</a>
+
+  
+  
+  
+  <script>
+  var addImgLayout = function () {
+    var img = document.querySelectorAll('.post-content img');
+    var i;
+    for (i = 0; i < img.length; i++) {
+      var wrapper = document.createElement('a');
+      wrapper.setAttribute('href', img[i].getAttribute('data-src'));
+      wrapper.setAttribute('aria-label', 'illustration');
+      wrapper.style.cssText = 'width: 100%; display: flex; justify-content: center;';
+      if (img[i].alt) wrapper.dataset.caption = img[i].alt;
+      wrapper.dataset.nolink = true;
+      img[i].before(wrapper);
+      wrapper.append(img[i]);
+      var divWrap = document.createElement('div');
+      divWrap.classList.add('gallery');
+      wrapper.before(divWrap);
+      divWrap.append(wrapper);
     }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
+    baguetteBox.run('.gallery');
   }
 </script>
-
-        </div>
-          
+<script>loadScript("/js/lib/lightbox/baguetteBox.min.js", addImgLayout)</script>
   
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          Table of Contents
-        </li>
-        <li class="sidebar-nav-overview">
-          Overview
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#IoC-%E4%B9%9F%E5%8F%AB%E6%8E%A7%E5%88%B6%E5%8F%8D%E8%BD%AC"><span class="nav-number">1.</span> <span class="nav-text">IoC 也叫控制反转:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IoC-%E5%AE%B9%E5%99%A8%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.</span> <span class="nav-text">IoC 容器实现步骤</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80-IoC-%E5%AE%B9%E5%99%A8%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E4%B9%8B%E6%97%A0%E5%8F%82%E6%9E%84%E9%80%A0"><span class="nav-number"></span> <span class="nav-text">一:IoC 容器创建对象之无参构造</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number"></span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C-IoC-%E5%AE%B9%E5%99%A8%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E4%B9%8B%E6%9C%89%E5%8F%82%E6%9E%84%E9%80%A0"><span class="nav-number"></span> <span class="nav-text">二:IoC 容器创建对象之有参构造</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IOC%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E6%9C%89%E7%BA%A7%E8%81%94%E5%85%B3%E7%B3%BB%E7%9A%84%E5%A4%9A%E4%B8%AA%E5%AF%B9%E8%B1%A1"><span class="nav-number">1.</span> <span class="nav-text">IOC容器管理有级联关系的多个对象:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-spring-xml-%E4%B8%AD%EF%BC%8C%E9%80%9A%E8%BF%87-ref-%E5%B1%9E%E6%80%A7%E5%B0%86%E5%85%B6%E4%BB%96-bean-%E8%B5%8B%E7%BB%99%E5%BD%93%E5%89%8D-bean-%E5%AF%B9%E8%B1%A1%EF%BC%8C%E8%BF%99%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%8F%AB%E5%81%9A%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%EF%BC%88DI%EF%BC%89%EF%BC%8C%E6%98%AF-Spring-%E9%9D%9E%E5%B8%B8%E9%87%8D%E8%A6%81%E7%9A%84%E6%9C%BA%E5%88%B6%EF%BC%8CDI-%E6%98%AF%E5%B0%86%E4%B8%8D%E5%90%8C%E5%AF%B9%E8%B1%A1%E8%BF%9B%E8%A1%8C%E5%85%B3%E8%81%94%E7%9A%84%E4%B8%80%E7%A7%8D%E6%96%B9%E5%BC%8F%EF%BC%8C%E6%98%AF-IoC-%E7%9A%84%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%EF%BC%8C%E9%80%9A%E5%B8%B8-DI-%E5%92%8C-IoC-%E6%98%AF%E7%B4%A7%E5%AF%86%E7%BB%93%E5%90%88%E5%9C%A8%E4%B8%80%E8%B5%B7%E7%9A%84%EF%BC%8C%E5%9B%A0%E6%AD%A4%E4%B8%80%E8%88%AC%E8%AF%B4%E7%9A%84-IoC-%E5%8C%85%E6%8B%AC-DI%E3%80%82"><span class="nav-number">2.</span> <span class="nav-text">\在 spring.xml 中，通过 ref 属性将其他 bean 赋给当前 bean 对象，这种方式叫做依赖注入（DI），是 Spring 非常重要的机制，DI 是将不同对象进行关联的一种方式，是 IoC 的具体实现方式，通常 DI 和 IoC 是紧密结合在一起的，因此一般说的 IoC 包括 DI。**</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E5%B1%9E%E6%80%A7%E9%80%9A%E8%BF%87-list-%E6%A0%87%E7%AD%BE%E5%92%8C-ref-%E6%A0%87%E7%AD%BE%E5%AE%8C%E6%88%90%E6%B3%A8%E5%85%A5"><span class="nav-number"></span> <span class="nav-text">集合属性通过 list 标签和 ref 标签完成注入:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-1"><span class="nav-number"></span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-%E4%B8%AD%E7%9A%84-bean"><span class="nav-number"></span> <span class="nav-text">Spring 中的 bean</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-%E7%9A%84%E7%BB%A7%E6%89%BF"><span class="nav-number"></span> <span class="nav-text">Spring 的继承</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-2"><span class="nav-number"></span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-%E7%9A%84%E4%BE%9D%E8%B5%96"><span class="nav-number"></span> <span class="nav-text">Spring 的依赖</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-3"><span class="nav-number"></span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-%E8%AF%BB%E5%8F%96%E5%A4%96%E9%83%A8%E8%B5%84%E6%BA%90"><span class="nav-number"></span> <span class="nav-text">Spring 读取外部资源</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-4"><span class="nav-number"></span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#p-%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="nav-number"></span> <span class="nav-text">p 命名空间</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-5"><span class="nav-number"></span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-IoC-%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%BC%80%E5%8F%91"><span class="nav-number"></span> <span class="nav-text">Spring IoC 基于注解的开发</span></a></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">blydd</p>
-  <div class="site-description" itemprop="description">米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.</div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">66</span>
-          <span class="site-state-item-name">posts</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">15</span>
-        <span class="site-state-item-name">categories</span>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">91</span>
-        <span class="site-state-item-name">tags</span>
-      </div>
-  </nav>
-</div>
-
-
-
-      </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
   
-  &copy; 
-  <span itemprop="copyrightYear">2021</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">blydd</span>
-</div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
-  </div>
-
-        
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
-  </div>
+  
+<script src="/js/main.js"></script>
 
   
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/muse.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-
-
   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  <script>
+    var addLazyload = function () {
+      var observer = lozad('.lozad', {
+        load: function (el) {
+          el.srcset = el.getAttribute('data-src');
+        },
+        loaded: function (el) {
+          el.classList.add('loaded');
+        }
+      });
+      observer.observe();
+    }
+  </script>
+  <script>loadScript("/js/lib/lozad.min.js", addLazyload)</script>
   
-
   
-
 </body>
+
 </html>
