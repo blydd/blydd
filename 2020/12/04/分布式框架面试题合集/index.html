@@ -275,7 +275,7 @@
 <li>完成业务流程后，删除对应的子节点释放锁。</li>
 </ul>
 <p>整体流程如下图所示：</p>
-<p><img src="https://images.gitbook.cn/a7143b40-db48-11e9-9f9d-c526a5f387ab" alt="1" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/a7143b40-db48-11e9-9f9d-c526a5f387ab" class="lozad post-image"></p>
+<p><img src="https://images.gitbook.cn/a7143b40-db48-11e9-9f9d-c526a5f387ab" alt="1" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/a7143b40-db48-11e9-9f9d-c526a5f387ab" class="lozad post-image lozad post-image lozad post-image lozad post-image lozad post-image lozad post-image lozad post-image lozad post-image lozad post-image lozad post-image" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/a7143b40-db48-11e9-9f9d-c526a5f387ab" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/a7143b40-db48-11e9-9f9d-c526a5f387ab" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/a7143b40-db48-11e9-9f9d-c526a5f387ab" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/a7143b40-db48-11e9-9f9d-c526a5f387ab" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/a7143b40-db48-11e9-9f9d-c526a5f387ab" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/a7143b40-db48-11e9-9f9d-c526a5f387ab" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/a7143b40-db48-11e9-9f9d-c526a5f387ab" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/a7143b40-db48-11e9-9f9d-c526a5f387ab" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/a7143b40-db48-11e9-9f9d-c526a5f387ab"></p>
 <h4 id="7-ZooKeeper-如何实现分布式事务？"><a href="#7-ZooKeeper-如何实现分布式事务？" class="headerlink" title="7.ZooKeeper 如何实现分布式事务？"></a>7.ZooKeeper 如何实现分布式事务？</h4><p>答：ZooKeeper 实现分布式事务，类似于两阶段提交，总共分为以下 4 步：</p>
 <ul>
 <li>客户端先给 ZooKeeper 节点发送写请求；</li>
@@ -327,7 +327,7 @@
 <pre class="highlight"><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:dubbo</span>=<span class="string">&quot;http://dubbo.apache.org/schema/dubbo&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dubbo:application</span> <span class="attr">name</span>=<span class="string">&quot;world&quot;</span>  /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 多注册中心配置 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dubbo:registry</span> <span class="attr">id</span>=<span class="string">&quot;hangzhouRegistry&quot;</span> <span class="attr">address</span>=<span class="string">&quot;10.20.141.150:9090&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dubbo:registry</span> <span class="attr">id</span>=<span class="string">&quot;qingdaoRegistry&quot;</span> <span class="attr">address</span>=<span class="string">&quot;10.20.141.151:9010&quot;</span> <span class="attr">default</span>=<span class="string">&quot;false&quot;</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 向多个注册中心注册 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dubbo:service</span> <span class="attr">interface</span>=<span class="string">&quot;com.alibaba.hello.api.HelloService&quot;</span> <span class="attr">version</span>=<span class="string">&quot;1.0.0&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;helloService&quot;</span> <span class="attr">registry</span>=<span class="string">&quot;hangzhouRegistry,qingdaoRegistry&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre>
 <h4 id="16-Dubbo-支持的连接方式有哪些？"><a href="#16-Dubbo-支持的连接方式有哪些？" class="headerlink" title="16.Dubbo 支持的连接方式有哪些？"></a>16.Dubbo 支持的连接方式有哪些？</h4><p>答：Dubbo 支持的主要连接方式有：组播、直连和 ZooKeeper 等注册中心。</p>
 <p><strong>① 组播方式</strong>，不需要启动任何中心节点，只要广播地址一样，就可以互相发现。</p>
-<p><img src="https://images.gitbook.cn/e3086fe0-db48-11e9-9f9d-c526a5f387ab" alt="2" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/e3086fe0-db48-11e9-9f9d-c526a5f387ab" class="lozad post-image"></p>
+<p><img src="https://images.gitbook.cn/e3086fe0-db48-11e9-9f9d-c526a5f387ab" alt="2" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/e3086fe0-db48-11e9-9f9d-c526a5f387ab" class="lozad post-image lozad post-image lozad post-image lozad post-image lozad post-image lozad post-image lozad post-image lozad post-image lozad post-image lozad post-image" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/e3086fe0-db48-11e9-9f9d-c526a5f387ab" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/e3086fe0-db48-11e9-9f9d-c526a5f387ab" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/e3086fe0-db48-11e9-9f9d-c526a5f387ab" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/e3086fe0-db48-11e9-9f9d-c526a5f387ab" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/e3086fe0-db48-11e9-9f9d-c526a5f387ab" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/e3086fe0-db48-11e9-9f9d-c526a5f387ab" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/e3086fe0-db48-11e9-9f9d-c526a5f387ab" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/e3086fe0-db48-11e9-9f9d-c526a5f387ab" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/e3086fe0-db48-11e9-9f9d-c526a5f387ab"></p>
 <ol>
 <li>提供方启动时广播自己的地址</li>
 <li>消费方启动时广播订阅请求</li>
@@ -355,7 +355,7 @@
 <pre class="highlight"><span class="line">&lt;dubbo:registry address&#x3D;&quot;127.0.0.1:9090&quot; group&#x3D;&quot;simple&quot; version&#x3D;&quot;1.0.0&quot; &#x2F;&gt;</span><br></pre>
 <p>适用性说明：此 SimpleRegistryService 只是简单实现，不支持集群，可作为自定义注册中心的参考，但不适合直接用于生产环境。</p>
 <p><strong>③ ZooKeeper 注册中心</strong>，Zookeeper 是 Apacahe Hadoop 的子项目，是一个树型的目录服务，支持变更推送，适合作为 Dubbo 服务的注册中心，工业强度较高，可用于生产环境，并推荐使用。</p>
-<p><img src="https://images.gitbook.cn/1c638310-db49-11e9-b7e8-efbebe7dfdf6" alt="3" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/1c638310-db49-11e9-b7e8-efbebe7dfdf6" class="lozad post-image"></p>
+<p><img src="https://images.gitbook.cn/1c638310-db49-11e9-b7e8-efbebe7dfdf6" alt="3" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/1c638310-db49-11e9-b7e8-efbebe7dfdf6" class="lozad post-image lozad post-image lozad post-image lozad post-image lozad post-image lozad post-image lozad post-image lozad post-image lozad post-image lozad post-image" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/1c638310-db49-11e9-b7e8-efbebe7dfdf6" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/1c638310-db49-11e9-b7e8-efbebe7dfdf6" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/1c638310-db49-11e9-b7e8-efbebe7dfdf6" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/1c638310-db49-11e9-b7e8-efbebe7dfdf6" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/1c638310-db49-11e9-b7e8-efbebe7dfdf6" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/1c638310-db49-11e9-b7e8-efbebe7dfdf6" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/1c638310-db49-11e9-b7e8-efbebe7dfdf6" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/1c638310-db49-11e9-b7e8-efbebe7dfdf6" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/1c638310-db49-11e9-b7e8-efbebe7dfdf6"></p>
 <p>流程说明：</p>
 <ul>
 <li>服务提供者启动时：向 /dubbo/com.foo.BarService/providers 目录下写入自己的 URL 地址</li>
@@ -489,15 +489,15 @@
 <p class="author-description">积跬步行千里</p>
 <div class="author-message">
   <a class="author-posts-count" href="/archives">
-    <span>66</span>
+    <span>67</span>
     <span>文章</span>
   </a>
   <a class="author-categories-count" href="/categories">
-    <span>15</span>
+    <span>16</span>
     <span>分类</span>
   </a>
   <a class="author-tags-count" href="/tags">
-    <span>91</span>
+    <span>92</span>
     <span>标签</span>
   </a>
 </div>
@@ -625,6 +625,13 @@
         </div>
       </a>
     
+      <a href="/categories/面试">
+        <div class="categories-list-item">
+          面试
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
   </div>
 </div>
   </article>
@@ -634,37 +641,37 @@
   <div class="tags-header"><i class="iconfont icon-biaoqian" style="padding-right: 2px;"></i>热门标签</div>
   <div class="tags-list">
     
-    <a href="\tags\springboot" title="springboot"><div class="tags-list-item">springboot</div></a>
-    
-    <a href="\tags\java" title="java"><div class="tags-list-item">java</div></a>
-    
     <a href="\tags\工具类" title="工具类"><div class="tags-list-item">工具类</div></a>
     
-    <a href="\tags\mybatis" title="mybatis"><div class="tags-list-item">mybatis</div></a>
-    
-    <a href="\tags\tool" title="tool"><div class="tags-list-item">tool</div></a>
-    
-    <a href="\tags\git" title="git"><div class="tags-list-item">git</div></a>
+    <a href="\tags\httpclient" title="httpclient"><div class="tags-list-item">httpclient</div></a>
     
     <a href="\tags\linux" title="linux"><div class="tags-list-item">linux</div></a>
     
-    <a href="\tags\springCloud" title="springCloud"><div class="tags-list-item">springCloud</div></a>
+    <a href="\tags\mac" title="mac"><div class="tags-list-item">mac</div></a>
     
-    <a href="\tags\线程池" title="线程池"><div class="tags-list-item">线程池</div></a>
+    <a href="\tags\mybatis" title="mybatis"><div class="tags-list-item">mybatis</div></a>
     
-    <a href="\tags\ms" title="ms"><div class="tags-list-item">ms</div></a>
+    <a href="\tags\springboot" title="springboot"><div class="tags-list-item">springboot</div></a>
     
-    <a href="\tags\mq" title="mq"><div class="tags-list-item">mq</div></a>
+    <a href="\tags\异步调用" title="异步调用"><div class="tags-list-item">异步调用</div></a>
     
-    <a href="\tags\常用" title="常用"><div class="tags-list-item">常用</div></a>
+    <a href="\tags\jdbcTemplate" title="jdbcTemplate"><div class="tags-list-item">jdbcTemplate</div></a>
     
-    <a href="\tags\bug" title="bug"><div class="tags-list-item">bug</div></a>
+    <a href="\tags\thymeleaf" title="thymeleaf"><div class="tags-list-item">thymeleaf</div></a>
     
-    <a href="\tags\分布式" title="分布式"><div class="tags-list-item">分布式</div></a>
+    <a href="\tags\war" title="war"><div class="tags-list-item">war</div></a>
     
-    <a href="\tags\acid" title="acid"><div class="tags-list-item">acid</div></a>
+    <a href="\tags\md" title="md"><div class="tags-list-item">md</div></a>
     
-    <a href="\tags\事务" title="事务"><div class="tags-list-item">事务</div></a>
+    <a href="\tags\markdown" title="markdown"><div class="tags-list-item">markdown</div></a>
+    
+    <a href="\tags\html" title="html"><div class="tags-list-item">html</div></a>
+    
+    <a href="\tags\docker" title="docker"><div class="tags-list-item">docker</div></a>
+    
+    <a href="\tags\git" title="git"><div class="tags-list-item">git</div></a>
+    
+    <a href="\tags\入门" title="入门"><div class="tags-list-item">入门</div></a>
     
   </div>
 </div>
@@ -689,6 +696,11 @@
   <div class="recent-posts-list">
     
       <div class="recent-posts-item">
+        <div class="recent-posts-item-title">2021-01-30</div>
+        <a href="/2021/01/30/java面试题/"><div class="recent-posts-item-content">java面试题</div></a>
+      </div>
+    
+      <div class="recent-posts-item">
         <div class="recent-posts-item-title">2021-01-26</div>
         <a href="/2021/01/26/编写优雅高效的java代码/"><div class="recent-posts-item-content">编写高效优雅java代码</div></a>
       </div>
@@ -701,11 +713,6 @@
       <div class="recent-posts-item">
         <div class="recent-posts-item-title">2021-01-22</div>
         <a href="/2021/01/22/开发注意代码整理/"><div class="recent-posts-item-content">开发中注意的小问题</div></a>
-      </div>
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-02</div>
-        <a href="/2021/01/02/SQL语句性能提升/"><div class="recent-posts-item-content">SQL语句性能提升</div></a>
       </div>
     
   </div>
