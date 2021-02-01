@@ -26,7 +26,7 @@
   
   <meta property="og:type" content="article">
   <meta property="og:article:published_time" content="2020-12-04">
-  <meta property="og:article:modified_time" content="2020-12-04">
+  <meta property="og:article:modified_time" content="2021-01-30">
   <meta property="og:article:author" content="blydd">
   
   
@@ -255,7 +255,7 @@
 </blockquote>
 <h2 id="模式注解"><a href="#模式注解" class="headerlink" title="模式注解"></a>模式注解</h2><p>Stereotype Annotation俗称为模式注解，Spring中常见的模式注解有<code>@Service</code>，<code>@Repository</code>，<code>@Controller</code>等，它们都“派生”自<code>@Component</code>注解。我们都知道，凡是被<code>@Component</code>标注的类都会被Spring扫描并纳入到IOC容器中，那么由<code>@Component</code>派生的注解所标注的类也会被扫描到IOC容器中。下面我们主要通过自定义模式注解来了解<code>@Component</code>的“派生性”和“层次性”。</p>
 <h3 id="Component-“派生性”"><a href="#Component-“派生性”" class="headerlink" title="@Component “派生性”"></a>@Component “派生性”</h3><p>新建一个Spring Boot工程，Spring Boot版本为2.1.0.RELEASE，<code>artifactId</code>为autoconfig，并引入<code>spring-boot-starter-web</code>依赖。项目结构如下所示:</p>
-<p><img src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20190220151447.png" alt="QQ截图20190220151447.png" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20190220151447.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/01/30/vgoQYsVG19SAZnH.png" alt="QQ截图20190220151447.png" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/vgoQYsVG19SAZnH.png" class="lozad post-image"></p>
 <p>在<code>com.example.demo</code>下新建<code>annotation</code>包，然后创建一个<code>FirstLevelService</code>注解：</p>
 <pre class="highlight"><span class="line"><span class="meta">@Target(&#123;ElementType.TYPE&#125;)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> FirstLevelService &#123;</span><br><span class="line">    <span class="function">String <span class="title">value</span><span class="params">()</span> <span class="keyword">default</span> &quot;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre>
 <p>这个注解定义由<code>@Service</code>标注，查看<code>@Service</code>的源码会发现其被<code>@Component</code>注解标注，所以它们的层次关系为:</p>
@@ -282,7 +282,7 @@
 
 
 <p>我们将<code>TestService</code>上的注解换成<code>@SecondLevelService</code>，然后再次运行<code>ServiceBootStrap</code>的main方法，输出如下：</p>
-<p><img src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20190220152939.png" alt="QQ截图20190220152939.png" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20190220152939.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/01/30/GBU3TVIFdOjPsLb.png" alt="QQ截图20190220152939.png" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/GBU3TVIFdOjPsLb.png" class="lozad post-image"></p>
 <p>可见结果也是成功的。</p>
 <p>这里有一点需要注意的是：<code>@Component</code>注解只包含一个value属性定义，所以其“派生”的注解也只能包含一个value属性定义。</p>
 <h2 id="Enable模块驱动"><a href="#Enable模块驱动" class="headerlink" title="@Enable模块驱动"></a>@Enable模块驱动</h2><p><code>@Enable</code>模块驱动在Spring Framework 3.1后开始支持。这里的模块通俗的来说就是一些为了实现某个功能的组件的集合。通过<code>@Enable</code>模块驱动，我们可以开启相应的模块功能。</p>
@@ -292,7 +292,7 @@
 
 
 <p>该注解通过<code>@Import</code>导入一个配置类<code>DelegatingWebMvcConfiguration</code>：</p>
-<p><img src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20190220170120.png" alt="QQ截图20190220170120.png" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20190220170120.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/01/30/PsS8U7fgo6L23wV.png" alt="QQ截图20190220170120.png" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/PsS8U7fgo6L23wV.png" class="lozad post-image"></p>
 <p>该配置类又继承自<code>WebMvcConfigurationSupport</code>，里面定义了一些Bean的声明。</p>
 <p>所以，基于注解驱动的<code>@Enable</code>模块驱动其实就是通过<code>@Import</code>来导入一个配置类，以此实现相应模块的组件注册，当这些组件注册到IOC容器中，这个模块对应的功能也就可以使用了。</p>
 <p>我们来定义一个基于注解驱动的<code>@Enable</code>模块驱动。</p>
@@ -311,7 +311,7 @@
 
 
 <p>运行该类的main方法，控制台输出如下：</p>
-<p><img src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20190220171218.png" alt="QQ截图20190220171218.png" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20190220171218.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/01/30/GjfhwqdS675YogZ.png" alt="QQ截图20190220171218.png" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/GjfhwqdS675YogZ.png" class="lozad post-image"></p>
 <p>说明我们自定义的基于注解驱动的<code>@EnableHelloWorld</code>是可行的。</p>
 <h3 id="接口编程"><a href="#接口编程" class="headerlink" title="接口编程"></a>接口编程</h3><p>除了使用上面这个方式外，我们还可以通过接口编程的方式来实现<code>@Enable</code>模块驱动。Spring中，基于接口编程方式的有<code>@EnableCaching</code>注解，查看其源码：</p>
 <pre class="highlight"><span class="line"><span class="meta">@Target(&#123;ElementType.TYPE&#125;)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Import(&#123;CachingConfigurationSelector.class&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> EnableCaching &#123;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">proxyTargetClass</span><span class="params">()</span> <span class="keyword">default</span> <span class="keyword">false</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">AdviceMode <span class="title">mode</span><span class="params">()</span> <span class="keyword">default</span> AdviceMode.PROXY</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">order</span><span class="params">()</span> <span class="keyword">default</span> 2147483647</span>;</span><br><span class="line">&#125;</span><br></pre>
@@ -337,13 +337,13 @@
 <li>Spring 工厂加载机制</li>
 </ol>
 <p>Spring 工厂加载机制的实现类为<code>SpringFactoriesLoader</code>，查看其源码：</p>
-<p><img src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20190221110551.png" alt="QQ截图20190221110551.png" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20190221110551.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/01/30/q8tHlaxhsFgXfjv.png" alt="QQ截图20190221110551.png" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/q8tHlaxhsFgXfjv.png" class="lozad post-image"></p>
 <p>该类的方法会读取META-INF目录下的spring.factories配置文件，我们查看spring-boot-autoconfigure-2.1.0.RELEASE.jar下的该文件：</p>
-<p><img src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20190221110753.png" alt="QQ截图20190221110753.png" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20190221110753.png" class="lozad post-image"></p>
-<p><img src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20190221110907.png" alt="QQ截图20190221110907.png" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20190221110907.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/01/30/6A7cY1lNQxbFMTK.png" alt="QQ截图20190221110753.png" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/6A7cY1lNQxbFMTK.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/01/30/PgmLeqWKdh8tTB5.png" alt="QQ截图20190221110907.png" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/PgmLeqWKdh8tTB5.png" class="lozad post-image"></p>
 <p>当启动类被<code>@EnableAutoConfiguration</code>标注后，上面截图中的所有类Spring都会去扫描，看是否可以纳入到IOC容器中进行管理。</p>
 <p>比如我们查看<code>org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration</code>的源码：</p>
-<p><img src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20190221111400.png" alt="QQ截图20190221111400.png" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20190221111400.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/01/30/QNlwMfSFIrdaH7x.png" alt="QQ截图20190221111400.png" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/QNlwMfSFIrdaH7x.png" class="lozad post-image"></p>
 <p>可看到该类上标注了一些注解，其中<code>@Configuration</code>为模式注解，<code>@EnableConfigurationProperties</code>为模块装配技术，<code>ConditionalOnClass</code>为条件装配技术。这和我们上面列出的Spring Boot自动装配底层主要技术一致，所以我们可以根据这个思路来自定义一个自动装配实现。</p>
 <p>新建一个配置类<code>HelloWorldAutoConfiguration</code>：</p>
 <pre class="highlight"><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableHelloWorld</span></span><br><span class="line"><span class="meta">@ConditionalOnProperty(name = &quot;helloworld&quot;, havingValue = &quot;true&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorldAutoConfiguration</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre>
@@ -360,7 +360,7 @@
 
 
 <p>运行该main方法，控制台输出如下：</p>
-<p><img src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20190221112922.png" alt="QQ截图20190221112922.png" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20190221112922.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/01/30/9yQPaDbOV86Jw34.png" alt="QQ截图20190221112922.png" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/9yQPaDbOV86Jw34.png" class="lozad post-image"></p>
 <p>说明我们自定义的自动装配已经成功了。</p>
 <p>下面简要分析下代码的运行逻辑：</p>
 <ol>
@@ -472,13 +472,6 @@
         </div>
       </a>
     
-      <a href="/categories/linux">
-        <div class="categories-list-item">
-          linux
-          <span class="categories-list-item-badge">3</span>
-        </div>
-      </a>
-    
       <a href="/categories/mac">
         <div class="categories-list-item">
           mac
@@ -486,10 +479,17 @@
         </div>
       </a>
     
+      <a href="/categories/linux">
+        <div class="categories-list-item">
+          linux
+          <span class="categories-list-item-badge">3</span>
+        </div>
+      </a>
+    
       <a href="/categories/java">
         <div class="categories-list-item">
           java
-          <span class="categories-list-item-badge">19</span>
+          <span class="categories-list-item-badge">18</span>
         </div>
       </a>
     
@@ -563,17 +563,17 @@
         </div>
       </a>
     
-      <a href="/categories/springCloud">
+      <a href="/categories/面试">
         <div class="categories-list-item">
-          springCloud
+          面试
           <span class="categories-list-item-badge">2</span>
         </div>
       </a>
     
-      <a href="/categories/面试">
+      <a href="/categories/springCloud">
         <div class="categories-list-item">
-          面试
-          <span class="categories-list-item-badge">1</span>
+          springCloud
+          <span class="categories-list-item-badge">2</span>
         </div>
       </a>
     
@@ -586,37 +586,37 @@
   <div class="tags-header"><i class="iconfont icon-biaoqian" style="padding-right: 2px;"></i>热门标签</div>
   <div class="tags-list">
     
+    <a href="\tags\springboot" title="springboot"><div class="tags-list-item">springboot</div></a>
+    
+    <a href="\tags\java" title="java"><div class="tags-list-item">java</div></a>
+    
     <a href="\tags\工具类" title="工具类"><div class="tags-list-item">工具类</div></a>
-    
-    <a href="\tags\httpclient" title="httpclient"><div class="tags-list-item">httpclient</div></a>
-    
-    <a href="\tags\linux" title="linux"><div class="tags-list-item">linux</div></a>
-    
-    <a href="\tags\mac" title="mac"><div class="tags-list-item">mac</div></a>
     
     <a href="\tags\mybatis" title="mybatis"><div class="tags-list-item">mybatis</div></a>
     
-    <a href="\tags\springboot" title="springboot"><div class="tags-list-item">springboot</div></a>
+    <a href="\tags\ms" title="ms"><div class="tags-list-item">ms</div></a>
     
-    <a href="\tags\异步调用" title="异步调用"><div class="tags-list-item">异步调用</div></a>
-    
-    <a href="\tags\jdbcTemplate" title="jdbcTemplate"><div class="tags-list-item">jdbcTemplate</div></a>
-    
-    <a href="\tags\thymeleaf" title="thymeleaf"><div class="tags-list-item">thymeleaf</div></a>
-    
-    <a href="\tags\war" title="war"><div class="tags-list-item">war</div></a>
-    
-    <a href="\tags\md" title="md"><div class="tags-list-item">md</div></a>
-    
-    <a href="\tags\markdown" title="markdown"><div class="tags-list-item">markdown</div></a>
-    
-    <a href="\tags\html" title="html"><div class="tags-list-item">html</div></a>
-    
-    <a href="\tags\docker" title="docker"><div class="tags-list-item">docker</div></a>
+    <a href="\tags\tool" title="tool"><div class="tags-list-item">tool</div></a>
     
     <a href="\tags\git" title="git"><div class="tags-list-item">git</div></a>
     
-    <a href="\tags\入门" title="入门"><div class="tags-list-item">入门</div></a>
+    <a href="\tags\linux" title="linux"><div class="tags-list-item">linux</div></a>
+    
+    <a href="\tags\springCloud" title="springCloud"><div class="tags-list-item">springCloud</div></a>
+    
+    <a href="\tags\线程池" title="线程池"><div class="tags-list-item">线程池</div></a>
+    
+    <a href="\tags\mq" title="mq"><div class="tags-list-item">mq</div></a>
+    
+    <a href="\tags\常用" title="常用"><div class="tags-list-item">常用</div></a>
+    
+    <a href="\tags\bug" title="bug"><div class="tags-list-item">bug</div></a>
+    
+    <a href="\tags\分布式" title="分布式"><div class="tags-list-item">分布式</div></a>
+    
+    <a href="\tags\acid" title="acid"><div class="tags-list-item">acid</div></a>
+    
+    <a href="\tags\事务" title="事务"><div class="tags-list-item">事务</div></a>
     
   </div>
 </div>

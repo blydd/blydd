@@ -26,7 +26,7 @@
   
   <meta property="og:type" content="article">
   <meta property="og:article:published_time" content="2020-12-04">
-  <meta property="og:article:modified_time" content="2020-12-04">
+  <meta property="og:article:modified_time" content="2021-02-01">
   <meta property="og:article:author" content="blydd">
   
   
@@ -244,12 +244,12 @@
   
   </header>
   <div id="section" class="post-content">
-    <h3 id="1-webservice接口的检查"><a href="#1-webservice接口的检查" class="headerlink" title="1.webservice接口的检查"></a>1.webservice接口的检查</h3><p>能够正常调用的webservice接口是可以直接访问的。在浏览器中输入webservice接口的URL，注意：一定要带上“？wsdl”结尾。调用成功会返回一串xml格式的数据，该数据便是接口具体的方法和返回的类型，如下图所示：<br><img  srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="http://mele.cool//20200825_13151183.png" class="lozad post-image"src="http://mele.cool//20200825_13151183.png"></p>
+    <h3 id="1-webservice接口的检查"><a href="#1-webservice接口的检查" class="headerlink" title="1.webservice接口的检查"></a>1.webservice接口的检查</h3><p>能够正常调用的webservice接口是可以直接访问的。在浏览器中输入webservice接口的URL，注意：一定要带上“？wsdl”结尾。调用成功会返回一串xml格式的数据，该数据便是接口具体的方法和返回的类型，如下图所示：<br><img src="https://i.loli.net/2021/02/01/p6YhST3ERsg9mDe.png" alt="20200825_13151183" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/01/p6YhST3ERsg9mDe.png" class="lozad post-image"></p>
 <h3 id="2-cmd命令生成项目webservice客户端"><a href="#2-cmd命令生成项目webservice客户端" class="headerlink" title="2.cmd命令生成项目webservice客户端"></a>2.cmd命令生成项目webservice客户端</h3><pre class="highlight"><span class="line">wsimport -s D:\Desktop\temp\s -p com.map -verbose -keep http://ws.webxml.com.cn/WebServices/MobileCodeWS.asmx?wsdl</span><br><span class="line"></span><br><span class="line">参数介绍：</span><br><span class="line">-keep：是否生成java源文件</span><br><span class="line">-d：指定.class文件的输出目录</span><br><span class="line">-s：指定.java文件的输出目录</span><br><span class="line">-p：定义生成类的包名，不定义的话有默认包名</span><br><span class="line">-verbose：在控制台显示输出信息</span><br><span class="line">-b：指定jaxws/jaxb绑定文件或额外的schemas</span><br><span class="line">-extension：使用扩展来支持SOAP1.2</span><br></pre>
 <blockquote>
 <p>注意：<br>1.指定的文件输出目录一定是要先建好文件夹，不然会报找不到目录；<br>建议按着项目的路径把这里填上，方便直接复制到项目中。</p>
 </blockquote>
-<h3 id="3-客户端代码的使用"><a href="#3-客户端代码的使用" class="headerlink" title="3.客户端代码的使用"></a>3.客户端代码的使用</h3><p>1.执行完2.2的操作后，在指定目录中就会找到生成后的代码，可直接把其拷贝到项目中。<br>2.在生成的代码中找出接口调用的连接类。一般是WS或Service结尾。打开后会有下图红框的结构。<br><img  srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="http://mele.cool//20200825_13180869.png" class="lozad post-image"src="http://mele.cool//20200825_13180869.png"><br>3.找出其调用类<br><img  srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="http://mele.cool//20200825_13182816.png" class="lozad post-image"src="http://mele.cool//20200825_13182816.png"><br>4.另写一个Service，并在该Service中写一个单例来注入webservice接口的连接类。参考代码如下：</p>
+<h3 id="3-客户端代码的使用"><a href="#3-客户端代码的使用" class="headerlink" title="3.客户端代码的使用"></a>3.客户端代码的使用</h3><p>1.执行完2.2的操作后，在指定目录中就会找到生成后的代码，可直接把其拷贝到项目中。<br>2.在生成的代码中找出接口调用的连接类。一般是WS或Service结尾。打开后会有下图红框的结构。<br><img src="https://i.loli.net/2021/02/01/4b7W6ijl2wzBxmR.png" alt="20200825_13180869" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/01/4b7W6ijl2wzBxmR.png" class="lozad post-image"><br>3.找出其调用类<br><img src="https://i.loli.net/2021/02/01/y12MIPc3UAbf8rK.png" alt="20200825_13182816" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/01/y12MIPc3UAbf8rK.png" class="lozad post-image"><br>4.另写一个Service，并在该Service中写一个单例来注入webservice接口的连接类。参考代码如下：</p>
 <pre class="highlight"><span class="line"><span class="keyword">private</span> MobileCodeWSSoap mobileCodeWSSoap;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> MobileCodeWSSoap <span class="title">getMobileCodeWSSoap</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	        <span class="keyword">if</span>(mobileCodeWSSoap != <span class="keyword">null</span>)&#123;</span><br><span class="line">	            <span class="keyword">return</span> mobileCodeWSSoap;</span><br><span class="line">	        &#125;</span><br><span class="line">	        <span class="keyword">try</span> &#123;</span><br><span class="line">	            URL uurl = <span class="keyword">new</span> URL(<span class="string">&quot;MobileTokenConstants.getValue(MobileTokenConstants.KEY_ADDRESS)&quot;</span>);<span class="comment">//URL在配置文件中动态配置</span></span><br><span class="line">	            MobileCodeWS mobileCodeWS = <span class="keyword">new</span> MobileCodeWS(uurl);</span><br><span class="line">	            mobileCodeWSSoap = mobileCodeWS.getMobileCodeWSSoap();</span><br><span class="line">	        &#125; <span class="keyword">catch</span> (MalformedURLException e) &#123; </span><br><span class="line">	            e.printStackTrace();</span><br><span class="line">	        &#125;</span><br><span class="line">	            <span class="keyword">return</span> mobileCodeWSSoap;</span><br><span class="line">	&#125;</span><br></pre>
   </div>
   <div>
@@ -343,13 +343,6 @@
         </div>
       </a>
     
-      <a href="/categories/linux">
-        <div class="categories-list-item">
-          linux
-          <span class="categories-list-item-badge">3</span>
-        </div>
-      </a>
-    
       <a href="/categories/mac">
         <div class="categories-list-item">
           mac
@@ -357,10 +350,17 @@
         </div>
       </a>
     
+      <a href="/categories/linux">
+        <div class="categories-list-item">
+          linux
+          <span class="categories-list-item-badge">3</span>
+        </div>
+      </a>
+    
       <a href="/categories/java">
         <div class="categories-list-item">
           java
-          <span class="categories-list-item-badge">19</span>
+          <span class="categories-list-item-badge">18</span>
         </div>
       </a>
     
@@ -434,17 +434,17 @@
         </div>
       </a>
     
-      <a href="/categories/springCloud">
+      <a href="/categories/面试">
         <div class="categories-list-item">
-          springCloud
+          面试
           <span class="categories-list-item-badge">2</span>
         </div>
       </a>
     
-      <a href="/categories/面试">
+      <a href="/categories/springCloud">
         <div class="categories-list-item">
-          面试
-          <span class="categories-list-item-badge">1</span>
+          springCloud
+          <span class="categories-list-item-badge">2</span>
         </div>
       </a>
     
@@ -457,37 +457,37 @@
   <div class="tags-header"><i class="iconfont icon-biaoqian" style="padding-right: 2px;"></i>热门标签</div>
   <div class="tags-list">
     
+    <a href="\tags\springboot" title="springboot"><div class="tags-list-item">springboot</div></a>
+    
+    <a href="\tags\java" title="java"><div class="tags-list-item">java</div></a>
+    
     <a href="\tags\工具类" title="工具类"><div class="tags-list-item">工具类</div></a>
-    
-    <a href="\tags\httpclient" title="httpclient"><div class="tags-list-item">httpclient</div></a>
-    
-    <a href="\tags\linux" title="linux"><div class="tags-list-item">linux</div></a>
-    
-    <a href="\tags\mac" title="mac"><div class="tags-list-item">mac</div></a>
     
     <a href="\tags\mybatis" title="mybatis"><div class="tags-list-item">mybatis</div></a>
     
-    <a href="\tags\springboot" title="springboot"><div class="tags-list-item">springboot</div></a>
+    <a href="\tags\ms" title="ms"><div class="tags-list-item">ms</div></a>
     
-    <a href="\tags\异步调用" title="异步调用"><div class="tags-list-item">异步调用</div></a>
-    
-    <a href="\tags\jdbcTemplate" title="jdbcTemplate"><div class="tags-list-item">jdbcTemplate</div></a>
-    
-    <a href="\tags\thymeleaf" title="thymeleaf"><div class="tags-list-item">thymeleaf</div></a>
-    
-    <a href="\tags\war" title="war"><div class="tags-list-item">war</div></a>
-    
-    <a href="\tags\md" title="md"><div class="tags-list-item">md</div></a>
-    
-    <a href="\tags\markdown" title="markdown"><div class="tags-list-item">markdown</div></a>
-    
-    <a href="\tags\html" title="html"><div class="tags-list-item">html</div></a>
-    
-    <a href="\tags\docker" title="docker"><div class="tags-list-item">docker</div></a>
+    <a href="\tags\tool" title="tool"><div class="tags-list-item">tool</div></a>
     
     <a href="\tags\git" title="git"><div class="tags-list-item">git</div></a>
     
-    <a href="\tags\入门" title="入门"><div class="tags-list-item">入门</div></a>
+    <a href="\tags\linux" title="linux"><div class="tags-list-item">linux</div></a>
+    
+    <a href="\tags\springCloud" title="springCloud"><div class="tags-list-item">springCloud</div></a>
+    
+    <a href="\tags\线程池" title="线程池"><div class="tags-list-item">线程池</div></a>
+    
+    <a href="\tags\mq" title="mq"><div class="tags-list-item">mq</div></a>
+    
+    <a href="\tags\常用" title="常用"><div class="tags-list-item">常用</div></a>
+    
+    <a href="\tags\bug" title="bug"><div class="tags-list-item">bug</div></a>
+    
+    <a href="\tags\分布式" title="分布式"><div class="tags-list-item">分布式</div></a>
+    
+    <a href="\tags\acid" title="acid"><div class="tags-list-item">acid</div></a>
+    
+    <a href="\tags\事务" title="事务"><div class="tags-list-item">事务</div></a>
     
   </div>
 </div>
