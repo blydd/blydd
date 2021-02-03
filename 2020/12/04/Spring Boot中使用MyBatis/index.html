@@ -1,718 +1,482 @@
 <!DOCTYPE html>
-<html  lang="zh-CN" >
-
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="theme-color" content="#fff" id="theme-color">
-  <meta name="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
-  <link rel="icon" href="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png">
-  <title>Spring Boot中使用MyBatis</title>
-  
-  
-  <meta property="og:title" content="Spring Boot中使用MyBatis">
-  
-  
-  <meta property="og:url" content="https://www.mele.cool/2020/12/04/Spring%20Boot%E4%B8%AD%E4%BD%BF%E7%94%A8MyBatis/index.html">
-  
-  
-  <meta property="og:img" content="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png">
-  
-  
-  <meta property="og:img" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
-  
-  
-  <meta property="og:type" content="article">
-  <meta property="og:article:published_time" content="2020-12-04">
-  <meta property="og:article:modified_time" content="2020-12-04">
-  <meta property="og:article:author" content="blydd">
-  
-  
-  <meta property="og:article:tag" content="mybatis">
-  
-  <meta property="og:article:tag" content="springboot">
-  
-  
-  
-  
-  <!-- 百度统计代码 -->
-<script>
-  var _hmt = _hmt || [];
-  (function() {
-    var hm = document.createElement("script");
-    hm.src = "https://hm.baidu.com/hm.js?52aed7fa581354c5e14562bad1a1def2";
-    var s = document.getElementsByTagName("script")[0]; 
-    s.parentNode.insertBefore(hm, s);
-  })();
-  </script>
- <!-- 百度统计代码 --> 
-  <script>
-    // control reverse button
-    var reverseDarkList = {
-      dark: 'light',
-      light: 'dark'
-    };
-    var themeColor = {
-      dark: '#1c1c1e',
-      light: '#fff'
-    }
-    // get the data of css prefers-color-scheme
-    var getCssMediaQuery = function() {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    };
-    // reverse current darkmode setting function
-    var reverseDarkModeSetting = function() {
-      var setting = localStorage.getItem('user-color-scheme');
-      if(reverseDarkList[setting]) {
-        setting = reverseDarkList[setting];
-      } else if(setting === null) {
-        setting = reverseDarkList[getCssMediaQuery()];
-      } else {
-        return;
-      }
-      localStorage.setItem('user-color-scheme', setting);
-      return setting;
-    };
-    // apply current darkmode setting
-    var setDarkmode = function(mode) {
-      var setting = mode || localStorage.getItem('user-color-scheme');
-      if(setting === getCssMediaQuery()) {
-        document.documentElement.removeAttribute('data-user-color-scheme');
-        localStorage.removeItem('user-color-scheme');
-        document.getElementById('theme-color').content = themeColor[setting];
-      } else if(reverseDarkList[setting]) {
-        document.documentElement.setAttribute('data-user-color-scheme', setting);
-        document.getElementById('theme-color').content = themeColor[setting];
-      } else {
-        document.documentElement.removeAttribute('data-user-color-scheme');
-        localStorage.removeItem('user-color-scheme');
-        document.getElementById('theme-color').content = themeColor[getCssMediaQuery()];
-      }
-    };
-    setDarkmode();
-  </script>
-  <script>
-    function loadScript(url, cb) {
-      var script = document.createElement('script');
-      script.src = url;
-      if (cb) script.onload = cb;
-      script.async = true;
-      document.body.appendChild(script);
-    }
-  </script>
-  
-  <link rel="preload" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css" as="style" >
-  <link rel="preload" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css" as="style" >
-  
-  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.js" as="script">
-  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.css" as="style" >
-  
-  
-  <link rel="preload" href="/js/lib/lozad.min.js" as="script">
-  
-  
-  
-  
-  
-  
-  
-  
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
 <link rel="stylesheet" href="/css/main.css">
 
-  
-  
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css">
 
-  
-  
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-  
-  
-<link rel="stylesheet" href="/js/lib/lightbox/baguetteBox.min.css">
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.mele.cool","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
 
-  
-  
-  
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
+  <meta name="description" content="Spring Boot中使用MyBatis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Boot中使用MyBatis">
+<meta property="og:url" content="https://www.mele.cool/2020/12/04/Spring%20Boot%E4%B8%AD%E4%BD%BF%E7%94%A8MyBatis/index.html">
+<meta property="og:site_name" content="米乐博客">
+<meta property="og:description" content="Spring Boot中使用MyBatis">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20171204160941.png">
+<meta property="og:image" content="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20171204161133.png">
+<meta property="og:image" content="http://59.110.212.214/upload/20200728_17391359.png">
+<meta property="og:image" content="http://59.110.212.214/upload/20200716_09513097.png">
+<meta property="og:image" content="http://59.110.212.214/upload/20200716_09514329.png">
+<meta property="article:published_time" content="2020-12-04T02:10:17.000Z">
+<meta property="article:modified_time" content="2020-12-04T12:00:30.249Z">
+<meta property="article:author" content="blydd">
+<meta property="article:tag" content="mybatis">
+<meta property="article:tag" content="springboot">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20171204160941.png">
+
+<link rel="canonical" href="https://www.mele.cool/2020/12/04/Spring%20Boot%E4%B8%AD%E4%BD%BF%E7%94%A8MyBatis/">
 
 
-<body>
-  <div class="wrapper">
-    
-    <nav class="navbar">
-  <div class="navbar-logo">
-    <span class="navbar-logo-main">
-      
-      <img class="navbar-logo-img" src="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png" alt="logo">
-      
-      <span class="navbar-logo-dsc">mele blog</span>
-    </span>
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Spring Boot中使用MyBatis | 米乐博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
   </div>
-  <div class="navbar-menu">
-    
-    <a href="/" class="navbar-menu-item">
-    
-    首页
-    
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">米乐博客</h1>
+      <span class="logo-line-after"><i></i></span>
     </a>
-    
-    <a href="/archives" class="navbar-menu-item">
-    
-    归档
-    
-    </a>
-    
-    <a href="/tags" class="navbar-menu-item">
-    
-    标签
-    
-    </a>
-    
-    <a href="/categories" class="navbar-menu-item">
-    
-    分类
-    
-    </a>
-    
-    <a href="/about" class="navbar-menu-item">
-    
-    关于
-    
-    </a>
-    
-    <a href="/links" class="navbar-menu-item">
-    
-    友链
-    
-    </a>
-    
-    <a class="navbar-menu-item darknavbar" id="dark"><i class="iconfont icon-weather"></i></a>
-    <a class="navbar-menu-item searchnavbar" id="search"><i class="iconfont icon-search" style="font-size: 1.2rem; font-weight: 400;"></i></a>
+      <p class="site-subtitle" itemprop="description">积跬步至千里</p>
   </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
 </nav>
+
+
+
+
+</div>
+    </header>
+
     
-    <div id="local-search" style="display: none;">
-      <input class="navbar-menu-item" id="search-input" placeholder="请输入搜索内容...">
-      <div id="search-content"></div>
-    </div>
-    
-    <div class="section-wrap">
-      <div class="container">
-        <div class="columns">
-          <main class="main-column">
-<article class="card card-content">
-  <header>
-    <h1 class="post-title">
-      Spring Boot中使用MyBatis
-    </h1>
-  </header>
-  <div class="post-meta post-show-meta">
-    <time datetime="2020-12-04T02:10:17.000Z">
-      <i class="iconfont icon-calendar" style="margin-right: 2px;"></i>
-      <span>2020-12-04</span>
-    </time>
-    
-    <span class="dot"></span>
-    
-    <a href="/categories/springboot/" class="post-meta-link">springboot</a>
-    
-    
-    
-    <span class="dot"></span>
-    <span>1.8k 字</span>
-    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
   </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
   
-  <div class="post-meta post-show-meta" style="margin-top: -10px;">
-    <div style="display: flex; align-items: center;">
-      <i class="iconfont icon-biaoqian" style="margin-right: 2px; font-size: 1.15rem;"></i>
-      
-      
-        <a href="/tags/mybatis/" class="post-meta-link">mybatis</a>
-      
-      
-      <span class="dot"></span>
-      
-        <a href="/tags/springboot/" class="post-meta-link">springboot</a>
-      
-    </div>
-  </div>
   
-  </header>
-  <div id="section" class="post-content">
-    <h2 id="引入依赖-mybatis-spring-boot-starter"><a href="#引入依赖-mybatis-spring-boot-starter" class="headerlink" title="引入依赖:mybatis-spring-boot-starter"></a>引入依赖:mybatis-spring-boot-starter</h2><p>在pom中引入：</p>
-<pre class="highlight"><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis.spring.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.mele.cool/2020/12/04/Spring%20Boot%E4%B8%AD%E4%BD%BF%E7%94%A8MyBatis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="blydd">
+      <meta itemprop="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="米乐博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Spring Boot中使用MyBatis
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-04 10:10:17 / 修改时间：20:00:30" itemprop="dateCreated datePublished" datetime="2020-12-04T10:10:17+08:00">2020-12-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/springboot/" itemprop="url" rel="index"><span itemprop="name">springboot</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">Spring Boot中使用MyBatis</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="引入依赖-mybatis-spring-boot-starter"><a href="#引入依赖-mybatis-spring-boot-starter" class="headerlink" title="引入依赖:mybatis-spring-boot-starter"></a>引入依赖:mybatis-spring-boot-starter</h2><p>在pom中引入：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis.spring.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 
 <p>不同版本的Spring Boot和MyBatis版本对应不一样，具体可查看官方文档：<a target="_blank" rel="noopener" href="http://www.mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/%E3%80%82">http://www.mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/。</a></p>
 <p>通过<code>dependency:tree</code>命令查看<code>mybatis-spring-boot-starter</code>都有哪些隐性依赖：</p>
-<pre class="highlight"><span class="line">+- org.mybatis.spring.boot:mybatis-spring-boot-starter:jar:1.3.1:compile</span><br><span class="line">|  +- org.springframework.boot:spring-boot-starter-jdbc:jar:1.5.9.RELEASE:compile</span><br><span class="line">|  |  +- org.apache.tomcat:tomcat-jdbc:jar:8.5.23:compile</span><br><span class="line">|  |  |  \- org.apache.tomcat:tomcat-juli:jar:8.5.23:compile</span><br><span class="line">|  |  \- org.springframework:spring-jdbc:jar:4.3.13.RELEASE:compile</span><br><span class="line">|  |     \- org.springframework:spring-tx:jar:4.3.13.RELEASE:compile</span><br><span class="line">|  +- org.mybatis.spring.boot:mybatis-spring-boot-autoconfigure:jar:1.3.1:compile</span><br><span class="line">|  +- org.mybatis:mybatis:jar:3.4.5:compile</span><br><span class="line">|  \- org.mybatis:mybatis-spring:jar:1.3.1:compile</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+- org.mybatis.spring.boot:mybatis-spring-boot-starter:jar:1.3.1:compile</span><br><span class="line">|  +- org.springframework.boot:spring-boot-starter-jdbc:jar:1.5.9.RELEASE:compile</span><br><span class="line">|  |  +- org.apache.tomcat:tomcat-jdbc:jar:8.5.23:compile</span><br><span class="line">|  |  |  \- org.apache.tomcat:tomcat-juli:jar:8.5.23:compile</span><br><span class="line">|  |  \- org.springframework:spring-jdbc:jar:4.3.13.RELEASE:compile</span><br><span class="line">|  |     \- org.springframework:spring-tx:jar:4.3.13.RELEASE:compile</span><br><span class="line">|  +- org.mybatis.spring.boot:mybatis-spring-boot-autoconfigure:jar:1.3.1:compile</span><br><span class="line">|  +- org.mybatis:mybatis:jar:3.4.5:compile</span><br><span class="line">|  \- org.mybatis:mybatis-spring:jar:1.3.1:compile</span><br></pre></td></tr></table></figure>
 
 
 <p>可发现其包含了<code>spring-boot-starter-jdbc</code>依赖，默认使用tomcat-jdbc数据源。</p>
 <h2 id="引入ojdbc6"><a href="#引入ojdbc6" class="headerlink" title="引入ojdbc6"></a>引入ojdbc6</h2><p>由于版权的原因，我们需要将ojdbc6.jar依赖安装到本地的maven仓库，然后才可以在pom中进行配置。</p>
 <p>下载ojdbc6.jar文件后，将其放到比较好找的目录下，比如D盘根目录。然后运行以下命令：</p>
-<pre class="highlight"><span class="line">C:\Users\Administrator&gt;mvn install:install-file -Dfile&#x3D;D:&#x2F;ojdbc6.jar -DgroupId&#x3D;com.oracle -DartifactId&#x3D;ojdbc6 -Dversion&#x3D;6.0 -</span><br><span class="line">Dpackaging&#x3D;jar -DgeneratePom&#x3D;true</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">[INFO] --- maven-install-plugin:2.4:install-file (default-cli) @ standalone-pom ---</span><br><span class="line">[INFO] Installing D:\ojdbc6.jar to D:\m2\repository\com\oracle\ojdbc6\6.0\ojdbc6-6.0.jar</span><br><span class="line">[INFO] Installing C:\Users\ADMINI~1\AppData\Local\Temp\mvninstall9103688544010617483.pom to D:\m2\repository\com\oracle\ojdbc</span><br><span class="line">6\6.0\ojdbc6-6.0.pom</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO] BUILD SUCCESS</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO] Total time: 0.940 s</span><br><span class="line">[INFO] Finished at: 2017-08-13T15:06:38+08:00</span><br><span class="line">[INFO] Final Memory: 6M&#x2F;145M</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Administrator&gt;mvn install:install-file -Dfile&#x3D;D:&#x2F;ojdbc6.jar -DgroupId&#x3D;com.oracle -DartifactId&#x3D;ojdbc6 -Dversion&#x3D;6.0 -</span><br><span class="line">Dpackaging&#x3D;jar -DgeneratePom&#x3D;true</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">[INFO] --- maven-install-plugin:2.4:install-file (default-cli) @ standalone-pom ---</span><br><span class="line">[INFO] Installing D:\ojdbc6.jar to D:\m2\repository\com\oracle\ojdbc6\6.0\ojdbc6-6.0.jar</span><br><span class="line">[INFO] Installing C:\Users\ADMINI~1\AppData\Local\Temp\mvninstall9103688544010617483.pom to D:\m2\repository\com\oracle\ojdbc</span><br><span class="line">6\6.0\ojdbc6-6.0.pom</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO] BUILD SUCCESS</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO] Total time: 0.940 s</span><br><span class="line">[INFO] Finished at: 2017-08-13T15:06:38+08:00</span><br><span class="line">[INFO] Final Memory: 6M&#x2F;145M</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br></pre></td></tr></table></figure>
 
 
 <p>接着在pom中引入：</p>
-<pre class="highlight"><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.oracle<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>ojdbc6<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>6.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.oracle<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>ojdbc6<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>6.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 
 <p>这里的groupid就是你之前安装时指定的-Dgroupid的值，artifactid就是你安装时指定的-Dartifactid的值，version也一样。</p>
 <h2 id="Druid数据源"><a href="#Druid数据源" class="headerlink" title="Druid数据源"></a>Druid数据源</h2><p>Druid是一个关系型数据库连接池，是阿里巴巴的一个开源项目，地址：<a target="_blank" rel="noopener" href="https://github.com/alibaba/druid%E3%80%82Druid%E4%B8%8D%E4%BD%86%E6%8F%90%E4%BE%9B%E8%BF%9E%E6%8E%A5%E6%B1%A0%E7%9A%84%E5%8A%9F%E8%83%BD%EF%BC%8C%E8%BF%98%E6%8F%90%E4%BE%9B%E7%9B%91%E6%8E%A7%E5%8A%9F%E8%83%BD%EF%BC%8C%E5%8F%AF%E4%BB%A5%E5%AE%9E%E6%97%B6%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E5%92%8CSQL%E6%9F%A5%E8%AF%A2%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%83%85%E5%86%B5%E3%80%82">https://github.com/alibaba/druid。Druid不但提供连接池的功能，还提供监控功能，可以实时查看数据库连接池和SQL查询的工作情况。</a></p>
 <h3 id="配置Druid依赖"><a href="#配置Druid依赖" class="headerlink" title="配置Druid依赖"></a>配置Druid依赖</h3><p>Druid为Spring Boot项目提供了对应的starter：</p>
-<pre class="highlight"><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>druid-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.1.10<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>druid-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.1.10<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 
 <h3 id="Druid数据源配置"><a href="#Druid数据源配置" class="headerlink" title="Druid数据源配置"></a>Druid数据源配置</h3><p>上面通过查看mybatis starter的隐性依赖发现，Spring Boot的数据源配置的默认类型是<code>org.apache.tomcat.jdbc.pool.Datasource</code>，为了使用Druid连接池，需要在application.yml下配置：</p>
-<pre class="highlight"><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">context-path:</span> <span class="string">/web</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">datasource:</span></span><br><span class="line">    <span class="attr">druid:</span></span><br><span class="line">      <span class="comment"># 数据库访问配置, 使用druid数据源</span></span><br><span class="line">      <span class="attr">type:</span> <span class="string">com.alibaba.druid.pool.DruidDataSource</span></span><br><span class="line">      <span class="attr">driver-class-name:</span> <span class="string">oracle.jdbc.driver.OracleDriver</span></span><br><span class="line">      <span class="attr">url:</span> <span class="string">jdbc:oracle:thin:@localhost:1521:ORCL</span></span><br><span class="line">      <span class="attr">username:</span> <span class="string">scott</span></span><br><span class="line">      <span class="attr">password:</span> <span class="number">123456</span></span><br><span class="line">      <span class="comment"># 连接池配置</span></span><br><span class="line">      <span class="attr">initial-size:</span> <span class="number">5</span></span><br><span class="line">      <span class="attr">min-idle:</span> <span class="number">5</span></span><br><span class="line">      <span class="attr">max-active:</span> <span class="number">20</span></span><br><span class="line">      <span class="comment"># 连接等待超时时间</span></span><br><span class="line">      <span class="attr">max-wait:</span> <span class="number">30000</span></span><br><span class="line">      <span class="comment"># 配置检测可以关闭的空闲连接间隔时间</span></span><br><span class="line">      <span class="attr">time-between-eviction-runs-millis:</span> <span class="number">60000</span></span><br><span class="line">      <span class="comment"># 配置连接在池中的最小生存时间</span></span><br><span class="line">      <span class="attr">min-evictable-idle-time-millis:</span> <span class="number">300000</span></span><br><span class="line">      <span class="attr">validation-query:</span> <span class="string">select</span> <span class="string">&#x27;1&#x27;</span> <span class="string">from</span> <span class="string">dual</span></span><br><span class="line">      <span class="attr">test-while-idle:</span> <span class="literal">true</span></span><br><span class="line">      <span class="attr">test-on-borrow:</span> <span class="literal">false</span></span><br><span class="line">      <span class="attr">test-on-return:</span> <span class="literal">false</span></span><br><span class="line">      <span class="comment"># 打开PSCache，并且指定每个连接上PSCache的大小</span></span><br><span class="line">      <span class="attr">pool-prepared-statements:</span> <span class="literal">true</span></span><br><span class="line">      <span class="attr">max-open-prepared-statements:</span> <span class="number">20</span></span><br><span class="line">      <span class="attr">max-pool-prepared-statement-per-connection-size:</span> <span class="number">20</span></span><br><span class="line">      <span class="comment"># 配置监控统计拦截的filters, 去掉后监控界面sql无法统计, &#x27;wall&#x27;用于防火墙</span></span><br><span class="line">      <span class="attr">filters:</span> <span class="string">stat,wall</span></span><br><span class="line">      <span class="comment"># Spring监控AOP切入点，如x.y.z.service.*,配置多个英文逗号分隔</span></span><br><span class="line">      <span class="attr">aop-patterns:</span> <span class="string">com.springboot.servie.*</span></span><br><span class="line">      </span><br><span class="line">    </span><br><span class="line">      <span class="comment"># WebStatFilter配置</span></span><br><span class="line">      <span class="attr">web-stat-filter:</span></span><br><span class="line">        <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line">        <span class="comment"># 添加过滤规则</span></span><br><span class="line">        <span class="attr">url-pattern:</span> <span class="string">/*</span></span><br><span class="line">        <span class="comment"># 忽略过滤的格式</span></span><br><span class="line">        <span class="attr">exclusions:</span> <span class="string">&#x27;*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*&#x27;</span></span><br><span class="line">      </span><br><span class="line">      <span class="comment"># StatViewServlet配置 </span></span><br><span class="line">      <span class="attr">stat-view-servlet:</span></span><br><span class="line">        <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line">        <span class="comment"># 访问路径为/druid时，跳转到StatViewServlet</span></span><br><span class="line">        <span class="attr">url-pattern:</span> <span class="string">/druid/*</span></span><br><span class="line">        <span class="comment"># 是否能够重置数据</span></span><br><span class="line">        <span class="attr">reset-enable:</span> <span class="literal">false</span></span><br><span class="line">        <span class="comment"># 需要账号密码才能访问控制台</span></span><br><span class="line">        <span class="attr">login-username:</span> <span class="string">druid</span></span><br><span class="line">        <span class="attr">login-password:</span> <span class="string">druid123</span></span><br><span class="line">        <span class="comment"># IP白名单</span></span><br><span class="line">        <span class="comment"># allow: 127.0.0.1</span></span><br><span class="line">        <span class="comment">#　IP黑名单（共同存在时，deny优先于allow）</span></span><br><span class="line">        <span class="comment"># deny: 192.168.1.218</span></span><br><span class="line">      </span><br><span class="line">      <span class="comment"># 配置StatFilter</span></span><br><span class="line">      <span class="attr">filter:</span> </span><br><span class="line">        <span class="attr">stat:</span> </span><br><span class="line">          <span class="attr">log-slow-sql:</span> <span class="literal">true</span></span><br></pre>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">context-path:</span> <span class="string">/web</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">datasource:</span></span><br><span class="line">    <span class="attr">druid:</span></span><br><span class="line">      <span class="comment"># 数据库访问配置, 使用druid数据源</span></span><br><span class="line">      <span class="attr">type:</span> <span class="string">com.alibaba.druid.pool.DruidDataSource</span></span><br><span class="line">      <span class="attr">driver-class-name:</span> <span class="string">oracle.jdbc.driver.OracleDriver</span></span><br><span class="line">      <span class="attr">url:</span> <span class="string">jdbc:oracle:thin:@localhost:1521:ORCL</span></span><br><span class="line">      <span class="attr">username:</span> <span class="string">scott</span></span><br><span class="line">      <span class="attr">password:</span> <span class="number">123456</span></span><br><span class="line">      <span class="comment"># 连接池配置</span></span><br><span class="line">      <span class="attr">initial-size:</span> <span class="number">5</span></span><br><span class="line">      <span class="attr">min-idle:</span> <span class="number">5</span></span><br><span class="line">      <span class="attr">max-active:</span> <span class="number">20</span></span><br><span class="line">      <span class="comment"># 连接等待超时时间</span></span><br><span class="line">      <span class="attr">max-wait:</span> <span class="number">30000</span></span><br><span class="line">      <span class="comment"># 配置检测可以关闭的空闲连接间隔时间</span></span><br><span class="line">      <span class="attr">time-between-eviction-runs-millis:</span> <span class="number">60000</span></span><br><span class="line">      <span class="comment"># 配置连接在池中的最小生存时间</span></span><br><span class="line">      <span class="attr">min-evictable-idle-time-millis:</span> <span class="number">300000</span></span><br><span class="line">      <span class="attr">validation-query:</span> <span class="string">select</span> <span class="string">&#x27;1&#x27;</span> <span class="string">from</span> <span class="string">dual</span></span><br><span class="line">      <span class="attr">test-while-idle:</span> <span class="literal">true</span></span><br><span class="line">      <span class="attr">test-on-borrow:</span> <span class="literal">false</span></span><br><span class="line">      <span class="attr">test-on-return:</span> <span class="literal">false</span></span><br><span class="line">      <span class="comment"># 打开PSCache，并且指定每个连接上PSCache的大小</span></span><br><span class="line">      <span class="attr">pool-prepared-statements:</span> <span class="literal">true</span></span><br><span class="line">      <span class="attr">max-open-prepared-statements:</span> <span class="number">20</span></span><br><span class="line">      <span class="attr">max-pool-prepared-statement-per-connection-size:</span> <span class="number">20</span></span><br><span class="line">      <span class="comment"># 配置监控统计拦截的filters, 去掉后监控界面sql无法统计, &#x27;wall&#x27;用于防火墙</span></span><br><span class="line">      <span class="attr">filters:</span> <span class="string">stat,wall</span></span><br><span class="line">      <span class="comment"># Spring监控AOP切入点，如x.y.z.service.*,配置多个英文逗号分隔</span></span><br><span class="line">      <span class="attr">aop-patterns:</span> <span class="string">com.springboot.servie.*</span></span><br><span class="line">      </span><br><span class="line">    </span><br><span class="line">      <span class="comment"># WebStatFilter配置</span></span><br><span class="line">      <span class="attr">web-stat-filter:</span></span><br><span class="line">        <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line">        <span class="comment"># 添加过滤规则</span></span><br><span class="line">        <span class="attr">url-pattern:</span> <span class="string">/*</span></span><br><span class="line">        <span class="comment"># 忽略过滤的格式</span></span><br><span class="line">        <span class="attr">exclusions:</span> <span class="string">&#x27;*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*&#x27;</span></span><br><span class="line">      </span><br><span class="line">      <span class="comment"># StatViewServlet配置 </span></span><br><span class="line">      <span class="attr">stat-view-servlet:</span></span><br><span class="line">        <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line">        <span class="comment"># 访问路径为/druid时，跳转到StatViewServlet</span></span><br><span class="line">        <span class="attr">url-pattern:</span> <span class="string">/druid/*</span></span><br><span class="line">        <span class="comment"># 是否能够重置数据</span></span><br><span class="line">        <span class="attr">reset-enable:</span> <span class="literal">false</span></span><br><span class="line">        <span class="comment"># 需要账号密码才能访问控制台</span></span><br><span class="line">        <span class="attr">login-username:</span> <span class="string">druid</span></span><br><span class="line">        <span class="attr">login-password:</span> <span class="string">druid123</span></span><br><span class="line">        <span class="comment"># IP白名单</span></span><br><span class="line">        <span class="comment"># allow: 127.0.0.1</span></span><br><span class="line">        <span class="comment">#　IP黑名单（共同存在时，deny优先于allow）</span></span><br><span class="line">        <span class="comment"># deny: 192.168.1.218</span></span><br><span class="line">      </span><br><span class="line">      <span class="comment"># 配置StatFilter</span></span><br><span class="line">      <span class="attr">filter:</span> </span><br><span class="line">        <span class="attr">stat:</span> </span><br><span class="line">          <span class="attr">log-slow-sql:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
 
 
 <p>上述配置不但配置了Druid作为连接池，而且还开启了Druid的监控功能。 其他配置可参考官方wiki——<a target="_blank" rel="noopener" href="https://github.com/alibaba/druid/tree/master/druid-spring-boot-starter">https://github.com/alibaba/druid/tree/master/druid-spring-boot-starter</a></p>
 <p>此时，运行项目，访问<a target="_blank" rel="noopener" href="http://localhost:8080/web/druid%EF%BC%9A">http://localhost:8080/web/druid：</a></p>
-<p><img src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20171204160941.png" alt="QQ截图20171204160941.png" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20171204160941.png" class="lozad post-image"></p>
+<p><img src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20171204160941.png" alt="QQ截图20171204160941.png"></p>
 <p>输入账号密码即可看到Druid监控后台：</p>
-<p><img src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20171204161133.png" alt="QQ截图20171204161133.png" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20171204161133.png" class="lozad post-image"></p>
+<p><img src="https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20171204161133.png" alt="QQ截图20171204161133.png"></p>
 <p>关于Druid的更多说明，可查看官方wiki——<a target="_blank" rel="noopener" href="https://github.com/alibaba/druid/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98">https://github.com/alibaba/druid/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98</a></p>
 <h2 id="使用MyBatis"><a href="#使用MyBatis" class="headerlink" title="使用MyBatis"></a>使用MyBatis</h2><p>使用的库表：</p>
-<pre class="highlight"><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> &quot;SCOTT&quot;.&quot;STUDENT&quot; (</span><br><span class="line">    &quot;SNO&quot; VARCHAR2(<span class="number">3</span> BYTE) <span class="keyword">NOT</span> <span class="keyword">NULL</span> ,</span><br><span class="line">    &quot;SNAME&quot; VARCHAR2(<span class="number">9</span> BYTE) <span class="keyword">NOT</span> <span class="keyword">NULL</span> ,</span><br><span class="line">    &quot;SSEX&quot; <span class="type">CHAR</span>(<span class="number">2</span> BYTE) <span class="keyword">NOT</span> <span class="keyword">NULL</span> </span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> &quot;SCOTT&quot;.&quot;STUDENT&quot; <span class="keyword">VALUES</span> (<span class="string">&#x27;001&#x27;</span>, <span class="string">&#x27;KangKang&#x27;</span>, <span class="string">&#x27;M &#x27;</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> &quot;SCOTT&quot;.&quot;STUDENT&quot; <span class="keyword">VALUES</span> (<span class="string">&#x27;002&#x27;</span>, <span class="string">&#x27;Mike&#x27;</span>, <span class="string">&#x27;M &#x27;</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> &quot;SCOTT&quot;.&quot;STUDENT&quot; <span class="keyword">VALUES</span> (<span class="string">&#x27;003&#x27;</span>, <span class="string">&#x27;Jane&#x27;</span>, <span class="string">&#x27;F &#x27;</span>);</span><br></pre>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> &quot;SCOTT&quot;.&quot;STUDENT&quot; (</span><br><span class="line">    &quot;SNO&quot; VARCHAR2(<span class="number">3</span> BYTE) <span class="keyword">NOT</span> <span class="keyword">NULL</span> ,</span><br><span class="line">    &quot;SNAME&quot; VARCHAR2(<span class="number">9</span> BYTE) <span class="keyword">NOT</span> <span class="keyword">NULL</span> ,</span><br><span class="line">    &quot;SSEX&quot; <span class="type">CHAR</span>(<span class="number">2</span> BYTE) <span class="keyword">NOT</span> <span class="keyword">NULL</span> </span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> &quot;SCOTT&quot;.&quot;STUDENT&quot; <span class="keyword">VALUES</span> (<span class="string">&#x27;001&#x27;</span>, <span class="string">&#x27;KangKang&#x27;</span>, <span class="string">&#x27;M &#x27;</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> &quot;SCOTT&quot;.&quot;STUDENT&quot; <span class="keyword">VALUES</span> (<span class="string">&#x27;002&#x27;</span>, <span class="string">&#x27;Mike&#x27;</span>, <span class="string">&#x27;M &#x27;</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> &quot;SCOTT&quot;.&quot;STUDENT&quot; <span class="keyword">VALUES</span> (<span class="string">&#x27;003&#x27;</span>, <span class="string">&#x27;Jane&#x27;</span>, <span class="string">&#x27;F &#x27;</span>);</span><br></pre></td></tr></table></figure>
 
 
 <p>创建对应实体：</p>
-<pre class="highlight"><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span> <span class="keyword">implements</span> <span class="title">Serializable</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">339516038496531943L</span>;</span><br><span class="line">    <span class="keyword">private</span> String sno;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String sex;</span><br><span class="line">    <span class="comment">// get,set略</span></span><br><span class="line">&#125;</span><br></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span> <span class="keyword">implements</span> <span class="title">Serializable</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">339516038496531943L</span>;</span><br><span class="line">    <span class="keyword">private</span> String sno;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String sex;</span><br><span class="line">    <span class="comment">// get,set略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 <p>创建一个包含基本CRUD的StudentMapper：</p>
-<pre class="highlight"><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">StudentMapper</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(Student student)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">update</span><span class="params">(Student student)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">deleteByIds</span><span class="params">(String sno)</span></span>;</span><br><span class="line">    <span class="function">Student <span class="title">queryStudentById</span><span class="params">(Long id)</span></span>;</span><br><span class="line">&#125;</span><br></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">StudentMapper</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(Student student)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">update</span><span class="params">(Student student)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">deleteByIds</span><span class="params">(String sno)</span></span>;</span><br><span class="line">    <span class="function">Student <span class="title">queryStudentById</span><span class="params">(Long id)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 <p>StudentMapper的实现可以基于xml也可以基于注解。</p>
 <h3 id="使用注解方式"><a href="#使用注解方式" class="headerlink" title="使用注解方式"></a>使用注解方式</h3><p>继续编辑StudentMapper：</p>
-<pre class="highlight"><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Mapper</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">StudentMapper</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Insert(&quot;insert into student(sno,sname,ssex) values(#&#123;sno&#125;,#&#123;name&#125;,#&#123;sex&#125;)&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(Student student)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Update(&quot;update student set sname=#&#123;name&#125;,ssex=#&#123;sex&#125; where sno=#&#123;sno&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">update</span><span class="params">(Student student)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Delete(&quot;delete from student where sno=#&#123;sno&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">deleteBysno</span><span class="params">(String sno)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Select(&quot;select * from student where sno=#&#123;sno&#125;&quot;)</span></span><br><span class="line">    <span class="meta">@Results(id = &quot;student&quot;,value= &#123;</span></span><br><span class="line"><span class="meta">        @Result(property = &quot;sno&quot;, column = &quot;sno&quot;, javaType = String.class),</span></span><br><span class="line"><span class="meta">        @Result(property = &quot;name&quot;, column = &quot;sname&quot;, javaType = String.class),</span></span><br><span class="line"><span class="meta">        @Result(property = &quot;sex&quot;, column = &quot;ssex&quot;, javaType = String.class)</span></span><br><span class="line"><span class="meta">    &#125;)</span></span><br><span class="line">    <span class="function">Student <span class="title">queryStudentBySno</span><span class="params">(String sno)</span></span>;</span><br></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Mapper</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">StudentMapper</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Insert(&quot;insert into student(sno,sname,ssex) values(#&#123;sno&#125;,#&#123;name&#125;,#&#123;sex&#125;)&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(Student student)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Update(&quot;update student set sname=#&#123;name&#125;,ssex=#&#123;sex&#125; where sno=#&#123;sno&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">update</span><span class="params">(Student student)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Delete(&quot;delete from student where sno=#&#123;sno&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">deleteBysno</span><span class="params">(String sno)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Select(&quot;select * from student where sno=#&#123;sno&#125;&quot;)</span></span><br><span class="line">    <span class="meta">@Results(id = &quot;student&quot;,value= &#123;</span></span><br><span class="line"><span class="meta">        @Result(property = &quot;sno&quot;, column = &quot;sno&quot;, javaType = String.class),</span></span><br><span class="line"><span class="meta">        @Result(property = &quot;name&quot;, column = &quot;sname&quot;, javaType = String.class),</span></span><br><span class="line"><span class="meta">        @Result(property = &quot;sex&quot;, column = &quot;ssex&quot;, javaType = String.class)</span></span><br><span class="line"><span class="meta">    &#125;)</span></span><br><span class="line">    <span class="function">Student <span class="title">queryStudentBySno</span><span class="params">(String sno)</span></span>;</span><br></pre></td></tr></table></figure>
 
 
 <p>简单的语句只需要使用@Insert、@Update、@Delete、@Select这4个注解即可，动态SQL语句需要使用@InsertProvider、@UpdateProvider、@DeleteProvider、@SelectProvider等注解。具体可参考MyBatis官方文档：<a target="_blank" rel="noopener" href="http://www.mybatis.org/mybatis-3/zh/java-api.html%E3%80%82">http://www.mybatis.org/mybatis-3/zh/java-api.html。</a></p>
 <h3 id="使用xml方式"><a href="#使用xml方式" class="headerlink" title="使用xml方式"></a>使用xml方式</h3><p>使用xml方式需要在application.yml中进行一些额外的配置：</p>
-<pre class="highlight"><span class="line"><span class="attr">mybatis:</span></span><br><span class="line">  <span class="comment"># type-aliases扫描路径</span></span><br><span class="line">  <span class="comment"># type-aliases-package:</span></span><br><span class="line">  <span class="comment"># mapper xml实现扫描路径</span></span><br><span class="line">  <span class="attr">mapper-locations:</span> <span class="string">classpath:mapper/*.xml</span></span><br><span class="line">  <span class="attr">property:</span></span><br><span class="line">    <span class="attr">order:</span> <span class="string">BEFORE</span></span><br></pre>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">mybatis:</span></span><br><span class="line">  <span class="comment"># type-aliases扫描路径</span></span><br><span class="line">  <span class="comment"># type-aliases-package:</span></span><br><span class="line">  <span class="comment"># mapper xml实现扫描路径</span></span><br><span class="line">  <span class="attr">mapper-locations:</span> <span class="string">classpath:mapper/*.xml</span></span><br><span class="line">  <span class="attr">property:</span></span><br><span class="line">    <span class="attr">order:</span> <span class="string">BEFORE</span></span><br></pre></td></tr></table></figure>
 <p>在resources目录下创建文件夹mapper,下面创建xml</p>
-<pre class="highlight"><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">mapper</span> <span class="meta-keyword">PUBLIC</span> <span class="meta-string">&quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;</span></span></span><br><span class="line"><span class="meta">        <span class="meta-string">&quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">&quot;com.mmile.studysb.mapper.StudentMapper&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;queryStudentBySno&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;String&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;com.mmile.studysb.model.Student&quot;</span>&gt;</span></span><br><span class="line">        select * from student where sno = #&#123;sno&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">mapper</span> <span class="meta-keyword">PUBLIC</span> <span class="meta-string">&quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;</span></span></span><br><span class="line"><span class="meta">        <span class="meta-string">&quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">&quot;com.mmile.studysb.mapper.StudentMapper&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;queryStudentBySno&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;String&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;com.mmile.studysb.model.Student&quot;</span>&gt;</span></span><br><span class="line">        select * from student where sno = #&#123;sno&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>接下来编写Service：</p>
-<pre class="highlight"><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">StudentService</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(Student student)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">update</span><span class="params">(Student student)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">deleteBysno</span><span class="params">(String sno)</span></span>;</span><br><span class="line">    <span class="function">Student <span class="title">queryStudentBySno</span><span class="params">(String sno)</span></span>;</span><br><span class="line">&#125;</span><br></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">StudentService</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(Student student)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">update</span><span class="params">(Student student)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">deleteBysno</span><span class="params">(String sno)</span></span>;</span><br><span class="line">    <span class="function">Student <span class="title">queryStudentBySno</span><span class="params">(String sno)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 <p>实现类：</p>
-<pre class="highlight"><span class="line"><span class="meta">@Service(&quot;studentService&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StudentServiceImp</span> <span class="keyword">implements</span> <span class="title">StudentService</span></span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> StudentMapper studentMapper;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(Student student)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.studentMapper.add(student);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">update</span><span class="params">(Student student)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.studentMapper.update(student);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">deleteBysno</span><span class="params">(String sno)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.studentMapper.deleteBysno(sno);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Student <span class="title">queryStudentBySno</span><span class="params">(String sno)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.studentMapper.queryStudentBySno(sno);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service(&quot;studentService&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StudentServiceImp</span> <span class="keyword">implements</span> <span class="title">StudentService</span></span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> StudentMapper studentMapper;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(Student student)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.studentMapper.add(student);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">update</span><span class="params">(Student student)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.studentMapper.update(student);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">deleteBysno</span><span class="params">(String sno)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.studentMapper.deleteBysno(sno);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Student <span class="title">queryStudentBySno</span><span class="params">(String sno)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.studentMapper.queryStudentBySno(sno);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 <p>编写controller：</p>
-<pre class="highlight"><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> StudentService studentService;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@RequestMapping( value = &quot;/querystudent&quot;, method = RequestMethod.GET)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Student <span class="title">queryStudentBySno</span><span class="params">(String sno)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.studentService.queryStudentBySno(sno);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> StudentService studentService;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@RequestMapping( value = &quot;/querystudent&quot;, method = RequestMethod.GET)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Student <span class="title">queryStudentBySno</span><span class="params">(String sno)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.studentService.queryStudentBySno(sno);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 <p>完整的项目目录如下图所示：</p>
-<p><img  srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="http://59.110.212.214/upload/20200728_17391359.png" class="lozad post-image"src="http://59.110.212.214/upload/20200728_17391359.png"></p>
+<p><img src="http://59.110.212.214/upload/20200728_17391359.png"></p>
 <p>启动项目访问：<a target="_blank" rel="noopener" href="http://localhost:8080/web/querystudent?sno=001%EF%BC%9A">http://localhost:8080/web/querystudent?sno=001：</a></p>
-<p><img  srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="http://59.110.212.214/upload/20200716_09513097.png" class="lozad post-image"src="http://59.110.212.214/upload/20200716_09513097.png"></p>
+<p><img src="http://59.110.212.214/upload/20200716_09513097.png"></p>
 <p>查看SQL监控情况：</p>
-<p><img  srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="http://59.110.212.214/upload/20200716_09514329.png" class="lozad post-image"src="http://59.110.212.214/upload/20200716_09514329.png"></p>
+<p><img src="http://59.110.212.214/upload/20200716_09514329.png"></p>
 <p>可看到其记录的就是刚刚访问<a target="_blank" rel="noopener" href="https://mrbird.cc/querystudent">/querystudent</a>得到的SQL。</p>
 <p>转自:<a target="_blank" rel="noopener" href="https://mrbird.cc/Spring-Boot%20Mybatis.html">https://mrbird.cc/Spring-Boot%20Mybatis.html</a></p>
 
-  </div>
-  <div>
-  
-  <div class="post-note note-warning copyright" style="margin-top: 42px">
-    <p><span style="font-weight: bold;">作者：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/about">blydd</a></p>
-    <p><span style="font-weight: bold;">文章链接：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/2020/12/04/Spring%20Boot%E4%B8%AD%E4%BD%BF%E7%94%A8MyBatis/">https://www.mele.cool/2020/12/04/Spring%20Boot%E4%B8%AD%E4%BD%BF%E7%94%A8MyBatis/</a></p>
-    <p><span style="font-weight: bold;">版权声明：</span>本博客所有文章除特别声明外，均采用<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0 协议</a>。转载请注明出处！</p>
-  </div>
-  
-  </div>
-</article>
-<div class="nav">
-  
-  <div class="nav-item-prev">
-    <a href="/2020/12/04/Spring Boot 中的异步调用/" class="nav-link">
-      <i class="iconfont icon-left nav-prev-icon"></i>
-      <div>
-        <div class="nav-label">上一篇</div>
-        
-        <div class="nav-title">Spring Boot 中的异步调用 </div>
-        
-      </div>
-    </a>
-  </div>
-  
-  
-  <div class="nav-item-next">
-    <a href="/2020/12/04/Spring Boot中使用thymeleaf/" class="nav-link">
-      <div>
-        <div class="nav-label">下一篇</div>
-        
-        <div class="nav-title">Spring Boot中使用thymeleaf </div>
-        
-      </div>
-      <i class="iconfont icon-right nav-next-icon"></i>
-    </a>
-  </div>
-  
-</div>
-
-<div class="card card-content toc-card" id="mobiletoc">
-  <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96-mybatis-spring-boot-starter"><span class="toc-text">引入依赖:mybatis-spring-boot-starter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E5%85%A5ojdbc6"><span class="toc-text">引入ojdbc6</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Druid%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="toc-text">Druid数据源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEDruid%E4%BE%9D%E8%B5%96"><span class="toc-text">配置Druid依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Druid%E6%95%B0%E6%8D%AE%E6%BA%90%E9%85%8D%E7%BD%AE"><span class="toc-text">Druid数据源配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8MyBatis"><span class="toc-text">使用MyBatis</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%B3%A8%E8%A7%A3%E6%96%B9%E5%BC%8F"><span class="toc-text">使用注解方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8xml%E6%96%B9%E5%BC%8F"><span class="toc-text">使用xml方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-text">测试</span></a></li></ol>
-</div></main>
-          <aside class="left-column">
-            
-            <div class="card card-author">
-              
-<img src="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png" class="author-img">
-
-<p class="author-name">blydd</p>
-<p class="author-description">积跬步行千里</p>
-<div class="author-message">
-  <a class="author-posts-count" href="/archives">
-    <span>66</span>
-    <span>文章</span>
-  </a>
-  <a class="author-categories-count" href="/categories">
-    <span>16</span>
-    <span>分类</span>
-  </a>
-  <a class="author-tags-count" href="/tags">
-    <span>92</span>
-    <span>标签</span>
-  </a>
-</div>
-
-            </div>
-            
-            <div class="sticky-tablet">
-  
-  
-  <article class="display-when-two-columns spacer">
-    <div class="card card-content toc-card">
-      <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96-mybatis-spring-boot-starter"><span class="toc-text">引入依赖:mybatis-spring-boot-starter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E5%85%A5ojdbc6"><span class="toc-text">引入ojdbc6</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Druid%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="toc-text">Druid数据源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEDruid%E4%BE%9D%E8%B5%96"><span class="toc-text">配置Druid依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Druid%E6%95%B0%E6%8D%AE%E6%BA%90%E9%85%8D%E7%BD%AE"><span class="toc-text">Druid数据源配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8MyBatis"><span class="toc-text">使用MyBatis</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%B3%A8%E8%A7%A3%E6%96%B9%E5%BC%8F"><span class="toc-text">使用注解方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8xml%E6%96%B9%E5%BC%8F"><span class="toc-text">使用xml方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-text">测试</span></a></li></ol>
     </div>
-  </article>
-  
-  
-  <article class="card card-content categories-widget">
-    <div class="categories-card">
-  <div class="categories-header"><i class="iconfont icon-fenlei" style="padding-right: 2px;"></i>分类</div>
-  <div class="categories-list">
+
     
-      <a href="/categories/工具类">
-        <div class="categories-list-item">
-          工具类
-          <span class="categories-list-item-badge">8</span>
-        </div>
-      </a>
     
-      <a href="/categories/linux">
-        <div class="categories-list-item">
-          linux
-          <span class="categories-list-item-badge">3</span>
-        </div>
-      </a>
     
-      <a href="/categories/mac">
-        <div class="categories-list-item">
-          mac
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/java">
-        <div class="categories-list-item">
-          java
-          <span class="categories-list-item-badge">18</span>
-        </div>
-      </a>
-    
-      <a href="/categories/springboot">
-        <div class="categories-list-item">
-          springboot
-          <span class="categories-list-item-badge">13</span>
-        </div>
-      </a>
-    
-      <a href="/categories/docker">
-        <div class="categories-list-item">
-          docker
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/版本控制">
-        <div class="categories-list-item">
-          版本控制
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/hello world">
-        <div class="categories-list-item">
-          hello world
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/mele">
-        <div class="categories-list-item">
-          mele
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/db">
-        <div class="categories-list-item">
-          db
-          <span class="categories-list-item-badge">7</span>
-        </div>
-      </a>
-    
-      <a href="/categories/其他">
-        <div class="categories-list-item">
-          其他
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/bug">
-        <div class="categories-list-item">
-          bug
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/js">
-        <div class="categories-list-item">
-          js
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/mq">
-        <div class="categories-list-item">
-          mq
-          <span class="categories-list-item-badge">3</span>
-        </div>
-      </a>
-    
-      <a href="/categories/面试">
-        <div class="categories-list-item">
-          面试
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/springCloud">
-        <div class="categories-list-item">
-          springCloud
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-  </div>
-</div>
-  </article>
-  
-  <article class="card card-content tags-widget">
-    <div class="tags-card">
-  <div class="tags-header"><i class="iconfont icon-biaoqian" style="padding-right: 2px;"></i>热门标签</div>
-  <div class="tags-list">
-    
-    <a href="\tags\springboot" title="springboot"><div class="tags-list-item">springboot</div></a>
-    
-    <a href="\tags\java" title="java"><div class="tags-list-item">java</div></a>
-    
-    <a href="\tags\工具类" title="工具类"><div class="tags-list-item">工具类</div></a>
-    
-    <a href="\tags\mybatis" title="mybatis"><div class="tags-list-item">mybatis</div></a>
-    
-    <a href="\tags\ms" title="ms"><div class="tags-list-item">ms</div></a>
-    
-    <a href="\tags\tool" title="tool"><div class="tags-list-item">tool</div></a>
-    
-    <a href="\tags\git" title="git"><div class="tags-list-item">git</div></a>
-    
-    <a href="\tags\linux" title="linux"><div class="tags-list-item">linux</div></a>
-    
-    <a href="\tags\线程池" title="线程池"><div class="tags-list-item">线程池</div></a>
-    
-    <a href="\tags\mq" title="mq"><div class="tags-list-item">mq</div></a>
-    
-    <a href="\tags\常用" title="常用"><div class="tags-list-item">常用</div></a>
-    
-    <a href="\tags\bug" title="bug"><div class="tags-list-item">bug</div></a>
-    
-    <a href="\tags\分布式" title="分布式"><div class="tags-list-item">分布式</div></a>
-    
-    <a href="\tags\acid" title="acid"><div class="tags-list-item">acid</div></a>
-    
-    <a href="\tags\事务" title="事务"><div class="tags-list-item">事务</div></a>
-    
-    <a href="\tags\xml" title="xml"><div class="tags-list-item">xml</div></a>
-    
-  </div>
-</div>
-  </article>
-  
-  
-</div>
-          </aside>
-          <aside class="right-column">
-            <div class="sticky-widescreen">
-  
-  
-  <article class="card card-content toc-card">
-    <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96-mybatis-spring-boot-starter"><span class="toc-text">引入依赖:mybatis-spring-boot-starter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E5%85%A5ojdbc6"><span class="toc-text">引入ojdbc6</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Druid%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="toc-text">Druid数据源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEDruid%E4%BE%9D%E8%B5%96"><span class="toc-text">配置Druid依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Druid%E6%95%B0%E6%8D%AE%E6%BA%90%E9%85%8D%E7%BD%AE"><span class="toc-text">Druid数据源配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8MyBatis"><span class="toc-text">使用MyBatis</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%B3%A8%E8%A7%A3%E6%96%B9%E5%BC%8F"><span class="toc-text">使用注解方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8xml%E6%96%B9%E5%BC%8F"><span class="toc-text">使用xml方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-text">测试</span></a></li></ol>
-  </article>
-  
-  
-  <article class="card card-content">
-    <div class="recent-posts-card">
-  <div class="recent-posts-header"><i class="iconfont icon-wenzhang_huaban" style="padding-right: 2px;"></i>最近文章</div>
-  <div class="recent-posts-list">
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-30</div>
-        <a href="/2021/01/30/java面试题/"><div class="recent-posts-item-content">java面试题</div></a>
-      </div>
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-26</div>
-        <a href="/2021/01/26/编写优雅高效的java代码/"><div class="recent-posts-item-content">编写高效优雅java代码</div></a>
-      </div>
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-23</div>
-        <a href="/2021/01/23/redis教程效率版/"><div class="recent-posts-item-content">redis入门效率版</div></a>
-      </div>
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-22</div>
-        <a href="/2021/01/22/开发注意代码整理/"><div class="recent-posts-item-content">开发中注意的小问题</div></a>
-      </div>
-    
-  </div>
-</div>
-  </article>
-  
-  
-</div>
-          </aside>
-        </div>
-      </div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/mybatis/" rel="tag"># mybatis</a>
+              <a href="/tags/springboot/" rel="tag"># springboot</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/04/Spring%20Boot%20%E4%B8%AD%E7%9A%84%E5%BC%82%E6%AD%A5%E8%B0%83%E7%94%A8/" rel="prev" title="Spring Boot 中的异步调用">
+      <i class="fa fa-chevron-left"></i> Spring Boot 中的异步调用
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/04/Spring%20Boot%E4%B8%AD%E4%BD%BF%E7%94%A8JdbcTemplate/" rel="next" title="Spring Boot中使用JdbcTemplate">
+      Spring Boot中使用JdbcTemplate <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-  </div>
+      </footer>
+    
+  </article>
   
-  <footer class="footer">
-  <div class="footer-container">
-    <div>
-      <div class="footer-dsc">
-        <span>Copyright ©
+  
+  
+
+
+
+          </div>
           
-          2020 -
-          
-          2021
-        </span>
-        &nbsp;
-        <a href="/" class="footer-link">mele blog </a>
-      </div>
-    </div>
 
-    
-    <div class="footer-dsc">
-      
-      Powered by
-      <a href="https://hexo.io/" class="footer-link" target="_blank" rel="nofollow noopener noreferrer">&nbsp;Hexo </a>
-      
-      
-      <span>&nbsp;|&nbsp;</span>
-      
-      
-      Theme -
-      <a href="https://github.com/theme-kaze" class="footer-link" target="_blank"
-        rel="nofollow noopener noreferrer">&nbsp;Kaze</a>
-      
-    </div>
-    
-    
-    
-    
-</footer>
-  <a role="button" id="scrollbutton" class="basebutton"  aria-label="回到顶部">
-  <i class="iconfont icon-arrowleft button-icon"></i>
-</a>
-<a role="button" id="menubutton" class="basebutton">
-  <i class="iconfont icon-menu button-icon"></i>
-</a>
-<a role="button" id="popbutton" class="basebutton" aria-label="控制中心">
-  <i class="iconfont icon-expand button-icon"></i>
-</a>
-<a role="button" id="darkbutton" class="basebutton darkwidget" aria-label="夜色模式">
-  <i class="iconfont icon-weather button-icon"></i>
-</a>
-<a role="button" id="searchbutton" class="basebutton searchwidget" aria-label="搜索">
-  <i class="iconfont icon-search button-icon"></i>
-</a>
-
-  
-  
-  
-  <script>
-  var addImgLayout = function () {
-    var img = document.querySelectorAll('.post-content img');
-    var i;
-    for (i = 0; i < img.length; i++) {
-      var wrapper = document.createElement('a');
-      wrapper.setAttribute('href', img[i].getAttribute('data-src'));
-      wrapper.setAttribute('aria-label', 'illustration');
-      wrapper.style.cssText = 'width: 100%; display: flex; justify-content: center;';
-      if (img[i].alt) wrapper.dataset.caption = img[i].alt;
-      wrapper.dataset.nolink = true;
-      img[i].before(wrapper);
-      wrapper.append(img[i]);
-      var divWrap = document.createElement('div');
-      divWrap.classList.add('gallery');
-      wrapper.before(divWrap);
-      divWrap.append(wrapper);
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
     }
-    baguetteBox.run('.gallery');
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
-<script>loadScript("/js/lib/lightbox/baguetteBox.min.js", addImgLayout)</script>
+
+        </div>
+          
   
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96-mybatis-spring-boot-starter"><span class="nav-number">1.</span> <span class="nav-text">引入依赖:mybatis-spring-boot-starter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E5%85%A5ojdbc6"><span class="nav-number">2.</span> <span class="nav-text">引入ojdbc6</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Druid%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="nav-number">3.</span> <span class="nav-text">Druid数据源</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEDruid%E4%BE%9D%E8%B5%96"><span class="nav-number">3.1.</span> <span class="nav-text">配置Druid依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Druid%E6%95%B0%E6%8D%AE%E6%BA%90%E9%85%8D%E7%BD%AE"><span class="nav-number">3.2.</span> <span class="nav-text">Druid数据源配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8MyBatis"><span class="nav-number">4.</span> <span class="nav-text">使用MyBatis</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%B3%A8%E8%A7%A3%E6%96%B9%E5%BC%8F"><span class="nav-number">4.1.</span> <span class="nav-text">使用注解方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8xml%E6%96%B9%E5%BC%8F"><span class="nav-number">4.2.</span> <span class="nav-text">使用xml方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">5.</span> <span class="nav-text">测试</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">blydd</p>
+  <div class="site-description" itemprop="description">米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">92</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
   
-  
-<script src="/js/main.js"></script>
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">blydd</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
 
   
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
   
-  <script>
-    var addLazyload = function () {
-      var observer = lozad('.lozad', {
-        load: function (el) {
-          el.srcset = el.getAttribute('data-src');
-        },
-        loaded: function (el) {
-          el.classList.add('loaded');
-        }
-      });
-      observer.observe();
-    }
-  </script>
-  <script>loadScript("/js/lib/lozad.min.js", addLazyload)</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
+
   
+
 </body>
-
 </html>

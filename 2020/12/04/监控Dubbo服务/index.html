@@ -1,250 +1,222 @@
 <!DOCTYPE html>
-<html  lang="zh-CN" >
-
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="theme-color" content="#fff" id="theme-color">
-  <meta name="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
-  <link rel="icon" href="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png">
-  <title>监控dubbo服务</title>
-  
-  
-  <meta property="og:title" content="监控dubbo服务">
-  
-  
-  <meta property="og:url" content="https://www.mele.cool/2020/12/04/%E7%9B%91%E6%8E%A7Dubbo%E6%9C%8D%E5%8A%A1/index.html">
-  
-  
-  <meta property="og:img" content="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png">
-  
-  
-  <meta property="og:img" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
-  
-  
-  <meta property="og:type" content="article">
-  <meta property="og:article:published_time" content="2020-12-04">
-  <meta property="og:article:modified_time" content="2021-01-30">
-  <meta property="og:article:author" content="blydd">
-  
-  
-  <meta property="og:article:tag" content="dubbo">
-  
-  <meta property="og:article:tag" content="监控">
-  
-  
-  
-  
-  <!-- 百度统计代码 -->
-<script>
-  var _hmt = _hmt || [];
-  (function() {
-    var hm = document.createElement("script");
-    hm.src = "https://hm.baidu.com/hm.js?52aed7fa581354c5e14562bad1a1def2";
-    var s = document.getElementsByTagName("script")[0]; 
-    s.parentNode.insertBefore(hm, s);
-  })();
-  </script>
- <!-- 百度统计代码 --> 
-  <script>
-    // control reverse button
-    var reverseDarkList = {
-      dark: 'light',
-      light: 'dark'
-    };
-    var themeColor = {
-      dark: '#1c1c1e',
-      light: '#fff'
-    }
-    // get the data of css prefers-color-scheme
-    var getCssMediaQuery = function() {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    };
-    // reverse current darkmode setting function
-    var reverseDarkModeSetting = function() {
-      var setting = localStorage.getItem('user-color-scheme');
-      if(reverseDarkList[setting]) {
-        setting = reverseDarkList[setting];
-      } else if(setting === null) {
-        setting = reverseDarkList[getCssMediaQuery()];
-      } else {
-        return;
-      }
-      localStorage.setItem('user-color-scheme', setting);
-      return setting;
-    };
-    // apply current darkmode setting
-    var setDarkmode = function(mode) {
-      var setting = mode || localStorage.getItem('user-color-scheme');
-      if(setting === getCssMediaQuery()) {
-        document.documentElement.removeAttribute('data-user-color-scheme');
-        localStorage.removeItem('user-color-scheme');
-        document.getElementById('theme-color').content = themeColor[setting];
-      } else if(reverseDarkList[setting]) {
-        document.documentElement.setAttribute('data-user-color-scheme', setting);
-        document.getElementById('theme-color').content = themeColor[setting];
-      } else {
-        document.documentElement.removeAttribute('data-user-color-scheme');
-        localStorage.removeItem('user-color-scheme');
-        document.getElementById('theme-color').content = themeColor[getCssMediaQuery()];
-      }
-    };
-    setDarkmode();
-  </script>
-  <script>
-    function loadScript(url, cb) {
-      var script = document.createElement('script');
-      script.src = url;
-      if (cb) script.onload = cb;
-      script.async = true;
-      document.body.appendChild(script);
-    }
-  </script>
-  
-  <link rel="preload" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css" as="style" >
-  <link rel="preload" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css" as="style" >
-  
-  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.js" as="script">
-  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.css" as="style" >
-  
-  
-  <link rel="preload" href="/js/lib/lozad.min.js" as="script">
-  
-  
-  
-  
-  
-  
-  
-  
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
 <link rel="stylesheet" href="/css/main.css">
 
-  
-  
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css">
 
-  
-  
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-  
-  
-<link rel="stylesheet" href="/js/lib/lightbox/baguetteBox.min.css">
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.mele.cool","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
 
-  
-  
-  
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
+  <meta name="description" content="Dubbo给我们提供了dubbo-admin和dubbo-monitor-simple用于监控Dubbo服务，可以用来监控接口暴露，注册情况，也可以显示接口的调用明细和调用时间。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="监控dubbo服务">
+<meta property="og:url" content="https://www.mele.cool/2020/12/04/%E7%9B%91%E6%8E%A7Dubbo%E6%9C%8D%E5%8A%A1/index.html">
+<meta property="og:site_name" content="米乐博客">
+<meta property="og:description" content="Dubbo给我们提供了dubbo-admin和dubbo-monitor-simple用于监控Dubbo服务，可以用来监控接口暴露，注册情况，也可以显示接口的调用明细和调用时间。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/01/30/Mp375Eu1AtNiP6X.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/30/KFtqDxkejXwuYZN.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/30/R3loDWFMSd6JCkB.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/30/BLqKscg1xJERVIZ.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/30/vaQhAg6LJnCdwfO.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/30/tDdrfxZeHSMYqO2.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/30/sP3v7fjSOKLmCh4.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/30/4Hou6SKqbP2jAZT.png">
+<meta property="article:published_time" content="2020-12-04T02:10:17.000Z">
+<meta property="article:modified_time" content="2021-01-30T04:56:34.496Z">
+<meta property="article:author" content="blydd">
+<meta property="article:tag" content="dubbo">
+<meta property="article:tag" content="监控">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/01/30/Mp375Eu1AtNiP6X.png">
+
+<link rel="canonical" href="https://www.mele.cool/2020/12/04/%E7%9B%91%E6%8E%A7Dubbo%E6%9C%8D%E5%8A%A1/">
 
 
-<body>
-  <div class="wrapper">
-    
-    <nav class="navbar">
-  <div class="navbar-logo">
-    <span class="navbar-logo-main">
-      
-      <img class="navbar-logo-img" src="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png" alt="logo">
-      
-      <span class="navbar-logo-dsc">mele blog</span>
-    </span>
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>监控dubbo服务 | 米乐博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
   </div>
-  <div class="navbar-menu">
-    
-    <a href="/" class="navbar-menu-item">
-    
-    首页
-    
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">米乐博客</h1>
+      <span class="logo-line-after"><i></i></span>
     </a>
-    
-    <a href="/archives" class="navbar-menu-item">
-    
-    归档
-    
-    </a>
-    
-    <a href="/tags" class="navbar-menu-item">
-    
-    标签
-    
-    </a>
-    
-    <a href="/categories" class="navbar-menu-item">
-    
-    分类
-    
-    </a>
-    
-    <a href="/about" class="navbar-menu-item">
-    
-    关于
-    
-    </a>
-    
-    <a href="/links" class="navbar-menu-item">
-    
-    友链
-    
-    </a>
-    
-    <a class="navbar-menu-item darknavbar" id="dark"><i class="iconfont icon-weather"></i></a>
-    <a class="navbar-menu-item searchnavbar" id="search"><i class="iconfont icon-search" style="font-size: 1.2rem; font-weight: 400;"></i></a>
+      <p class="site-subtitle" itemprop="description">积跬步至千里</p>
   </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
 </nav>
+
+
+
+
+</div>
+    </header>
+
     
-    <div id="local-search" style="display: none;">
-      <input class="navbar-menu-item" id="search-input" placeholder="请输入搜索内容...">
-      <div id="search-content"></div>
-    </div>
-    
-    <div class="section-wrap">
-      <div class="container">
-        <div class="columns">
-          <main class="main-column">
-<article class="card card-content">
-  <header>
-    <h1 class="post-title">
-      监控dubbo服务
-    </h1>
-  </header>
-  <div class="post-meta post-show-meta">
-    <time datetime="2020-12-04T02:10:17.000Z">
-      <i class="iconfont icon-calendar" style="margin-right: 2px;"></i>
-      <span>2020-12-04</span>
-    </time>
-    
-    <span class="dot"></span>
-    
-    <a href="/categories/java/" class="post-meta-link">java</a>
-    
-    
-    
-    <span class="dot"></span>
-    <span>723 字</span>
-    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
   </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
   
-  <div class="post-meta post-show-meta" style="margin-top: -10px;">
-    <div style="display: flex; align-items: center;">
-      <i class="iconfont icon-biaoqian" style="margin-right: 2px; font-size: 1.15rem;"></i>
-      
-      
-        <a href="/tags/dubbo/" class="post-meta-link">dubbo</a>
-      
-      
-      <span class="dot"></span>
-      
-        <a href="/tags/监控/" class="post-meta-link">监控</a>
-      
-    </div>
-  </div>
   
-  </header>
-  <div id="section" class="post-content">
-    <p>Dubbo给我们提供了dubbo-admin和dubbo-monitor-simple用于监控Dubbo服务，可以用来监控接口暴露，注册情况，也可以显示接口的调用明细和调用时间。dubbo-admin和dubbo-monitor-simple的下载地址为：<a target="_blank" rel="noopener" href="https://github.com/apache/incubator-dubbo-admin/tree/master%EF%BC%8C%E8%BF%99%E9%87%8C%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D%E5%AE%83%E4%BB%AC%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E3%80%82">https://github.com/apache/incubator-dubbo-admin/tree/master，这里简单介绍它们如何使用。</a></p>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.mele.cool/2020/12/04/%E7%9B%91%E6%8E%A7Dubbo%E6%9C%8D%E5%8A%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="blydd">
+      <meta itemprop="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="米乐博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          监控dubbo服务
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-04 10:10:17" itemprop="dateCreated datePublished" datetime="2020-12-04T10:10:17+08:00">2020-12-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-30 12:56:34" itemprop="dateModified" datetime="2021-01-30T12:56:34+08:00">2021-01-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">Dubbo给我们提供了dubbo-admin和dubbo-monitor-simple用于监控Dubbo服务，可以用来监控接口暴露，注册情况，也可以显示接口的调用明细和调用时间。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Dubbo给我们提供了dubbo-admin和dubbo-monitor-simple用于监控Dubbo服务，可以用来监控接口暴露，注册情况，也可以显示接口的调用明细和调用时间。dubbo-admin和dubbo-monitor-simple的下载地址为：<a target="_blank" rel="noopener" href="https://github.com/apache/incubator-dubbo-admin/tree/master%EF%BC%8C%E8%BF%99%E9%87%8C%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D%E5%AE%83%E4%BB%AC%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E3%80%82">https://github.com/apache/incubator-dubbo-admin/tree/master，这里简单介绍它们如何使用。</a></p>
 <h2 id="1-准备"><a href="#1-准备" class="headerlink" title="1.准备"></a>1.准备</h2><p>要监控Dubbo服务，首先我们必须在Dubbo应用上提供连接监控中心的配置，Dubbo支持两种方式：</p>
 <table>
 <thead>
@@ -281,32 +253,32 @@
 </tr>
 </tbody></table>
 <p>这里我们采用第一种方式，在上一节中的server-provider和server-consumer的配置文件中添加如下配置:</p>
-<pre class="highlight"><span class="line"><span class="attr">dubbo:</span></span><br><span class="line">  <span class="attr">monitor:</span></span><br><span class="line">    <span class="attr">protocol:</span> <span class="string">registry</span></span><br></pre>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dubbo:</span></span><br><span class="line">  <span class="attr">monitor:</span></span><br><span class="line">    <span class="attr">protocol:</span> <span class="string">registry</span></span><br></pre></td></tr></table></figure>
 
 
 <p>配置好后，依次启动server-provider和server-consumer，接下来开始搭建监控中心。</p>
 <h2 id="2-dubbo-monitor-simple"><a href="#2-dubbo-monitor-simple" class="headerlink" title="2.dubbo-monitor-simple"></a>2.dubbo-monitor-simple</h2><p>下载<a target="_blank" rel="noopener" href="https://github.com/apache/incubator-dubbo-admin/tree/master%E6%BA%90%E7%A0%81%E5%90%8E%EF%BC%8C%E4%BD%BF%E7%94%A8IDEA%E5%AF%BC%E5%85%A5dubbo-monitor-simple%E5%BA%94%E7%94%A8%EF%BC%8C%E4%BF%AE%E6%94%B9%E5%85%B6%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6dubbo.properties%E5%86%85%E5%AE%B9%EF%BC%9A">https://github.com/apache/incubator-dubbo-admin/tree/master源码后，使用IDEA导入dubbo-monitor-simple应用，修改其配置文件dubbo.properties内容：</a></p>
-<pre class="highlight"><span class="line"><span class="meta">dubbo.container</span>=<span class="string">log4j,spring,registry,jetty-monitor</span></span><br><span class="line"><span class="meta">dubbo.application.name</span>=<span class="string">simple-monitor</span></span><br><span class="line"><span class="meta">dubbo.application.owner</span>=<span class="string">dubbo</span></span><br><span class="line"><span class="meta">dubbo.registry.address</span>=<span class="string">zookeeper://127.0.0.1:2181</span></span><br><span class="line"><span class="meta">dubbo.protocol.port</span>=<span class="string">7070</span></span><br><span class="line"><span class="meta">dubbo.jetty.port</span>=<span class="string">7000</span></span><br><span class="line"><span class="meta">dubbo.jetty.directory</span>=<span class="string">$&#123;user.home&#125;/monitor</span></span><br><span class="line"><span class="meta">dubbo.charts.directory</span>=<span class="string">$&#123;user.home&#125;/monitor/charts</span></span><br><span class="line"><span class="meta">dubbo.statistics.directory</span>=<span class="string">$&#123;user.home&#125;/monitor/statistics</span></span><br><span class="line"><span class="meta">dubbo.log4j.file</span>=<span class="string">logs/dubbo-monitor-simple.log</span></span><br><span class="line"><span class="meta">dubbo.log4j.level</span>=<span class="string">WARN</span></span><br></pre>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">dubbo.container</span>=<span class="string">log4j,spring,registry,jetty-monitor</span></span><br><span class="line"><span class="meta">dubbo.application.name</span>=<span class="string">simple-monitor</span></span><br><span class="line"><span class="meta">dubbo.application.owner</span>=<span class="string">dubbo</span></span><br><span class="line"><span class="meta">dubbo.registry.address</span>=<span class="string">zookeeper://127.0.0.1:2181</span></span><br><span class="line"><span class="meta">dubbo.protocol.port</span>=<span class="string">7070</span></span><br><span class="line"><span class="meta">dubbo.jetty.port</span>=<span class="string">7000</span></span><br><span class="line"><span class="meta">dubbo.jetty.directory</span>=<span class="string">$&#123;user.home&#125;/monitor</span></span><br><span class="line"><span class="meta">dubbo.charts.directory</span>=<span class="string">$&#123;user.home&#125;/monitor/charts</span></span><br><span class="line"><span class="meta">dubbo.statistics.directory</span>=<span class="string">$&#123;user.home&#125;/monitor/statistics</span></span><br><span class="line"><span class="meta">dubbo.log4j.file</span>=<span class="string">logs/dubbo-monitor-simple.log</span></span><br><span class="line"><span class="meta">dubbo.log4j.level</span>=<span class="string">WARN</span></span><br></pre></td></tr></table></figure>
 
 
 <p>上面主要指定了注册中心地址为zookeeper://127.0.0.1:2181，监控中心协议端口为7070以及监控应用访问端口为7000。</p>
 <p>配置好后，运行启动类<code>MonitorStarter</code>的main方法来启动应用，启动后，访问<a target="_blank" rel="noopener" href="http://localhost:7000/">http://localhost:7000</a>便可看到如下页面：</p>
-<p><img src="https://i.loli.net/2021/01/30/Mp375Eu1AtNiP6X.png" alt="20200728_13291257" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/Mp375Eu1AtNiP6X.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/01/30/Mp375Eu1AtNiP6X.png" alt="20200728_13291257"></p>
 <p>在线应用信息:</p>
-<p><img src="https://i.loli.net/2021/01/30/KFtqDxkejXwuYZN.png" alt="20200728_13285730" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/KFtqDxkejXwuYZN.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/01/30/KFtqDxkejXwuYZN.png" alt="20200728_13285730"></p>
 <p>多次访问<a target="_blank" rel="noopener" href="http://localhost:8081/hello/mrbird%E5%90%8E%EF%BC%8C%E4%BE%BF%E5%8F%AF%E4%BB%A5%E5%9C%A8%E7%9B%91%E6%8E%A7%E4%B8%AD%E5%BF%83%E6%9F%A5%E7%9C%8B%E6%9C%8D%E5%8A%A1%E8%B0%83%E7%94%A8%E6%83%85%E5%86%B5%EF%BC%9A">http://localhost:8081/hello/mrbird后，便可以在监控中心查看服务调用情况：</a></p>
-<p><img src="https://i.loli.net/2021/01/30/R3loDWFMSd6JCkB.png" alt="20200728_13284593" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/R3loDWFMSd6JCkB.png" class="lozad post-image"></p>
-<p><img src="https://i.loli.net/2021/01/30/BLqKscg1xJERVIZ.png" alt="20200728_13283614" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/BLqKscg1xJERVIZ.png" class="lozad post-image">)</p>
+<p><img src="https://i.loli.net/2021/01/30/R3loDWFMSd6JCkB.png" alt="20200728_13284593"></p>
+<p><img src="https://i.loli.net/2021/01/30/BLqKscg1xJERVIZ.png" alt="20200728_13283614">)</p>
 <h2 id="3-dubbo-admin"><a href="#3-dubbo-admin" class="headerlink" title="3.dubbo-admin"></a>3.dubbo-admin</h2><p>使用IDEA导入dubbo-admin应用，修改其配置文件application.properties：</p>
-<pre class="highlight"><span class="line"><span class="meta">server.port</span>=<span class="string">7001</span></span><br><span class="line"><span class="meta">spring.velocity.cache</span>=<span class="string">false</span></span><br><span class="line"><span class="meta">spring.velocity.charset</span>=<span class="string">UTF-8</span></span><br><span class="line"><span class="meta">spring.velocity.layout-url</span>=<span class="string">/templates/default.vm</span></span><br><span class="line"><span class="meta">spring.messages.fallback-to-system-locale</span>=<span class="string">false</span></span><br><span class="line"><span class="meta">spring.messages.basename</span>=<span class="string">i18n/message</span></span><br><span class="line"><span class="meta">spring.root.password</span>=<span class="string">root</span></span><br><span class="line"><span class="meta">spring.guest.password</span>=<span class="string">guest</span></span><br><span class="line"></span><br><span class="line"><span class="meta">dubbo.registry.address</span>=<span class="string">zookeeper://127.0.0.1:2181</span></span><br></pre>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">server.port</span>=<span class="string">7001</span></span><br><span class="line"><span class="meta">spring.velocity.cache</span>=<span class="string">false</span></span><br><span class="line"><span class="meta">spring.velocity.charset</span>=<span class="string">UTF-8</span></span><br><span class="line"><span class="meta">spring.velocity.layout-url</span>=<span class="string">/templates/default.vm</span></span><br><span class="line"><span class="meta">spring.messages.fallback-to-system-locale</span>=<span class="string">false</span></span><br><span class="line"><span class="meta">spring.messages.basename</span>=<span class="string">i18n/message</span></span><br><span class="line"><span class="meta">spring.root.password</span>=<span class="string">root</span></span><br><span class="line"><span class="meta">spring.guest.password</span>=<span class="string">guest</span></span><br><span class="line"></span><br><span class="line"><span class="meta">dubbo.registry.address</span>=<span class="string">zookeeper://127.0.0.1:2181</span></span><br></pre></td></tr></table></figure>
 
 
 <p>上面配置主要配置了注册中心地址为zookeeper://127.0.0.1:2181，应用端口号为7001，root和guest账户的密码。</p>
 <p>配置好后，启动应用（dubbo-admin使用Spring Boot构建，启动入口类即可），访问<a target="_blank" rel="noopener" href="http://localhost:7001/">http://localhost:7001</a>：</p>
-<p><img src="https://i.loli.net/2021/01/30/vaQhAg6LJnCdwfO.png" alt="20200728_13281327" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/vaQhAg6LJnCdwfO.png" class="lozad post-image"></p>
-<p><img src="https://i.loli.net/2021/01/30/tDdrfxZeHSMYqO2.png" alt="20200728_13280472" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/tDdrfxZeHSMYqO2.png" class="lozad post-image"></p>
-<p><img src="https://i.loli.net/2021/01/30/sP3v7fjSOKLmCh4.png" alt="20200728_13275350" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/sP3v7fjSOKLmCh4.png" class="lozad post-image"></p>
-<p><img src="https://i.loli.net/2021/01/30/4Hou6SKqbP2jAZT.png" alt="20200728_13274153" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/4Hou6SKqbP2jAZT.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/01/30/vaQhAg6LJnCdwfO.png" alt="20200728_13281327"></p>
+<p><img src="https://i.loli.net/2021/01/30/tDdrfxZeHSMYqO2.png" alt="20200728_13280472"></p>
+<p><img src="https://i.loli.net/2021/01/30/sP3v7fjSOKLmCh4.png" alt="20200728_13275350"></p>
+<p><img src="https://i.loli.net/2021/01/30/4Hou6SKqbP2jAZT.png" alt="20200728_13274153"></p>
 <p>duubo提供了新版的dubbo-admin，采用前后端分离的方式，前端由Vue.js构建，UI更为nice，不过还不完善，所以这里就不介绍了。</p>
 <p>源码链接：<a target="_blank" rel="noopener" href="https://github.com/wuyouzhuguli/SpringAll/tree/master/52.Dubbo-OPS-Mointor">https://github.com/wuyouzhuguli/SpringAll/tree/master/52.Dubbo-OPS-Mointor</a></p>
 <ul>
@@ -315,397 +287,198 @@
 <li><strong>版权声明：</strong> 本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！</li>
 </ul>
 
-  </div>
-  <div>
-  
-  <div class="post-note note-warning copyright" style="margin-top: 42px">
-    <p><span style="font-weight: bold;">作者：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/about">blydd</a></p>
-    <p><span style="font-weight: bold;">文章链接：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/2020/12/04/%E7%9B%91%E6%8E%A7Dubbo%E6%9C%8D%E5%8A%A1/">https://www.mele.cool/2020/12/04/%E7%9B%91%E6%8E%A7Dubbo%E6%9C%8D%E5%8A%A1/</a></p>
-    <p><span style="font-weight: bold;">版权声明：</span>本博客所有文章除特别声明外，均采用<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0 协议</a>。转载请注明出处！</p>
-  </div>
-  
-  </div>
-</article>
-<div class="nav">
-  
-  <div class="nav-item-prev">
-    <a href="/2020/12/04/深入学习Spring Boot自动装配/" class="nav-link">
-      <i class="iconfont icon-left nav-prev-icon"></i>
-      <div>
-        <div class="nav-label">上一篇</div>
-        
-        <div class="nav-title">深入学习springboot自动装配 </div>
-        
-      </div>
-    </a>
-  </div>
-  
-  
-  <div class="nav-item-next">
-    <a href="/2020/12/04/线程池Executors/" class="nav-link">
-      <div>
-        <div class="nav-label">下一篇</div>
-        
-        <div class="nav-title">线程池Executors </div>
-        
-      </div>
-      <i class="iconfont icon-right nav-next-icon"></i>
-    </a>
-  </div>
-  
-</div>
-
-<div class="card card-content toc-card" id="mobiletoc">
-  <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%87%86%E5%A4%87"><span class="toc-text">1.准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-dubbo-monitor-simple"><span class="toc-text">2.dubbo-monitor-simple</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-dubbo-admin"><span class="toc-text">3.dubbo-admin</span></a></li></ol>
-</div></main>
-          <aside class="left-column">
-            
-            <div class="card card-author">
-              
-<img src="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png" class="author-img">
-
-<p class="author-name">blydd</p>
-<p class="author-description">积跬步行千里</p>
-<div class="author-message">
-  <a class="author-posts-count" href="/archives">
-    <span>66</span>
-    <span>文章</span>
-  </a>
-  <a class="author-categories-count" href="/categories">
-    <span>16</span>
-    <span>分类</span>
-  </a>
-  <a class="author-tags-count" href="/tags">
-    <span>92</span>
-    <span>标签</span>
-  </a>
-</div>
-
-            </div>
-            
-            <div class="sticky-tablet">
-  
-  
-  <article class="display-when-two-columns spacer">
-    <div class="card card-content toc-card">
-      <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%87%86%E5%A4%87"><span class="toc-text">1.准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-dubbo-monitor-simple"><span class="toc-text">2.dubbo-monitor-simple</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-dubbo-admin"><span class="toc-text">3.dubbo-admin</span></a></li></ol>
     </div>
-  </article>
-  
-  
-  <article class="card card-content categories-widget">
-    <div class="categories-card">
-  <div class="categories-header"><i class="iconfont icon-fenlei" style="padding-right: 2px;"></i>分类</div>
-  <div class="categories-list">
+
     
-      <a href="/categories/工具类">
-        <div class="categories-list-item">
-          工具类
-          <span class="categories-list-item-badge">8</span>
-        </div>
-      </a>
     
-      <a href="/categories/linux">
-        <div class="categories-list-item">
-          linux
-          <span class="categories-list-item-badge">3</span>
-        </div>
-      </a>
     
-      <a href="/categories/mac">
-        <div class="categories-list-item">
-          mac
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/java">
-        <div class="categories-list-item">
-          java
-          <span class="categories-list-item-badge">18</span>
-        </div>
-      </a>
-    
-      <a href="/categories/springboot">
-        <div class="categories-list-item">
-          springboot
-          <span class="categories-list-item-badge">13</span>
-        </div>
-      </a>
-    
-      <a href="/categories/docker">
-        <div class="categories-list-item">
-          docker
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/版本控制">
-        <div class="categories-list-item">
-          版本控制
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/hello world">
-        <div class="categories-list-item">
-          hello world
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/mele">
-        <div class="categories-list-item">
-          mele
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/db">
-        <div class="categories-list-item">
-          db
-          <span class="categories-list-item-badge">7</span>
-        </div>
-      </a>
-    
-      <a href="/categories/其他">
-        <div class="categories-list-item">
-          其他
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/bug">
-        <div class="categories-list-item">
-          bug
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/js">
-        <div class="categories-list-item">
-          js
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/mq">
-        <div class="categories-list-item">
-          mq
-          <span class="categories-list-item-badge">3</span>
-        </div>
-      </a>
-    
-      <a href="/categories/面试">
-        <div class="categories-list-item">
-          面试
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/springCloud">
-        <div class="categories-list-item">
-          springCloud
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-  </div>
-</div>
-  </article>
-  
-  <article class="card card-content tags-widget">
-    <div class="tags-card">
-  <div class="tags-header"><i class="iconfont icon-biaoqian" style="padding-right: 2px;"></i>热门标签</div>
-  <div class="tags-list">
-    
-    <a href="\tags\springboot" title="springboot"><div class="tags-list-item">springboot</div></a>
-    
-    <a href="\tags\java" title="java"><div class="tags-list-item">java</div></a>
-    
-    <a href="\tags\工具类" title="工具类"><div class="tags-list-item">工具类</div></a>
-    
-    <a href="\tags\mybatis" title="mybatis"><div class="tags-list-item">mybatis</div></a>
-    
-    <a href="\tags\ms" title="ms"><div class="tags-list-item">ms</div></a>
-    
-    <a href="\tags\tool" title="tool"><div class="tags-list-item">tool</div></a>
-    
-    <a href="\tags\git" title="git"><div class="tags-list-item">git</div></a>
-    
-    <a href="\tags\linux" title="linux"><div class="tags-list-item">linux</div></a>
-    
-    <a href="\tags\线程池" title="线程池"><div class="tags-list-item">线程池</div></a>
-    
-    <a href="\tags\mq" title="mq"><div class="tags-list-item">mq</div></a>
-    
-    <a href="\tags\常用" title="常用"><div class="tags-list-item">常用</div></a>
-    
-    <a href="\tags\bug" title="bug"><div class="tags-list-item">bug</div></a>
-    
-    <a href="\tags\分布式" title="分布式"><div class="tags-list-item">分布式</div></a>
-    
-    <a href="\tags\acid" title="acid"><div class="tags-list-item">acid</div></a>
-    
-    <a href="\tags\事务" title="事务"><div class="tags-list-item">事务</div></a>
-    
-    <a href="\tags\xml" title="xml"><div class="tags-list-item">xml</div></a>
-    
-  </div>
-</div>
-  </article>
-  
-  
-</div>
-          </aside>
-          <aside class="right-column">
-            <div class="sticky-widescreen">
-  
-  
-  <article class="card card-content toc-card">
-    <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%87%86%E5%A4%87"><span class="toc-text">1.准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-dubbo-monitor-simple"><span class="toc-text">2.dubbo-monitor-simple</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-dubbo-admin"><span class="toc-text">3.dubbo-admin</span></a></li></ol>
-  </article>
-  
-  
-  <article class="card card-content">
-    <div class="recent-posts-card">
-  <div class="recent-posts-header"><i class="iconfont icon-wenzhang_huaban" style="padding-right: 2px;"></i>最近文章</div>
-  <div class="recent-posts-list">
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-30</div>
-        <a href="/2021/01/30/java面试题/"><div class="recent-posts-item-content">java面试题</div></a>
-      </div>
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-26</div>
-        <a href="/2021/01/26/编写优雅高效的java代码/"><div class="recent-posts-item-content">编写高效优雅java代码</div></a>
-      </div>
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-23</div>
-        <a href="/2021/01/23/redis教程效率版/"><div class="recent-posts-item-content">redis入门效率版</div></a>
-      </div>
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-22</div>
-        <a href="/2021/01/22/开发注意代码整理/"><div class="recent-posts-item-content">开发中注意的小问题</div></a>
-      </div>
-    
-  </div>
-</div>
-  </article>
-  
-  
-</div>
-          </aside>
-        </div>
-      </div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dubbo/" rel="tag"># dubbo</a>
+              <a href="/tags/%E7%9B%91%E6%8E%A7/" rel="tag"># 监控</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/04/%E7%BA%BF%E7%A8%8B%E6%B1%A0Executors/" rel="prev" title="线程池Executors">
+      <i class="fa fa-chevron-left"></i> 线程池Executors
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/04/%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0Spring%20Boot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/" rel="next" title="深入学习springboot自动装配">
+      深入学习springboot自动装配 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-  </div>
+      </footer>
+    
+  </article>
   
-  <footer class="footer">
-  <div class="footer-container">
-    <div>
-      <div class="footer-dsc">
-        <span>Copyright ©
+  
+  
+
+
+
+          </div>
           
-          2020 -
-          
-          2021
-        </span>
-        &nbsp;
-        <a href="/" class="footer-link">mele blog </a>
-      </div>
-    </div>
 
-    
-    <div class="footer-dsc">
-      
-      Powered by
-      <a href="https://hexo.io/" class="footer-link" target="_blank" rel="nofollow noopener noreferrer">&nbsp;Hexo </a>
-      
-      
-      <span>&nbsp;|&nbsp;</span>
-      
-      
-      Theme -
-      <a href="https://github.com/theme-kaze" class="footer-link" target="_blank"
-        rel="nofollow noopener noreferrer">&nbsp;Kaze</a>
-      
-    </div>
-    
-    
-    
-    
-</footer>
-  <a role="button" id="scrollbutton" class="basebutton"  aria-label="回到顶部">
-  <i class="iconfont icon-arrowleft button-icon"></i>
-</a>
-<a role="button" id="menubutton" class="basebutton">
-  <i class="iconfont icon-menu button-icon"></i>
-</a>
-<a role="button" id="popbutton" class="basebutton" aria-label="控制中心">
-  <i class="iconfont icon-expand button-icon"></i>
-</a>
-<a role="button" id="darkbutton" class="basebutton darkwidget" aria-label="夜色模式">
-  <i class="iconfont icon-weather button-icon"></i>
-</a>
-<a role="button" id="searchbutton" class="basebutton searchwidget" aria-label="搜索">
-  <i class="iconfont icon-search button-icon"></i>
-</a>
-
-  
-  
-  
-  <script>
-  var addImgLayout = function () {
-    var img = document.querySelectorAll('.post-content img');
-    var i;
-    for (i = 0; i < img.length; i++) {
-      var wrapper = document.createElement('a');
-      wrapper.setAttribute('href', img[i].getAttribute('data-src'));
-      wrapper.setAttribute('aria-label', 'illustration');
-      wrapper.style.cssText = 'width: 100%; display: flex; justify-content: center;';
-      if (img[i].alt) wrapper.dataset.caption = img[i].alt;
-      wrapper.dataset.nolink = true;
-      img[i].before(wrapper);
-      wrapper.append(img[i]);
-      var divWrap = document.createElement('div');
-      divWrap.classList.add('gallery');
-      wrapper.before(divWrap);
-      divWrap.append(wrapper);
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
     }
-    baguetteBox.run('.gallery');
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
-<script>loadScript("/js/lib/lightbox/baguetteBox.min.js", addImgLayout)</script>
+
+        </div>
+          
   
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%87%86%E5%A4%87"><span class="nav-number">1.</span> <span class="nav-text">1.准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-dubbo-monitor-simple"><span class="nav-number">2.</span> <span class="nav-text">2.dubbo-monitor-simple</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-dubbo-admin"><span class="nav-number">3.</span> <span class="nav-text">3.dubbo-admin</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">blydd</p>
+  <div class="site-description" itemprop="description">米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">92</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
   
-  
-<script src="/js/main.js"></script>
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">blydd</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
 
   
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
   
-  <script>
-    var addLazyload = function () {
-      var observer = lozad('.lozad', {
-        load: function (el) {
-          el.srcset = el.getAttribute('data-src');
-        },
-        loaded: function (el) {
-          el.classList.add('loaded');
-        }
-      });
-      observer.observe();
-    }
-  </script>
-  <script>loadScript("/js/lib/lozad.min.js", addLazyload)</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
+
   
+
 </body>
-
 </html>

@@ -1,243 +1,217 @@
 <!DOCTYPE html>
-<html  lang="zh-CN" >
-
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="theme-color" content="#fff" id="theme-color">
-  <meta name="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
-  <link rel="icon" href="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png">
-  <title>redis入门效率版</title>
-  
-  
-  <meta property="og:title" content="redis入门效率版">
-  
-  
-  <meta property="og:url" content="https://www.mele.cool/2021/01/23/redis%E6%95%99%E7%A8%8B%E6%95%88%E7%8E%87%E7%89%88/index.html">
-  
-  
-  <meta property="og:img" content="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png">
-  
-  
-  <meta property="og:img" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
-  
-  
-  <meta property="og:type" content="article">
-  <meta property="og:article:published_time" content="2021-01-23">
-  <meta property="og:article:modified_time" content="2021-01-30">
-  <meta property="og:article:author" content="blydd">
-  
-  
-  <meta property="og:article:tag" content="redis">
-  
-  
-  
-  
-  <!-- 百度统计代码 -->
-<script>
-  var _hmt = _hmt || [];
-  (function() {
-    var hm = document.createElement("script");
-    hm.src = "https://hm.baidu.com/hm.js?52aed7fa581354c5e14562bad1a1def2";
-    var s = document.getElementsByTagName("script")[0]; 
-    s.parentNode.insertBefore(hm, s);
-  })();
-  </script>
- <!-- 百度统计代码 --> 
-  <script>
-    // control reverse button
-    var reverseDarkList = {
-      dark: 'light',
-      light: 'dark'
-    };
-    var themeColor = {
-      dark: '#1c1c1e',
-      light: '#fff'
-    }
-    // get the data of css prefers-color-scheme
-    var getCssMediaQuery = function() {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    };
-    // reverse current darkmode setting function
-    var reverseDarkModeSetting = function() {
-      var setting = localStorage.getItem('user-color-scheme');
-      if(reverseDarkList[setting]) {
-        setting = reverseDarkList[setting];
-      } else if(setting === null) {
-        setting = reverseDarkList[getCssMediaQuery()];
-      } else {
-        return;
-      }
-      localStorage.setItem('user-color-scheme', setting);
-      return setting;
-    };
-    // apply current darkmode setting
-    var setDarkmode = function(mode) {
-      var setting = mode || localStorage.getItem('user-color-scheme');
-      if(setting === getCssMediaQuery()) {
-        document.documentElement.removeAttribute('data-user-color-scheme');
-        localStorage.removeItem('user-color-scheme');
-        document.getElementById('theme-color').content = themeColor[setting];
-      } else if(reverseDarkList[setting]) {
-        document.documentElement.setAttribute('data-user-color-scheme', setting);
-        document.getElementById('theme-color').content = themeColor[setting];
-      } else {
-        document.documentElement.removeAttribute('data-user-color-scheme');
-        localStorage.removeItem('user-color-scheme');
-        document.getElementById('theme-color').content = themeColor[getCssMediaQuery()];
-      }
-    };
-    setDarkmode();
-  </script>
-  <script>
-    function loadScript(url, cb) {
-      var script = document.createElement('script');
-      script.src = url;
-      if (cb) script.onload = cb;
-      script.async = true;
-      document.body.appendChild(script);
-    }
-  </script>
-  
-  <link rel="preload" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css" as="style" >
-  <link rel="preload" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css" as="style" >
-  
-  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.js" as="script">
-  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.css" as="style" >
-  
-  
-  <link rel="preload" href="/js/lib/lozad.min.js" as="script">
-  
-  
-  
-  
-  
-  
-  
-  
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
 <link rel="stylesheet" href="/css/main.css">
 
-  
-  
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css">
 
-  
-  
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-  
-  
-<link rel="stylesheet" href="/js/lib/lightbox/baguetteBox.min.css">
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.mele.cool","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
 
-  
-  
-  
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
+  <meta name="description" content="redis五种数据类型,持久化,事务,通用命令等.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis入门效率版">
+<meta property="og:url" content="https://www.mele.cool/2021/01/23/redis%E6%95%99%E7%A8%8B%E6%95%88%E7%8E%87%E7%89%88/index.html">
+<meta property="og:site_name" content="米乐博客">
+<meta property="og:description" content="redis五种数据类型,持久化,事务,通用命令等.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/01/30/oxvBH9EgWXTjSGA.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/30/iIGRsyC3n6l9w24.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/30/daySTQE9livjgXJ.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/30/sLbq7CDHG39WI1A.png">
+<meta property="article:published_time" content="2021-01-23T15:10:17.000Z">
+<meta property="article:modified_time" content="2021-01-30T02:02:08.316Z">
+<meta property="article:author" content="blydd">
+<meta property="article:tag" content="redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/01/30/oxvBH9EgWXTjSGA.png">
+
+<link rel="canonical" href="https://www.mele.cool/2021/01/23/redis%E6%95%99%E7%A8%8B%E6%95%88%E7%8E%87%E7%89%88/">
 
 
-<body>
-  <div class="wrapper">
-    
-    <nav class="navbar">
-  <div class="navbar-logo">
-    <span class="navbar-logo-main">
-      
-      <img class="navbar-logo-img" src="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png" alt="logo">
-      
-      <span class="navbar-logo-dsc">mele blog</span>
-    </span>
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>redis入门效率版 | 米乐博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
   </div>
-  <div class="navbar-menu">
-    
-    <a href="/" class="navbar-menu-item">
-    
-    首页
-    
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">米乐博客</h1>
+      <span class="logo-line-after"><i></i></span>
     </a>
-    
-    <a href="/archives" class="navbar-menu-item">
-    
-    归档
-    
-    </a>
-    
-    <a href="/tags" class="navbar-menu-item">
-    
-    标签
-    
-    </a>
-    
-    <a href="/categories" class="navbar-menu-item">
-    
-    分类
-    
-    </a>
-    
-    <a href="/about" class="navbar-menu-item">
-    
-    关于
-    
-    </a>
-    
-    <a href="/links" class="navbar-menu-item">
-    
-    友链
-    
-    </a>
-    
-    <a class="navbar-menu-item darknavbar" id="dark"><i class="iconfont icon-weather"></i></a>
-    <a class="navbar-menu-item searchnavbar" id="search"><i class="iconfont icon-search" style="font-size: 1.2rem; font-weight: 400;"></i></a>
+      <p class="site-subtitle" itemprop="description">积跬步至千里</p>
   </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
 </nav>
+
+
+
+
+</div>
+    </header>
+
     
-    <div id="local-search" style="display: none;">
-      <input class="navbar-menu-item" id="search-input" placeholder="请输入搜索内容...">
-      <div id="search-content"></div>
-    </div>
-    
-    <div class="section-wrap">
-      <div class="container">
-        <div class="columns">
-          <main class="main-column">
-<article class="card card-content">
-  <header>
-    <h1 class="post-title">
-      redis入门效率版
-    </h1>
-  </header>
-  <div class="post-meta post-show-meta">
-    <time datetime="2021-01-23T15:10:17.000Z">
-      <i class="iconfont icon-calendar" style="margin-right: 2px;"></i>
-      <span>2021-01-23</span>
-    </time>
-    
-    <span class="dot"></span>
-    
-    <a href="/categories/db/" class="post-meta-link">db</a>
-    
-    
-    
-    <span class="dot"></span>
-    <span>7.8k 字</span>
-    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
   </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
   
-  <div class="post-meta post-show-meta" style="margin-top: -10px;">
-    <div style="display: flex; align-items: center;">
-      <i class="iconfont icon-biaoqian" style="margin-right: 2px; font-size: 1.15rem;"></i>
-      
-      
-        <a href="/tags/redis/" class="post-meta-link">redis</a>
-      
-    </div>
-  </div>
   
-  </header>
-  <div id="section" class="post-content">
-    <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><pre class="highlight"><span class="line">wget http://download.redis.io/releases/redis-3.2.8.tar.gz</span><br><span class="line"><span class="meta">#</span><span class="bash">1.下载安装包 6.0.5版本</span></span><br><span class="line">wget http://download.redis.io/releases/redis-6.0.5.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">2.解压到指定文件夹</span></span><br><span class="line">tar -zxvf redis-6.0.5.tar.gz -C /usr/local/redis/</span><br><span class="line"><span class="meta">#</span><span class="bash">3.在编译安装前，查看系统gcc环境的版本（gcc -v），centos7默认安装的版本为4.8.5，该版本过低会无法进行安装，需要升级gcc到6以上。</span></span><br><span class="line">sudo yum -y install centos-release-scl</span><br><span class="line">sudo yum -y install devtoolset-9-gcc devtoolset-9-gcc-c++ devtoolset-9-binutils</span><br><span class="line">sudo scl enable devtoolset-9 bash</span><br><span class="line">sudo echo &quot;source /opt/rh/devtoolset-9/enable&quot; &gt;&gt; /etc/profile</span><br><span class="line">gcc -v</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">4.进入文件夹 编译</span></span><br><span class="line">cd /usr/local/redis/redis-6.0.5/</span><br><span class="line">make</span><br><span class="line"><span class="meta">#</span><span class="bash">编译并安装到指定文件夹</span></span><br><span class="line">sudo make &amp;&amp; sudo make install PREFIX=/usr/local/redis/redis-6.0.5</span><br><span class="line"><span class="meta">#</span><span class="bash">若编译报错:zmalloc.h:50:10: fatal error: jemalloc/jemalloc.h: No such file or directory</span></span><br><span class="line"><span class="meta">#</span><span class="bash">则使用命令:make MALLOC=libc</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">5.修改redis.conf的一些必要配置：</span></span><br><span class="line">daemonize no --&gt; yes  # 让redis启动的时候以后台服务的形式</span><br><span class="line">requirepass foobared --&gt; #设置redis的连接密码</span><br><span class="line">port 6379　　　　--&gt; #redis的启动端口，默认为6379</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">6.将redis做成服务，并设置成开机启动：</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">7.指定redis日志和数据存放目录</span></span><br><span class="line">mkdir -p /usr/local/redis/redis-6.0.5/log</span><br><span class="line">mkdir -p /usr/local/redis/redis-6.0.5/data</span><br><span class="line">vim redis.conf</span><br><span class="line"><span class="meta">#</span><span class="bash"> 指定redis日志文件存放目录</span></span><br><span class="line">logfile &quot;/usr/local/redis/redis-6.0.5/log/redis.log&quot;</span><br><span class="line"><span class="meta">#</span><span class="bash">指定redis数据存放目录</span></span><br><span class="line">dir /usr/local/redis/redis-6.0.5/data</span><br></pre>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.mele.cool/2021/01/23/redis%E6%95%99%E7%A8%8B%E6%95%88%E7%8E%87%E7%89%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="blydd">
+      <meta itemprop="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="米乐博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          redis入门效率版
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-23 23:10:17" itemprop="dateCreated datePublished" datetime="2021-01-23T23:10:17+08:00">2021-01-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-30 10:02:08" itemprop="dateModified" datetime="2021-01-30T10:02:08+08:00">2021-01-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/db/" itemprop="url" rel="index"><span itemprop="name">db</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">redis五种数据类型,持久化,事务,通用命令等.</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-3.2.8.tar.gz</span><br><span class="line"><span class="meta">#</span><span class="bash">1.下载安装包 6.0.5版本</span></span><br><span class="line">wget http://download.redis.io/releases/redis-6.0.5.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">2.解压到指定文件夹</span></span><br><span class="line">tar -zxvf redis-6.0.5.tar.gz -C /usr/local/redis/</span><br><span class="line"><span class="meta">#</span><span class="bash">3.在编译安装前，查看系统gcc环境的版本（gcc -v），centos7默认安装的版本为4.8.5，该版本过低会无法进行安装，需要升级gcc到6以上。</span></span><br><span class="line">sudo yum -y install centos-release-scl</span><br><span class="line">sudo yum -y install devtoolset-9-gcc devtoolset-9-gcc-c++ devtoolset-9-binutils</span><br><span class="line">sudo scl enable devtoolset-9 bash</span><br><span class="line">sudo echo &quot;source /opt/rh/devtoolset-9/enable&quot; &gt;&gt; /etc/profile</span><br><span class="line">gcc -v</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">4.进入文件夹 编译</span></span><br><span class="line">cd /usr/local/redis/redis-6.0.5/</span><br><span class="line">make</span><br><span class="line"><span class="meta">#</span><span class="bash">编译并安装到指定文件夹</span></span><br><span class="line">sudo make &amp;&amp; sudo make install PREFIX=/usr/local/redis/redis-6.0.5</span><br><span class="line"><span class="meta">#</span><span class="bash">若编译报错:zmalloc.h:50:10: fatal error: jemalloc/jemalloc.h: No such file or directory</span></span><br><span class="line"><span class="meta">#</span><span class="bash">则使用命令:make MALLOC=libc</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">5.修改redis.conf的一些必要配置：</span></span><br><span class="line">daemonize no --&gt; yes  # 让redis启动的时候以后台服务的形式</span><br><span class="line">requirepass foobared --&gt; #设置redis的连接密码</span><br><span class="line">port 6379　　　　--&gt; #redis的启动端口，默认为6379</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">6.将redis做成服务，并设置成开机启动：</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">7.指定redis日志和数据存放目录</span></span><br><span class="line">mkdir -p /usr/local/redis/redis-6.0.5/log</span><br><span class="line">mkdir -p /usr/local/redis/redis-6.0.5/data</span><br><span class="line">vim redis.conf</span><br><span class="line"><span class="meta">#</span><span class="bash"> 指定redis日志文件存放目录</span></span><br><span class="line">logfile &quot;/usr/local/redis/redis-6.0.5/log/redis.log&quot;</span><br><span class="line"><span class="meta">#</span><span class="bash">指定redis数据存放目录</span></span><br><span class="line">dir /usr/local/redis/redis-6.0.5/data</span><br></pre></td></tr></table></figure>
 
 
 <h1 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h1><blockquote>
@@ -271,7 +245,7 @@
 <li><p>查看当前redis信息:info</p>
 </li>
 </ul>
-<pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">安装gcc环境</span></span><br><span class="line">yum install gcc-c++</span><br><span class="line"><span class="meta">#</span><span class="bash">启动服务端 前端启动,无法部署集群</span> </span><br><span class="line">./redis/bin/redis-server</span><br><span class="line"><span class="meta">#</span><span class="bash">后端启动</span></span><br><span class="line"><span class="meta">#</span><span class="bash">1.修改redis.conf文件,开启守护线程: daemonize yes</span></span><br><span class="line"><span class="meta">#</span><span class="bash">2.命令启动</span></span><br><span class="line">./bin/redis-server ./redis.conf</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">启动客户端 默认连接本地6379端口</span></span><br><span class="line">./redis/bin/redis-cli</span><br><span class="line"><span class="meta">#</span><span class="bash">连接其他机器</span></span><br><span class="line">./bin/redis-cli -h ip -p 6379</span><br><span class="line"></span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">安装gcc环境</span></span><br><span class="line">yum install gcc-c++</span><br><span class="line"><span class="meta">#</span><span class="bash">启动服务端 前端启动,无法部署集群</span> </span><br><span class="line">./redis/bin/redis-server</span><br><span class="line"><span class="meta">#</span><span class="bash">后端启动</span></span><br><span class="line"><span class="meta">#</span><span class="bash">1.修改redis.conf文件,开启守护线程: daemonize yes</span></span><br><span class="line"><span class="meta">#</span><span class="bash">2.命令启动</span></span><br><span class="line">./bin/redis-server ./redis.conf</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">启动客户端 默认连接本地6379端口</span></span><br><span class="line">./redis/bin/redis-cli</span><br><span class="line"><span class="meta">#</span><span class="bash">连接其他机器</span></span><br><span class="line">./bin/redis-cli -h ip -p 6379</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h3 id="后台启动redis"><a href="#后台启动redis" class="headerlink" title="后台启动redis"></a>后台启动redis</h3><blockquote>
 <p>./bin/redis-server ./redis.conf</p>
 </blockquote>
@@ -284,33 +258,33 @@
 <h2 id="String"><a href="#String" class="headerlink" title="String"></a>String</h2><blockquote>
 <p>单个值最大512M,对应java中的map</p>
 </blockquote>
-<h3 id="使用命令"><a href="#使用命令" class="headerlink" title="使用命令"></a>使用命令</h3><pre class="highlight"><span class="line">set key value</span><br><span class="line">get key</span><br><span class="line">del key</span><br><span class="line">getset key value</span><br><span class="line">incr key</span><br><span class="line">decr key</span><br><span class="line">append key</span><br><span class="line">incrby </span><br><span class="line">decrby </span><br></pre>
+<h3 id="使用命令"><a href="#使用命令" class="headerlink" title="使用命令"></a>使用命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">set key value</span><br><span class="line">get key</span><br><span class="line">del key</span><br><span class="line">getset key value</span><br><span class="line">incr key</span><br><span class="line">decr key</span><br><span class="line">append key</span><br><span class="line">incrby </span><br><span class="line">decrby </span><br></pre></td></tr></table></figure>
 <h2 id="hash"><a href="#hash" class="headerlink" title="hash"></a>hash</h2><blockquote>
 <p>示例:{username:”zhangsan”,age:”18”},类似JSON,对应java中的bean.</p>
 </blockquote>
-<h3 id="使用命令-1"><a href="#使用命令-1" class="headerlink" title="使用命令"></a>使用命令</h3><pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">赋值</span></span><br><span class="line">hset key field value</span><br><span class="line"><span class="meta">#</span><span class="bash">赋值多个</span></span><br><span class="line">hmset key field value[field1 value1 field2 value2...]</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">取值</span></span><br><span class="line">hget key field</span><br><span class="line"><span class="meta">#</span><span class="bash">取值多个</span></span><br><span class="line">hmget key field1 field2...</span><br><span class="line"><span class="meta">#</span><span class="bash">取值全部</span></span><br><span class="line">hgetall key</span><br><span class="line"><span class="meta">#</span><span class="bash">查询key有几个field</span></span><br><span class="line">hlen key</span><br><span class="line"><span class="meta">#</span><span class="bash">查询<span class="built_in">hash</span>所有field</span></span><br><span class="line">hkeys key</span><br><span class="line"><span class="meta">#</span><span class="bash">查询<span class="built_in">hash</span>所有value</span></span><br><span class="line">hvals key</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">删除</span></span><br><span class="line">hdel key field [field2 field3...]</span><br><span class="line"><span class="meta">#</span><span class="bash">删除整个<span class="built_in">hash</span></span></span><br><span class="line">del key</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">增加值</span></span><br><span class="line">hincrby key field 10</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">判断field的value是否存在,存在返回1,否则返回0</span></span><br><span class="line">hexists key field</span><br></pre>
+<h3 id="使用命令-1"><a href="#使用命令-1" class="headerlink" title="使用命令"></a>使用命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">赋值</span></span><br><span class="line">hset key field value</span><br><span class="line"><span class="meta">#</span><span class="bash">赋值多个</span></span><br><span class="line">hmset key field value[field1 value1 field2 value2...]</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">取值</span></span><br><span class="line">hget key field</span><br><span class="line"><span class="meta">#</span><span class="bash">取值多个</span></span><br><span class="line">hmget key field1 field2...</span><br><span class="line"><span class="meta">#</span><span class="bash">取值全部</span></span><br><span class="line">hgetall key</span><br><span class="line"><span class="meta">#</span><span class="bash">查询key有几个field</span></span><br><span class="line">hlen key</span><br><span class="line"><span class="meta">#</span><span class="bash">查询<span class="built_in">hash</span>所有field</span></span><br><span class="line">hkeys key</span><br><span class="line"><span class="meta">#</span><span class="bash">查询<span class="built_in">hash</span>所有value</span></span><br><span class="line">hvals key</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">删除</span></span><br><span class="line">hdel key field [field2 field3...]</span><br><span class="line"><span class="meta">#</span><span class="bash">删除整个<span class="built_in">hash</span></span></span><br><span class="line">del key</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">增加值</span></span><br><span class="line">hincrby key field 10</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">判断field的value是否存在,存在返回1,否则返回0</span></span><br><span class="line">hexists key field</span><br></pre></td></tr></table></figure>
 <h2 id="list"><a href="#list" class="headerlink" title="list"></a>list</h2><blockquote>
 <p>示例:[1,2,3],对应linkedList链表集合,增删快.</p>
 <p>redis中是双向链表,增删极快.场景:大数据量集合操作,任务队列</p>
 </blockquote>
-<h3 id="使用命令-2"><a href="#使用命令-2" class="headerlink" title="使用命令"></a>使用命令</h3><pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">左赋值</span></span><br><span class="line">lpush key a b c d </span><br><span class="line"><span class="meta">#</span><span class="bash">右赋值 符合习惯</span></span><br><span class="line">rpush key a b c d</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">取值,获取list中start到end的值.</span></span><br><span class="line"><span class="meta">#</span><span class="bash">start end 从0开始,可为负数,-1表示尾部元素,-2表示倒数第二个元素...</span></span><br><span class="line">lrange key start end</span><br><span class="line"><span class="meta">#</span><span class="bash">查询list长度</span></span><br><span class="line">llen key</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">删除左边第一个元素,若key不存在返回nil,存在返回第一个元素</span></span><br><span class="line">lpop key</span><br><span class="line"><span class="meta">#</span><span class="bash">删除右边最后一个元素</span></span><br><span class="line">rpop key</span><br><span class="line"><span class="meta">#</span><span class="bash">删除集合中所有a,若0改为2表示左边开始删2个,-2表示右边开始删2个   效率极低,因为需要给集合赋索引操作</span></span><br><span class="line">lrem key 0 a</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">在pivot元素前|后插入value  效率不高</span></span><br><span class="line">linsert kry before|after pivot value</span><br><span class="line"><span class="meta">#</span><span class="bash">替换下标为index的元素为value 效率不高</span></span><br><span class="line">lset key index value</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">将集合中尾部元素弹出,添加到头部,存入新集合list2 通过循环实现队列功能</span></span><br><span class="line">rpoplpush list1 list2</span><br><span class="line"><span class="meta">#</span><span class="bash">eg: list1为 a b c ,执行一次后:list1: a b list2:c</span></span><br><span class="line"><span class="meta">#</span><span class="bash">循环队列</span></span><br><span class="line">rpoplpush list1 list1</span><br></pre>
+<h3 id="使用命令-2"><a href="#使用命令-2" class="headerlink" title="使用命令"></a>使用命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">左赋值</span></span><br><span class="line">lpush key a b c d </span><br><span class="line"><span class="meta">#</span><span class="bash">右赋值 符合习惯</span></span><br><span class="line">rpush key a b c d</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">取值,获取list中start到end的值.</span></span><br><span class="line"><span class="meta">#</span><span class="bash">start end 从0开始,可为负数,-1表示尾部元素,-2表示倒数第二个元素...</span></span><br><span class="line">lrange key start end</span><br><span class="line"><span class="meta">#</span><span class="bash">查询list长度</span></span><br><span class="line">llen key</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">删除左边第一个元素,若key不存在返回nil,存在返回第一个元素</span></span><br><span class="line">lpop key</span><br><span class="line"><span class="meta">#</span><span class="bash">删除右边最后一个元素</span></span><br><span class="line">rpop key</span><br><span class="line"><span class="meta">#</span><span class="bash">删除集合中所有a,若0改为2表示左边开始删2个,-2表示右边开始删2个   效率极低,因为需要给集合赋索引操作</span></span><br><span class="line">lrem key 0 a</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">在pivot元素前|后插入value  效率不高</span></span><br><span class="line">linsert kry before|after pivot value</span><br><span class="line"><span class="meta">#</span><span class="bash">替换下标为index的元素为value 效率不高</span></span><br><span class="line">lset key index value</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">将集合中尾部元素弹出,添加到头部,存入新集合list2 通过循环实现队列功能</span></span><br><span class="line">rpoplpush list1 list2</span><br><span class="line"><span class="meta">#</span><span class="bash">eg: list1为 a b c ,执行一次后:list1: a b list2:c</span></span><br><span class="line"><span class="meta">#</span><span class="bash">循环队列</span></span><br><span class="line">rpoplpush list1 list1</span><br></pre></td></tr></table></figure>
 <h2 id="set"><a href="#set" class="headerlink" title="set"></a>set</h2><blockquote>
 <p>对应hashset,无序,不重复.</p>
 <p>场景:redis中涉及到两个集合的交集 并集 差集运算.</p>
 </blockquote>
-<h3 id="使用命令-3"><a href="#使用命令-3" class="headerlink" title="使用命令"></a>使用命令</h3><pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">赋值,重复的会去除</span></span><br><span class="line">sadd key a b c d d</span><br><span class="line"><span class="meta">#</span><span class="bash">删除元素</span></span><br><span class="line">srem key a b</span><br><span class="line"><span class="meta">#</span><span class="bash">查询所有元素</span></span><br><span class="line">smembers key</span><br><span class="line"><span class="meta">#</span><span class="bash">查询a元素是否存在,存在返回1,否则返回0</span></span><br><span class="line">sismember key a</span><br><span class="line"><span class="meta">#</span><span class="bash">查询<span class="built_in">set</span>中元素数量</span></span><br><span class="line">scard key</span><br><span class="line"><span class="meta">#</span><span class="bash">随机返回<span class="built_in">set</span>中一个元素 伪随机</span></span><br><span class="line">srandmember key</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">差集运算,属于key1 不属于key2</span></span><br><span class="line">sdiff key1 key2</span><br><span class="line"><span class="meta">#</span><span class="bash">交集运算</span></span><br><span class="line">sinter key1 key2</span><br><span class="line"><span class="meta">#</span><span class="bash">并集运算</span></span><br><span class="line">sunion key1 key2</span><br><span class="line"><span class="meta">#</span><span class="bash">将差|并|交集存入新的set3中</span></span><br><span class="line">sdiffstore|sunionstore|sinterstore set3 set1 set2</span><br></pre>
+<h3 id="使用命令-3"><a href="#使用命令-3" class="headerlink" title="使用命令"></a>使用命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">赋值,重复的会去除</span></span><br><span class="line">sadd key a b c d d</span><br><span class="line"><span class="meta">#</span><span class="bash">删除元素</span></span><br><span class="line">srem key a b</span><br><span class="line"><span class="meta">#</span><span class="bash">查询所有元素</span></span><br><span class="line">smembers key</span><br><span class="line"><span class="meta">#</span><span class="bash">查询a元素是否存在,存在返回1,否则返回0</span></span><br><span class="line">sismember key a</span><br><span class="line"><span class="meta">#</span><span class="bash">查询<span class="built_in">set</span>中元素数量</span></span><br><span class="line">scard key</span><br><span class="line"><span class="meta">#</span><span class="bash">随机返回<span class="built_in">set</span>中一个元素 伪随机</span></span><br><span class="line">srandmember key</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">差集运算,属于key1 不属于key2</span></span><br><span class="line">sdiff key1 key2</span><br><span class="line"><span class="meta">#</span><span class="bash">交集运算</span></span><br><span class="line">sinter key1 key2</span><br><span class="line"><span class="meta">#</span><span class="bash">并集运算</span></span><br><span class="line">sunion key1 key2</span><br><span class="line"><span class="meta">#</span><span class="bash">将差|并|交集存入新的set3中</span></span><br><span class="line">sdiffstore|sunionstore|sinterstore set3 set1 set2</span><br></pre></td></tr></table></figure>
 <h2 id="有序set"><a href="#有序set" class="headerlink" title="有序set"></a>有序set</h2><blockquote>
 <p>有序,不重复.</p>
 <p>默认升序</p>
 <p>场景:排行榜 </p>
 </blockquote>
-<h3 id="使用命令-4"><a href="#使用命令-4" class="headerlink" title="使用命令"></a>使用命令</h3><pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">赋值</span> </span><br><span class="line">zadd set1 500 xiaoming 200 xiaohong 100 xiaogang</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">查询xiaoming的分数</span></span><br><span class="line">zscore set1 xiaoming</span><br><span class="line"><span class="meta">#</span><span class="bash">查询元素数量</span></span><br><span class="line">zcard set1</span><br><span class="line"><span class="meta">#</span><span class="bash">查询所有元素</span></span><br><span class="line">zrange set1 0 -1</span><br><span class="line"><span class="meta">#</span><span class="bash">查询所有元素的分数</span></span><br><span class="line">zrange set1 0 -1 withscores</span><br><span class="line"><span class="meta">#</span><span class="bash">倒序查看所有元素 --&gt;排行榜</span></span><br><span class="line">zrevrange set1 0 -1 withscores</span><br><span class="line"><span class="meta">#</span><span class="bash">按分数范围查询元素. 后可加withscores显示分数.后可加<span class="built_in">limit</span> 0 1查询前两名</span></span><br><span class="line">zrangebyscore set1 200 500</span><br><span class="line"><span class="meta">#</span><span class="bash">查询指定分数范围内有几个元素</span></span><br><span class="line">zcount set1 200 1000</span><br><span class="line"><span class="meta">#</span><span class="bash">查询xiaoming在set1中的排名 从小到大</span></span><br><span class="line">zrank set1 xiaoming</span><br><span class="line"><span class="meta">#</span><span class="bash">查询xiaoming在set1中的排名 从大到小</span></span><br><span class="line">zrevrank set1 xiaoming</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">删除元素</span></span><br><span class="line">zrem set1 xiaoming xiaohong</span><br><span class="line"><span class="meta">#</span><span class="bash">范围删除 删除前两名</span></span><br><span class="line">zremrangebyscore set1 0 1</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">加值 给xiaoming加200分</span></span><br><span class="line">zincrby set1 200 xiaoming</span><br><span class="line"></span><br></pre>
-<h1 id="redis通用命令"><a href="#redis通用命令" class="headerlink" title="redis通用命令"></a>redis通用命令</h1><pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">查询所有key  *表示0或多个 ?表示1个</span></span><br><span class="line">keys *</span><br><span class="line"><span class="meta">#</span><span class="bash">查询长度为4的key</span></span><br><span class="line">keys ????</span><br><span class="line"><span class="meta">#</span><span class="bash">模糊查询 查询带name的key</span></span><br><span class="line">keys *name*</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">删除key 删除多个key</span></span><br><span class="line">del key [key2 key3...]</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">判断key是否存在 存在返回1否则返回0</span></span><br><span class="line">exists key</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">重命名key 不常用</span></span><br><span class="line">rname oldkey newkey</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">返回key的value的数据类型</span></span><br><span class="line">type key</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">设置key过期时间30秒,单位是秒,默认永久有效</span></span><br><span class="line">expire key 30</span><br><span class="line"><span class="meta">#</span><span class="bash">查询key剩余有效期时间,-2表示过期,会删除key.若未设置超时返回-1</span></span><br><span class="line">ttl key</span><br></pre>
+<h3 id="使用命令-4"><a href="#使用命令-4" class="headerlink" title="使用命令"></a>使用命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">赋值</span> </span><br><span class="line">zadd set1 500 xiaoming 200 xiaohong 100 xiaogang</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">查询xiaoming的分数</span></span><br><span class="line">zscore set1 xiaoming</span><br><span class="line"><span class="meta">#</span><span class="bash">查询元素数量</span></span><br><span class="line">zcard set1</span><br><span class="line"><span class="meta">#</span><span class="bash">查询所有元素</span></span><br><span class="line">zrange set1 0 -1</span><br><span class="line"><span class="meta">#</span><span class="bash">查询所有元素的分数</span></span><br><span class="line">zrange set1 0 -1 withscores</span><br><span class="line"><span class="meta">#</span><span class="bash">倒序查看所有元素 --&gt;排行榜</span></span><br><span class="line">zrevrange set1 0 -1 withscores</span><br><span class="line"><span class="meta">#</span><span class="bash">按分数范围查询元素. 后可加withscores显示分数.后可加<span class="built_in">limit</span> 0 1查询前两名</span></span><br><span class="line">zrangebyscore set1 200 500</span><br><span class="line"><span class="meta">#</span><span class="bash">查询指定分数范围内有几个元素</span></span><br><span class="line">zcount set1 200 1000</span><br><span class="line"><span class="meta">#</span><span class="bash">查询xiaoming在set1中的排名 从小到大</span></span><br><span class="line">zrank set1 xiaoming</span><br><span class="line"><span class="meta">#</span><span class="bash">查询xiaoming在set1中的排名 从大到小</span></span><br><span class="line">zrevrank set1 xiaoming</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">删除元素</span></span><br><span class="line">zrem set1 xiaoming xiaohong</span><br><span class="line"><span class="meta">#</span><span class="bash">范围删除 删除前两名</span></span><br><span class="line">zremrangebyscore set1 0 1</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">加值 给xiaoming加200分</span></span><br><span class="line">zincrby set1 200 xiaoming</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="redis通用命令"><a href="#redis通用命令" class="headerlink" title="redis通用命令"></a>redis通用命令</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">查询所有key  *表示0或多个 ?表示1个</span></span><br><span class="line">keys *</span><br><span class="line"><span class="meta">#</span><span class="bash">查询长度为4的key</span></span><br><span class="line">keys ????</span><br><span class="line"><span class="meta">#</span><span class="bash">模糊查询 查询带name的key</span></span><br><span class="line">keys *name*</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">删除key 删除多个key</span></span><br><span class="line">del key [key2 key3...]</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">判断key是否存在 存在返回1否则返回0</span></span><br><span class="line">exists key</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">重命名key 不常用</span></span><br><span class="line">rname oldkey newkey</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">返回key的value的数据类型</span></span><br><span class="line">type key</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">设置key过期时间30秒,单位是秒,默认永久有效</span></span><br><span class="line">expire key 30</span><br><span class="line"><span class="meta">#</span><span class="bash">查询key剩余有效期时间,-2表示过期,会删除key.若未设置超时返回-1</span></span><br><span class="line">ttl key</span><br></pre></td></tr></table></figure>
 <h1 id="redis事务"><a href="#redis事务" class="headerlink" title="redis事务"></a>redis事务</h1><blockquote>
 <p>redis事务不是为了保证数据完整性,而是为了服务于批量操作.</p>
 <p>事务中报错并不会回滚,而是正常顺序执行.</p>
 </blockquote>
-<pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">开启事务</span></span><br><span class="line">multi</span><br><span class="line"><span class="meta">#</span><span class="bash">提交事务</span></span><br><span class="line">exec</span><br><span class="line"><span class="meta">#</span><span class="bash">回滚事务</span></span><br><span class="line">discard</span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">开启事务</span></span><br><span class="line">multi</span><br><span class="line"><span class="meta">#</span><span class="bash">提交事务</span></span><br><span class="line">exec</span><br><span class="line"><span class="meta">#</span><span class="bash">回滚事务</span></span><br><span class="line">discard</span><br></pre></td></tr></table></figure>
 <h1 id="redis持久化"><a href="#redis持久化" class="headerlink" title="redis持久化"></a>redis持久化</h1><blockquote>
 <p>redis默认所有增删改都是在内存中执行,因此提供了两种持久化策略</p>
 </blockquote>
@@ -371,7 +345,7 @@
 <p>jedis是java连接操作redis的框架.</p>
 <p>redis有什么命令,jedis就有对应的方法.</p>
 </blockquote>
-<pre class="highlight"><span class="line"><span class="comment">//单实例使用示例</span></span><br><span class="line">Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">&quot;192.168.0.20&quot;</span>,<span class="number">6379</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//连接池</span></span><br><span class="line">JedisPoolConfig config = <span class="keyword">new</span> JedisPoolConfig();</span><br><span class="line">config.setMaxTotal(<span class="number">50</span>);<span class="comment">//池中最大连接数</span></span><br><span class="line">config.setMaxIdle(<span class="number">10</span>);<span class="comment">//池中空闲时保留的最大连接数</span></span><br><span class="line">JedisPool pool = <span class="keyword">new</span> JedisPool(config,<span class="string">&quot;192.168.0.20&quot;</span>,<span class="number">6379</span>);</span><br><span class="line">Jedis jedis = pool.getResource();</span><br><span class="line">jedis.getName(<span class="string">&quot;username&quot;</span>);</span><br><span class="line">jedis.close();<span class="comment">//连接归还池中.</span></span><br></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//单实例使用示例</span></span><br><span class="line">Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">&quot;192.168.0.20&quot;</span>,<span class="number">6379</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//连接池</span></span><br><span class="line">JedisPoolConfig config = <span class="keyword">new</span> JedisPoolConfig();</span><br><span class="line">config.setMaxTotal(<span class="number">50</span>);<span class="comment">//池中最大连接数</span></span><br><span class="line">config.setMaxIdle(<span class="number">10</span>);<span class="comment">//池中空闲时保留的最大连接数</span></span><br><span class="line">JedisPool pool = <span class="keyword">new</span> JedisPool(config,<span class="string">&quot;192.168.0.20&quot;</span>,<span class="number">6379</span>);</span><br><span class="line">Jedis jedis = pool.getResource();</span><br><span class="line">jedis.getName(<span class="string">&quot;username&quot;</span>);</span><br><span class="line">jedis.close();<span class="comment">//连接归还池中.</span></span><br></pre></td></tr></table></figure>
 <h1 id="过期策略"><a href="#过期策略" class="headerlink" title="过期策略"></a>过期策略</h1><p>过期策略通常有以下三种:</p>
 <ul>
 <li><p><strong>定时过期</strong><br>每个设置过期时间的key都需要创建一个定时器,到过期时间就会立即清除。该策略可以立即清除过期的数据,<strong>对内存很友好;但是会占用大量的CPU资源去处理过期的数据</strong>,从而影响缓存的响应时间和吞吐量。</p>
@@ -385,7 +359,7 @@
 <p><strong>实际项目中设置内存淘汰策略: maxmemory-policy allkey-lru,移除最近最少使用的key.</strong></p>
 <p><strong>过期策略默认是: maxmemory-policy noeviction</strong></p>
 <p>redis.conf配置如下:</p>
-<pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash"> MAXMEMORY POLICY: how Redis will select what to remove when maxmemory</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> is reached. You can select one from the following behaviors:</span></span><br><span class="line"><span class="meta">#</span><span class="bash">最大内存策略:当到达最大使用内存时,你可以在下面5种行为中选择, Redis如何选择淘汰数据库键 当内存不足以容纳新写入数据时</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> volatile-lru -&gt; Evict using approximated LRU, only keys with an expire <span class="built_in">set</span>.</span></span><br><span class="line"><span class="meta">#</span><span class="bash">在设置了过期时间的键空间中,移除最近最少使用的key,这种情况一般是把redis既当缓存，又做持久化存储的时候才用。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> allkeys-lru -&gt; Evict any key using approximated LRU.</span></span><br><span class="line"><span class="meta">#</span><span class="bash">移除最近最少使用的key (推荐)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> volatile-lfu -&gt; Evict using approximated LFU, only keys with an expire <span class="built_in">set</span>.</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> allkeys-lfu -&gt; Evict any key using approximated LFU.</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> volatile-random -&gt; Remove a random key having an expire <span class="built_in">set</span>.</span></span><br><span class="line"><span class="meta">#</span><span class="bash">在设置了过期时间的键空间中，随机移除一个键，不推荐</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> allkeys-random -&gt; Remove a random key, any key.</span></span><br><span class="line"><span class="meta">#</span><span class="bash">直接在键空间中随机移除一个键,弄啥叻</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> volatile-ttl -&gt; Remove the key with the nearest expire time (minor TTL)</span></span><br><span class="line"><span class="meta">#</span><span class="bash">在设置了过期时间的键空间中,有更早过期时间的key优先移除不推荐</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> noeviction -&gt; Don<span class="string">&#x27;t evict anything, just return an error on write operations.</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">不做过键处理,只返回一个写操作错误。不推荐</span></span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> MAXMEMORY POLICY: how Redis will select what to remove when maxmemory</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> is reached. You can select one from the following behaviors:</span></span><br><span class="line"><span class="meta">#</span><span class="bash">最大内存策略:当到达最大使用内存时,你可以在下面5种行为中选择, Redis如何选择淘汰数据库键 当内存不足以容纳新写入数据时</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> volatile-lru -&gt; Evict using approximated LRU, only keys with an expire <span class="built_in">set</span>.</span></span><br><span class="line"><span class="meta">#</span><span class="bash">在设置了过期时间的键空间中,移除最近最少使用的key,这种情况一般是把redis既当缓存，又做持久化存储的时候才用。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> allkeys-lru -&gt; Evict any key using approximated LRU.</span></span><br><span class="line"><span class="meta">#</span><span class="bash">移除最近最少使用的key (推荐)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> volatile-lfu -&gt; Evict using approximated LFU, only keys with an expire <span class="built_in">set</span>.</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> allkeys-lfu -&gt; Evict any key using approximated LFU.</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> volatile-random -&gt; Remove a random key having an expire <span class="built_in">set</span>.</span></span><br><span class="line"><span class="meta">#</span><span class="bash">在设置了过期时间的键空间中，随机移除一个键，不推荐</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> allkeys-random -&gt; Remove a random key, any key.</span></span><br><span class="line"><span class="meta">#</span><span class="bash">直接在键空间中随机移除一个键,弄啥叻</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> volatile-ttl -&gt; Remove the key with the nearest expire time (minor TTL)</span></span><br><span class="line"><span class="meta">#</span><span class="bash">在设置了过期时间的键空间中,有更早过期时间的key优先移除不推荐</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> noeviction -&gt; Don<span class="string">&#x27;t evict anything, just return an error on write operations.</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">不做过键处理,只返回一个写操作错误。不推荐</span></span><br></pre></td></tr></table></figure>
 
 
 <h1 id="Redis的主从复制架构"><a href="#Redis的主从复制架构" class="headerlink" title="Redis的主从复制架构."></a>Redis的主从复制架构.</h1><blockquote>
@@ -404,7 +378,7 @@
 <li>读写分离(读多写少的场景很适用) ,如果写操作很多,就得使用集群</li>
 <li>从数据库持久化(可以将持久化的性能消耗移动到从节点) </li>
 </ol>
-<h2 id="搭建"><a href="#搭建" class="headerlink" title="搭建"></a>搭建</h2><pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash"> 修改从节点的配置文件redis.conf</span></span><br><span class="line">vim redis.conf</span><br><span class="line"><span class="meta">#</span><span class="bash">修改		主节点ip		主节点port</span></span><br><span class="line">slaveof masterip masterport</span><br></pre>
+<h2 id="搭建"><a href="#搭建" class="headerlink" title="搭建"></a>搭建</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 修改从节点的配置文件redis.conf</span></span><br><span class="line">vim redis.conf</span><br><span class="line"><span class="meta">#</span><span class="bash">修改		主节点ip		主节点port</span></span><br><span class="line">slaveof masterip masterport</span><br></pre></td></tr></table></figure>
 <h1 id="哨兵"><a href="#哨兵" class="headerlink" title="哨兵"></a>哨兵</h1><blockquote>
 <p><strong>Sentinel (哨兵)是Redis的高可用性解决方案</strong>:由一个或多个Sentinel实例组成的Sentinel系统可以监视任意多个主服务器,以及这些主服务器属下的所有从服务器,并<strong>在被监视的主服务器进入下线状态时,自动将下线主服务器属下的某个从服务器升级为新的主服务器</strong>。</p>
 </blockquote>
@@ -412,69 +386,69 @@
 <p>每台服务器都要修改sentinel.conf文件配置哨兵.</p>
 <p>一般哨兵的配置节点数不能是1个,最好是有几个主从节点,就配置几个哨兵。不能哨兵自己出现单点故障</p>
 </blockquote>
-<pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">1 修改主节点配置文件</span></span><br><span class="line">vim sentinel.conf</span><br><span class="line"><span class="meta">#</span><span class="bash">15行 每台机器修改为自己对应的主机各</span></span><br><span class="line">bind 127.0.0.1 192.168.1.1</span><br><span class="line"><span class="meta">#</span><span class="bash">修改后台运行</span></span><br><span class="line">daemonize yes</span><br><span class="line"><span class="meta">#</span><span class="bash">三台机器监控的主节点</span></span><br><span class="line"><span class="meta">#</span><span class="bash">	monitor监控,master-name服务器名称可自定义,ip服务器ip,quorum为2时2代表只有两个或两个以上的哨兵认为主服务器不可用的时候,才会进行failover操作。</span>			</span><br><span class="line">sentinel monitor &lt;master-name&gt; &lt;ip&gt; &lt;redis-port&gt; &lt;quorum&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">如果Redis是有密码的,需要指定密码</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 定义服务的密码, mymaster服务名称, 123456是Redis服务器密码</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> sentinel auth-pass &lt;master-name&gt; &lt;password&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">2 把配置文件复制到其他节点服务器</span></span><br><span class="line">scp sentinel.conf 从节点1ip:$PWD</span><br><span class="line">scp sentinel.conf 从节点2ip:$PWD</span><br><span class="line"><span class="meta">#</span><span class="bash">分别修改从节点配置文件,绑定自己机器的ip</span></span><br><span class="line">bind 从节点1ip</span><br><span class="line">bind 从节点2ip</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">3 每台服务器启动哨兵服务</span></span><br><span class="line">bin/redis-sentinel sentinel.conf</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">4 验证哨兵启动是否成功</span></span><br><span class="line"><span class="meta">#</span><span class="bash">查看Sentinel master的状态 连接哨兵 26379是哨兵端口</span></span><br><span class="line">bin/redis-cli -h 从节点2ip -p 263794</span><br><span class="line"><span class="meta">#</span><span class="bash">使用ping命令检查哨兵是否工作,如果正常会返回PONG</span></span><br><span class="line"><span class="meta">#</span><span class="bash">使用命令info,可以查看主节点有几个从节点,及几个哨兵.</span></span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">1 修改主节点配置文件</span></span><br><span class="line">vim sentinel.conf</span><br><span class="line"><span class="meta">#</span><span class="bash">15行 每台机器修改为自己对应的主机各</span></span><br><span class="line">bind 127.0.0.1 192.168.1.1</span><br><span class="line"><span class="meta">#</span><span class="bash">修改后台运行</span></span><br><span class="line">daemonize yes</span><br><span class="line"><span class="meta">#</span><span class="bash">三台机器监控的主节点</span></span><br><span class="line"><span class="meta">#</span><span class="bash">	monitor监控,master-name服务器名称可自定义,ip服务器ip,quorum为2时2代表只有两个或两个以上的哨兵认为主服务器不可用的时候,才会进行failover操作。</span>			</span><br><span class="line">sentinel monitor &lt;master-name&gt; &lt;ip&gt; &lt;redis-port&gt; &lt;quorum&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">如果Redis是有密码的,需要指定密码</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 定义服务的密码, mymaster服务名称, 123456是Redis服务器密码</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> sentinel auth-pass &lt;master-name&gt; &lt;password&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">2 把配置文件复制到其他节点服务器</span></span><br><span class="line">scp sentinel.conf 从节点1ip:$PWD</span><br><span class="line">scp sentinel.conf 从节点2ip:$PWD</span><br><span class="line"><span class="meta">#</span><span class="bash">分别修改从节点配置文件,绑定自己机器的ip</span></span><br><span class="line">bind 从节点1ip</span><br><span class="line">bind 从节点2ip</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">3 每台服务器启动哨兵服务</span></span><br><span class="line">bin/redis-sentinel sentinel.conf</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">4 验证哨兵启动是否成功</span></span><br><span class="line"><span class="meta">#</span><span class="bash">查看Sentinel master的状态 连接哨兵 26379是哨兵端口</span></span><br><span class="line">bin/redis-cli -h 从节点2ip -p 263794</span><br><span class="line"><span class="meta">#</span><span class="bash">使用ping命令检查哨兵是否工作,如果正常会返回PONG</span></span><br><span class="line"><span class="meta">#</span><span class="bash">使用命令info,可以查看主节点有几个从节点,及几个哨兵.</span></span><br></pre></td></tr></table></figure>
 <h2 id="哨兵模式下的代码连接"><a href="#哨兵模式下的代码连接" class="headerlink" title="哨兵模式下的代码连接"></a>哨兵模式下的代码连接</h2><blockquote>
 <p>哨兵模式下,代码中就不能配置主节点连接信息,因为主节点可能挂掉,所以应该配置哨兵的连接信息,并使用JedisSentinelPool来创建连接池。</p>
 </blockquote>
 <h1 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h1><h2 id="docker搭建redis集群"><a href="#docker搭建redis集群" class="headerlink" title="docker搭建redis集群"></a>docker搭建redis集群</h2><h3 id="创建模板及脚本"><a href="#创建模板及脚本" class="headerlink" title="创建模板及脚本"></a>创建模板及脚本</h3><blockquote>
 <p>在/usr/local/server/redis-cluster/目录下创建一个模板,把可变参数传入;</p>
 </blockquote>
-<pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">集群各节点公共配置模板</span></span><br><span class="line"><span class="meta">#</span><span class="bash">端口</span> </span><br><span class="line">port $&#123;PORT&#125; </span><br><span class="line"><span class="meta">#</span><span class="bash">非保护模式 若开启则每次都需输入密码</span> </span><br><span class="line">protected-mode no </span><br><span class="line"><span class="meta">#</span><span class="bash">启用集群模式</span> </span><br><span class="line">cluster-enabled yes c</span><br><span class="line">luster-config-file nodes.conf </span><br><span class="line"><span class="meta">#</span><span class="bash">超时时间</span> </span><br><span class="line">cluster-node-timeout 5000 </span><br><span class="line"><span class="meta">#</span><span class="bash">集群各节点IP地址</span> </span><br><span class="line">cluster-announce-ip 192.168.2.110</span><br><span class="line"><span class="meta">#</span><span class="bash">集群节点映射端口</span> </span><br><span class="line">cluster-announce-port $&#123;PORT&#125; </span><br><span class="line"><span class="meta">#</span><span class="bash">集群总线端口</span> </span><br><span class="line">cluster-announce-bus-port 1$&#123;PORT&#125; </span><br><span class="line"><span class="meta">#</span><span class="bash">开启aof持久化策略</span> </span><br><span class="line">appendonly yes </span><br><span class="line"><span class="meta">#</span><span class="bash">后台运行</span> </span><br><span class="line"><span class="meta">#</span><span class="bash">daemonize yes</span> </span><br><span class="line"><span class="meta">#</span><span class="bash">进程号存储</span> </span><br><span class="line">pidfile /var/run/redis_$&#123;PORT&#125;.pid </span><br><span class="line"><span class="meta">#</span><span class="bash">集群加密</span> </span><br><span class="line"><span class="meta">#</span><span class="bash">masterauth itheima</span> </span><br><span class="line"><span class="meta">#</span><span class="bash">requirepass itheima</span></span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">集群各节点公共配置模板</span></span><br><span class="line"><span class="meta">#</span><span class="bash">端口</span> </span><br><span class="line">port $&#123;PORT&#125; </span><br><span class="line"><span class="meta">#</span><span class="bash">非保护模式 若开启则每次都需输入密码</span> </span><br><span class="line">protected-mode no </span><br><span class="line"><span class="meta">#</span><span class="bash">启用集群模式</span> </span><br><span class="line">cluster-enabled yes c</span><br><span class="line">luster-config-file nodes.conf </span><br><span class="line"><span class="meta">#</span><span class="bash">超时时间</span> </span><br><span class="line">cluster-node-timeout 5000 </span><br><span class="line"><span class="meta">#</span><span class="bash">集群各节点IP地址</span> </span><br><span class="line">cluster-announce-ip 192.168.2.110</span><br><span class="line"><span class="meta">#</span><span class="bash">集群节点映射端口</span> </span><br><span class="line">cluster-announce-port $&#123;PORT&#125; </span><br><span class="line"><span class="meta">#</span><span class="bash">集群总线端口</span> </span><br><span class="line">cluster-announce-bus-port 1$&#123;PORT&#125; </span><br><span class="line"><span class="meta">#</span><span class="bash">开启aof持久化策略</span> </span><br><span class="line">appendonly yes </span><br><span class="line"><span class="meta">#</span><span class="bash">后台运行</span> </span><br><span class="line"><span class="meta">#</span><span class="bash">daemonize yes</span> </span><br><span class="line"><span class="meta">#</span><span class="bash">进程号存储</span> </span><br><span class="line">pidfile /var/run/redis_$&#123;PORT&#125;.pid </span><br><span class="line"><span class="meta">#</span><span class="bash">集群加密</span> </span><br><span class="line"><span class="meta">#</span><span class="bash">masterauth itheima</span> </span><br><span class="line"><span class="meta">#</span><span class="bash">requirepass itheima</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>创建redis创建容器脚本:</p>
 </blockquote>
-<pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash">在/usr/<span class="built_in">local</span>/server/redis-cluster下生成conf和data目标，并生成配置信息</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">输入信息</span></span><br><span class="line">read -p &quot;请输入本机IP地址：&quot; Native_IP</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建文件夹</span></span><br><span class="line">mkdir -p /usr/local/server/redis-cluster</span><br><span class="line"><span class="meta">#</span><span class="bash"> 下载redis配置模板</span></span><br><span class="line">echo &quot;正在下载redis-cluster.tmpl配置模板，请手动下载redis-cluster.tmpl文件并复制到/usr/local/server/redis-cluster目录&quot;;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 文件下载地址 请手动下载redis-cluster.tmpl文件</span></span><br><span class="line"><span class="meta">#</span><span class="bash">wget -P /usr/<span class="built_in">local</span>/server/redis-cluster https://srv-file22.gofile.io/download/RoGvVk/redis-cluster.tmpl</span></span><br><span class="line"></span><br><span class="line">echo &quot;正在创建redis-net网络&quot;;</span><br><span class="line"><span class="meta">#</span><span class="bash">c创建网络</span></span><br><span class="line">docker network create redis-net</span><br><span class="line"></span><br><span class="line">echo &quot;正在创建redis配置文件&quot;;</span><br><span class="line">for port in `seq 7001 7006`; </span><br><span class="line">do </span><br><span class="line">  mkdir -p /usr/local/server/redis-cluster/$&#123;port&#125;/conf &amp;&amp; PORT=$&#123;port&#125; Native_IP=$&#123;Native_IP&#125;  envsubst &lt; /usr/local/server/redis-cluster/redis-cluster.tmpl &gt; /usr/local/server/redis-cluster/$&#123;port&#125;/conf/redis.conf &amp;&amp; mkdir -p /usr/local/server/redis-cluster/$&#123;port&#125;/data;</span><br><span class="line">done</span><br><span class="line">echo &quot;正在启动redis容器&quot;;</span><br><span class="line"><span class="meta">#</span><span class="bash">创建6个redis容器</span></span><br><span class="line">for port in `seq 7001 7006`;</span><br><span class="line">do</span><br><span class="line">	docker run -d -it -p $&#123;port&#125;:$&#123;port&#125; -p 1$&#123;port&#125;:1$&#123;port&#125; -v /usr/local/server/redis-cluster/$&#123;port&#125;/conf/redis.conf:/usr/local/etc/redis/redis.conf -v /usr/local/server/redis-cluster/$&#123;port&#125;/data:/data --privileged=true --restart always --name redis-$&#123;port&#125; --net redis-net --sysctl net.core.somaxconn=1024 redis redis-server /usr/local/etc/redis/redis.conf;</span><br><span class="line">done</span><br><span class="line"><span class="meta">#</span><span class="bash">查找ip</span></span><br><span class="line">for port in `seq 7001 7006`;</span><br><span class="line">do</span><br><span class="line">	echo  -n &quot;$(docker inspect --format &#x27;&#123;&#123; (index .NetworkSettings.Networks &quot;redis-net&quot;).IPAddress &#125;&#125;&#x27; &quot;redis-$&#123;port&#125;&quot;)&quot;:$&#123;port&#125;&quot; &quot;;</span><br><span class="line">done</span><br><span class="line"><span class="meta">#</span><span class="bash">换行</span></span><br><span class="line">echo -e &quot;\n&quot;</span><br><span class="line"><span class="meta">#</span><span class="bash">输入信息</span></span><br><span class="line">read -p &quot;请把输入要启动的docker容器名称，默认redis-7001：&quot; DOCKER_NAME</span><br><span class="line"><span class="meta">#</span><span class="bash">判断是否为空</span></span><br><span class="line">if [ ! $DOCKER_NAME ]; </span><br><span class="line">	then DOCKER_NAME=&#x27;redis-7001&#x27;; </span><br><span class="line">fi</span><br><span class="line"><span class="meta">#</span><span class="bash">进入容器</span></span><br><span class="line">docker exec -it redis-7001 /bin/bash</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除容器</span></span><br><span class="line"><span class="meta">#</span><span class="bash">docker rm -f $(docker ps -a |  grep <span class="string">&quot;redis-*&quot;</span>  | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>)</span></span><br><span class="line"></span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash">在/usr/<span class="built_in">local</span>/server/redis-cluster下生成conf和data目标，并生成配置信息</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">输入信息</span></span><br><span class="line">read -p &quot;请输入本机IP地址：&quot; Native_IP</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建文件夹</span></span><br><span class="line">mkdir -p /usr/local/server/redis-cluster</span><br><span class="line"><span class="meta">#</span><span class="bash"> 下载redis配置模板</span></span><br><span class="line">echo &quot;正在下载redis-cluster.tmpl配置模板，请手动下载redis-cluster.tmpl文件并复制到/usr/local/server/redis-cluster目录&quot;;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 文件下载地址 请手动下载redis-cluster.tmpl文件</span></span><br><span class="line"><span class="meta">#</span><span class="bash">wget -P /usr/<span class="built_in">local</span>/server/redis-cluster https://srv-file22.gofile.io/download/RoGvVk/redis-cluster.tmpl</span></span><br><span class="line"></span><br><span class="line">echo &quot;正在创建redis-net网络&quot;;</span><br><span class="line"><span class="meta">#</span><span class="bash">c创建网络</span></span><br><span class="line">docker network create redis-net</span><br><span class="line"></span><br><span class="line">echo &quot;正在创建redis配置文件&quot;;</span><br><span class="line">for port in `seq 7001 7006`; </span><br><span class="line">do </span><br><span class="line">  mkdir -p /usr/local/server/redis-cluster/$&#123;port&#125;/conf &amp;&amp; PORT=$&#123;port&#125; Native_IP=$&#123;Native_IP&#125;  envsubst &lt; /usr/local/server/redis-cluster/redis-cluster.tmpl &gt; /usr/local/server/redis-cluster/$&#123;port&#125;/conf/redis.conf &amp;&amp; mkdir -p /usr/local/server/redis-cluster/$&#123;port&#125;/data;</span><br><span class="line">done</span><br><span class="line">echo &quot;正在启动redis容器&quot;;</span><br><span class="line"><span class="meta">#</span><span class="bash">创建6个redis容器</span></span><br><span class="line">for port in `seq 7001 7006`;</span><br><span class="line">do</span><br><span class="line">	docker run -d -it -p $&#123;port&#125;:$&#123;port&#125; -p 1$&#123;port&#125;:1$&#123;port&#125; -v /usr/local/server/redis-cluster/$&#123;port&#125;/conf/redis.conf:/usr/local/etc/redis/redis.conf -v /usr/local/server/redis-cluster/$&#123;port&#125;/data:/data --privileged=true --restart always --name redis-$&#123;port&#125; --net redis-net --sysctl net.core.somaxconn=1024 redis redis-server /usr/local/etc/redis/redis.conf;</span><br><span class="line">done</span><br><span class="line"><span class="meta">#</span><span class="bash">查找ip</span></span><br><span class="line">for port in `seq 7001 7006`;</span><br><span class="line">do</span><br><span class="line">	echo  -n &quot;$(docker inspect --format &#x27;&#123;&#123; (index .NetworkSettings.Networks &quot;redis-net&quot;).IPAddress &#125;&#125;&#x27; &quot;redis-$&#123;port&#125;&quot;)&quot;:$&#123;port&#125;&quot; &quot;;</span><br><span class="line">done</span><br><span class="line"><span class="meta">#</span><span class="bash">换行</span></span><br><span class="line">echo -e &quot;\n&quot;</span><br><span class="line"><span class="meta">#</span><span class="bash">输入信息</span></span><br><span class="line">read -p &quot;请把输入要启动的docker容器名称，默认redis-7001：&quot; DOCKER_NAME</span><br><span class="line"><span class="meta">#</span><span class="bash">判断是否为空</span></span><br><span class="line">if [ ! $DOCKER_NAME ]; </span><br><span class="line">	then DOCKER_NAME=&#x27;redis-7001&#x27;; </span><br><span class="line">fi</span><br><span class="line"><span class="meta">#</span><span class="bash">进入容器</span></span><br><span class="line">docker exec -it redis-7001 /bin/bash</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除容器</span></span><br><span class="line"><span class="meta">#</span><span class="bash">docker rm -f $(docker ps -a |  grep <span class="string">&quot;redis-*&quot;</span>  | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>)</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>创建删除脚本</p>
 </blockquote>
-<pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">echo &quot;正在停止所有redis容器&quot;;</span><br><span class="line">docker stop $(docker ps -a |  grep &quot;redis-*&quot;  | awk &#x27;&#123;print $1&#125;&#x27;)</span><br><span class="line">echo &quot;正在删除所有redis容器&quot;;</span><br><span class="line">docker rm -f $(docker ps -a |  grep &quot;redis-*&quot;  | awk &#x27;&#123;print $1&#125;&#x27;)</span><br><span class="line">echo &quot;正在删除redis-net网络&quot;;</span><br><span class="line">docker network rm redis-net</span><br><span class="line">echo &quot;正在删除/usr/local/server目录&quot;;</span><br><span class="line"><span class="meta">#</span><span class="bash">rm -rf /usr/<span class="built_in">local</span>/server</span></span><br><span class="line">rm -rf 7001 7002 7003 7004 7005 7006</span><br><span class="line"></span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">echo &quot;正在停止所有redis容器&quot;;</span><br><span class="line">docker stop $(docker ps -a |  grep &quot;redis-*&quot;  | awk &#x27;&#123;print $1&#125;&#x27;)</span><br><span class="line">echo &quot;正在删除所有redis容器&quot;;</span><br><span class="line">docker rm -f $(docker ps -a |  grep &quot;redis-*&quot;  | awk &#x27;&#123;print $1&#125;&#x27;)</span><br><span class="line">echo &quot;正在删除redis-net网络&quot;;</span><br><span class="line">docker network rm redis-net</span><br><span class="line">echo &quot;正在删除/usr/local/server目录&quot;;</span><br><span class="line"><span class="meta">#</span><span class="bash">rm -rf /usr/<span class="built_in">local</span>/server</span></span><br><span class="line">rm -rf 7001 7002 7003 7004 7005 7006</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h3 id="执行脚本-创建容器-创建集群"><a href="#执行脚本-创建容器-创建集群" class="headerlink" title="执行脚本,创建容器,创建集群"></a>执行脚本,创建容器,创建集群</h3><blockquote>
 <p>执行redis.sh脚本,创建容器,创建集群:</p>
 </blockquote>
-<pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">1 执行脚本 创建容器</span></span><br><span class="line">./redis.sh</span><br><span class="line">[root@localhost redis-cluster]# ./redis.sh </span><br><span class="line">请输入本机IP地址：192.168.2.110</span><br><span class="line">正在下载redis-cluster.tmpl配置模板，请手动下载redis-cluster.tmpl文件并复制到/usr/local/server/redis-cluster目录</span><br><span class="line">正在创建redis-net网络</span><br><span class="line">2f24ef5a195f41775f7cd85d56218d6a7f34591f349c7c835d26b6c4ec9be019</span><br><span class="line">正在创建redis配置文件</span><br><span class="line">正在启动redis容器</span><br><span class="line">df2ceae9f7e44a2ebe4727d06717db7f636693ef8a2ff42458ce7e3cf5738937</span><br><span class="line">86e34c9145760f65394615e221ec886d9634775966cfd30bb33a41a2ba0b8963</span><br><span class="line">fdda9586b0987c6d207b840290e5c21fc1ca624574404a3db744d54bdc074177</span><br><span class="line">f0c725bc27884e319a7d16575dc919063a8999d2d6ab1a62773af7ce3aee227f</span><br><span class="line">9a2373144fed4b48fb9a168cdc1ecb2fbbd3d5f08a8314580c6e4a5d2216ca32</span><br><span class="line">1d0ed018e4c6ec2f6b292f668ac6d47658a183a7b5aa5839395eb098c2e46356</span><br><span class="line">172.18.0.2:7001 172.18.0.3:7002 172.18.0.4:7003 172.18.0.5:7004 172.18.0.6:7005 172.18.0.7:7006 </span><br><span class="line"><span class="meta">#</span><span class="bash">按回车确认</span></span><br><span class="line">请把输入要启动的docker容器名称，默认redis-7001：</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">2 创建集群</span></span><br><span class="line">cd /usr/local/bin/</span><br><span class="line"><span class="meta">#</span><span class="bash">进入到任意一个安装好的redis节点的bin目录，里面有个脚本对象redis-cli，然后执行集群创建</span> </span><br><span class="line"><span class="meta">#</span><span class="bash">--cluster-replicas 1 表示每个主节点有一个从节点</span></span><br><span class="line">./redis-cli --cluster create 172.18.0.2:7001 172.18.0.3:7002 172.18.0.4:7003 172.18.0.5:7004 172.18.0.6:7005 172.18.0.7:7006 --cluster-replicas 1</span><br><span class="line"></span><br></pre>
-<h3 id="验证集群是否创建成功"><a href="#验证集群是否创建成功" class="headerlink" title="验证集群是否创建成功"></a>验证集群是否创建成功</h3><pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">进入任意一个节点</span></span><br><span class="line">cd /usr/local/bin</span><br><span class="line"><span class="meta">#</span><span class="bash">连接任意节点</span></span><br><span class="line"> ./redis-cli -p 7001 -c</span><br><span class="line"><span class="meta"> #</span><span class="bash">执行赋值操作,可看到进行了重定向操作:7001重定向到了7003,说明集群创建成功.</span></span><br><span class="line"><span class="meta"> #</span><span class="bash">重定向原理:redis根据key值进行crc16%16384,计算出该key应该存到哪个节点的哈希槽中</span></span><br><span class="line"> 127.0.0.1:7001&gt; set username zhangsan</span><br><span class="line"><span class="meta">-&gt;</span><span class="bash"> Redirected to slot [14315] located at 192.168.2.110:7003</span></span><br><span class="line">OK</span><br><span class="line">192.168.2.110:7003&gt; </span><br><span class="line"><span class="meta">#</span><span class="bash">也可以在节点中执行cluster nodes查看集群中节点信息,及哈希槽分配信息.</span></span><br><span class="line">192.168.2.110:7003&gt; cluster nodes</span><br><span class="line">76579cdead091c604e60e03454bab68ae69caa36 192.168.2.110:7004@17004 slave 52c2332c4271dba57d3be960d5feef2334b767e5 0 1611586728573 3 connected</span><br><span class="line">b7dde8f6eb6f0385303e45bc54c588e8ea422acf 192.168.2.110:7005@17005 slave 8bddaceb3363a9675e48e6a76c4194c50cc545ac 0 1611586729588 1 connected</span><br><span class="line">52c2332c4271dba57d3be960d5feef2334b767e5 192.168.2.110:7003@17003 myself,master - 0 1611586727000 3 connected 10923-16383</span><br><span class="line">8bddaceb3363a9675e48e6a76c4194c50cc545ac 192.168.2.110:7001@17001 master - 0 1611586729000 1 connected 0-5460</span><br><span class="line">4967d4c7cd28c8601eb9de843f1a1d449a343a7c 192.168.2.110:7006@17006 slave 21d108f7cb03af71f707fb314b730a76c33b8c74 0 1611586728000 2 connected</span><br><span class="line">21d108f7cb03af71f707fb314b730a76c33b8c74 192.168.2.110:7002@17002 master - 0 1611586727561 2 connected 5461-10922</span><br><span class="line">192.168.2.110:7003&gt; </span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">1 执行脚本 创建容器</span></span><br><span class="line">./redis.sh</span><br><span class="line">[root@localhost redis-cluster]# ./redis.sh </span><br><span class="line">请输入本机IP地址：192.168.2.110</span><br><span class="line">正在下载redis-cluster.tmpl配置模板，请手动下载redis-cluster.tmpl文件并复制到/usr/local/server/redis-cluster目录</span><br><span class="line">正在创建redis-net网络</span><br><span class="line">2f24ef5a195f41775f7cd85d56218d6a7f34591f349c7c835d26b6c4ec9be019</span><br><span class="line">正在创建redis配置文件</span><br><span class="line">正在启动redis容器</span><br><span class="line">df2ceae9f7e44a2ebe4727d06717db7f636693ef8a2ff42458ce7e3cf5738937</span><br><span class="line">86e34c9145760f65394615e221ec886d9634775966cfd30bb33a41a2ba0b8963</span><br><span class="line">fdda9586b0987c6d207b840290e5c21fc1ca624574404a3db744d54bdc074177</span><br><span class="line">f0c725bc27884e319a7d16575dc919063a8999d2d6ab1a62773af7ce3aee227f</span><br><span class="line">9a2373144fed4b48fb9a168cdc1ecb2fbbd3d5f08a8314580c6e4a5d2216ca32</span><br><span class="line">1d0ed018e4c6ec2f6b292f668ac6d47658a183a7b5aa5839395eb098c2e46356</span><br><span class="line">172.18.0.2:7001 172.18.0.3:7002 172.18.0.4:7003 172.18.0.5:7004 172.18.0.6:7005 172.18.0.7:7006 </span><br><span class="line"><span class="meta">#</span><span class="bash">按回车确认</span></span><br><span class="line">请把输入要启动的docker容器名称，默认redis-7001：</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">2 创建集群</span></span><br><span class="line">cd /usr/local/bin/</span><br><span class="line"><span class="meta">#</span><span class="bash">进入到任意一个安装好的redis节点的bin目录，里面有个脚本对象redis-cli，然后执行集群创建</span> </span><br><span class="line"><span class="meta">#</span><span class="bash">--cluster-replicas 1 表示每个主节点有一个从节点</span></span><br><span class="line">./redis-cli --cluster create 172.18.0.2:7001 172.18.0.3:7002 172.18.0.4:7003 172.18.0.5:7004 172.18.0.6:7005 172.18.0.7:7006 --cluster-replicas 1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="验证集群是否创建成功"><a href="#验证集群是否创建成功" class="headerlink" title="验证集群是否创建成功"></a>验证集群是否创建成功</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">进入任意一个节点</span></span><br><span class="line">cd /usr/local/bin</span><br><span class="line"><span class="meta">#</span><span class="bash">连接任意节点</span></span><br><span class="line"> ./redis-cli -p 7001 -c</span><br><span class="line"><span class="meta"> #</span><span class="bash">执行赋值操作,可看到进行了重定向操作:7001重定向到了7003,说明集群创建成功.</span></span><br><span class="line"><span class="meta"> #</span><span class="bash">重定向原理:redis根据key值进行crc16%16384,计算出该key应该存到哪个节点的哈希槽中</span></span><br><span class="line"> 127.0.0.1:7001&gt; set username zhangsan</span><br><span class="line"><span class="meta">-&gt;</span><span class="bash"> Redirected to slot [14315] located at 192.168.2.110:7003</span></span><br><span class="line">OK</span><br><span class="line">192.168.2.110:7003&gt; </span><br><span class="line"><span class="meta">#</span><span class="bash">也可以在节点中执行cluster nodes查看集群中节点信息,及哈希槽分配信息.</span></span><br><span class="line">192.168.2.110:7003&gt; cluster nodes</span><br><span class="line">76579cdead091c604e60e03454bab68ae69caa36 192.168.2.110:7004@17004 slave 52c2332c4271dba57d3be960d5feef2334b767e5 0 1611586728573 3 connected</span><br><span class="line">b7dde8f6eb6f0385303e45bc54c588e8ea422acf 192.168.2.110:7005@17005 slave 8bddaceb3363a9675e48e6a76c4194c50cc545ac 0 1611586729588 1 connected</span><br><span class="line">52c2332c4271dba57d3be960d5feef2334b767e5 192.168.2.110:7003@17003 myself,master - 0 1611586727000 3 connected 10923-16383</span><br><span class="line">8bddaceb3363a9675e48e6a76c4194c50cc545ac 192.168.2.110:7001@17001 master - 0 1611586729000 1 connected 0-5460</span><br><span class="line">4967d4c7cd28c8601eb9de843f1a1d449a343a7c 192.168.2.110:7006@17006 slave 21d108f7cb03af71f707fb314b730a76c33b8c74 0 1611586728000 2 connected</span><br><span class="line">21d108f7cb03af71f707fb314b730a76c33b8c74 192.168.2.110:7002@17002 master - 0 1611586727561 2 connected 5461-10922</span><br><span class="line">192.168.2.110:7003&gt; </span><br></pre></td></tr></table></figure>
 
 
-<h2 id="创建集群遇到的问题"><a href="#创建集群遇到的问题" class="headerlink" title="创建集群遇到的问题"></a>创建集群遇到的问题</h2><h3 id="rpc-error-code-2-desc-oci-runtime-error-exec-failed-container-linux-go-247-starting-containe"><a href="#rpc-error-code-2-desc-oci-runtime-error-exec-failed-container-linux-go-247-starting-containe" class="headerlink" title="rpc error: code = 2 desc = oci runtime error: exec failed: container_linux.go:247: starting containe"></a>rpc error: code = 2 desc = oci runtime error: exec failed: container_linux.go:247: starting containe</h3><pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">查看我的docker 版本</span></span><br><span class="line">docker --version</span><br><span class="line">Docker version 1.13.1, build 07f3374/1.13.1</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">更新yum 即可修复 （如果yum的仓库连接不成功， 可以使用阿里仓库）</span></span><br><span class="line"> yum update -y</span><br></pre>
+<h2 id="创建集群遇到的问题"><a href="#创建集群遇到的问题" class="headerlink" title="创建集群遇到的问题"></a>创建集群遇到的问题</h2><h3 id="rpc-error-code-2-desc-oci-runtime-error-exec-failed-container-linux-go-247-starting-containe"><a href="#rpc-error-code-2-desc-oci-runtime-error-exec-failed-container-linux-go-247-starting-containe" class="headerlink" title="rpc error: code = 2 desc = oci runtime error: exec failed: container_linux.go:247: starting containe"></a>rpc error: code = 2 desc = oci runtime error: exec failed: container_linux.go:247: starting containe</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">查看我的docker 版本</span></span><br><span class="line">docker --version</span><br><span class="line">Docker version 1.13.1, build 07f3374/1.13.1</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">更新yum 即可修复 （如果yum的仓库连接不成功， 可以使用阿里仓库）</span></span><br><span class="line"> yum update -y</span><br></pre></td></tr></table></figure>
 <h3 id="创建集群后-一直点点点等待连接"><a href="#创建集群后-一直点点点等待连接" class="headerlink" title="创建集群后,一直点点点等待连接"></a>创建集群后,一直点点点等待连接</h3><blockquote>
 <p>相关端口未打开</p>
-<pre class="highlight"><span class="line">firewall-cmd --zone=public --add-port=7001/tcp --permanent   # 开放7001端口</span><br><span class="line">firewall-cmd --zone=public --remove-port=17001/tcp --permanent  #关闭17001端口</span><br><span class="line">firewall-cmd --reload   # 配置立即生效</span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone=public --add-port=7001/tcp --permanent   # 开放7001端口</span><br><span class="line">firewall-cmd --zone=public --remove-port=17001/tcp --permanent  #关闭17001端口</span><br><span class="line">firewall-cmd --reload   # 配置立即生效</span><br></pre></td></tr></table></figure>
 
 
 </blockquote>
-<h2 id="集群的扩容"><a href="#集群的扩容" class="headerlink" title="集群的扩容"></a>集群的扩容</h2><h3 id="通过启动两个节点7007-7008-一主一从"><a href="#通过启动两个节点7007-7008-一主一从" class="headerlink" title="通过启动两个节点7007 7008,一主一从"></a>通过启动两个节点7007 7008,一主一从</h3><pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">docker安装Redis这里编写了一个脚本，安装脚本 redis-port.sh 如下</span></span><br><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span> </span><br><span class="line"><span class="meta">#</span><span class="bash">在/usr/<span class="built_in">local</span>/server/redis-cluster下生成conf和data目标，并生成配置信息</span> </span><br><span class="line"><span class="meta">#</span><span class="bash">换行</span> </span><br><span class="line">echo -e &quot;\n&quot; </span><br><span class="line"><span class="meta">#</span><span class="bash">输入信息</span> </span><br><span class="line">read -p &quot;请输入容器端口：&quot; DOCKER_PORT</span><br><span class="line"><span class="meta">#</span><span class="bash">输入端口赋值</span></span><br><span class="line">port=$DOCKER_PORT;</span><br><span class="line">echo -e &quot;$port&quot;</span><br><span class="line"><span class="meta">#</span><span class="bash">创建配置文件</span></span><br><span class="line">mkdir -p ./$&#123;port&#125;/conf &amp;&amp; PORT=$&#123;port&#125; envsubst &lt; ./redis-cluster.tmpl &gt; ./$&#123;port&#125;/conf/redis.conf &amp;&amp; mkdir -p ./$&#123;port&#125;/data;</span><br><span class="line"><span class="meta">#</span><span class="bash">创建redis容器</span></span><br><span class="line">docker run -d -it -p $&#123;port&#125;:$&#123;port&#125; -p 1$&#123;port&#125;:1$&#123;port&#125; -v /usr/local/server/redis-cluster/$&#123;port&#125;/conf/redis.conf:/usr/local/etc/redis/redis.conf -v /usr/local/server/redis-cluster/$&#123;port&#125;/data:/data --privileged=true --restart always --name redis-$&#123;port&#125; --net redis-net --sysctl net.core.somaxconn=1024 redis redis-server /usr/local/etc/redis/redis.conf;</span><br><span class="line"><span class="meta">#</span><span class="bash">查找ip</span></span><br><span class="line">echo -n &quot;启动$(docker inspect --format &#x27;&#123;&#123; (index .NetworkSettings.Networks &quot;redis- net&quot;).IPAddress &#125;&#125;&#x27; &quot;redis-$&#123;port&#125;&quot;)&quot;:$&#123;port&#125;&quot; 成功！&quot;;</span><br><span class="line">echo -e &quot;\n&quot;</span><br></pre>
-<h3 id="启动完成-把7007加进集群-并分配哈希槽"><a href="#启动完成-把7007加进集群-并分配哈希槽" class="headerlink" title="启动完成,把7007加进集群,并分配哈希槽."></a>启动完成,把7007加进集群,并分配哈希槽.</h3><pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">1 查看主节点信息 和从节点信息</span></span><br><span class="line">[root@localhost bin]# ./redis-cli -p 7001 cluster nodes|grep master</span><br><span class="line">52c2332c4271dba57d3be960d5feef2334b767e5 192.168.2.110:7003@17003 master - 0 1611589610513 3 connected 10923-16383</span><br><span class="line">8bddaceb3363a9675e48e6a76c4194c50cc545ac 192.168.2.110:7001@17001 myself,master - 0 1611589610000 1 connected 0-5460</span><br><span class="line">21d108f7cb03af71f707fb314b730a76c33b8c74 192.168.2.110:7002@17002 master - 0 1611589611527 2 connected 5461-10922</span><br><span class="line">[root@localhost bin]# ./redis-cli -p 7001 cluster nodes|grep slave</span><br><span class="line">4967d4c7cd28c8601eb9de843f1a1d449a343a7c 192.168.2.110:7006@17006 slave 21d108f7cb03af71f707fb314b730a76c33b8c74 0 1611589702041 2 connected</span><br><span class="line">76579cdead091c604e60e03454bab68ae69caa36 192.168.2.110:7004@17004 slave 52c2332c4271dba57d3be960d5feef2334b767e5 0 1611589702000 3 connected</span><br><span class="line">b7dde8f6eb6f0385303e45bc54c588e8ea422acf 192.168.2.110:7005@17005 slave 8bddaceb3363a9675e48e6a76c4194c50cc545ac 0 1611589701540 1 connected</span><br><span class="line">[root@localhost bin]# </span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">2 把7007添加到集群中</span></span><br><span class="line"><span class="meta">#</span><span class="bash">命令说明 将节点192.168.2.110:7007添加到节点192.168.2.110:7001所在的集群中</span></span><br><span class="line">./redis-cli --cluster add-node 192.168.2.110:7007 192.168.2.110:7001</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3 再次查看主节点信息,已能看到7007节点,但是7007没有分配哈希槽</span></span><br><span class="line">[root@localhost bin]# ./redis-cli -p 7001 cluster nodes|grep master</span><br><span class="line">52c2332c4271dba57d3be960d5feef2334b767e5 192.168.2.110:7003@17003 master - 0 1611590983590 3 connected 10923-16383</span><br><span class="line">8bddaceb3363a9675e48e6a76c4194c50cc545ac 192.168.2.110:7001@17001 myself,master - 0 1611590981000 1 connected 0-5460</span><br><span class="line">21d108f7cb03af71f707fb314b730a76c33b8c74 192.168.2.110:7002@17002 master - 0 1611590983000 2 connected 5461-10922</span><br><span class="line">eaf055c10e03a10e6493194bc3389d65919c3ecb 192.168.2.110:7007@17007 master - 0 1611590983590 0 connected</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">4 重新分配哈希槽</span></span><br><span class="line"><span class="meta">#</span><span class="bash">我们将 7001,7002,7003 中的 100 个哈希槽挪给 7007 ，命令如下：</span></span><br><span class="line">./redis-cli --cluster reshard 192.168.2.110:7001 --cluster-from 8bddaceb3363a9675e48e6a76c4194c50cc545ac,21d108f7cb03af71f707fb314b730a76c33b8c74,52c2332c4271dba57d3be960d5feef2334b767e5 --cluster-to eaf055c10e03a10e6493194bc3389d65919c3ecb --cluster-slots 100</span><br><span class="line"><span class="meta">#</span><span class="bash"> 参数说明</span></span><br><span class="line"><span class="meta">#</span><span class="bash">--cluster-from：表示slot目前所在的节点的node ID，多个ID用逗号分隔</span> </span><br><span class="line"><span class="meta">#</span><span class="bash">--cluster-to：表示需要新分配节点的node ID</span> </span><br><span class="line"><span class="meta">#</span><span class="bash">--cluster-slots：分配的slot数量</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 5 再次查看主节点信息,哈希槽已成功分配给7007</span></span><br><span class="line">[root@localhost bin]# ./redis-cli -p 7001 cluster nodes|grep master</span><br><span class="line">52c2332c4271dba57d3be960d5feef2334b767e5 192.168.2.110:7003@17003 master - 0 1611591101000 3 connected 10956-16383</span><br><span class="line">8bddaceb3363a9675e48e6a76c4194c50cc545ac 192.168.2.110:7001@17001 myself,master - 0 1611591102000 1 connected 33-5460</span><br><span class="line">21d108f7cb03af71f707fb314b730a76c33b8c74 192.168.2.110:7002@17002 master - 0 1611591101598 2 connected 5495-10922</span><br><span class="line">eaf055c10e03a10e6493194bc3389d65919c3ecb 192.168.2.110:7007@17007 master - 0 1611591102514 7 connected 0-32 5461-5494 10923-10955</span><br><span class="line">[root@localhost bin]# </span><br></pre>
+<h2 id="集群的扩容"><a href="#集群的扩容" class="headerlink" title="集群的扩容"></a>集群的扩容</h2><h3 id="通过启动两个节点7007-7008-一主一从"><a href="#通过启动两个节点7007-7008-一主一从" class="headerlink" title="通过启动两个节点7007 7008,一主一从"></a>通过启动两个节点7007 7008,一主一从</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">docker安装Redis这里编写了一个脚本，安装脚本 redis-port.sh 如下</span></span><br><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span> </span><br><span class="line"><span class="meta">#</span><span class="bash">在/usr/<span class="built_in">local</span>/server/redis-cluster下生成conf和data目标，并生成配置信息</span> </span><br><span class="line"><span class="meta">#</span><span class="bash">换行</span> </span><br><span class="line">echo -e &quot;\n&quot; </span><br><span class="line"><span class="meta">#</span><span class="bash">输入信息</span> </span><br><span class="line">read -p &quot;请输入容器端口：&quot; DOCKER_PORT</span><br><span class="line"><span class="meta">#</span><span class="bash">输入端口赋值</span></span><br><span class="line">port=$DOCKER_PORT;</span><br><span class="line">echo -e &quot;$port&quot;</span><br><span class="line"><span class="meta">#</span><span class="bash">创建配置文件</span></span><br><span class="line">mkdir -p ./$&#123;port&#125;/conf &amp;&amp; PORT=$&#123;port&#125; envsubst &lt; ./redis-cluster.tmpl &gt; ./$&#123;port&#125;/conf/redis.conf &amp;&amp; mkdir -p ./$&#123;port&#125;/data;</span><br><span class="line"><span class="meta">#</span><span class="bash">创建redis容器</span></span><br><span class="line">docker run -d -it -p $&#123;port&#125;:$&#123;port&#125; -p 1$&#123;port&#125;:1$&#123;port&#125; -v /usr/local/server/redis-cluster/$&#123;port&#125;/conf/redis.conf:/usr/local/etc/redis/redis.conf -v /usr/local/server/redis-cluster/$&#123;port&#125;/data:/data --privileged=true --restart always --name redis-$&#123;port&#125; --net redis-net --sysctl net.core.somaxconn=1024 redis redis-server /usr/local/etc/redis/redis.conf;</span><br><span class="line"><span class="meta">#</span><span class="bash">查找ip</span></span><br><span class="line">echo -n &quot;启动$(docker inspect --format &#x27;&#123;&#123; (index .NetworkSettings.Networks &quot;redis- net&quot;).IPAddress &#125;&#125;&#x27; &quot;redis-$&#123;port&#125;&quot;)&quot;:$&#123;port&#125;&quot; 成功！&quot;;</span><br><span class="line">echo -e &quot;\n&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="启动完成-把7007加进集群-并分配哈希槽"><a href="#启动完成-把7007加进集群-并分配哈希槽" class="headerlink" title="启动完成,把7007加进集群,并分配哈希槽."></a>启动完成,把7007加进集群,并分配哈希槽.</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">1 查看主节点信息 和从节点信息</span></span><br><span class="line">[root@localhost bin]# ./redis-cli -p 7001 cluster nodes|grep master</span><br><span class="line">52c2332c4271dba57d3be960d5feef2334b767e5 192.168.2.110:7003@17003 master - 0 1611589610513 3 connected 10923-16383</span><br><span class="line">8bddaceb3363a9675e48e6a76c4194c50cc545ac 192.168.2.110:7001@17001 myself,master - 0 1611589610000 1 connected 0-5460</span><br><span class="line">21d108f7cb03af71f707fb314b730a76c33b8c74 192.168.2.110:7002@17002 master - 0 1611589611527 2 connected 5461-10922</span><br><span class="line">[root@localhost bin]# ./redis-cli -p 7001 cluster nodes|grep slave</span><br><span class="line">4967d4c7cd28c8601eb9de843f1a1d449a343a7c 192.168.2.110:7006@17006 slave 21d108f7cb03af71f707fb314b730a76c33b8c74 0 1611589702041 2 connected</span><br><span class="line">76579cdead091c604e60e03454bab68ae69caa36 192.168.2.110:7004@17004 slave 52c2332c4271dba57d3be960d5feef2334b767e5 0 1611589702000 3 connected</span><br><span class="line">b7dde8f6eb6f0385303e45bc54c588e8ea422acf 192.168.2.110:7005@17005 slave 8bddaceb3363a9675e48e6a76c4194c50cc545ac 0 1611589701540 1 connected</span><br><span class="line">[root@localhost bin]# </span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">2 把7007添加到集群中</span></span><br><span class="line"><span class="meta">#</span><span class="bash">命令说明 将节点192.168.2.110:7007添加到节点192.168.2.110:7001所在的集群中</span></span><br><span class="line">./redis-cli --cluster add-node 192.168.2.110:7007 192.168.2.110:7001</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3 再次查看主节点信息,已能看到7007节点,但是7007没有分配哈希槽</span></span><br><span class="line">[root@localhost bin]# ./redis-cli -p 7001 cluster nodes|grep master</span><br><span class="line">52c2332c4271dba57d3be960d5feef2334b767e5 192.168.2.110:7003@17003 master - 0 1611590983590 3 connected 10923-16383</span><br><span class="line">8bddaceb3363a9675e48e6a76c4194c50cc545ac 192.168.2.110:7001@17001 myself,master - 0 1611590981000 1 connected 0-5460</span><br><span class="line">21d108f7cb03af71f707fb314b730a76c33b8c74 192.168.2.110:7002@17002 master - 0 1611590983000 2 connected 5461-10922</span><br><span class="line">eaf055c10e03a10e6493194bc3389d65919c3ecb 192.168.2.110:7007@17007 master - 0 1611590983590 0 connected</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">4 重新分配哈希槽</span></span><br><span class="line"><span class="meta">#</span><span class="bash">我们将 7001,7002,7003 中的 100 个哈希槽挪给 7007 ，命令如下：</span></span><br><span class="line">./redis-cli --cluster reshard 192.168.2.110:7001 --cluster-from 8bddaceb3363a9675e48e6a76c4194c50cc545ac,21d108f7cb03af71f707fb314b730a76c33b8c74,52c2332c4271dba57d3be960d5feef2334b767e5 --cluster-to eaf055c10e03a10e6493194bc3389d65919c3ecb --cluster-slots 100</span><br><span class="line"><span class="meta">#</span><span class="bash"> 参数说明</span></span><br><span class="line"><span class="meta">#</span><span class="bash">--cluster-from：表示slot目前所在的节点的node ID，多个ID用逗号分隔</span> </span><br><span class="line"><span class="meta">#</span><span class="bash">--cluster-to：表示需要新分配节点的node ID</span> </span><br><span class="line"><span class="meta">#</span><span class="bash">--cluster-slots：分配的slot数量</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 5 再次查看主节点信息,哈希槽已成功分配给7007</span></span><br><span class="line">[root@localhost bin]# ./redis-cli -p 7001 cluster nodes|grep master</span><br><span class="line">52c2332c4271dba57d3be960d5feef2334b767e5 192.168.2.110:7003@17003 master - 0 1611591101000 3 connected 10956-16383</span><br><span class="line">8bddaceb3363a9675e48e6a76c4194c50cc545ac 192.168.2.110:7001@17001 myself,master - 0 1611591102000 1 connected 33-5460</span><br><span class="line">21d108f7cb03af71f707fb314b730a76c33b8c74 192.168.2.110:7002@17002 master - 0 1611591101598 2 connected 5495-10922</span><br><span class="line">eaf055c10e03a10e6493194bc3389d65919c3ecb 192.168.2.110:7007@17007 master - 0 1611591102514 7 connected 0-32 5461-5494 10923-10955</span><br><span class="line">[root@localhost bin]# </span><br></pre></td></tr></table></figure>
 <h3 id="把7008加进7007的从节点"><a href="#把7008加进7007的从节点" class="headerlink" title="把7008加进7007的从节点"></a>把7008加进7007的从节点</h3><blockquote>
 <p>我们需要往集群中给 7007 节点添加一个从节点 7008 ，添加从节点的主要目的是提高高可用，防止主节点宕机后该节点无法提供服务。添加从节点命令如下：</p>
-<pre class="highlight"><span class="line"><span class="meta">&gt;</span><span class="bash">./redis-cli --cluster add-node 192.168.2.110:7008 192.168.2.110:7007 --cluster-slave --cluster-master-id eaf055c10e03a10e6493194bc3389d65919c3ecb</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"><span class="comment">#参数说明</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"><span class="comment">#add-node: 后面的分别跟着新加入的slave和slave对应的master</span></span> </span><br><span class="line"><span class="meta">&gt;</span><span class="bash"><span class="comment">#cluster-slave：表示加入的是slave节点</span></span> </span><br><span class="line"><span class="meta">&gt;</span><span class="bash"><span class="comment">#--cluster-master-id：表示slave对应的master的node ID</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"><span class="comment">#再次查看从节点信息,7008已加入</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">[root@localhost bin]<span class="comment"># ./redis-cli -p 7001 cluster nodes|grep slavebdcc8f4553c05fe408a75045ca910b5156d5a11c 192.168.2.110:7008@17008 slave eaf055c10e03a10e6493194bc3389d65919c3ecb 0 1611591482000 7 connected</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">4967d4c7cd28c8601eb9de843f1a1d449a343a7c 192.168.2.110:7006@17006 slave 21d108f7cb03af71f707fb314b730a76c33b8c74 0 1611591481472 2 connected</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">76579cdead091c604e60e03454bab68ae69caa36 192.168.2.110:7004@17004 slave 52c2332c4271dba57d3be960d5feef2334b767e5 0 1611591482181 3 connected</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">b7dde8f6eb6f0385303e45bc54c588e8ea422acf 192.168.2.110:7005@17005 slave 8bddaceb3363a9675e48e6a76c4194c50cc545ac 0 1611591482484 1 connected</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">[root@localhost bin]<span class="comment">#</span></span> </span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">./redis-cli --cluster add-node 192.168.2.110:7008 192.168.2.110:7007 --cluster-slave --cluster-master-id eaf055c10e03a10e6493194bc3389d65919c3ecb</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"><span class="comment">#参数说明</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"><span class="comment">#add-node: 后面的分别跟着新加入的slave和slave对应的master</span></span> </span><br><span class="line"><span class="meta">&gt;</span><span class="bash"><span class="comment">#cluster-slave：表示加入的是slave节点</span></span> </span><br><span class="line"><span class="meta">&gt;</span><span class="bash"><span class="comment">#--cluster-master-id：表示slave对应的master的node ID</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"><span class="comment">#再次查看从节点信息,7008已加入</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">[root@localhost bin]<span class="comment"># ./redis-cli -p 7001 cluster nodes|grep slavebdcc8f4553c05fe408a75045ca910b5156d5a11c 192.168.2.110:7008@17008 slave eaf055c10e03a10e6493194bc3389d65919c3ecb 0 1611591482000 7 connected</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">4967d4c7cd28c8601eb9de843f1a1d449a343a7c 192.168.2.110:7006@17006 slave 21d108f7cb03af71f707fb314b730a76c33b8c74 0 1611591481472 2 connected</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">76579cdead091c604e60e03454bab68ae69caa36 192.168.2.110:7004@17004 slave 52c2332c4271dba57d3be960d5feef2334b767e5 0 1611591482181 3 connected</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">b7dde8f6eb6f0385303e45bc54c588e8ea422acf 192.168.2.110:7005@17005 slave 8bddaceb3363a9675e48e6a76c4194c50cc545ac 0 1611591482484 1 connected</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">[root@localhost bin]<span class="comment">#</span></span> </span><br></pre></td></tr></table></figure>
 
 
 </blockquote>
 <h2 id="集群的收容"><a href="#集群的收容" class="headerlink" title="集群的收容"></a>集群的收容</h2><h3 id="移除从节点"><a href="#移除从节点" class="headerlink" title="移除从节点"></a><strong>移除从节点</strong></h3><p>移除 7007 的从节点 7008 ，命令如下：</p>
-<pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">查看从节点</span></span><br><span class="line">root@579a0ecdc975:/usr/local/bin# ./redis-cli -p 7001 cluster nodes | grep slave</span><br><span class="line">b7dde8f6eb6f0385303e45bc54c588e8ea422acf 192.168.2.110:7005@17005 slave,fail? 8bddaceb3363a9675e48e6a76c4194c50cc545ac 1611969411737 1611969410827 1 connected</span><br><span class="line">bdcc8f4553c05fe408a75045ca910b5156d5a11c 192.168.2.110:7008@17008 slave,fail? eaf055c10e03a10e6493194bc3389d65919c3ecb 1611969413356 1611969410827 7 connected</span><br><span class="line">4967d4c7cd28c8601eb9de843f1a1d449a343a7c 192.168.2.110:7006@17006 slave,fail? 21d108f7cb03af71f707fb314b730a76c33b8c74 1611969412748 1611969410827 2 connected</span><br><span class="line">76579cdead091c604e60e03454bab68ae69caa36 192.168.2.110:7004@17004 slave,fail? 52c2332c4271dba57d3be960d5feef2334b767e5 1611969413356 1611969410827 3 connected</span><br><span class="line">root@579a0ecdc975:/usr/local/bin# </span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除7008</span></span><br><span class="line">[root@localhost bin]# ./redis-cli --cluster del-node 192.168.2.110:7008 bdcc8f4553c05fe408a75045ca910b5156d5a11c</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Removing node bdcc8f4553c05fe408a75045ca910b5156d5a11c from cluster 192.168.2.110:7008</span></span><br><span class="line">Could not connect to Redis at 192.168.2.110:7008: No route to host</span><br><span class="line">[root@localhost bin]# </span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">查看从节点</span></span><br><span class="line">root@579a0ecdc975:/usr/local/bin# ./redis-cli -p 7001 cluster nodes | grep slave</span><br><span class="line">b7dde8f6eb6f0385303e45bc54c588e8ea422acf 192.168.2.110:7005@17005 slave,fail? 8bddaceb3363a9675e48e6a76c4194c50cc545ac 1611969411737 1611969410827 1 connected</span><br><span class="line">bdcc8f4553c05fe408a75045ca910b5156d5a11c 192.168.2.110:7008@17008 slave,fail? eaf055c10e03a10e6493194bc3389d65919c3ecb 1611969413356 1611969410827 7 connected</span><br><span class="line">4967d4c7cd28c8601eb9de843f1a1d449a343a7c 192.168.2.110:7006@17006 slave,fail? 21d108f7cb03af71f707fb314b730a76c33b8c74 1611969412748 1611969410827 2 connected</span><br><span class="line">76579cdead091c604e60e03454bab68ae69caa36 192.168.2.110:7004@17004 slave,fail? 52c2332c4271dba57d3be960d5feef2334b767e5 1611969413356 1611969410827 3 connected</span><br><span class="line">root@579a0ecdc975:/usr/local/bin# </span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除7008</span></span><br><span class="line">[root@localhost bin]# ./redis-cli --cluster del-node 192.168.2.110:7008 bdcc8f4553c05fe408a75045ca910b5156d5a11c</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Removing node bdcc8f4553c05fe408a75045ca910b5156d5a11c from cluster 192.168.2.110:7008</span></span><br><span class="line">Could not connect to Redis at 192.168.2.110:7008: No route to host</span><br><span class="line">[root@localhost bin]# </span><br></pre></td></tr></table></figure>
 
 
 <p>参数说明：</p>
-<pre class="highlight"><span class="line">del-node:删除节点，后面跟着slave节点的 ip:port 和node ID</span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">del-node:删除节点，后面跟着slave节点的 ip:port 和node ID</span><br></pre></td></tr></table></figure>
 <p>删除后，我们再来查看集群节点，此时再无7008节点。</p>
-<p><img src="https://i.loli.net/2021/01/30/oxvBH9EgWXTjSGA.png" alt="image-20210130095713026" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/oxvBH9EgWXTjSGA.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/01/30/oxvBH9EgWXTjSGA.png" alt="image-20210130095713026"></p>
 <h3 id="迁移Master的Slot"><a href="#迁移Master的Slot" class="headerlink" title="迁移Master的Slot"></a>迁移Master的Slot</h3><p>我们需要将 7007 节点的哈希槽迁移到 7001,7002,7003 节点上，仍然用上面用过的 redis-cli –cluster reshard</p>
 <p>语法，命令如下：</p>
 <p>第1次迁移：</p>
-<pre class="highlight"><span class="line">./redis-cli --cluster reshard 192.168.2.114:7007 --cluster-from 443096af2ff8c1e89f1160faed4f6a02235822a7 --cluster-to 80a69bb8af3737bce2913b2952b4456430a89eb3 --cluster-slots 33 --cluster-yes</span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./redis-cli --cluster reshard 192.168.2.114:7007 --cluster-from 443096af2ff8c1e89f1160faed4f6a02235822a7 --cluster-to 80a69bb8af3737bce2913b2952b4456430a89eb3 --cluster-slots 33 --cluster-yes</span><br></pre></td></tr></table></figure>
 <p>查看集群节点：</p>
-<p><img src="https://i.loli.net/2021/01/30/iIGRsyC3n6l9w24.png" alt="image-20210130100001634" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/iIGRsyC3n6l9w24.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/01/30/iIGRsyC3n6l9w24.png" alt="image-20210130100001634"></p>
 <p>第2次迁移：</p>
-<pre class="highlight"><span class="line">./redis-cli --cluster reshard 192.168.211.141:7007 --cluster-from </span><br><span class="line">443096af2ff8c1e89f1160faed4f6a02235822a7 --cluster-to </span><br><span class="line">c9687b2ebec8b99ee14fcbb885b5c3439c58827f --cluster-slots 34 --cluster-yes </span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./redis-cli --cluster reshard 192.168.211.141:7007 --cluster-from </span><br><span class="line">443096af2ff8c1e89f1160faed4f6a02235822a7 --cluster-to </span><br><span class="line">c9687b2ebec8b99ee14fcbb885b5c3439c58827f --cluster-slots 34 --cluster-yes </span><br></pre></td></tr></table></figure>
 
 
 <p>第3次迁移：</p>
-<pre class="highlight"><span class="line">./redis-cli --cluster reshard 192.168.211.141:7007 --cluster-from </span><br><span class="line">443096af2ff8c1e89f1160faed4f6a02235822a7 --cluster-to </span><br><span class="line">612e4af8eae48426938ce65d12a7d7376b0b37e3 --cluster-slots 33 --cluster-yes</span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./redis-cli --cluster reshard 192.168.211.141:7007 --cluster-from </span><br><span class="line">443096af2ff8c1e89f1160faed4f6a02235822a7 --cluster-to </span><br><span class="line">612e4af8eae48426938ce65d12a7d7376b0b37e3 --cluster-slots 33 --cluster-yes</span><br></pre></td></tr></table></figure>
 <p>集群状态查询：</p>
-<p><img src="https://i.loli.net/2021/01/30/daySTQE9livjgXJ.png" alt="image-20210130100113825" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/daySTQE9livjgXJ.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/01/30/daySTQE9livjgXJ.png" alt="image-20210130100113825"></p>
 <h3 id="删除7007主节点"><a href="#删除7007主节点" class="headerlink" title="删除7007主节点"></a>删除7007主节点</h3><p>删除节点命令如下：</p>
-<pre class="highlight"><span class="line">./redis-cli --cluster del-node 192.168.211.141:7007 443096af2ff8c1e89f1160faed4f6a02235822a7</span><br></pre>
-<p>集群节点查看：<img src="https://i.loli.net/2021/01/30/sLbq7CDHG39WI1A.png" alt="image-20210130100155133" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/sLbq7CDHG39WI1A.png" class="lozad post-image"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./redis-cli --cluster del-node 192.168.211.141:7007 443096af2ff8c1e89f1160faed4f6a02235822a7</span><br></pre></td></tr></table></figure>
+<p>集群节点查看：<img src="https://i.loli.net/2021/01/30/sLbq7CDHG39WI1A.png" alt="image-20210130100155133"></p>
 <h1 id="集群面试题"><a href="#集群面试题" class="headerlink" title="集群面试题"></a>集群面试题</h1><ul>
 <li><p>问题一: Redis的多数据库机制,了解多少?</p>
 <blockquote>
@@ -513,7 +487,7 @@
 <blockquote>
 <p>​    <strong>一言以蔽之:查询Key,缓存过期,大量并发,频繁查询数据派</strong></p>
 <p>业界比较常用的做法:<strong>使用互斥锁</strong>。简单地来说,就是在缓存失效的时候(判断拿出来的值为空) ,不是立即去load db (查询数据库) ,而是先使用缓存工具的某些带成功操作返回值的操作(比如Redis的SETNX或者Memcache的ADD)去set一个mutex key,就是只让一个线程构建缓存,其他线程等待构建缓存的线程执行完,重新从缓存获取数据。</p>
-<pre class="highlight"><span class="line"><span class="function">string <span class="title">get</span><span class="params">(String key)</span></span>&#123;</span><br><span class="line">  String value = redis.get(key);</span><br><span class="line">	<span class="keyword">if</span> (value == <span class="keyword">null</span>)&#123;</span><br><span class="line">		<span class="comment">//如果key不存在,则设置为1</span></span><br><span class="line">		<span class="keyword">if</span> (redis.setnx(key_mutex, <span class="string">&quot;1&quot;</span>)) &#123; </span><br><span class="line">			<span class="comment">//设置key的过期时间为3分钟</span></span><br><span class="line">			redis.expire(key_mutex, <span class="number">3</span> * <span class="number">60</span>) ;</span><br><span class="line">			<span class="comment">//从db中加载数据，但注意：只有一个线程能进入到这里,其他线程访问的时候已有课key_mutex</span></span><br><span class="line">			value =db.get(key); </span><br><span class="line">			<span class="comment">//从数据库中加载成功,则设置对应的数据</span></span><br><span class="line">			redis.set(key, value);</span><br><span class="line">			redis.delete(key_mutex); </span><br><span class="line"> 	 	&#125; <span class="keyword">else</span> &#123; </span><br><span class="line">			<span class="comment">//其他线程休息50毫秒后重试</span></span><br><span class="line">    	Thread.sleep (<span class="number">50</span>);</span><br><span class="line">			get(key);</span><br><span class="line">  	&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">get</span><span class="params">(String key)</span></span>&#123;</span><br><span class="line">  String value = redis.get(key);</span><br><span class="line">	<span class="keyword">if</span> (value == <span class="keyword">null</span>)&#123;</span><br><span class="line">		<span class="comment">//如果key不存在,则设置为1</span></span><br><span class="line">		<span class="keyword">if</span> (redis.setnx(key_mutex, <span class="string">&quot;1&quot;</span>)) &#123; </span><br><span class="line">			<span class="comment">//设置key的过期时间为3分钟</span></span><br><span class="line">			redis.expire(key_mutex, <span class="number">3</span> * <span class="number">60</span>) ;</span><br><span class="line">			<span class="comment">//从db中加载数据，但注意：只有一个线程能进入到这里,其他线程访问的时候已有课key_mutex</span></span><br><span class="line">			value =db.get(key); </span><br><span class="line">			<span class="comment">//从数据库中加载成功,则设置对应的数据</span></span><br><span class="line">			redis.set(key, value);</span><br><span class="line">			redis.delete(key_mutex); </span><br><span class="line"> 	 	&#125; <span class="keyword">else</span> &#123; </span><br><span class="line">			<span class="comment">//其他线程休息50毫秒后重试</span></span><br><span class="line">    	Thread.sleep (<span class="number">50</span>);</span><br><span class="line">			get(key);</span><br><span class="line">  	&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>缓存雪崩</strong>:当缓存服务器重启或者大量缓存集中在某一个时间段失效,这样在失效的时候,也会给后端系统(比如DB)带来很大压力。</p>
 </blockquote>
 <blockquote>
@@ -521,397 +495,197 @@
 <p>缓存失效时的雪崩效应对底层系统的冲击非常可怕!大多数系统设计者考虑用<strong>加锁或者队列</strong>的方式保证来保证不会有大量的线程对数据库一次性进行读写,从而避免失效时大量的并发请求落到底层存储系统上。还有一个简单方案就时**将缓存失效时间分散开,**比如可以在原有的失效时间基础上增加一个随机值,比如1-5分钟随机,这样每一个缓存的过期时间的重复率就会降低,就很难引发集体失效的事件。</p>
 </blockquote>
 
-  </div>
-  <div>
-  
-  <div class="post-note note-warning copyright" style="margin-top: 42px">
-    <p><span style="font-weight: bold;">作者：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/about">blydd</a></p>
-    <p><span style="font-weight: bold;">文章链接：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/2021/01/23/redis%E6%95%99%E7%A8%8B%E6%95%88%E7%8E%87%E7%89%88/">https://www.mele.cool/2021/01/23/redis%E6%95%99%E7%A8%8B%E6%95%88%E7%8E%87%E7%89%88/</a></p>
-    <p><span style="font-weight: bold;">版权声明：</span>本博客所有文章除特别声明外，均采用<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0 协议</a>。转载请注明出处！</p>
-  </div>
-  
-  </div>
-</article>
-<div class="nav">
-  
-  <div class="nav-item-prev">
-    <a href="/2021/01/26/编写优雅高效的java代码/" class="nav-link">
-      <i class="iconfont icon-left nav-prev-icon"></i>
-      <div>
-        <div class="nav-label">上一篇</div>
-        
-        <div class="nav-title">编写高效优雅java代码 </div>
-        
-      </div>
-    </a>
-  </div>
-  
-  
-  <div class="nav-item-next">
-    <a href="/2021/01/22/开发注意代码整理/" class="nav-link">
-      <div>
-        <div class="nav-label">下一篇</div>
-        
-        <div class="nav-title">开发中注意的小问题 </div>
-        
-      </div>
-      <i class="iconfont icon-right nav-next-icon"></i>
-    </a>
-  </div>
-  
-</div>
-
-<div class="card card-content toc-card" id="mobiletoc">
-  <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
-<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-text">基本使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8E%E5%8F%B0%E5%90%AF%E5%8A%A8redis"><span class="toc-text">后台启动redis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%97%ADredis"><span class="toc-text">关闭redis</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#String"><span class="toc-text">String</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">使用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hash"><span class="toc-text">hash</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4-1"><span class="toc-text">使用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#list"><span class="toc-text">list</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4-2"><span class="toc-text">使用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#set"><span class="toc-text">set</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4-3"><span class="toc-text">使用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E5%BA%8Fset"><span class="toc-text">有序set</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4-4"><span class="toc-text">使用命令</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#redis%E9%80%9A%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">redis通用命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#redis%E4%BA%8B%E5%8A%A1"><span class="toc-text">redis事务</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#redis%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">redis持久化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Jedis"><span class="toc-text">Jedis</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5"><span class="toc-text">过期策略</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5"><span class="toc-text">内存淘汰策略</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis%E7%9A%84%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E6%9E%B6%E6%9E%84"><span class="toc-text">Redis的主从复制架构.</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF"><span class="toc-text">场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA"><span class="toc-text">搭建</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%93%A8%E5%85%B5"><span class="toc-text">哨兵</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%93%A8%E5%85%B5"><span class="toc-text">配置哨兵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%93%A8%E5%85%B5%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84%E4%BB%A3%E7%A0%81%E8%BF%9E%E6%8E%A5"><span class="toc-text">哨兵模式下的代码连接</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4"><span class="toc-text">集群</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#docker%E6%90%AD%E5%BB%BAredis%E9%9B%86%E7%BE%A4"><span class="toc-text">docker搭建redis集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%A8%A1%E6%9D%BF%E5%8F%8A%E8%84%9A%E6%9C%AC"><span class="toc-text">创建模板及脚本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC-%E5%88%9B%E5%BB%BA%E5%AE%B9%E5%99%A8-%E5%88%9B%E5%BB%BA%E9%9B%86%E7%BE%A4"><span class="toc-text">执行脚本,创建容器,创建集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E9%9B%86%E7%BE%A4%E6%98%AF%E5%90%A6%E5%88%9B%E5%BB%BA%E6%88%90%E5%8A%9F"><span class="toc-text">验证集群是否创建成功</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%9B%86%E7%BE%A4%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">创建集群遇到的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#rpc-error-code-2-desc-oci-runtime-error-exec-failed-container-linux-go-247-starting-containe"><span class="toc-text">rpc error: code &#x3D; 2 desc &#x3D; oci runtime error: exec failed: container_linux.go:247: starting containe</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%9B%86%E7%BE%A4%E5%90%8E-%E4%B8%80%E7%9B%B4%E7%82%B9%E7%82%B9%E7%82%B9%E7%AD%89%E5%BE%85%E8%BF%9E%E6%8E%A5"><span class="toc-text">创建集群后,一直点点点等待连接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E7%9A%84%E6%89%A9%E5%AE%B9"><span class="toc-text">集群的扩容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E5%90%AF%E5%8A%A8%E4%B8%A4%E4%B8%AA%E8%8A%82%E7%82%B97007-7008-%E4%B8%80%E4%B8%BB%E4%B8%80%E4%BB%8E"><span class="toc-text">通过启动两个节点7007 7008,一主一从</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E5%AE%8C%E6%88%90-%E6%8A%8A7007%E5%8A%A0%E8%BF%9B%E9%9B%86%E7%BE%A4-%E5%B9%B6%E5%88%86%E9%85%8D%E5%93%88%E5%B8%8C%E6%A7%BD"><span class="toc-text">启动完成,把7007加进集群,并分配哈希槽.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%8A7008%E5%8A%A0%E8%BF%9B7007%E7%9A%84%E4%BB%8E%E8%8A%82%E7%82%B9"><span class="toc-text">把7008加进7007的从节点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E7%9A%84%E6%94%B6%E5%AE%B9"><span class="toc-text">集群的收容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A7%BB%E9%99%A4%E4%BB%8E%E8%8A%82%E7%82%B9"><span class="toc-text">移除从节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%81%E7%A7%BBMaster%E7%9A%84Slot"><span class="toc-text">迁移Master的Slot</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A47007%E4%B8%BB%E8%8A%82%E7%82%B9"><span class="toc-text">删除7007主节点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E9%9D%A2%E8%AF%95%E9%A2%98"><span class="toc-text">集群面试题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F-%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF-%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9"><span class="toc-text">缓存穿透 缓存击穿 缓存雪崩</span></a></li></ol>
-</div></main>
-          <aside class="left-column">
-            
-            <div class="card card-author">
-              
-<img src="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png" class="author-img">
-
-<p class="author-name">blydd</p>
-<p class="author-description">积跬步行千里</p>
-<div class="author-message">
-  <a class="author-posts-count" href="/archives">
-    <span>66</span>
-    <span>文章</span>
-  </a>
-  <a class="author-categories-count" href="/categories">
-    <span>16</span>
-    <span>分类</span>
-  </a>
-  <a class="author-tags-count" href="/tags">
-    <span>92</span>
-    <span>标签</span>
-  </a>
-</div>
-
-            </div>
-            
-            <div class="sticky-tablet">
-  
-  
-  <article class="display-when-two-columns spacer">
-    <div class="card card-content toc-card">
-      <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
-<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-text">基本使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8E%E5%8F%B0%E5%90%AF%E5%8A%A8redis"><span class="toc-text">后台启动redis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%97%ADredis"><span class="toc-text">关闭redis</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#String"><span class="toc-text">String</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">使用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hash"><span class="toc-text">hash</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4-1"><span class="toc-text">使用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#list"><span class="toc-text">list</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4-2"><span class="toc-text">使用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#set"><span class="toc-text">set</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4-3"><span class="toc-text">使用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E5%BA%8Fset"><span class="toc-text">有序set</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4-4"><span class="toc-text">使用命令</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#redis%E9%80%9A%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">redis通用命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#redis%E4%BA%8B%E5%8A%A1"><span class="toc-text">redis事务</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#redis%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">redis持久化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Jedis"><span class="toc-text">Jedis</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5"><span class="toc-text">过期策略</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5"><span class="toc-text">内存淘汰策略</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis%E7%9A%84%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E6%9E%B6%E6%9E%84"><span class="toc-text">Redis的主从复制架构.</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF"><span class="toc-text">场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA"><span class="toc-text">搭建</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%93%A8%E5%85%B5"><span class="toc-text">哨兵</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%93%A8%E5%85%B5"><span class="toc-text">配置哨兵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%93%A8%E5%85%B5%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84%E4%BB%A3%E7%A0%81%E8%BF%9E%E6%8E%A5"><span class="toc-text">哨兵模式下的代码连接</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4"><span class="toc-text">集群</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#docker%E6%90%AD%E5%BB%BAredis%E9%9B%86%E7%BE%A4"><span class="toc-text">docker搭建redis集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%A8%A1%E6%9D%BF%E5%8F%8A%E8%84%9A%E6%9C%AC"><span class="toc-text">创建模板及脚本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC-%E5%88%9B%E5%BB%BA%E5%AE%B9%E5%99%A8-%E5%88%9B%E5%BB%BA%E9%9B%86%E7%BE%A4"><span class="toc-text">执行脚本,创建容器,创建集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E9%9B%86%E7%BE%A4%E6%98%AF%E5%90%A6%E5%88%9B%E5%BB%BA%E6%88%90%E5%8A%9F"><span class="toc-text">验证集群是否创建成功</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%9B%86%E7%BE%A4%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">创建集群遇到的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#rpc-error-code-2-desc-oci-runtime-error-exec-failed-container-linux-go-247-starting-containe"><span class="toc-text">rpc error: code &#x3D; 2 desc &#x3D; oci runtime error: exec failed: container_linux.go:247: starting containe</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%9B%86%E7%BE%A4%E5%90%8E-%E4%B8%80%E7%9B%B4%E7%82%B9%E7%82%B9%E7%82%B9%E7%AD%89%E5%BE%85%E8%BF%9E%E6%8E%A5"><span class="toc-text">创建集群后,一直点点点等待连接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E7%9A%84%E6%89%A9%E5%AE%B9"><span class="toc-text">集群的扩容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E5%90%AF%E5%8A%A8%E4%B8%A4%E4%B8%AA%E8%8A%82%E7%82%B97007-7008-%E4%B8%80%E4%B8%BB%E4%B8%80%E4%BB%8E"><span class="toc-text">通过启动两个节点7007 7008,一主一从</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E5%AE%8C%E6%88%90-%E6%8A%8A7007%E5%8A%A0%E8%BF%9B%E9%9B%86%E7%BE%A4-%E5%B9%B6%E5%88%86%E9%85%8D%E5%93%88%E5%B8%8C%E6%A7%BD"><span class="toc-text">启动完成,把7007加进集群,并分配哈希槽.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%8A7008%E5%8A%A0%E8%BF%9B7007%E7%9A%84%E4%BB%8E%E8%8A%82%E7%82%B9"><span class="toc-text">把7008加进7007的从节点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E7%9A%84%E6%94%B6%E5%AE%B9"><span class="toc-text">集群的收容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A7%BB%E9%99%A4%E4%BB%8E%E8%8A%82%E7%82%B9"><span class="toc-text">移除从节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%81%E7%A7%BBMaster%E7%9A%84Slot"><span class="toc-text">迁移Master的Slot</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A47007%E4%B8%BB%E8%8A%82%E7%82%B9"><span class="toc-text">删除7007主节点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E9%9D%A2%E8%AF%95%E9%A2%98"><span class="toc-text">集群面试题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F-%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF-%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9"><span class="toc-text">缓存穿透 缓存击穿 缓存雪崩</span></a></li></ol>
     </div>
-  </article>
-  
-  
-  <article class="card card-content categories-widget">
-    <div class="categories-card">
-  <div class="categories-header"><i class="iconfont icon-fenlei" style="padding-right: 2px;"></i>分类</div>
-  <div class="categories-list">
+
     
-      <a href="/categories/工具类">
-        <div class="categories-list-item">
-          工具类
-          <span class="categories-list-item-badge">8</span>
-        </div>
-      </a>
     
-      <a href="/categories/linux">
-        <div class="categories-list-item">
-          linux
-          <span class="categories-list-item-badge">3</span>
-        </div>
-      </a>
     
-      <a href="/categories/mac">
-        <div class="categories-list-item">
-          mac
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/java">
-        <div class="categories-list-item">
-          java
-          <span class="categories-list-item-badge">18</span>
-        </div>
-      </a>
-    
-      <a href="/categories/springboot">
-        <div class="categories-list-item">
-          springboot
-          <span class="categories-list-item-badge">13</span>
-        </div>
-      </a>
-    
-      <a href="/categories/docker">
-        <div class="categories-list-item">
-          docker
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/版本控制">
-        <div class="categories-list-item">
-          版本控制
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/hello world">
-        <div class="categories-list-item">
-          hello world
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/mele">
-        <div class="categories-list-item">
-          mele
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/db">
-        <div class="categories-list-item">
-          db
-          <span class="categories-list-item-badge">7</span>
-        </div>
-      </a>
-    
-      <a href="/categories/其他">
-        <div class="categories-list-item">
-          其他
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/bug">
-        <div class="categories-list-item">
-          bug
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/js">
-        <div class="categories-list-item">
-          js
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/mq">
-        <div class="categories-list-item">
-          mq
-          <span class="categories-list-item-badge">3</span>
-        </div>
-      </a>
-    
-      <a href="/categories/面试">
-        <div class="categories-list-item">
-          面试
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/springCloud">
-        <div class="categories-list-item">
-          springCloud
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-  </div>
-</div>
-  </article>
-  
-  <article class="card card-content tags-widget">
-    <div class="tags-card">
-  <div class="tags-header"><i class="iconfont icon-biaoqian" style="padding-right: 2px;"></i>热门标签</div>
-  <div class="tags-list">
-    
-    <a href="\tags\springboot" title="springboot"><div class="tags-list-item">springboot</div></a>
-    
-    <a href="\tags\java" title="java"><div class="tags-list-item">java</div></a>
-    
-    <a href="\tags\工具类" title="工具类"><div class="tags-list-item">工具类</div></a>
-    
-    <a href="\tags\mybatis" title="mybatis"><div class="tags-list-item">mybatis</div></a>
-    
-    <a href="\tags\ms" title="ms"><div class="tags-list-item">ms</div></a>
-    
-    <a href="\tags\tool" title="tool"><div class="tags-list-item">tool</div></a>
-    
-    <a href="\tags\git" title="git"><div class="tags-list-item">git</div></a>
-    
-    <a href="\tags\linux" title="linux"><div class="tags-list-item">linux</div></a>
-    
-    <a href="\tags\线程池" title="线程池"><div class="tags-list-item">线程池</div></a>
-    
-    <a href="\tags\mq" title="mq"><div class="tags-list-item">mq</div></a>
-    
-    <a href="\tags\常用" title="常用"><div class="tags-list-item">常用</div></a>
-    
-    <a href="\tags\bug" title="bug"><div class="tags-list-item">bug</div></a>
-    
-    <a href="\tags\分布式" title="分布式"><div class="tags-list-item">分布式</div></a>
-    
-    <a href="\tags\acid" title="acid"><div class="tags-list-item">acid</div></a>
-    
-    <a href="\tags\事务" title="事务"><div class="tags-list-item">事务</div></a>
-    
-    <a href="\tags\xml" title="xml"><div class="tags-list-item">xml</div></a>
-    
-  </div>
-</div>
-  </article>
-  
-  
-</div>
-          </aside>
-          <aside class="right-column">
-            <div class="sticky-widescreen">
-  
-  
-  <article class="card card-content toc-card">
-    <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
-<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-text">基本使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8E%E5%8F%B0%E5%90%AF%E5%8A%A8redis"><span class="toc-text">后台启动redis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%97%ADredis"><span class="toc-text">关闭redis</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#String"><span class="toc-text">String</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">使用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hash"><span class="toc-text">hash</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4-1"><span class="toc-text">使用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#list"><span class="toc-text">list</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4-2"><span class="toc-text">使用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#set"><span class="toc-text">set</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4-3"><span class="toc-text">使用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E5%BA%8Fset"><span class="toc-text">有序set</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4-4"><span class="toc-text">使用命令</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#redis%E9%80%9A%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">redis通用命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#redis%E4%BA%8B%E5%8A%A1"><span class="toc-text">redis事务</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#redis%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">redis持久化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Jedis"><span class="toc-text">Jedis</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5"><span class="toc-text">过期策略</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5"><span class="toc-text">内存淘汰策略</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis%E7%9A%84%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E6%9E%B6%E6%9E%84"><span class="toc-text">Redis的主从复制架构.</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF"><span class="toc-text">场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA"><span class="toc-text">搭建</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%93%A8%E5%85%B5"><span class="toc-text">哨兵</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%93%A8%E5%85%B5"><span class="toc-text">配置哨兵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%93%A8%E5%85%B5%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84%E4%BB%A3%E7%A0%81%E8%BF%9E%E6%8E%A5"><span class="toc-text">哨兵模式下的代码连接</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4"><span class="toc-text">集群</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#docker%E6%90%AD%E5%BB%BAredis%E9%9B%86%E7%BE%A4"><span class="toc-text">docker搭建redis集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%A8%A1%E6%9D%BF%E5%8F%8A%E8%84%9A%E6%9C%AC"><span class="toc-text">创建模板及脚本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC-%E5%88%9B%E5%BB%BA%E5%AE%B9%E5%99%A8-%E5%88%9B%E5%BB%BA%E9%9B%86%E7%BE%A4"><span class="toc-text">执行脚本,创建容器,创建集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E9%9B%86%E7%BE%A4%E6%98%AF%E5%90%A6%E5%88%9B%E5%BB%BA%E6%88%90%E5%8A%9F"><span class="toc-text">验证集群是否创建成功</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%9B%86%E7%BE%A4%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">创建集群遇到的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#rpc-error-code-2-desc-oci-runtime-error-exec-failed-container-linux-go-247-starting-containe"><span class="toc-text">rpc error: code &#x3D; 2 desc &#x3D; oci runtime error: exec failed: container_linux.go:247: starting containe</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%9B%86%E7%BE%A4%E5%90%8E-%E4%B8%80%E7%9B%B4%E7%82%B9%E7%82%B9%E7%82%B9%E7%AD%89%E5%BE%85%E8%BF%9E%E6%8E%A5"><span class="toc-text">创建集群后,一直点点点等待连接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E7%9A%84%E6%89%A9%E5%AE%B9"><span class="toc-text">集群的扩容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E5%90%AF%E5%8A%A8%E4%B8%A4%E4%B8%AA%E8%8A%82%E7%82%B97007-7008-%E4%B8%80%E4%B8%BB%E4%B8%80%E4%BB%8E"><span class="toc-text">通过启动两个节点7007 7008,一主一从</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E5%AE%8C%E6%88%90-%E6%8A%8A7007%E5%8A%A0%E8%BF%9B%E9%9B%86%E7%BE%A4-%E5%B9%B6%E5%88%86%E9%85%8D%E5%93%88%E5%B8%8C%E6%A7%BD"><span class="toc-text">启动完成,把7007加进集群,并分配哈希槽.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%8A7008%E5%8A%A0%E8%BF%9B7007%E7%9A%84%E4%BB%8E%E8%8A%82%E7%82%B9"><span class="toc-text">把7008加进7007的从节点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E7%9A%84%E6%94%B6%E5%AE%B9"><span class="toc-text">集群的收容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A7%BB%E9%99%A4%E4%BB%8E%E8%8A%82%E7%82%B9"><span class="toc-text">移除从节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%81%E7%A7%BBMaster%E7%9A%84Slot"><span class="toc-text">迁移Master的Slot</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A47007%E4%B8%BB%E8%8A%82%E7%82%B9"><span class="toc-text">删除7007主节点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E9%9D%A2%E8%AF%95%E9%A2%98"><span class="toc-text">集群面试题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F-%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF-%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9"><span class="toc-text">缓存穿透 缓存击穿 缓存雪崩</span></a></li></ol>
-  </article>
-  
-  
-  <article class="card card-content">
-    <div class="recent-posts-card">
-  <div class="recent-posts-header"><i class="iconfont icon-wenzhang_huaban" style="padding-right: 2px;"></i>最近文章</div>
-  <div class="recent-posts-list">
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-30</div>
-        <a href="/2021/01/30/java面试题/"><div class="recent-posts-item-content">java面试题</div></a>
-      </div>
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-26</div>
-        <a href="/2021/01/26/编写优雅高效的java代码/"><div class="recent-posts-item-content">编写高效优雅java代码</div></a>
-      </div>
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-23</div>
-        <a href="/2021/01/23/redis教程效率版/"><div class="recent-posts-item-content">redis入门效率版</div></a>
-      </div>
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-22</div>
-        <a href="/2021/01/22/开发注意代码整理/"><div class="recent-posts-item-content">开发中注意的小问题</div></a>
-      </div>
-    
-  </div>
-</div>
-  </article>
-  
-  
-</div>
-          </aside>
-        </div>
-      </div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/redis/" rel="tag"># redis</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/22/%E5%BC%80%E5%8F%91%E6%B3%A8%E6%84%8F%E4%BB%A3%E7%A0%81%E6%95%B4%E7%90%86/" rel="prev" title="开发中注意的小问题">
+      <i class="fa fa-chevron-left"></i> 开发中注意的小问题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/01/26/%E7%BC%96%E5%86%99%E4%BC%98%E9%9B%85%E9%AB%98%E6%95%88%E7%9A%84java%E4%BB%A3%E7%A0%81/" rel="next" title="编写高效优雅java代码">
+      编写高效优雅java代码 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-  </div>
+      </footer>
+    
+  </article>
   
-  <footer class="footer">
-  <div class="footer-container">
-    <div>
-      <div class="footer-dsc">
-        <span>Copyright ©
+  
+  
+
+
+
+          </div>
           
-          2020 -
-          
-          2021
-        </span>
-        &nbsp;
-        <a href="/" class="footer-link">mele blog </a>
-      </div>
-    </div>
 
-    
-    <div class="footer-dsc">
-      
-      Powered by
-      <a href="https://hexo.io/" class="footer-link" target="_blank" rel="nofollow noopener noreferrer">&nbsp;Hexo </a>
-      
-      
-      <span>&nbsp;|&nbsp;</span>
-      
-      
-      Theme -
-      <a href="https://github.com/theme-kaze" class="footer-link" target="_blank"
-        rel="nofollow noopener noreferrer">&nbsp;Kaze</a>
-      
-    </div>
-    
-    
-    
-    
-</footer>
-  <a role="button" id="scrollbutton" class="basebutton"  aria-label="回到顶部">
-  <i class="iconfont icon-arrowleft button-icon"></i>
-</a>
-<a role="button" id="menubutton" class="basebutton">
-  <i class="iconfont icon-menu button-icon"></i>
-</a>
-<a role="button" id="popbutton" class="basebutton" aria-label="控制中心">
-  <i class="iconfont icon-expand button-icon"></i>
-</a>
-<a role="button" id="darkbutton" class="basebutton darkwidget" aria-label="夜色模式">
-  <i class="iconfont icon-weather button-icon"></i>
-</a>
-<a role="button" id="searchbutton" class="basebutton searchwidget" aria-label="搜索">
-  <i class="iconfont icon-search button-icon"></i>
-</a>
-
-  
-  
-  
-  <script>
-  var addImgLayout = function () {
-    var img = document.querySelectorAll('.post-content img');
-    var i;
-    for (i = 0; i < img.length; i++) {
-      var wrapper = document.createElement('a');
-      wrapper.setAttribute('href', img[i].getAttribute('data-src'));
-      wrapper.setAttribute('aria-label', 'illustration');
-      wrapper.style.cssText = 'width: 100%; display: flex; justify-content: center;';
-      if (img[i].alt) wrapper.dataset.caption = img[i].alt;
-      wrapper.dataset.nolink = true;
-      img[i].before(wrapper);
-      wrapper.append(img[i]);
-      var divWrap = document.createElement('div');
-      divWrap.classList.add('gallery');
-      wrapper.before(divWrap);
-      divWrap.append(wrapper);
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
     }
-    baguetteBox.run('.gallery');
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
-<script>loadScript("/js/lib/lightbox/baguetteBox.min.js", addImgLayout)</script>
+
+        </div>
+          
   
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E5%8F%B0%E5%90%AF%E5%8A%A8redis"><span class="nav-number">2.0.1.</span> <span class="nav-text">后台启动redis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%97%ADredis"><span class="nav-number">2.0.2.</span> <span class="nav-text">关闭redis</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#String"><span class="nav-number">3.1.</span> <span class="nav-text">String</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">3.1.1.</span> <span class="nav-text">使用命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hash"><span class="nav-number">3.2.</span> <span class="nav-text">hash</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4-1"><span class="nav-number">3.2.1.</span> <span class="nav-text">使用命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#list"><span class="nav-number">3.3.</span> <span class="nav-text">list</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4-2"><span class="nav-number">3.3.1.</span> <span class="nav-text">使用命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#set"><span class="nav-number">3.4.</span> <span class="nav-text">set</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4-3"><span class="nav-number">3.4.1.</span> <span class="nav-text">使用命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E5%BA%8Fset"><span class="nav-number">3.5.</span> <span class="nav-text">有序set</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4-4"><span class="nav-number">3.5.1.</span> <span class="nav-text">使用命令</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#redis%E9%80%9A%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">4.</span> <span class="nav-text">redis通用命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#redis%E4%BA%8B%E5%8A%A1"><span class="nav-number">5.</span> <span class="nav-text">redis事务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#redis%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-number">6.</span> <span class="nav-text">redis持久化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Jedis"><span class="nav-number">7.</span> <span class="nav-text">Jedis</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5"><span class="nav-number">8.</span> <span class="nav-text">过期策略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5"><span class="nav-number">9.</span> <span class="nav-text">内存淘汰策略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis%E7%9A%84%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E6%9E%B6%E6%9E%84"><span class="nav-number">10.</span> <span class="nav-text">Redis的主从复制架构.</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">10.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">10.2.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%90%AD%E5%BB%BA"><span class="nav-number">10.3.</span> <span class="nav-text">搭建</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%93%A8%E5%85%B5"><span class="nav-number">11.</span> <span class="nav-text">哨兵</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%93%A8%E5%85%B5"><span class="nav-number">11.1.</span> <span class="nav-text">配置哨兵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%93%A8%E5%85%B5%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84%E4%BB%A3%E7%A0%81%E8%BF%9E%E6%8E%A5"><span class="nav-number">11.2.</span> <span class="nav-text">哨兵模式下的代码连接</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4"><span class="nav-number">12.</span> <span class="nav-text">集群</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#docker%E6%90%AD%E5%BB%BAredis%E9%9B%86%E7%BE%A4"><span class="nav-number">12.1.</span> <span class="nav-text">docker搭建redis集群</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%A8%A1%E6%9D%BF%E5%8F%8A%E8%84%9A%E6%9C%AC"><span class="nav-number">12.1.1.</span> <span class="nav-text">创建模板及脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC-%E5%88%9B%E5%BB%BA%E5%AE%B9%E5%99%A8-%E5%88%9B%E5%BB%BA%E9%9B%86%E7%BE%A4"><span class="nav-number">12.1.2.</span> <span class="nav-text">执行脚本,创建容器,创建集群</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81%E9%9B%86%E7%BE%A4%E6%98%AF%E5%90%A6%E5%88%9B%E5%BB%BA%E6%88%90%E5%8A%9F"><span class="nav-number">12.1.3.</span> <span class="nav-text">验证集群是否创建成功</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E9%9B%86%E7%BE%A4%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">12.2.</span> <span class="nav-text">创建集群遇到的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#rpc-error-code-2-desc-oci-runtime-error-exec-failed-container-linux-go-247-starting-containe"><span class="nav-number">12.2.1.</span> <span class="nav-text">rpc error: code &#x3D; 2 desc &#x3D; oci runtime error: exec failed: container_linux.go:247: starting containe</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E9%9B%86%E7%BE%A4%E5%90%8E-%E4%B8%80%E7%9B%B4%E7%82%B9%E7%82%B9%E7%82%B9%E7%AD%89%E5%BE%85%E8%BF%9E%E6%8E%A5"><span class="nav-number">12.2.2.</span> <span class="nav-text">创建集群后,一直点点点等待连接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E7%9A%84%E6%89%A9%E5%AE%B9"><span class="nav-number">12.3.</span> <span class="nav-text">集群的扩容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E5%90%AF%E5%8A%A8%E4%B8%A4%E4%B8%AA%E8%8A%82%E7%82%B97007-7008-%E4%B8%80%E4%B8%BB%E4%B8%80%E4%BB%8E"><span class="nav-number">12.3.1.</span> <span class="nav-text">通过启动两个节点7007 7008,一主一从</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%AE%8C%E6%88%90-%E6%8A%8A7007%E5%8A%A0%E8%BF%9B%E9%9B%86%E7%BE%A4-%E5%B9%B6%E5%88%86%E9%85%8D%E5%93%88%E5%B8%8C%E6%A7%BD"><span class="nav-number">12.3.2.</span> <span class="nav-text">启动完成,把7007加进集群,并分配哈希槽.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%8A7008%E5%8A%A0%E8%BF%9B7007%E7%9A%84%E4%BB%8E%E8%8A%82%E7%82%B9"><span class="nav-number">12.3.3.</span> <span class="nav-text">把7008加进7007的从节点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E7%9A%84%E6%94%B6%E5%AE%B9"><span class="nav-number">12.4.</span> <span class="nav-text">集群的收容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%BB%E9%99%A4%E4%BB%8E%E8%8A%82%E7%82%B9"><span class="nav-number">12.4.1.</span> <span class="nav-text">移除从节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%81%E7%A7%BBMaster%E7%9A%84Slot"><span class="nav-number">12.4.2.</span> <span class="nav-text">迁移Master的Slot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A47007%E4%B8%BB%E8%8A%82%E7%82%B9"><span class="nav-number">12.4.3.</span> <span class="nav-text">删除7007主节点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E9%9D%A2%E8%AF%95%E9%A2%98"><span class="nav-number">13.</span> <span class="nav-text">集群面试题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F-%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF-%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9"><span class="nav-number">14.</span> <span class="nav-text">缓存穿透 缓存击穿 缓存雪崩</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">blydd</p>
+  <div class="site-description" itemprop="description">米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">92</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
   
-  
-<script src="/js/main.js"></script>
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">blydd</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
 
   
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
   
-  <script>
-    var addLazyload = function () {
-      var observer = lozad('.lozad', {
-        load: function (el) {
-          el.srcset = el.getAttribute('data-src');
-        },
-        loaded: function (el) {
-          el.classList.add('loaded');
-        }
-      });
-      observer.observe();
-    }
-  </script>
-  <script>loadScript("/js/lib/lozad.min.js", addLazyload)</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
+
   
+
 </body>
-
 </html>

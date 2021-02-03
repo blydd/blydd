@@ -1,244 +1,215 @@
 <!DOCTYPE html>
-<html  lang="zh-CN" >
-
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="theme-color" content="#fff" id="theme-color">
-  <meta name="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
-  <link rel="icon" href="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png">
-  <title>linux常用命令</title>
-  
-  
-  <meta property="og:title" content="linux常用命令">
-  
-  
-  <meta property="og:url" content="https://www.mele.cool/2020/12/04/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">
-  
-  
-  <meta property="og:img" content="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png">
-  
-  
-  <meta property="og:img" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
-  
-  
-  <meta property="og:type" content="article">
-  <meta property="og:article:published_time" content="2020-12-04">
-  <meta property="og:article:modified_time" content="2021-01-30">
-  <meta property="og:article:author" content="blydd">
-  
-  
-  <meta property="og:article:tag" content="linux">
-  
-  
-  
-  
-  <!-- 百度统计代码 -->
-<script>
-  var _hmt = _hmt || [];
-  (function() {
-    var hm = document.createElement("script");
-    hm.src = "https://hm.baidu.com/hm.js?52aed7fa581354c5e14562bad1a1def2";
-    var s = document.getElementsByTagName("script")[0]; 
-    s.parentNode.insertBefore(hm, s);
-  })();
-  </script>
- <!-- 百度统计代码 --> 
-  <script>
-    // control reverse button
-    var reverseDarkList = {
-      dark: 'light',
-      light: 'dark'
-    };
-    var themeColor = {
-      dark: '#1c1c1e',
-      light: '#fff'
-    }
-    // get the data of css prefers-color-scheme
-    var getCssMediaQuery = function() {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    };
-    // reverse current darkmode setting function
-    var reverseDarkModeSetting = function() {
-      var setting = localStorage.getItem('user-color-scheme');
-      if(reverseDarkList[setting]) {
-        setting = reverseDarkList[setting];
-      } else if(setting === null) {
-        setting = reverseDarkList[getCssMediaQuery()];
-      } else {
-        return;
-      }
-      localStorage.setItem('user-color-scheme', setting);
-      return setting;
-    };
-    // apply current darkmode setting
-    var setDarkmode = function(mode) {
-      var setting = mode || localStorage.getItem('user-color-scheme');
-      if(setting === getCssMediaQuery()) {
-        document.documentElement.removeAttribute('data-user-color-scheme');
-        localStorage.removeItem('user-color-scheme');
-        document.getElementById('theme-color').content = themeColor[setting];
-      } else if(reverseDarkList[setting]) {
-        document.documentElement.setAttribute('data-user-color-scheme', setting);
-        document.getElementById('theme-color').content = themeColor[setting];
-      } else {
-        document.documentElement.removeAttribute('data-user-color-scheme');
-        localStorage.removeItem('user-color-scheme');
-        document.getElementById('theme-color').content = themeColor[getCssMediaQuery()];
-      }
-    };
-    setDarkmode();
-  </script>
-  <script>
-    function loadScript(url, cb) {
-      var script = document.createElement('script');
-      script.src = url;
-      if (cb) script.onload = cb;
-      script.async = true;
-      document.body.appendChild(script);
-    }
-  </script>
-  
-  <link rel="preload" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css" as="style" >
-  <link rel="preload" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css" as="style" >
-  
-  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.js" as="script">
-  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.css" as="style" >
-  
-  
-  <link rel="preload" href="/js/lib/lozad.min.js" as="script">
-  
-  
-  
-  
-  
-  
-  
-  
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
 <link rel="stylesheet" href="/css/main.css">
 
-  
-  
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css">
 
-  
-  
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-  
-  
-<link rel="stylesheet" href="/js/lib/lightbox/baguetteBox.min.css">
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.mele.cool","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
 
-  
-  
-  
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
+  <meta name="description" content="linux常用命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux常用命令">
+<meta property="og:url" content="https://www.mele.cool/2020/12/04/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:site_name" content="米乐博客">
+<meta property="og:description" content="linux常用命令">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/01/30/5Ss9Fx7OVICRnKN.png">
+<meta property="article:published_time" content="2020-12-04T02:10:17.000Z">
+<meta property="article:modified_time" content="2021-01-30T02:53:44.964Z">
+<meta property="article:author" content="blydd">
+<meta property="article:tag" content="linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/01/30/5Ss9Fx7OVICRnKN.png">
+
+<link rel="canonical" href="https://www.mele.cool/2020/12/04/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
 
 
-<body>
-  <div class="wrapper">
-    
-    <nav class="navbar">
-  <div class="navbar-logo">
-    <span class="navbar-logo-main">
-      
-      <img class="navbar-logo-img" src="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png" alt="logo">
-      
-      <span class="navbar-logo-dsc">mele blog</span>
-    </span>
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>linux常用命令 | 米乐博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
   </div>
-  <div class="navbar-menu">
-    
-    <a href="/" class="navbar-menu-item">
-    
-    首页
-    
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">米乐博客</h1>
+      <span class="logo-line-after"><i></i></span>
     </a>
-    
-    <a href="/archives" class="navbar-menu-item">
-    
-    归档
-    
-    </a>
-    
-    <a href="/tags" class="navbar-menu-item">
-    
-    标签
-    
-    </a>
-    
-    <a href="/categories" class="navbar-menu-item">
-    
-    分类
-    
-    </a>
-    
-    <a href="/about" class="navbar-menu-item">
-    
-    关于
-    
-    </a>
-    
-    <a href="/links" class="navbar-menu-item">
-    
-    友链
-    
-    </a>
-    
-    <a class="navbar-menu-item darknavbar" id="dark"><i class="iconfont icon-weather"></i></a>
-    <a class="navbar-menu-item searchnavbar" id="search"><i class="iconfont icon-search" style="font-size: 1.2rem; font-weight: 400;"></i></a>
+      <p class="site-subtitle" itemprop="description">积跬步至千里</p>
   </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
 </nav>
+
+
+
+
+</div>
+    </header>
+
     
-    <div id="local-search" style="display: none;">
-      <input class="navbar-menu-item" id="search-input" placeholder="请输入搜索内容...">
-      <div id="search-content"></div>
-    </div>
-    
-    <div class="section-wrap">
-      <div class="container">
-        <div class="columns">
-          <main class="main-column">
-<article class="card card-content">
-  <header>
-    <h1 class="post-title">
-      linux常用命令
-    </h1>
-  </header>
-  <div class="post-meta post-show-meta">
-    <time datetime="2020-12-04T02:10:17.000Z">
-      <i class="iconfont icon-calendar" style="margin-right: 2px;"></i>
-      <span>2020-12-04</span>
-    </time>
-    
-    <span class="dot"></span>
-    
-    <a href="/categories/linux/" class="post-meta-link">linux</a>
-    
-    
-    
-    <span class="dot"></span>
-    <span>1.8k 字</span>
-    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
   </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
   
-  <div class="post-meta post-show-meta" style="margin-top: -10px;">
-    <div style="display: flex; align-items: center;">
-      <i class="iconfont icon-biaoqian" style="margin-right: 2px; font-size: 1.15rem;"></i>
-      
-      
-        <a href="/tags/linux/" class="post-meta-link">linux</a>
-      
-    </div>
-  </div>
   
-  </header>
-  <div id="section" class="post-content">
-    <h2 id="展示"><a href="#展示" class="headerlink" title="展示"></a>展示</h2><pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash"> 友好展示信息</span></span><br><span class="line">ll -h</span><br><span class="line"><span class="meta">#</span><span class="bash"> 展示指定目录的文件</span></span><br><span class="line">ll -h /etc</span><br><span class="line"><span class="meta">#</span><span class="bash">切换到上次访问目录,只能最后两个目录间切换</span></span><br><span class="line">cd -</span><br></pre>
-<h2 id="新建文件夹"><a href="#新建文件夹" class="headerlink" title="新建文件夹"></a>新建文件夹</h2><pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">创建多层目录</span></span><br><span class="line">mkdir /t1/t2</span><br><span class="line"><span class="meta">#</span><span class="bash"> t3目录不存在的话则先创建t3</span></span><br><span class="line">mkdir -p t3/t4</span><br></pre>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.mele.cool/2020/12/04/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="blydd">
+      <meta itemprop="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="米乐博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          linux常用命令
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-04 10:10:17" itemprop="dateCreated datePublished" datetime="2020-12-04T10:10:17+08:00">2020-12-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-30 10:53:44" itemprop="dateModified" datetime="2021-01-30T10:53:44+08:00">2021-01-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">linux常用命令</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="展示"><a href="#展示" class="headerlink" title="展示"></a>展示</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 友好展示信息</span></span><br><span class="line">ll -h</span><br><span class="line"><span class="meta">#</span><span class="bash"> 展示指定目录的文件</span></span><br><span class="line">ll -h /etc</span><br><span class="line"><span class="meta">#</span><span class="bash">切换到上次访问目录,只能最后两个目录间切换</span></span><br><span class="line">cd -</span><br></pre></td></tr></table></figure>
+<h2 id="新建文件夹"><a href="#新建文件夹" class="headerlink" title="新建文件夹"></a>新建文件夹</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">创建多层目录</span></span><br><span class="line">mkdir /t1/t2</span><br><span class="line"><span class="meta">#</span><span class="bash"> t3目录不存在的话则先创建t3</span></span><br><span class="line">mkdir -p t3/t4</span><br></pre></td></tr></table></figure>
 
 
 <h2 id="端口"><a href="#端口" class="headerlink" title="端口"></a><strong>端口</strong></h2><blockquote>
@@ -250,16 +221,16 @@
 <blockquote>
 <p>telnet [域名或ip] [端口]    #远程管理与端口探测命令<br> eg:telnet 192.168.0.252 80    #探测服务器80端口,成功的话没有提示,进入空白页,退出摁ctrl+],退回到telnet界面,输入quit命令退出</p>
 </blockquote>
-<pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">1、开放端口</span></span><br><span class="line">firewall-cmd --zone=public --add-port=5672/tcp --permanent   # 开放5672端口</span><br><span class="line">firewall-cmd --zone=public --remove-port=5672/tcp --permanent  #关闭5672端口</span><br><span class="line">firewall-cmd --reload   # 配置立即生效</span><br><span class="line"><span class="meta">#</span><span class="bash">2、查看防火墙所有开放的端口</span></span><br><span class="line">firewall-cmd --zone=public --list-ports</span><br><span class="line"><span class="meta">#</span><span class="bash">3.、关闭防火墙</span></span><br><span class="line"><span class="meta">#</span><span class="bash">如果要开放的端口太多，嫌麻烦，可以关闭防火墙，安全性自行评估</span></span><br><span class="line">systemctl stop firewalld.service</span><br><span class="line"><span class="meta">#</span><span class="bash">4、查看防火墙状态</span></span><br><span class="line"> firewall-cmd --state</span><br><span class="line"><span class="meta">#</span><span class="bash">5、查看监听的端口</span></span><br><span class="line">netstat -lnpt</span><br><span class="line"><span class="meta">#</span><span class="bash">PS:centos7默认没有 netstat 命令，需要安装 net-tools 工具，yum install -y net-tools</span></span><br><span class="line"><span class="meta">#</span><span class="bash">6、检查端口被哪个进程占用</span></span><br><span class="line">netstat -lnpt |grep 5672</span><br><span class="line"><span class="meta">#</span><span class="bash"> 7 查看进程的详细信息</span></span><br><span class="line">ps 6832</span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">1、开放端口</span></span><br><span class="line">firewall-cmd --zone=public --add-port=5672/tcp --permanent   # 开放5672端口</span><br><span class="line">firewall-cmd --zone=public --remove-port=5672/tcp --permanent  #关闭5672端口</span><br><span class="line">firewall-cmd --reload   # 配置立即生效</span><br><span class="line"><span class="meta">#</span><span class="bash">2、查看防火墙所有开放的端口</span></span><br><span class="line">firewall-cmd --zone=public --list-ports</span><br><span class="line"><span class="meta">#</span><span class="bash">3.、关闭防火墙</span></span><br><span class="line"><span class="meta">#</span><span class="bash">如果要开放的端口太多，嫌麻烦，可以关闭防火墙，安全性自行评估</span></span><br><span class="line">systemctl stop firewalld.service</span><br><span class="line"><span class="meta">#</span><span class="bash">4、查看防火墙状态</span></span><br><span class="line"> firewall-cmd --state</span><br><span class="line"><span class="meta">#</span><span class="bash">5、查看监听的端口</span></span><br><span class="line">netstat -lnpt</span><br><span class="line"><span class="meta">#</span><span class="bash">PS:centos7默认没有 netstat 命令，需要安装 net-tools 工具，yum install -y net-tools</span></span><br><span class="line"><span class="meta">#</span><span class="bash">6、检查端口被哪个进程占用</span></span><br><span class="line">netstat -lnpt |grep 5672</span><br><span class="line"><span class="meta">#</span><span class="bash"> 7 查看进程的详细信息</span></span><br><span class="line">ps 6832</span><br></pre></td></tr></table></figure>
 
 
-<h2 id="JDK"><a href="#JDK" class="headerlink" title="JDK"></a>JDK</h2><pre class="highlight"><span class="line">java -verbose #查看jdk安装路径.最后两行为jdk安装路径</span><br></pre>
+<h2 id="JDK"><a href="#JDK" class="headerlink" title="JDK"></a>JDK</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -verbose #查看jdk安装路径.最后两行为jdk安装路径</span><br></pre></td></tr></table></figure>
 
 
 <h2 id="配置ip-修改网卡信息文件"><a href="#配置ip-修改网卡信息文件" class="headerlink" title="配置ip,修改网卡信息文件"></a><strong>配置ip,修改网卡信息文件</strong></h2><blockquote>
 <p>vi /etc/sysconfig/network-scripts/ifcfg-etho    </p>
 </blockquote>
-<h2 id="后台启动jar并把日志输出到指定文件中-启动springboot项目"><a href="#后台启动jar并把日志输出到指定文件中-启动springboot项目" class="headerlink" title="后台启动jar并把日志输出到指定文件中(启动springboot项目)"></a><strong>后台启动jar并把日志输出到指定文件中(启动springboot项目)</strong></h2><pre class="highlight"><span class="line">nohup java -jar my-blog.jar &gt; mylog.txt  &amp; </span><br><span class="line"></span><br><span class="line">nohup java -jar my-blog.jar &gt; catalina.out 2&gt;&amp;1 &amp;</span><br></pre>
+<h2 id="后台启动jar并把日志输出到指定文件中-启动springboot项目"><a href="#后台启动jar并把日志输出到指定文件中-启动springboot项目" class="headerlink" title="后台启动jar并把日志输出到指定文件中(启动springboot项目)"></a><strong>后台启动jar并把日志输出到指定文件中(启动springboot项目)</strong></h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nohup java -jar my-blog.jar &gt; mylog.txt  &amp; </span><br><span class="line"></span><br><span class="line">nohup java -jar my-blog.jar &gt; catalina.out 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
 
 
 
@@ -271,10 +242,10 @@
 <li>*.tar     打包,不压缩.</li>
 <li>*.tar.gz 打包并压缩</li>
 </ul>
-<pre class="highlight"><span class="line">cp -r 源文件夹 目的地  #Linux复制文件夹,-r表示递归</span><br><span class="line">cp 文件 新目录/新文件名 #复制并改名</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">压缩 -zcvf参数顺序不能变.eg压缩当前目录下全部文件:tar -zcvf hehe.tar.gz *</span></span><br><span class="line">tar -zcvf 压缩包名字.tar.gz 需压缩的文件</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">解压缩到当前目录</span></span><br><span class="line">tar -zxvf 压缩包名</span><br><span class="line"><span class="meta">#</span><span class="bash">解压缩到指定目录</span></span><br><span class="line">tar -zxvf 压缩包名 -C 指定目录地址</span><br><span class="line"></span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cp -r 源文件夹 目的地  #Linux复制文件夹,-r表示递归</span><br><span class="line">cp 文件 新目录/新文件名 #复制并改名</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">压缩 -zcvf参数顺序不能变.eg压缩当前目录下全部文件:tar -zcvf hehe.tar.gz *</span></span><br><span class="line">tar -zcvf 压缩包名字.tar.gz 需压缩的文件</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">解压缩到当前目录</span></span><br><span class="line">tar -zxvf 压缩包名</span><br><span class="line"><span class="meta">#</span><span class="bash">解压缩到指定目录</span></span><br><span class="line">tar -zxvf 压缩包名 -C 指定目录地址</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h2 id="查看服务器DNS信息"><a href="#查看服务器DNS信息" class="headerlink" title="查看服务器DNS信息:"></a><strong>查看服务器DNS信息:</strong></h2><blockquote>
-   <pre class="highlight"><span class="line">1.cat /etc/resolv.conf</span><br></pre>
-   <pre class="highlight"><span class="line">2.nslookup 127.0.0.1 | grep Server</span><br></pre>
+   <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1.cat /etc/resolv.conf</span><br></pre></td></tr></table></figure>
+   <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2.nslookup 127.0.0.1 | grep Server</span><br></pre></td></tr></table></figure>
 <p>修改DNS服务器非常简单，只需要修改/etc/resolv.conf配置文件即可。那么修改DNS是否需要重启某些服务，答案是不需要。修改后会立即生效，不需做任何额外处理。</p>
 </blockquote>
 <h2 id="ping：测试网络命令"><a href="#ping：测试网络命令" class="headerlink" title="ping：测试网络命令"></a><strong>ping：测试网络命令</strong></h2><blockquote>
@@ -285,11 +256,11 @@
 -f：竭尽自己主机的能力发出数据包
 </code></pre>
 </blockquote>
-<pre class="highlight"><span class="line">[root@centos7 ~]# ping -c1 -W1 192.168.0.6 #脚本中常用的ping测试，ping一次，超时时间1s</span><br><span class="line">[root@centos7 ~]# ping -s 65507 -f 192.168.0.6 #竭尽自己所能，向192.168.0.6发出大数据包，ddos攻击</span><br></pre>
-<h2 id="linux查找文件"><a href="#linux查找文件" class="headerlink" title="linux查找文件:"></a><strong>linux查找文件:</strong></h2><pre class="highlight"><span class="line">find / -name httpd.conf　　#在根目录下查找文件httpd.conf，表示在整个硬盘查找</span><br><span class="line"></span><br><span class="line">find /etc -name httpd.conf　　#在/etc目录下文件httpd.conf</span><br><span class="line"></span><br><span class="line">find /etc -name &#x27;*srm*&#x27;　　#使用通配符*(0或者任意多个)。表示在/etc目录下查找文件名中含有字符串‘srm’的文件</span><br><span class="line"></span><br><span class="line">find . -name &#x27;srm*&#x27; 　　#表示当前目录下查找文件名开头是字符串‘srm’的文件</span><br><span class="line"></span><br><span class="line">sudo find / -type d -name *tomcat*  #查找文件夹位置,文件夹名字不确定的用*补上</span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]# ping -c1 -W1 192.168.0.6 #脚本中常用的ping测试，ping一次，超时时间1s</span><br><span class="line">[root@centos7 ~]# ping -s 65507 -f 192.168.0.6 #竭尽自己所能，向192.168.0.6发出大数据包，ddos攻击</span><br></pre></td></tr></table></figure>
+<h2 id="linux查找文件"><a href="#linux查找文件" class="headerlink" title="linux查找文件:"></a><strong>linux查找文件:</strong></h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">find / -name httpd.conf　　#在根目录下查找文件httpd.conf，表示在整个硬盘查找</span><br><span class="line"></span><br><span class="line">find /etc -name httpd.conf　　#在/etc目录下文件httpd.conf</span><br><span class="line"></span><br><span class="line">find /etc -name &#x27;*srm*&#x27;　　#使用通配符*(0或者任意多个)。表示在/etc目录下查找文件名中含有字符串‘srm’的文件</span><br><span class="line"></span><br><span class="line">find . -name &#x27;srm*&#x27; 　　#表示当前目录下查找文件名开头是字符串‘srm’的文件</span><br><span class="line"></span><br><span class="line">sudo find / -type d -name *tomcat*  #查找文件夹位置,文件夹名字不确定的用*补上</span><br></pre></td></tr></table></figure>
 
 
-<h2 id="Linux显示主机名"><a href="#Linux显示主机名" class="headerlink" title="Linux显示主机名:"></a><strong>Linux显示主机名:</strong></h2><pre class="highlight"><span class="line">hostname        #显示完整名字</span><br><span class="line">hostname -s 	  #显示短格式名字</span><br><span class="line">hostname -a	    #显示主机别名</span><br><span class="line">hostname -i	    #显示主机ip</span><br></pre>
+<h2 id="Linux显示主机名"><a href="#Linux显示主机名" class="headerlink" title="Linux显示主机名:"></a><strong>Linux显示主机名:</strong></h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hostname        #显示完整名字</span><br><span class="line">hostname -s 	  #显示短格式名字</span><br><span class="line">hostname -a	    #显示主机别名</span><br><span class="line">hostname -i	    #显示主机ip</span><br></pre></td></tr></table></figure>
 
 
 <h2 id="查看DNS服务器地址"><a href="#查看DNS服务器地址" class="headerlink" title="查看DNS服务器地址:"></a><strong>查看DNS服务器地址:</strong></h2><blockquote>
@@ -329,425 +300,225 @@
 </ul>
 <h2 id="grep和管道"><a href="#grep和管道" class="headerlink" title="grep和管道"></a>grep和管道</h2><p>| 是管道符号,可连接不同命令</p>
 <p>grep是正则表达式,用于字符串搜索.格式:grep 字符串 搜索的文件,eg:ll | grep aaa</p>
-<h2 id="系统相关"><a href="#系统相关" class="headerlink" title="系统相关"></a>系统相关</h2><pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">查看系统进程</span></span><br><span class="line">ps -ef</span><br><span class="line"><span class="meta">#</span><span class="bash">重启</span></span><br><span class="line">reboot</span><br><span class="line"><span class="meta">#</span><span class="bash">关机</span></span><br><span class="line">halt</span><br><span class="line"><span class="meta">#</span><span class="bash">网络设置</span></span><br><span class="line">setup</span><br><span class="line"><span class="meta">#</span><span class="bash">开启某端口防火墙</span></span><br><span class="line">firewall-cmd --permanent --zone=public --add-port=7006/tcp --permanent</span><br></pre>
-<h2 id="文件权限"><a href="#文件权限" class="headerlink" title="文件权限"></a>文件权限</h2><pre class="highlight"><span class="line">- RWX RW- R--</span><br><span class="line">1  2   3   4</span><br><span class="line"><span class="meta">#</span><span class="bash"> 1:类型,d目录,-普通文件,l链接文件</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2:所属用户权限,用u(user)表示</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3:所属组权限,用g(group)表示</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 4:其他用户权限,用o(other)表示</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 所有权限,用a(all)表示</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">修改权限</span></span><br><span class="line">chmod u=rwx demo.java</span><br><span class="line">chmod g=rw- demo.java</span><br><span class="line">chmod a=rwx demo.java</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">更改文件夹权限</span></span><br><span class="line">chmod -R 权限 文件夹名</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">增加执行权限</span></span><br><span class="line">chmod +X demo.java</span><br></pre>
+<h2 id="系统相关"><a href="#系统相关" class="headerlink" title="系统相关"></a>系统相关</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">查看系统进程</span></span><br><span class="line">ps -ef</span><br><span class="line"><span class="meta">#</span><span class="bash">重启</span></span><br><span class="line">reboot</span><br><span class="line"><span class="meta">#</span><span class="bash">关机</span></span><br><span class="line">halt</span><br><span class="line"><span class="meta">#</span><span class="bash">网络设置</span></span><br><span class="line">setup</span><br><span class="line"><span class="meta">#</span><span class="bash">开启某端口防火墙</span></span><br><span class="line">firewall-cmd --permanent --zone=public --add-port=7006/tcp --permanent</span><br></pre></td></tr></table></figure>
+<h2 id="文件权限"><a href="#文件权限" class="headerlink" title="文件权限"></a>文件权限</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">- RWX RW- R--</span><br><span class="line">1  2   3   4</span><br><span class="line"><span class="meta">#</span><span class="bash"> 1:类型,d目录,-普通文件,l链接文件</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2:所属用户权限,用u(user)表示</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3:所属组权限,用g(group)表示</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 4:其他用户权限,用o(other)表示</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 所有权限,用a(all)表示</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">修改权限</span></span><br><span class="line">chmod u=rwx demo.java</span><br><span class="line">chmod g=rw- demo.java</span><br><span class="line">chmod a=rwx demo.java</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">更改文件夹权限</span></span><br><span class="line">chmod -R 权限 文件夹名</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">增加执行权限</span></span><br><span class="line">chmod +X demo.java</span><br></pre></td></tr></table></figure>
 <h2 id="安装与卸载"><a href="#安装与卸载" class="headerlink" title="安装与卸载"></a>安装与卸载</h2><blockquote>
 <p>rpm命令相当于windows下的添加/卸载程序.</p>
 <p>yum命令相当于带联网功能的rpm.</p>
 </blockquote>
-<pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">程序安装</span></span><br><span class="line">rpm -ivh 程序名</span><br><span class="line"><span class="meta">#</span><span class="bash">程序查看</span></span><br><span class="line">rpm -qa</span><br><span class="line"><span class="meta">#</span><span class="bash">程序卸载</span></span><br><span class="line">rpm -e --nodeps 程序名</span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">程序安装</span></span><br><span class="line">rpm -ivh 程序名</span><br><span class="line"><span class="meta">#</span><span class="bash">程序查看</span></span><br><span class="line">rpm -qa</span><br><span class="line"><span class="meta">#</span><span class="bash">程序卸载</span></span><br><span class="line">rpm -e --nodeps 程序名</span><br></pre></td></tr></table></figure>
 <h2 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h2><ul>
 <li>安装依赖</li>
 </ul>
-<pre class="highlight"><span class="line">yum install glibc.i686</span><br><span class="line">yum -y install libaio.so.1 libgcc_s.so.1 libstdc++.so.6</span><br><span class="line">yum update libstdc++-4.4.7-4.e16.x86-64</span><br><span class="line">yum install gcc-c++</span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum install glibc.i686</span><br><span class="line">yum -y install libaio.so.1 libgcc_s.so.1 libstdc++.so.6</span><br><span class="line">yum update libstdc++-4.4.7-4.e16.x86-64</span><br><span class="line">yum install gcc-c++</span><br></pre></td></tr></table></figure>
 <ul>
 <li>安装jdk</li>
 </ul>
-<pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash"> 1 查看已安装老版本</span></span><br><span class="line">rpm -qa | grep java</span><br><span class="line"><span class="meta">#</span><span class="bash"> 2 卸载老版本</span></span><br><span class="line">rpm -e --nodeps 上面查到的</span><br><span class="line"><span class="meta">#</span><span class="bash"> 3 上传jdk包,解压到指定目录</span></span><br><span class="line">tar -zxvf -C /usr/local/java</span><br><span class="line"><span class="meta">#</span><span class="bash"> 4 配置环境变量 vim /etc/profile</span></span><br><span class="line">JAVA_HOME=/usr/local/java/jdk...</span><br><span class="line">CLASS_PATH=.:$JAVA_HOME/lib.tools.jar</span><br><span class="line">PATH=$JAVA_HOME/bin:$PATH</span><br><span class="line">export JAVA_HONE CLASSPATH PATH</span><br><span class="line"><span class="meta">#</span><span class="bash"> 5 重新加载配置文件</span></span><br><span class="line">source /etc/profile</span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1 查看已安装老版本</span></span><br><span class="line">rpm -qa | grep java</span><br><span class="line"><span class="meta">#</span><span class="bash"> 2 卸载老版本</span></span><br><span class="line">rpm -e --nodeps 上面查到的</span><br><span class="line"><span class="meta">#</span><span class="bash"> 3 上传jdk包,解压到指定目录</span></span><br><span class="line">tar -zxvf -C /usr/local/java</span><br><span class="line"><span class="meta">#</span><span class="bash"> 4 配置环境变量 vim /etc/profile</span></span><br><span class="line">JAVA_HOME=/usr/local/java/jdk...</span><br><span class="line">CLASS_PATH=.:$JAVA_HOME/lib.tools.jar</span><br><span class="line">PATH=$JAVA_HOME/bin:$PATH</span><br><span class="line">export JAVA_HONE CLASSPATH PATH</span><br><span class="line"><span class="meta">#</span><span class="bash"> 5 重新加载配置文件</span></span><br><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure>
 <h2 id="常见错误"><a href="#常见错误" class="headerlink" title="常见错误"></a>常见错误</h2><h4 id="1-yum安装时报cannot-find-a-valid-baseurl-for-repo"><a href="#1-yum安装时报cannot-find-a-valid-baseurl-for-repo" class="headerlink" title="1.yum安装时报cannot find a valid baseurl for repo"></a>1.yum安装时报<a target="_blank" rel="noopener" href="https://www.cnblogs.com/phpandmysql/p/7773063.html">cannot find a valid baseurl for repo</a></h4><blockquote>
 <p>出现这个问题是因为yum在安装包的过程中，虽然已经联网，但是没法解析远程包管理库对应的域名，所以我们只需要在网络配置中添加上DNS对应的ip地址即可。</p>
 </blockquote>
 <p>​    1.查看网卡名:<code>ip addr</code></p>
-<p><img src="https://i.loli.net/2021/01/30/5Ss9Fx7OVICRnKN.png" alt="image-20210130103817342" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/5Ss9Fx7OVICRnKN.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/01/30/5Ss9Fx7OVICRnKN.png" alt="image-20210130103817342"></p>
 <p>​    2.修改网络配置文件<code>vi /etc/sysconfig/network-scripts/ifcfg-ens33</code></p>
-<pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">文件末尾添加</span></span><br><span class="line">DNS1=8.8.8.8</span><br><span class="line">DNS2=4.2.2.2</span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">文件末尾添加</span></span><br><span class="line">DNS1=8.8.8.8</span><br><span class="line">DNS2=4.2.2.2</span><br></pre></td></tr></table></figure>
 <p>​    3.重启网络<code>ifup ens33</code>,成功</p>
 <h4 id="2-ifconfig命令报-bash-ifconfig-command-not-found"><a href="#2-ifconfig命令报-bash-ifconfig-command-not-found" class="headerlink" title="2.ifconfig命令报-bash: ifconfig: command not found"></a>2.ifconfig命令报<code>-bash: ifconfig: command not found</code></h4><p> 安装网络工具:<code>yum install -y net-tools</code></p>
 <h4 id="3-CentOS下ifconfig命令不显示ip"><a href="#3-CentOS下ifconfig命令不显示ip" class="headerlink" title="3.CentOS下ifconfig命令不显示ip"></a>3.CentOS下<code>ifconfig</code>命令不显示ip</h4><p>1.查看网卡名:<code>ip addr</code>,我的显示<code>ens33</code></p>
 <p>2.修改配置文件:<code>/etc/sysconfig/network-scripts/ifcfg-ens33</code>,ONBOOT改为yes</p>
 <p>3.启动网卡<code>ifup ens33</code>即可.</p>
 
-  </div>
-  <div>
-  
-  <div class="post-note note-warning copyright" style="margin-top: 42px">
-    <p><span style="font-weight: bold;">作者：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/about">blydd</a></p>
-    <p><span style="font-weight: bold;">文章链接：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/2020/12/04/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">https://www.mele.cool/2020/12/04/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</a></p>
-    <p><span style="font-weight: bold;">版权声明：</span>本博客所有文章除特别声明外，均采用<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0 协议</a>。转载请注明出处！</p>
-  </div>
-  
-  </div>
-</article>
-<div class="nav">
-  
-  <div class="nav-item-prev">
-    <a href="/2020/12/04/HTTP请求工具类/" class="nav-link">
-      <i class="iconfont icon-left nav-prev-icon"></i>
-      <div>
-        <div class="nav-label">上一篇</div>
-        
-        <div class="nav-title">http请求工具类 </div>
-        
-      </div>
-    </a>
-  </div>
-  
-  
-  <div class="nav-item-next">
-    <a href="/2020/12/04/MAC电脑常用命令/" class="nav-link">
-      <div>
-        <div class="nav-label">下一篇</div>
-        
-        <div class="nav-title">mac常用命令 </div>
-        
-      </div>
-      <i class="iconfont icon-right nav-next-icon"></i>
-    </a>
-  </div>
-  
-</div>
-
-<div class="card card-content toc-card" id="mobiletoc">
-  <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%95%E7%A4%BA"><span class="toc-text">展示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-text">新建文件夹</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3"><span class="toc-text">端口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JDK"><span class="toc-text">JDK</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEip-%E4%BF%AE%E6%94%B9%E7%BD%91%E5%8D%A1%E4%BF%A1%E6%81%AF%E6%96%87%E4%BB%B6"><span class="toc-text">配置ip,修改网卡信息文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E5%8F%B0%E5%90%AF%E5%8A%A8jar%E5%B9%B6%E6%8A%8A%E6%97%A5%E5%BF%97%E8%BE%93%E5%87%BA%E5%88%B0%E6%8C%87%E5%AE%9A%E6%96%87%E4%BB%B6%E4%B8%AD-%E5%90%AF%E5%8A%A8springboot%E9%A1%B9%E7%9B%AE"><span class="toc-text">后台启动jar并把日志输出到指定文件中(启动springboot项目)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E6%98%AF32%E4%BD%8D%E6%88%9664%E4%BD%8D"><span class="toc-text">查看系统是32位或64位</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E5%88%B6%E8%A7%A3%E5%8E%8B"><span class="toc-text">复制解压</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%9C%8D%E5%8A%A1%E5%99%A8DNS%E4%BF%A1%E6%81%AF"><span class="toc-text">查看服务器DNS信息:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ping%EF%BC%9A%E6%B5%8B%E8%AF%95%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4"><span class="toc-text">ping：测试网络命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#linux%E6%9F%A5%E6%89%BE%E6%96%87%E4%BB%B6"><span class="toc-text">linux查找文件:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E6%98%BE%E7%A4%BA%E4%B8%BB%E6%9C%BA%E5%90%8D"><span class="toc-text">Linux显示主机名:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8BDNS%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9C%B0%E5%9D%80"><span class="toc-text">查看DNS服务器地址:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%99%BB%E9%99%86linux%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">命令行登陆linux服务器:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD"><span class="toc-text">上传下载:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9"><span class="toc-text">浏览文件内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#grep%E5%92%8C%E7%AE%A1%E9%81%93"><span class="toc-text">grep和管道</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3"><span class="toc-text">系统相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90"><span class="toc-text">文件权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8D%B8%E8%BD%BD"><span class="toc-text">安装与卸载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85JDK"><span class="toc-text">安装JDK</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF"><span class="toc-text">常见错误</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-yum%E5%AE%89%E8%A3%85%E6%97%B6%E6%8A%A5cannot-find-a-valid-baseurl-for-repo"><span class="toc-text">1.yum安装时报cannot find a valid baseurl for repo</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-ifconfig%E5%91%BD%E4%BB%A4%E6%8A%A5-bash-ifconfig-command-not-found"><span class="toc-text">2.ifconfig命令报-bash: ifconfig: command not found</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-CentOS%E4%B8%8Bifconfig%E5%91%BD%E4%BB%A4%E4%B8%8D%E6%98%BE%E7%A4%BAip"><span class="toc-text">3.CentOS下ifconfig命令不显示ip</span></a></li></ol></li></ol></li></ol>
-</div></main>
-          <aside class="left-column">
-            
-            <div class="card card-author">
-              
-<img src="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png" class="author-img">
-
-<p class="author-name">blydd</p>
-<p class="author-description">积跬步行千里</p>
-<div class="author-message">
-  <a class="author-posts-count" href="/archives">
-    <span>66</span>
-    <span>文章</span>
-  </a>
-  <a class="author-categories-count" href="/categories">
-    <span>16</span>
-    <span>分类</span>
-  </a>
-  <a class="author-tags-count" href="/tags">
-    <span>92</span>
-    <span>标签</span>
-  </a>
-</div>
-
-            </div>
-            
-            <div class="sticky-tablet">
-  
-  
-  <article class="display-when-two-columns spacer">
-    <div class="card card-content toc-card">
-      <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%95%E7%A4%BA"><span class="toc-text">展示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-text">新建文件夹</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3"><span class="toc-text">端口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JDK"><span class="toc-text">JDK</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEip-%E4%BF%AE%E6%94%B9%E7%BD%91%E5%8D%A1%E4%BF%A1%E6%81%AF%E6%96%87%E4%BB%B6"><span class="toc-text">配置ip,修改网卡信息文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E5%8F%B0%E5%90%AF%E5%8A%A8jar%E5%B9%B6%E6%8A%8A%E6%97%A5%E5%BF%97%E8%BE%93%E5%87%BA%E5%88%B0%E6%8C%87%E5%AE%9A%E6%96%87%E4%BB%B6%E4%B8%AD-%E5%90%AF%E5%8A%A8springboot%E9%A1%B9%E7%9B%AE"><span class="toc-text">后台启动jar并把日志输出到指定文件中(启动springboot项目)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E6%98%AF32%E4%BD%8D%E6%88%9664%E4%BD%8D"><span class="toc-text">查看系统是32位或64位</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E5%88%B6%E8%A7%A3%E5%8E%8B"><span class="toc-text">复制解压</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%9C%8D%E5%8A%A1%E5%99%A8DNS%E4%BF%A1%E6%81%AF"><span class="toc-text">查看服务器DNS信息:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ping%EF%BC%9A%E6%B5%8B%E8%AF%95%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4"><span class="toc-text">ping：测试网络命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#linux%E6%9F%A5%E6%89%BE%E6%96%87%E4%BB%B6"><span class="toc-text">linux查找文件:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E6%98%BE%E7%A4%BA%E4%B8%BB%E6%9C%BA%E5%90%8D"><span class="toc-text">Linux显示主机名:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8BDNS%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9C%B0%E5%9D%80"><span class="toc-text">查看DNS服务器地址:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%99%BB%E9%99%86linux%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">命令行登陆linux服务器:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD"><span class="toc-text">上传下载:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9"><span class="toc-text">浏览文件内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#grep%E5%92%8C%E7%AE%A1%E9%81%93"><span class="toc-text">grep和管道</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3"><span class="toc-text">系统相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90"><span class="toc-text">文件权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8D%B8%E8%BD%BD"><span class="toc-text">安装与卸载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85JDK"><span class="toc-text">安装JDK</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF"><span class="toc-text">常见错误</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-yum%E5%AE%89%E8%A3%85%E6%97%B6%E6%8A%A5cannot-find-a-valid-baseurl-for-repo"><span class="toc-text">1.yum安装时报cannot find a valid baseurl for repo</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-ifconfig%E5%91%BD%E4%BB%A4%E6%8A%A5-bash-ifconfig-command-not-found"><span class="toc-text">2.ifconfig命令报-bash: ifconfig: command not found</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-CentOS%E4%B8%8Bifconfig%E5%91%BD%E4%BB%A4%E4%B8%8D%E6%98%BE%E7%A4%BAip"><span class="toc-text">3.CentOS下ifconfig命令不显示ip</span></a></li></ol></li></ol></li></ol>
     </div>
-  </article>
-  
-  
-  <article class="card card-content categories-widget">
-    <div class="categories-card">
-  <div class="categories-header"><i class="iconfont icon-fenlei" style="padding-right: 2px;"></i>分类</div>
-  <div class="categories-list">
+
     
-      <a href="/categories/工具类">
-        <div class="categories-list-item">
-          工具类
-          <span class="categories-list-item-badge">8</span>
-        </div>
-      </a>
     
-      <a href="/categories/linux">
-        <div class="categories-list-item">
-          linux
-          <span class="categories-list-item-badge">3</span>
-        </div>
-      </a>
     
-      <a href="/categories/mac">
-        <div class="categories-list-item">
-          mac
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/java">
-        <div class="categories-list-item">
-          java
-          <span class="categories-list-item-badge">18</span>
-        </div>
-      </a>
-    
-      <a href="/categories/springboot">
-        <div class="categories-list-item">
-          springboot
-          <span class="categories-list-item-badge">13</span>
-        </div>
-      </a>
-    
-      <a href="/categories/docker">
-        <div class="categories-list-item">
-          docker
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/版本控制">
-        <div class="categories-list-item">
-          版本控制
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/hello world">
-        <div class="categories-list-item">
-          hello world
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/mele">
-        <div class="categories-list-item">
-          mele
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/db">
-        <div class="categories-list-item">
-          db
-          <span class="categories-list-item-badge">7</span>
-        </div>
-      </a>
-    
-      <a href="/categories/其他">
-        <div class="categories-list-item">
-          其他
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/bug">
-        <div class="categories-list-item">
-          bug
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/js">
-        <div class="categories-list-item">
-          js
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/mq">
-        <div class="categories-list-item">
-          mq
-          <span class="categories-list-item-badge">3</span>
-        </div>
-      </a>
-    
-      <a href="/categories/面试">
-        <div class="categories-list-item">
-          面试
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/springCloud">
-        <div class="categories-list-item">
-          springCloud
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-  </div>
-</div>
-  </article>
-  
-  <article class="card card-content tags-widget">
-    <div class="tags-card">
-  <div class="tags-header"><i class="iconfont icon-biaoqian" style="padding-right: 2px;"></i>热门标签</div>
-  <div class="tags-list">
-    
-    <a href="\tags\springboot" title="springboot"><div class="tags-list-item">springboot</div></a>
-    
-    <a href="\tags\java" title="java"><div class="tags-list-item">java</div></a>
-    
-    <a href="\tags\工具类" title="工具类"><div class="tags-list-item">工具类</div></a>
-    
-    <a href="\tags\mybatis" title="mybatis"><div class="tags-list-item">mybatis</div></a>
-    
-    <a href="\tags\ms" title="ms"><div class="tags-list-item">ms</div></a>
-    
-    <a href="\tags\tool" title="tool"><div class="tags-list-item">tool</div></a>
-    
-    <a href="\tags\git" title="git"><div class="tags-list-item">git</div></a>
-    
-    <a href="\tags\linux" title="linux"><div class="tags-list-item">linux</div></a>
-    
-    <a href="\tags\线程池" title="线程池"><div class="tags-list-item">线程池</div></a>
-    
-    <a href="\tags\mq" title="mq"><div class="tags-list-item">mq</div></a>
-    
-    <a href="\tags\常用" title="常用"><div class="tags-list-item">常用</div></a>
-    
-    <a href="\tags\bug" title="bug"><div class="tags-list-item">bug</div></a>
-    
-    <a href="\tags\分布式" title="分布式"><div class="tags-list-item">分布式</div></a>
-    
-    <a href="\tags\acid" title="acid"><div class="tags-list-item">acid</div></a>
-    
-    <a href="\tags\事务" title="事务"><div class="tags-list-item">事务</div></a>
-    
-    <a href="\tags\xml" title="xml"><div class="tags-list-item">xml</div></a>
-    
-  </div>
-</div>
-  </article>
-  
-  
-</div>
-          </aside>
-          <aside class="right-column">
-            <div class="sticky-widescreen">
-  
-  
-  <article class="card card-content toc-card">
-    <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%95%E7%A4%BA"><span class="toc-text">展示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-text">新建文件夹</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3"><span class="toc-text">端口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JDK"><span class="toc-text">JDK</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEip-%E4%BF%AE%E6%94%B9%E7%BD%91%E5%8D%A1%E4%BF%A1%E6%81%AF%E6%96%87%E4%BB%B6"><span class="toc-text">配置ip,修改网卡信息文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E5%8F%B0%E5%90%AF%E5%8A%A8jar%E5%B9%B6%E6%8A%8A%E6%97%A5%E5%BF%97%E8%BE%93%E5%87%BA%E5%88%B0%E6%8C%87%E5%AE%9A%E6%96%87%E4%BB%B6%E4%B8%AD-%E5%90%AF%E5%8A%A8springboot%E9%A1%B9%E7%9B%AE"><span class="toc-text">后台启动jar并把日志输出到指定文件中(启动springboot项目)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E6%98%AF32%E4%BD%8D%E6%88%9664%E4%BD%8D"><span class="toc-text">查看系统是32位或64位</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E5%88%B6%E8%A7%A3%E5%8E%8B"><span class="toc-text">复制解压</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%9C%8D%E5%8A%A1%E5%99%A8DNS%E4%BF%A1%E6%81%AF"><span class="toc-text">查看服务器DNS信息:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ping%EF%BC%9A%E6%B5%8B%E8%AF%95%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4"><span class="toc-text">ping：测试网络命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#linux%E6%9F%A5%E6%89%BE%E6%96%87%E4%BB%B6"><span class="toc-text">linux查找文件:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E6%98%BE%E7%A4%BA%E4%B8%BB%E6%9C%BA%E5%90%8D"><span class="toc-text">Linux显示主机名:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8BDNS%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9C%B0%E5%9D%80"><span class="toc-text">查看DNS服务器地址:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%99%BB%E9%99%86linux%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">命令行登陆linux服务器:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD"><span class="toc-text">上传下载:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9"><span class="toc-text">浏览文件内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#grep%E5%92%8C%E7%AE%A1%E9%81%93"><span class="toc-text">grep和管道</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3"><span class="toc-text">系统相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90"><span class="toc-text">文件权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8D%B8%E8%BD%BD"><span class="toc-text">安装与卸载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85JDK"><span class="toc-text">安装JDK</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF"><span class="toc-text">常见错误</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-yum%E5%AE%89%E8%A3%85%E6%97%B6%E6%8A%A5cannot-find-a-valid-baseurl-for-repo"><span class="toc-text">1.yum安装时报cannot find a valid baseurl for repo</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-ifconfig%E5%91%BD%E4%BB%A4%E6%8A%A5-bash-ifconfig-command-not-found"><span class="toc-text">2.ifconfig命令报-bash: ifconfig: command not found</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-CentOS%E4%B8%8Bifconfig%E5%91%BD%E4%BB%A4%E4%B8%8D%E6%98%BE%E7%A4%BAip"><span class="toc-text">3.CentOS下ifconfig命令不显示ip</span></a></li></ol></li></ol></li></ol>
-  </article>
-  
-  
-  <article class="card card-content">
-    <div class="recent-posts-card">
-  <div class="recent-posts-header"><i class="iconfont icon-wenzhang_huaban" style="padding-right: 2px;"></i>最近文章</div>
-  <div class="recent-posts-list">
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-30</div>
-        <a href="/2021/01/30/java面试题/"><div class="recent-posts-item-content">java面试题</div></a>
-      </div>
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-26</div>
-        <a href="/2021/01/26/编写优雅高效的java代码/"><div class="recent-posts-item-content">编写高效优雅java代码</div></a>
-      </div>
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-23</div>
-        <a href="/2021/01/23/redis教程效率版/"><div class="recent-posts-item-content">redis入门效率版</div></a>
-      </div>
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-22</div>
-        <a href="/2021/01/22/开发注意代码整理/"><div class="recent-posts-item-content">开发中注意的小问题</div></a>
-      </div>
-    
-  </div>
-</div>
-  </article>
-  
-  
-</div>
-          </aside>
-        </div>
-      </div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/04/Mybatis/" rel="prev" title="mybatis">
+      <i class="fa fa-chevron-left"></i> mybatis
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/04/HTTP%E8%AF%B7%E6%B1%82%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="next" title="http请求工具类">
+      http请求工具类 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-  </div>
+      </footer>
+    
+  </article>
   
-  <footer class="footer">
-  <div class="footer-container">
-    <div>
-      <div class="footer-dsc">
-        <span>Copyright ©
+  
+  
+
+
+
+          </div>
           
-          2020 -
-          
-          2021
-        </span>
-        &nbsp;
-        <a href="/" class="footer-link">mele blog </a>
-      </div>
-    </div>
 
-    
-    <div class="footer-dsc">
-      
-      Powered by
-      <a href="https://hexo.io/" class="footer-link" target="_blank" rel="nofollow noopener noreferrer">&nbsp;Hexo </a>
-      
-      
-      <span>&nbsp;|&nbsp;</span>
-      
-      
-      Theme -
-      <a href="https://github.com/theme-kaze" class="footer-link" target="_blank"
-        rel="nofollow noopener noreferrer">&nbsp;Kaze</a>
-      
-    </div>
-    
-    
-    
-    
-</footer>
-  <a role="button" id="scrollbutton" class="basebutton"  aria-label="回到顶部">
-  <i class="iconfont icon-arrowleft button-icon"></i>
-</a>
-<a role="button" id="menubutton" class="basebutton">
-  <i class="iconfont icon-menu button-icon"></i>
-</a>
-<a role="button" id="popbutton" class="basebutton" aria-label="控制中心">
-  <i class="iconfont icon-expand button-icon"></i>
-</a>
-<a role="button" id="darkbutton" class="basebutton darkwidget" aria-label="夜色模式">
-  <i class="iconfont icon-weather button-icon"></i>
-</a>
-<a role="button" id="searchbutton" class="basebutton searchwidget" aria-label="搜索">
-  <i class="iconfont icon-search button-icon"></i>
-</a>
-
-  
-  
-  
-  <script>
-  var addImgLayout = function () {
-    var img = document.querySelectorAll('.post-content img');
-    var i;
-    for (i = 0; i < img.length; i++) {
-      var wrapper = document.createElement('a');
-      wrapper.setAttribute('href', img[i].getAttribute('data-src'));
-      wrapper.setAttribute('aria-label', 'illustration');
-      wrapper.style.cssText = 'width: 100%; display: flex; justify-content: center;';
-      if (img[i].alt) wrapper.dataset.caption = img[i].alt;
-      wrapper.dataset.nolink = true;
-      img[i].before(wrapper);
-      wrapper.append(img[i]);
-      var divWrap = document.createElement('div');
-      divWrap.classList.add('gallery');
-      wrapper.before(divWrap);
-      divWrap.append(wrapper);
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
     }
-    baguetteBox.run('.gallery');
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
-<script>loadScript("/js/lib/lightbox/baguetteBox.min.js", addImgLayout)</script>
+
+        </div>
+          
   
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%95%E7%A4%BA"><span class="nav-number">1.</span> <span class="nav-text">展示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="nav-number">2.</span> <span class="nav-text">新建文件夹</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3"><span class="nav-number">3.</span> <span class="nav-text">端口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK"><span class="nav-number">4.</span> <span class="nav-text">JDK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEip-%E4%BF%AE%E6%94%B9%E7%BD%91%E5%8D%A1%E4%BF%A1%E6%81%AF%E6%96%87%E4%BB%B6"><span class="nav-number">5.</span> <span class="nav-text">配置ip,修改网卡信息文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8E%E5%8F%B0%E5%90%AF%E5%8A%A8jar%E5%B9%B6%E6%8A%8A%E6%97%A5%E5%BF%97%E8%BE%93%E5%87%BA%E5%88%B0%E6%8C%87%E5%AE%9A%E6%96%87%E4%BB%B6%E4%B8%AD-%E5%90%AF%E5%8A%A8springboot%E9%A1%B9%E7%9B%AE"><span class="nav-number">6.</span> <span class="nav-text">后台启动jar并把日志输出到指定文件中(启动springboot项目)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E6%98%AF32%E4%BD%8D%E6%88%9664%E4%BD%8D"><span class="nav-number">7.</span> <span class="nav-text">查看系统是32位或64位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%E8%A7%A3%E5%8E%8B"><span class="nav-number">8.</span> <span class="nav-text">复制解压</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%9C%8D%E5%8A%A1%E5%99%A8DNS%E4%BF%A1%E6%81%AF"><span class="nav-number">9.</span> <span class="nav-text">查看服务器DNS信息:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ping%EF%BC%9A%E6%B5%8B%E8%AF%95%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4"><span class="nav-number">10.</span> <span class="nav-text">ping：测试网络命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux%E6%9F%A5%E6%89%BE%E6%96%87%E4%BB%B6"><span class="nav-number">11.</span> <span class="nav-text">linux查找文件:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux%E6%98%BE%E7%A4%BA%E4%B8%BB%E6%9C%BA%E5%90%8D"><span class="nav-number">12.</span> <span class="nav-text">Linux显示主机名:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8BDNS%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9C%B0%E5%9D%80"><span class="nav-number">13.</span> <span class="nav-text">查看DNS服务器地址:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%99%BB%E9%99%86linux%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">14.</span> <span class="nav-text">命令行登陆linux服务器:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD"><span class="nav-number">15.</span> <span class="nav-text">上传下载:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9"><span class="nav-number">16.</span> <span class="nav-text">浏览文件内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#grep%E5%92%8C%E7%AE%A1%E9%81%93"><span class="nav-number">17.</span> <span class="nav-text">grep和管道</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3"><span class="nav-number">18.</span> <span class="nav-text">系统相关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90"><span class="nav-number">19.</span> <span class="nav-text">文件权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8D%B8%E8%BD%BD"><span class="nav-number">20.</span> <span class="nav-text">安装与卸载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85JDK"><span class="nav-number">21.</span> <span class="nav-text">安装JDK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF"><span class="nav-number">22.</span> <span class="nav-text">常见错误</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-yum%E5%AE%89%E8%A3%85%E6%97%B6%E6%8A%A5cannot-find-a-valid-baseurl-for-repo"><span class="nav-number">22.0.1.</span> <span class="nav-text">1.yum安装时报cannot find a valid baseurl for repo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-ifconfig%E5%91%BD%E4%BB%A4%E6%8A%A5-bash-ifconfig-command-not-found"><span class="nav-number">22.0.2.</span> <span class="nav-text">2.ifconfig命令报-bash: ifconfig: command not found</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-CentOS%E4%B8%8Bifconfig%E5%91%BD%E4%BB%A4%E4%B8%8D%E6%98%BE%E7%A4%BAip"><span class="nav-number">22.0.3.</span> <span class="nav-text">3.CentOS下ifconfig命令不显示ip</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">blydd</p>
+  <div class="site-description" itemprop="description">米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">92</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
   
-  
-<script src="/js/main.js"></script>
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">blydd</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
 
   
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
   
-  <script>
-    var addLazyload = function () {
-      var observer = lozad('.lozad', {
-        load: function (el) {
-          el.srcset = el.getAttribute('data-src');
-        },
-        loaded: function (el) {
-          el.classList.add('loaded');
-        }
-      });
-      observer.observe();
-    }
-  </script>
-  <script>loadScript("/js/lib/lozad.min.js", addLazyload)</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
+
   
+
 </body>
-
 </html>

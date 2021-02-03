@@ -1,250 +1,217 @@
 <!DOCTYPE html>
-<html  lang="zh-CN" >
-
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="theme-color" content="#fff" id="theme-color">
-  <meta name="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
-  <link rel="icon" href="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png">
-  <title>Java 分布式框架面试题合集</title>
-  
-  
-  <meta property="og:title" content="Java 分布式框架面试题合集">
-  
-  
-  <meta property="og:url" content="https://www.mele.cool/2020/12/04/%E5%88%86%E5%B8%83%E5%BC%8F%E6%A1%86%E6%9E%B6%E9%9D%A2%E8%AF%95%E9%A2%98%E5%90%88%E9%9B%86/index.html">
-  
-  
-  <meta property="og:img" content="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png">
-  
-  
-  <meta property="og:img" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
-  
-  
-  <meta property="og:type" content="article">
-  <meta property="og:article:published_time" content="2020-12-04">
-  <meta property="og:article:modified_time" content="2021-01-30">
-  <meta property="og:article:author" content="blydd">
-  
-  
-  <meta property="og:article:tag" content="分布式">
-  
-  <meta property="og:article:tag" content="ms">
-  
-  
-  
-  
-  <!-- 百度统计代码 -->
-<script>
-  var _hmt = _hmt || [];
-  (function() {
-    var hm = document.createElement("script");
-    hm.src = "https://hm.baidu.com/hm.js?52aed7fa581354c5e14562bad1a1def2";
-    var s = document.getElementsByTagName("script")[0]; 
-    s.parentNode.insertBefore(hm, s);
-  })();
-  </script>
- <!-- 百度统计代码 --> 
-  <script>
-    // control reverse button
-    var reverseDarkList = {
-      dark: 'light',
-      light: 'dark'
-    };
-    var themeColor = {
-      dark: '#1c1c1e',
-      light: '#fff'
-    }
-    // get the data of css prefers-color-scheme
-    var getCssMediaQuery = function() {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    };
-    // reverse current darkmode setting function
-    var reverseDarkModeSetting = function() {
-      var setting = localStorage.getItem('user-color-scheme');
-      if(reverseDarkList[setting]) {
-        setting = reverseDarkList[setting];
-      } else if(setting === null) {
-        setting = reverseDarkList[getCssMediaQuery()];
-      } else {
-        return;
-      }
-      localStorage.setItem('user-color-scheme', setting);
-      return setting;
-    };
-    // apply current darkmode setting
-    var setDarkmode = function(mode) {
-      var setting = mode || localStorage.getItem('user-color-scheme');
-      if(setting === getCssMediaQuery()) {
-        document.documentElement.removeAttribute('data-user-color-scheme');
-        localStorage.removeItem('user-color-scheme');
-        document.getElementById('theme-color').content = themeColor[setting];
-      } else if(reverseDarkList[setting]) {
-        document.documentElement.setAttribute('data-user-color-scheme', setting);
-        document.getElementById('theme-color').content = themeColor[setting];
-      } else {
-        document.documentElement.removeAttribute('data-user-color-scheme');
-        localStorage.removeItem('user-color-scheme');
-        document.getElementById('theme-color').content = themeColor[getCssMediaQuery()];
-      }
-    };
-    setDarkmode();
-  </script>
-  <script>
-    function loadScript(url, cb) {
-      var script = document.createElement('script');
-      script.src = url;
-      if (cb) script.onload = cb;
-      script.async = true;
-      document.body.appendChild(script);
-    }
-  </script>
-  
-  <link rel="preload" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css" as="style" >
-  <link rel="preload" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css" as="style" >
-  
-  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.js" as="script">
-  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.css" as="style" >
-  
-  
-  <link rel="preload" href="/js/lib/lozad.min.js" as="script">
-  
-  
-  
-  
-  
-  
-  
-  
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
 <link rel="stylesheet" href="/css/main.css">
 
-  
-  
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css">
 
-  
-  
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-  
-  
-<link rel="stylesheet" href="/js/lib/lightbox/baguetteBox.min.css">
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.mele.cool","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
 
-  
-  
-  
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
+  <meta name="description" content="Java 分布式框架面试题合集">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 分布式框架面试题合集">
+<meta property="og:url" content="https://www.mele.cool/2020/12/04/%E5%88%86%E5%B8%83%E5%BC%8F%E6%A1%86%E6%9E%B6%E9%9D%A2%E8%AF%95%E9%A2%98%E5%90%88%E9%9B%86/index.html">
+<meta property="og:site_name" content="米乐博客">
+<meta property="og:description" content="Java 分布式框架面试题合集">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/01/30/HtcD3wdb7az8rIs.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/30/vO3xDYzTaktAQoH.jpg">
+<meta property="og:image" content="https://i.loli.net/2021/01/30/jD6ohXZN59FHpUl.jpg">
+<meta property="article:published_time" content="2020-12-04T02:10:17.000Z">
+<meta property="article:modified_time" content="2021-01-30T04:51:49.416Z">
+<meta property="article:author" content="blydd">
+<meta property="article:tag" content="分布式">
+<meta property="article:tag" content="ms">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/01/30/HtcD3wdb7az8rIs.png">
+
+<link rel="canonical" href="https://www.mele.cool/2020/12/04/%E5%88%86%E5%B8%83%E5%BC%8F%E6%A1%86%E6%9E%B6%E9%9D%A2%E8%AF%95%E9%A2%98%E5%90%88%E9%9B%86/">
 
 
-<body>
-  <div class="wrapper">
-    
-    <nav class="navbar">
-  <div class="navbar-logo">
-    <span class="navbar-logo-main">
-      
-      <img class="navbar-logo-img" src="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png" alt="logo">
-      
-      <span class="navbar-logo-dsc">mele blog</span>
-    </span>
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java 分布式框架面试题合集 | 米乐博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
   </div>
-  <div class="navbar-menu">
-    
-    <a href="/" class="navbar-menu-item">
-    
-    首页
-    
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">米乐博客</h1>
+      <span class="logo-line-after"><i></i></span>
     </a>
-    
-    <a href="/archives" class="navbar-menu-item">
-    
-    归档
-    
-    </a>
-    
-    <a href="/tags" class="navbar-menu-item">
-    
-    标签
-    
-    </a>
-    
-    <a href="/categories" class="navbar-menu-item">
-    
-    分类
-    
-    </a>
-    
-    <a href="/about" class="navbar-menu-item">
-    
-    关于
-    
-    </a>
-    
-    <a href="/links" class="navbar-menu-item">
-    
-    友链
-    
-    </a>
-    
-    <a class="navbar-menu-item darknavbar" id="dark"><i class="iconfont icon-weather"></i></a>
-    <a class="navbar-menu-item searchnavbar" id="search"><i class="iconfont icon-search" style="font-size: 1.2rem; font-weight: 400;"></i></a>
+      <p class="site-subtitle" itemprop="description">积跬步至千里</p>
   </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
 </nav>
+
+
+
+
+</div>
+    </header>
+
     
-    <div id="local-search" style="display: none;">
-      <input class="navbar-menu-item" id="search-input" placeholder="请输入搜索内容...">
-      <div id="search-content"></div>
-    </div>
-    
-    <div class="section-wrap">
-      <div class="container">
-        <div class="columns">
-          <main class="main-column">
-<article class="card card-content">
-  <header>
-    <h1 class="post-title">
-      Java 分布式框架面试题合集
-    </h1>
-  </header>
-  <div class="post-meta post-show-meta">
-    <time datetime="2020-12-04T02:10:17.000Z">
-      <i class="iconfont icon-calendar" style="margin-right: 2px;"></i>
-      <span>2020-12-04</span>
-    </time>
-    
-    <span class="dot"></span>
-    
-    <a href="/categories/面试/" class="post-meta-link">面试</a>
-    
-    
-    
-    <span class="dot"></span>
-    <span>4.7k 字</span>
-    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
   </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
   
-  <div class="post-meta post-show-meta" style="margin-top: -10px;">
-    <div style="display: flex; align-items: center;">
-      <i class="iconfont icon-biaoqian" style="margin-right: 2px; font-size: 1.15rem;"></i>
-      
-      
-        <a href="/tags/分布式/" class="post-meta-link">分布式</a>
-      
-      
-      <span class="dot"></span>
-      
-        <a href="/tags/ms/" class="post-meta-link">ms</a>
-      
-    </div>
-  </div>
   
-  </header>
-  <div id="section" class="post-content">
-    <h4 id="1-什么是-ZooKeeper？"><a href="#1-什么是-ZooKeeper？" class="headerlink" title="1.什么是 ZooKeeper？"></a>1.什么是 ZooKeeper？</h4><p>答：ZooKeeper 是一个开源的分布式应用程序协调服务，是一个典型的分布式数据一致性解决方案。设计目的是将那些复杂且容易出错的分布式一致性服务封装起来，构成一个高效可靠的系统，并以一系列简单易用的原子操作提供给用户使用。</p>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.mele.cool/2020/12/04/%E5%88%86%E5%B8%83%E5%BC%8F%E6%A1%86%E6%9E%B6%E9%9D%A2%E8%AF%95%E9%A2%98%E5%90%88%E9%9B%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="blydd">
+      <meta itemprop="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="米乐博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 分布式框架面试题合集
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-04 10:10:17" itemprop="dateCreated datePublished" datetime="2020-12-04T10:10:17+08:00">2020-12-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-30 12:51:49" itemprop="dateModified" datetime="2021-01-30T12:51:49+08:00">2021-01-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%A2%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">面试</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">Java 分布式框架面试题合集</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-什么是-ZooKeeper？"><a href="#1-什么是-ZooKeeper？" class="headerlink" title="1.什么是 ZooKeeper？"></a>1.什么是 ZooKeeper？</h4><p>答：ZooKeeper 是一个开源的分布式应用程序协调服务，是一个典型的分布式数据一致性解决方案。设计目的是将那些复杂且容易出错的分布式一致性服务封装起来，构成一个高效可靠的系统，并以一系列简单易用的原子操作提供给用户使用。</p>
 <h4 id="2-ZooKeeper-提供了哪些功能？"><a href="#2-ZooKeeper-提供了哪些功能？" class="headerlink" title="2.ZooKeeper 提供了哪些功能？"></a>2.ZooKeeper 提供了哪些功能？</h4><p>答：ZooKeeper 主要提供以下功能：</p>
 <ul>
 <li>分布式服务注册与订阅：在分布式环境中，为了保证高可用性，通常同一个应用或同一个服务的提供方都会部署多份，达到对等服务。而消费者就须要在这些对等的服务器中选择一个来执行相关的业务逻辑，比较典型的服务注册与订阅，如 Dubbo。</li>
@@ -275,7 +242,7 @@
 <li>完成业务流程后，删除对应的子节点释放锁。</li>
 </ul>
 <p>整体流程如下图所示：</p>
-<p><img src="https://i.loli.net/2021/01/30/HtcD3wdb7az8rIs.png" alt="1" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/HtcD3wdb7az8rIs.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/01/30/HtcD3wdb7az8rIs.png" alt="1"></p>
 <h4 id="7-ZooKeeper-如何实现分布式事务？"><a href="#7-ZooKeeper-如何实现分布式事务？" class="headerlink" title="7.ZooKeeper 如何实现分布式事务？"></a>7.ZooKeeper 如何实现分布式事务？</h4><p>答：ZooKeeper 实现分布式事务，类似于两阶段提交，总共分为以下 4 步：</p>
 <ul>
 <li>客户端先给 ZooKeeper 节点发送写请求；</li>
@@ -311,23 +278,23 @@
 </ul>
 <p><strong>负载均衡配置如下</strong>：</p>
 <p>服务端服务级别</p>
-<pre class="highlight"><span class="line"><span class="tag">&lt;<span class="name">dubbo:service</span> <span class="attr">interface</span>=<span class="string">&quot;xxx&quot;</span> <span class="attr">loadbalance</span>=<span class="string">&quot;roundrobin&quot;</span> /&gt;</span></span><br></pre>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dubbo:service</span> <span class="attr">interface</span>=<span class="string">&quot;xxx&quot;</span> <span class="attr">loadbalance</span>=<span class="string">&quot;roundrobin&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
 <p>客户端服务级别</p>
-<pre class="highlight"><span class="line"><span class="tag">&lt;<span class="name">dubbo:reference</span> <span class="attr">interface</span>=<span class="string">&quot;xxx&quot;</span> <span class="attr">loadbalance</span>=<span class="string">&quot;roundrobin&quot;</span> /&gt;</span></span><br></pre>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dubbo:reference</span> <span class="attr">interface</span>=<span class="string">&quot;xxx&quot;</span> <span class="attr">loadbalance</span>=<span class="string">&quot;roundrobin&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
 <p>服务端方法级别</p>
-<pre class="highlight"><span class="line"><span class="tag">&lt;<span class="name">dubbo:service</span> <span class="attr">interface</span>=<span class="string">&quot;xxx&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">dubbo:method</span> <span class="attr">name</span>=<span class="string">&quot;xxx&quot;</span> <span class="attr">loadbalance</span>=<span class="string">&quot;roundrobin&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dubbo:service</span>&gt;</span></span><br></pre>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dubbo:service</span> <span class="attr">interface</span>=<span class="string">&quot;xxx&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">dubbo:method</span> <span class="attr">name</span>=<span class="string">&quot;xxx&quot;</span> <span class="attr">loadbalance</span>=<span class="string">&quot;roundrobin&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dubbo:service</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>客户端方法级别</p>
-<pre class="highlight"><span class="line"><span class="tag">&lt;<span class="name">dubbo:reference</span> <span class="attr">interface</span>=<span class="string">&quot;xxx&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">dubbo:method</span> <span class="attr">name</span>=<span class="string">&quot;xxx&quot;</span> <span class="attr">loadbalance</span>=<span class="string">&quot;roundrobin&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dubbo:reference</span>&gt;</span></span><br></pre>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dubbo:reference</span> <span class="attr">interface</span>=<span class="string">&quot;xxx&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">dubbo:method</span> <span class="attr">name</span>=<span class="string">&quot;xxx&quot;</span> <span class="attr">loadbalance</span>=<span class="string">&quot;roundrobin&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dubbo:reference</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <h4 id="13-Dubbo-不支持以下哪种协议？"><a href="#13-Dubbo-不支持以下哪种协议？" class="headerlink" title="13.Dubbo 不支持以下哪种协议？"></a>13.Dubbo 不支持以下哪种协议？</h4><p>A：dubbo://<br>B：rmi://<br>C：redis://<br>D：restful://</p>
 <p>答：D</p>
 <p>题目解析：restful 是一种编程规范，并不是一种传输协议，也不被 Dubbo 支持。</p>
 <h4 id="14-Dubbo-默认使用什么注册中心，还有别的选择吗？"><a href="#14-Dubbo-默认使用什么注册中心，还有别的选择吗？" class="headerlink" title="14.Dubbo 默认使用什么注册中心，还有别的选择吗？"></a>14.Dubbo 默认使用什么注册中心，还有别的选择吗？</h4><p>答：推荐使用 ZooKeeper 作为注册中心，还有 Nacos、Redis、Simple 注册中心（普通的 Dubbo 服务）。</p>
 <h4 id="15-Dubbo-支持多注册中心吗？"><a href="#15-Dubbo-支持多注册中心吗？" class="headerlink" title="15.Dubbo 支持多注册中心吗？"></a>15.Dubbo 支持多注册中心吗？</h4><p>答：Dubbo 支持同一服务向多注册中心同时注册，或者不同服务分别注册到不同的注册中心上去，甚至可以同时引用注册在不同注册中心上的同名服务。</p>
 <p>多注册中心注册：</p>
-<pre class="highlight"><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:dubbo</span>=<span class="string">&quot;http://dubbo.apache.org/schema/dubbo&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dubbo:application</span> <span class="attr">name</span>=<span class="string">&quot;world&quot;</span>  /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 多注册中心配置 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dubbo:registry</span> <span class="attr">id</span>=<span class="string">&quot;hangzhouRegistry&quot;</span> <span class="attr">address</span>=<span class="string">&quot;10.20.141.150:9090&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dubbo:registry</span> <span class="attr">id</span>=<span class="string">&quot;qingdaoRegistry&quot;</span> <span class="attr">address</span>=<span class="string">&quot;10.20.141.151:9010&quot;</span> <span class="attr">default</span>=<span class="string">&quot;false&quot;</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 向多个注册中心注册 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dubbo:service</span> <span class="attr">interface</span>=<span class="string">&quot;com.alibaba.hello.api.HelloService&quot;</span> <span class="attr">version</span>=<span class="string">&quot;1.0.0&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;helloService&quot;</span> <span class="attr">registry</span>=<span class="string">&quot;hangzhouRegistry,qingdaoRegistry&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:dubbo</span>=<span class="string">&quot;http://dubbo.apache.org/schema/dubbo&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dubbo:application</span> <span class="attr">name</span>=<span class="string">&quot;world&quot;</span>  /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 多注册中心配置 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dubbo:registry</span> <span class="attr">id</span>=<span class="string">&quot;hangzhouRegistry&quot;</span> <span class="attr">address</span>=<span class="string">&quot;10.20.141.150:9090&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dubbo:registry</span> <span class="attr">id</span>=<span class="string">&quot;qingdaoRegistry&quot;</span> <span class="attr">address</span>=<span class="string">&quot;10.20.141.151:9010&quot;</span> <span class="attr">default</span>=<span class="string">&quot;false&quot;</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 向多个注册中心注册 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dubbo:service</span> <span class="attr">interface</span>=<span class="string">&quot;com.alibaba.hello.api.HelloService&quot;</span> <span class="attr">version</span>=<span class="string">&quot;1.0.0&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;helloService&quot;</span> <span class="attr">registry</span>=<span class="string">&quot;hangzhouRegistry,qingdaoRegistry&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <h4 id="16-Dubbo-支持的连接方式有哪些？"><a href="#16-Dubbo-支持的连接方式有哪些？" class="headerlink" title="16.Dubbo 支持的连接方式有哪些？"></a>16.Dubbo 支持的连接方式有哪些？</h4><p>答：Dubbo 支持的主要连接方式有：组播、直连和 ZooKeeper 等注册中心。</p>
 <p><strong>① 组播方式</strong>，不需要启动任何中心节点，只要广播地址一样，就可以互相发现。</p>
-<p><img src="https://i.loli.net/2021/01/30/vO3xDYzTaktAQoH.jpg" alt="2" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/vO3xDYzTaktAQoH.jpg" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/01/30/vO3xDYzTaktAQoH.jpg" alt="2"></p>
 <ol>
 <li>提供方启动时广播自己的地址</li>
 <li>消费方启动时广播订阅请求</li>
@@ -336,26 +303,26 @@
 </ol>
 <p>组播受网络结构限制，只适合小规模应用或开发阶段使用。组播地址段：224.0.0.0 ~ 239.255.255.255</p>
 <p>配置</p>
-<pre class="highlight"><span class="line">&lt;dubbo:registry address&#x3D;&quot;multicast:&#x2F;&#x2F;224.5.6.7:1234&quot; &#x2F;&gt;</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:registry address&#x3D;&quot;multicast:&#x2F;&#x2F;224.5.6.7:1234&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
 <p>或</p>
-<pre class="highlight"><span class="line">&lt;dubbo:registry protocol&#x3D;&quot;multicast&quot; address&#x3D;&quot;224.5.6.7:1234&quot; &#x2F;&gt;</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:registry protocol&#x3D;&quot;multicast&quot; address&#x3D;&quot;224.5.6.7:1234&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
 <p>为了减少广播量，Dubbo 缺省使用单播发送提供者地址信息给消费者，如果一个机器上同时启了多个消费者进程，消费者需声明 unicast=false，否则只会有一个消费者能收到消息；当服务者和消费者运行在同一台机器上，消费者同样需要声明 unicast=false，否则消费者无法收到消息，导致 No provider available for the service 异常：</p>
-<pre class="highlight"><span class="line">&lt;dubbo:registry address&#x3D;&quot;multicast:&#x2F;&#x2F;224.5.6.7:1234?unicast&#x3D;false&quot; &#x2F;&gt;</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:registry address&#x3D;&quot;multicast:&#x2F;&#x2F;224.5.6.7:1234?unicast&#x3D;false&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
 <p>或</p>
-<pre class="highlight"><span class="line">&lt;dubbo:registry protocol&#x3D;&quot;multicast&quot; address&#x3D;&quot;224.5.6.7:1234&quot;&gt;</span><br><span class="line">    &lt;dubbo:parameter key&#x3D;&quot;unicast&quot; value&#x3D;&quot;false&quot; &#x2F;&gt;</span><br><span class="line">&lt;&#x2F;dubbo:registry&gt;</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:registry protocol&#x3D;&quot;multicast&quot; address&#x3D;&quot;224.5.6.7:1234&quot;&gt;</span><br><span class="line">    &lt;dubbo:parameter key&#x3D;&quot;unicast&quot; value&#x3D;&quot;false&quot; &#x2F;&gt;</span><br><span class="line">&lt;&#x2F;dubbo:registry&gt;</span><br></pre></td></tr></table></figure>
 <p><strong>② 直连方式</strong>，注册中心本身就是一个普通的 Dubbo 服务，可以减少第三方依赖，使整体通讯方式一致。</p>
-<pre class="highlight"><span class="line"><span class="tag">&lt;<span class="name">dubbo:registry</span> <span class="attr">protocol</span>=<span class="string">&quot;zookeeper&quot;</span> <span class="attr">address</span>=<span class="string">&quot;N/A&quot;</span>  <span class="attr">file</span>=<span class="string">&quot;./.dubbo-platform&quot;</span>/&gt;</span></span><br></pre>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dubbo:registry</span> <span class="attr">protocol</span>=<span class="string">&quot;zookeeper&quot;</span> <span class="attr">address</span>=<span class="string">&quot;N/A&quot;</span>  <span class="attr">file</span>=<span class="string">&quot;./.dubbo-platform&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
 <p>将 Simple 注册中心暴露成 Dubbo 服务：</p>
-<pre class="highlight"><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;beans xmlns&#x3D;&quot;http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;beans&quot;</span><br><span class="line">    xmlns:xsi&#x3D;&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2001&#x2F;XMLSchema-instance&quot;</span><br><span class="line">    xmlns:dubbo&#x3D;&quot;http:&#x2F;&#x2F;dubbo.apache.org&#x2F;schema&#x2F;dubbo&quot;</span><br><span class="line">    xsi:schemaLocation&#x3D;&quot;http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;beans http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;beans&#x2F;spring-beans-4.3.xsd http:&#x2F;&#x2F;dubbo.apache.org&#x2F;schema&#x2F;dubbo http:&#x2F;&#x2F;dubbo.apache.org&#x2F;schema&#x2F;dubbo&#x2F;dubbo.xsd&quot;&gt;</span><br><span class="line">    &lt;!-- 当前应用信息配置 --&gt;</span><br><span class="line">    &lt;dubbo:application name&#x3D;&quot;simple-registry&quot; &#x2F;&gt;</span><br><span class="line">    &lt;!-- 暴露服务协议配置 --&gt;</span><br><span class="line">    &lt;dubbo:protocol port&#x3D;&quot;9090&quot; &#x2F;&gt;</span><br><span class="line">    &lt;!-- 暴露服务配置 --&gt;</span><br><span class="line">    &lt;dubbo:service interface&#x3D;&quot;org.apache.dubbo.registry.RegistryService&quot; ref&#x3D;&quot;registryService&quot; registry&#x3D;&quot;N&#x2F;A&quot; ondisconnect&#x3D;&quot;disconnect&quot; callbacks&#x3D;&quot;1000&quot;&gt;</span><br><span class="line">        &lt;dubbo:method name&#x3D;&quot;subscribe&quot;&gt;&lt;dubbo:argument index&#x3D;&quot;1&quot; callback&#x3D;&quot;true&quot; &#x2F;&gt;&lt;&#x2F;dubbo:method&gt;</span><br><span class="line">        &lt;dubbo:method name&#x3D;&quot;unsubscribe&quot;&gt;&lt;dubbo:argument index&#x3D;&quot;1&quot; callback&#x3D;&quot;false&quot; &#x2F;&gt;&lt;&#x2F;dubbo:method&gt;</span><br><span class="line">    &lt;&#x2F;dubbo:service&gt;</span><br><span class="line">    &lt;!-- 简单注册中心实现，可自行扩展实现集群和状态同步 --&gt;</span><br><span class="line">    &lt;bean id&#x3D;&quot;registryService&quot; class&#x3D;&quot;org.apache.dubbo.registry.simple.SimpleRegistryService&quot; &#x2F;&gt;</span><br><span class="line">&lt;&#x2F;beans&gt;</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;beans xmlns&#x3D;&quot;http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;beans&quot;</span><br><span class="line">    xmlns:xsi&#x3D;&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2001&#x2F;XMLSchema-instance&quot;</span><br><span class="line">    xmlns:dubbo&#x3D;&quot;http:&#x2F;&#x2F;dubbo.apache.org&#x2F;schema&#x2F;dubbo&quot;</span><br><span class="line">    xsi:schemaLocation&#x3D;&quot;http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;beans http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;beans&#x2F;spring-beans-4.3.xsd http:&#x2F;&#x2F;dubbo.apache.org&#x2F;schema&#x2F;dubbo http:&#x2F;&#x2F;dubbo.apache.org&#x2F;schema&#x2F;dubbo&#x2F;dubbo.xsd&quot;&gt;</span><br><span class="line">    &lt;!-- 当前应用信息配置 --&gt;</span><br><span class="line">    &lt;dubbo:application name&#x3D;&quot;simple-registry&quot; &#x2F;&gt;</span><br><span class="line">    &lt;!-- 暴露服务协议配置 --&gt;</span><br><span class="line">    &lt;dubbo:protocol port&#x3D;&quot;9090&quot; &#x2F;&gt;</span><br><span class="line">    &lt;!-- 暴露服务配置 --&gt;</span><br><span class="line">    &lt;dubbo:service interface&#x3D;&quot;org.apache.dubbo.registry.RegistryService&quot; ref&#x3D;&quot;registryService&quot; registry&#x3D;&quot;N&#x2F;A&quot; ondisconnect&#x3D;&quot;disconnect&quot; callbacks&#x3D;&quot;1000&quot;&gt;</span><br><span class="line">        &lt;dubbo:method name&#x3D;&quot;subscribe&quot;&gt;&lt;dubbo:argument index&#x3D;&quot;1&quot; callback&#x3D;&quot;true&quot; &#x2F;&gt;&lt;&#x2F;dubbo:method&gt;</span><br><span class="line">        &lt;dubbo:method name&#x3D;&quot;unsubscribe&quot;&gt;&lt;dubbo:argument index&#x3D;&quot;1&quot; callback&#x3D;&quot;false&quot; &#x2F;&gt;&lt;&#x2F;dubbo:method&gt;</span><br><span class="line">    &lt;&#x2F;dubbo:service&gt;</span><br><span class="line">    &lt;!-- 简单注册中心实现，可自行扩展实现集群和状态同步 --&gt;</span><br><span class="line">    &lt;bean id&#x3D;&quot;registryService&quot; class&#x3D;&quot;org.apache.dubbo.registry.simple.SimpleRegistryService&quot; &#x2F;&gt;</span><br><span class="line">&lt;&#x2F;beans&gt;</span><br></pre></td></tr></table></figure>
 <p>引用 Simple Registry 服务：</p>
-<pre class="highlight"><span class="line">&lt;dubbo:registry address&#x3D;&quot;127.0.0.1:9090&quot; &#x2F;&gt;</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:registry address&#x3D;&quot;127.0.0.1:9090&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
 <p>或者：</p>
-<pre class="highlight"><span class="line">&lt;dubbo:service interface&#x3D;&quot;org.apache.dubbo.registry.RegistryService&quot; group&#x3D;&quot;simple&quot; version&#x3D;&quot;1.0.0&quot; ... &gt;</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:service interface&#x3D;&quot;org.apache.dubbo.registry.RegistryService&quot; group&#x3D;&quot;simple&quot; version&#x3D;&quot;1.0.0&quot; ... &gt;</span><br></pre></td></tr></table></figure>
 <p>或者：</p>
-<pre class="highlight"><span class="line">&lt;dubbo:registry address&#x3D;&quot;127.0.0.1:9090&quot; group&#x3D;&quot;simple&quot; version&#x3D;&quot;1.0.0&quot; &#x2F;&gt;</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:registry address&#x3D;&quot;127.0.0.1:9090&quot; group&#x3D;&quot;simple&quot; version&#x3D;&quot;1.0.0&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
 <p>适用性说明：此 SimpleRegistryService 只是简单实现，不支持集群，可作为自定义注册中心的参考，但不适合直接用于生产环境。</p>
 <p><strong>③ ZooKeeper 注册中心</strong>，Zookeeper 是 Apacahe Hadoop 的子项目，是一个树型的目录服务，支持变更推送，适合作为 Dubbo 服务的注册中心，工业强度较高，可用于生产环境，并推荐使用。</p>
-<p><img src="https://i.loli.net/2021/01/30/jD6ohXZN59FHpUl.jpg" alt="3" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/30/jD6ohXZN59FHpUl.jpg" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/01/30/jD6ohXZN59FHpUl.jpg" alt="3"></p>
 <p>流程说明：</p>
 <ul>
 <li>服务提供者启动时：向 /dubbo/com.foo.BarService/providers 目录下写入自己的 URL 地址</li>
@@ -374,7 +341,7 @@
 </ul>
 <p><strong>Zookeeper 使用</strong></p>
 <p>在 provider 和 consumer 中增加 zookeeper 客户端 jar 包依赖：</p>
-<pre class="highlight"><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.zookeeper&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;zookeeper&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;3.3.3&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.zookeeper&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;zookeeper&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;3.3.3&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
 <p>Dubbo 支持 zkclient 和 curator 两种 Zookeeper 客户端实现：</p>
 <blockquote>
 <p>注意：在 2.7.x 的版本中已经移除了 zkclient 的实现，如果要使用 zkclient 客户端，需要自行拓展。</p>
@@ -382,33 +349,33 @@
 <p><strong>使用 zkclient 客户端</strong></p>
 <p>从 2.2.0 版本开始缺省为 zkclient 实现，以提升 zookeeper 客户端的健状性。<a target="_blank" rel="noopener" href="https://github.com/sgroschupf/zkclient">zkclient</a> 是 Datameer 开源的一个 Zookeeper 客户端实现。</p>
 <p>缺省配置：</p>
-<pre class="highlight"><span class="line">&lt;dubbo:registry ... client&#x3D;&quot;zkclient&quot; &#x2F;&gt;</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:registry ... client&#x3D;&quot;zkclient&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
 <p>或：</p>
-<pre class="highlight"><span class="line">dubbo.registry.client&#x3D;zkclient</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dubbo.registry.client&#x3D;zkclient</span><br></pre></td></tr></table></figure>
 <p>或：</p>
-<pre class="highlight"><span class="line">zookeeper:&#x2F;&#x2F;10.20.153.10:2181?client&#x3D;zkclient</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zookeeper:&#x2F;&#x2F;10.20.153.10:2181?client&#x3D;zkclient</span><br></pre></td></tr></table></figure>
 <p>需依赖或直接<a target="_blank" rel="noopener" href="http://repo1.maven.org/maven2/com/github/sgroschupf/zkclient">下载</a>：</p>
-<pre class="highlight"><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.github.sgroschupf&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;zkclient&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;0.1&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.github.sgroschupf&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;zkclient&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;0.1&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
 <p><strong>使用 curator 客户端</strong></p>
 <p>从 2.3.0 版本开始支持可选 curator 实现。Curator 是 Netflix 开源的一个 Zookeeper 客户端实现。</p>
 <p>如果需要改为 curator 实现，请配置：</p>
-<pre class="highlight"><span class="line">&lt;dubbo:registry ... client&#x3D;&quot;curator&quot; &#x2F;&gt;</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:registry ... client&#x3D;&quot;curator&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
 <p>或：</p>
-<pre class="highlight"><span class="line">dubbo.registry.client&#x3D;curator</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dubbo.registry.client&#x3D;curator</span><br></pre></td></tr></table></figure>
 <p>或：</p>
-<pre class="highlight"><span class="line">zookeeper:&#x2F;&#x2F;10.20.153.10:2181?client&#x3D;curator</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zookeeper:&#x2F;&#x2F;10.20.153.10:2181?client&#x3D;curator</span><br></pre></td></tr></table></figure>
 <p>需依赖或直接下载：</p>
-<pre class="highlight"><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.netflix.curator&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;curator-framework&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.1.10&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.netflix.curator&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;curator-framework&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.1.10&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
 <p>Zookeeper 单机配置:</p>
-<pre class="highlight"><span class="line">&lt;dubbo:registry address&#x3D;&quot;zookeeper:&#x2F;&#x2F;10.20.153.10:2181&quot; &#x2F;&gt;</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:registry address&#x3D;&quot;zookeeper:&#x2F;&#x2F;10.20.153.10:2181&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
 <p>或：</p>
-<pre class="highlight"><span class="line">&lt;dubbo:registry protocol&#x3D;&quot;zookeeper&quot; address&#x3D;&quot;10.20.153.10:2181&quot; &#x2F;&gt;</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:registry protocol&#x3D;&quot;zookeeper&quot; address&#x3D;&quot;10.20.153.10:2181&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
 <p>Zookeeper 集群配置：</p>
-<pre class="highlight"><span class="line">&lt;dubbo:registry address&#x3D;&quot;zookeeper:&#x2F;&#x2F;10.20.153.10:2181?backup&#x3D;10.20.153.11:2181,10.20.153.12:2181&quot; &#x2F;&gt;</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:registry address&#x3D;&quot;zookeeper:&#x2F;&#x2F;10.20.153.10:2181?backup&#x3D;10.20.153.11:2181,10.20.153.12:2181&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
 <p>或：</p>
-<pre class="highlight"><span class="line">&lt;dubbo:registry protocol&#x3D;&quot;zookeeper&quot; address&#x3D;&quot;10.20.153.10:2181,10.20.153.11:2181,10.20.153.12:2181&quot; &#x2F;&gt;</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:registry protocol&#x3D;&quot;zookeeper&quot; address&#x3D;&quot;10.20.153.10:2181,10.20.153.11:2181,10.20.153.12:2181&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
 <p>同一 Zookeeper，分成多组注册中心：</p>
-<pre class="highlight"><span class="line">&lt;dubbo:registry id&#x3D;&quot;chinaRegistry&quot; protocol&#x3D;&quot;zookeeper&quot; address&#x3D;&quot;10.20.153.10:2181&quot; group&#x3D;&quot;china&quot; &#x2F;&gt;</span><br><span class="line">&lt;dubbo:registry id&#x3D;&quot;intlRegistry&quot; protocol&#x3D;&quot;zookeeper&quot; address&#x3D;&quot;10.20.153.10:2181&quot; group&#x3D;&quot;intl&quot; &#x2F;&gt;</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:registry id&#x3D;&quot;chinaRegistry&quot; protocol&#x3D;&quot;zookeeper&quot; address&#x3D;&quot;10.20.153.10:2181&quot; group&#x3D;&quot;china&quot; &#x2F;&gt;</span><br><span class="line">&lt;dubbo:registry id&#x3D;&quot;intlRegistry&quot; protocol&#x3D;&quot;zookeeper&quot; address&#x3D;&quot;10.20.153.10:2181&quot; group&#x3D;&quot;intl&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
 <h4 id="17-什么是服务熔断？"><a href="#17-什么是服务熔断？" class="headerlink" title="17.什么是服务熔断？"></a>17.什么是服务熔断？</h4><p>答：在应用系统服务中，当依赖服务因访问压力过大而响应变慢或失败，上游服务为了保护系统整体的可用性，临时切断对下游服务的调用。这种牺牲局部，保全整体的措施就叫做熔断。</p>
 <h4 id="18-Dubbo-可以对结果进行缓存吗？支持的缓存类型都有哪些？"><a href="#18-Dubbo-可以对结果进行缓存吗？支持的缓存类型都有哪些？" class="headerlink" title="18.Dubbo 可以对结果进行缓存吗？支持的缓存类型都有哪些？"></a>18.Dubbo 可以对结果进行缓存吗？支持的缓存类型都有哪些？</h4><p>答：可以，Dubbo 提供了声明式缓存，用于加速热门数据的访问速度，以减少用户加缓存的工作量。</p>
 <p>Dubbo 支持的缓存类型有：</p>
@@ -418,414 +385,215 @@
 <li>jcache 集成，可以桥接各种缓存实现。</li>
 </ul>
 <p>配置如下：</p>
-<pre class="highlight"><span class="line"><span class="tag">&lt;<span class="name">dubbo:reference</span> <span class="attr">interface</span>=<span class="string">&quot;com.foo.BarService&quot;</span> <span class="attr">cache</span>=<span class="string">&quot;lru&quot;</span> /&gt;</span></span><br></pre>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dubbo:reference</span> <span class="attr">interface</span>=<span class="string">&quot;com.foo.BarService&quot;</span> <span class="attr">cache</span>=<span class="string">&quot;lru&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
 <p>或</p>
-<pre class="highlight"><span class="line"><span class="tag">&lt;<span class="name">dubbo:reference</span> <span class="attr">interface</span>=<span class="string">&quot;com.foo.BarService&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dubbo:method</span> <span class="attr">name</span>=<span class="string">&quot;findBar&quot;</span> <span class="attr">cache</span>=<span class="string">&quot;lru&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dubbo:reference</span>&gt;</span></span><br></pre>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dubbo:reference</span> <span class="attr">interface</span>=<span class="string">&quot;com.foo.BarService&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dubbo:method</span> <span class="attr">name</span>=<span class="string">&quot;findBar&quot;</span> <span class="attr">cache</span>=<span class="string">&quot;lru&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dubbo:reference</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <h4 id="19-Dubbo-有几种集群容错模式？"><a href="#19-Dubbo-有几种集群容错模式？" class="headerlink" title="19.Dubbo 有几种集群容错模式？"></a>19.Dubbo 有几种集群容错模式？</h4><p>答：Dubbo 集群容错模式如下。</p>
 <h5 id="①-Failover-Cluster"><a href="#①-Failover-Cluster" class="headerlink" title="① Failover Cluster"></a>① Failover Cluster</h5><p>失败自动切换，当出现失败，重试其他服务器。通常用于读操作，但重试会带来更长延迟。可通过 <code>retries=&quot;2&quot;</code> 来设置重试次数（不含第一次）。</p>
 <p>重试次数配置如下：</p>
-<pre class="highlight"><span class="line"><span class="tag">&lt;<span class="name">dubbo:service</span> <span class="attr">retries</span>=<span class="string">&quot;2&quot;</span> /&gt;</span></span><br></pre>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dubbo:service</span> <span class="attr">retries</span>=<span class="string">&quot;2&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
 <p>或</p>
-<pre class="highlight"><span class="line"><span class="tag">&lt;<span class="name">dubbo:reference</span> <span class="attr">retries</span>=<span class="string">&quot;2&quot;</span> /&gt;</span></span><br></pre>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dubbo:reference</span> <span class="attr">retries</span>=<span class="string">&quot;2&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
 <p>或</p>
-<pre class="highlight"><span class="line"><span class="tag">&lt;<span class="name">dubbo:reference</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dubbo:method</span> <span class="attr">name</span>=<span class="string">&quot;findFoo&quot;</span> <span class="attr">retries</span>=<span class="string">&quot;2&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dubbo:reference</span>&gt;</span></span><br></pre>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dubbo:reference</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dubbo:method</span> <span class="attr">name</span>=<span class="string">&quot;findFoo&quot;</span> <span class="attr">retries</span>=<span class="string">&quot;2&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dubbo:reference</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <h5 id="②-Failfast-Cluster"><a href="#②-Failfast-Cluster" class="headerlink" title="② Failfast Cluster"></a>② Failfast Cluster</h5><p>快速失败，只发起一次调用，失败立即报错。通常用于非幂等性的写操作，比如新增记录。</p>
 <h5 id="③-Failsafe-Cluster"><a href="#③-Failsafe-Cluster" class="headerlink" title="③ Failsafe Cluster"></a>③ Failsafe Cluster</h5><p>失败安全，出现异常时，直接忽略。通常用于写入审计日志等操作。</p>
 <h5 id="④-Failback-Cluster"><a href="#④-Failback-Cluster" class="headerlink" title="④ Failback Cluster"></a>④ Failback Cluster</h5><p>失败自动恢复，后台记录失败请求，定时重发。通常用于消息通知操作。</p>
 <h5 id="⑤-Forking-Cluster"><a href="#⑤-Forking-Cluster" class="headerlink" title="⑤ Forking Cluster"></a>⑤ Forking Cluster</h5><p>并行调用多个服务器，只要一个成功即返回。通常用于实时性要求较高的读操作，但需要浪费更多服务资源。可通过 forks=”2” 来设置最大并行数。</p>
 <h5 id="⑥-Broadcast-Cluster"><a href="#⑥-Broadcast-Cluster" class="headerlink" title="⑥ Broadcast Cluster"></a>⑥ Broadcast Cluster</h5><p>广播调用所有提供者，逐个调用，任意一台报错则报错。通常用于通知所有提供者更新缓存或日志等本地资源信息。</p>
 
-  </div>
-  <div>
-  
-  <div class="post-note note-warning copyright" style="margin-top: 42px">
-    <p><span style="font-weight: bold;">作者：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/about">blydd</a></p>
-    <p><span style="font-weight: bold;">文章链接：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/2020/12/04/%E5%88%86%E5%B8%83%E5%BC%8F%E6%A1%86%E6%9E%B6%E9%9D%A2%E8%AF%95%E9%A2%98%E5%90%88%E9%9B%86/">https://www.mele.cool/2020/12/04/%E5%88%86%E5%B8%83%E5%BC%8F%E6%A1%86%E6%9E%B6%E9%9D%A2%E8%AF%95%E9%A2%98%E5%90%88%E9%9B%86/</a></p>
-    <p><span style="font-weight: bold;">版权声明：</span>本博客所有文章除特别声明外，均采用<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0 协议</a>。转载请注明出处！</p>
-  </div>
-  
-  </div>
-</article>
-<div class="nav">
-  
-  <div class="nav-item-prev">
-    <a href="/2020/12/04/springcloud入门/" class="nav-link">
-      <i class="iconfont icon-left nav-prev-icon"></i>
-      <div>
-        <div class="nav-label">上一篇</div>
-        
-        <div class="nav-title">springCloud入门 </div>
-        
-      </div>
-    </a>
-  </div>
-  
-  
-  <div class="nav-item-next">
-    <a href="/2020/12/04/数据库系统原理/" class="nav-link">
-      <div>
-        <div class="nav-label">下一篇</div>
-        
-        <div class="nav-title">数据库系统原理 </div>
-        
-      </div>
-      <i class="iconfont icon-right nav-next-icon"></i>
-    </a>
-  </div>
-  
-</div>
-
-<div class="card card-content toc-card" id="mobiletoc">
-  <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
-<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF-ZooKeeper%EF%BC%9F"><span class="toc-text">1.什么是 ZooKeeper？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-ZooKeeper-%E6%8F%90%E4%BE%9B%E4%BA%86%E5%93%AA%E4%BA%9B%E5%8A%9F%E8%83%BD%EF%BC%9F"><span class="toc-text">2.ZooKeeper 提供了哪些功能？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-ZooKeeper-%E6%9C%89%E5%87%A0%E7%A7%8D%E6%90%AD%E5%BB%BA%E6%A8%A1%E5%BC%8F%EF%BC%9F"><span class="toc-text">3.ZooKeeper 有几种搭建模式？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-ZooKeeper-%E6%9C%89%E5%93%AA%E4%BA%9B%E7%89%B9%E6%80%A7%EF%BC%9F"><span class="toc-text">4.ZooKeeper 有哪些特性？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E4%BB%A5%E4%B8%8B%E5%85%B3%E4%BA%8E-ZooKeeper-%E6%8F%8F%E8%BF%B0%E9%94%99%E8%AF%AF%E7%9A%84%E6%98%AF%EF%BC%9F"><span class="toc-text">5.以下关于 ZooKeeper 描述错误的是？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-ZooKeeper-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%EF%BC%9F"><span class="toc-text">6.ZooKeeper 如何实现分布式锁？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-ZooKeeper-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%EF%BC%9F"><span class="toc-text">7.ZooKeeper 如何实现分布式事务？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-%E9%9B%86%E7%BE%A4%E4%B8%AD%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%9C%89%E4%B8%BB%E8%8A%82%E7%82%B9%EF%BC%9F"><span class="toc-text">8.集群中为什么要有主节点？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-Dubbo-%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">9.Dubbo 是什么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10-Dubbo-%E6%9C%89%E5%93%AA%E4%BA%9B%E7%89%B9%E6%80%A7%EF%BC%9F"><span class="toc-text">10.Dubbo 有哪些特性？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#11-Dubbo-%E6%9C%89%E5%93%AA%E4%BA%9B%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%EF%BC%9F"><span class="toc-text">11.Dubbo 有哪些核心组件？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#12-Dubbo-%E6%9C%89%E5%93%AA%E4%BA%9B%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5%EF%BC%9F"><span class="toc-text">12.Dubbo 有哪些负载均衡策略？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#13-Dubbo-%E4%B8%8D%E6%94%AF%E6%8C%81%E4%BB%A5%E4%B8%8B%E5%93%AA%E7%A7%8D%E5%8D%8F%E8%AE%AE%EF%BC%9F"><span class="toc-text">13.Dubbo 不支持以下哪种协议？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#14-Dubbo-%E9%BB%98%E8%AE%A4%E4%BD%BF%E7%94%A8%E4%BB%80%E4%B9%88%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%EF%BC%8C%E8%BF%98%E6%9C%89%E5%88%AB%E7%9A%84%E9%80%89%E6%8B%A9%E5%90%97%EF%BC%9F"><span class="toc-text">14.Dubbo 默认使用什么注册中心，还有别的选择吗？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#15-Dubbo-%E6%94%AF%E6%8C%81%E5%A4%9A%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E5%90%97%EF%BC%9F"><span class="toc-text">15.Dubbo 支持多注册中心吗？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#16-Dubbo-%E6%94%AF%E6%8C%81%E7%9A%84%E8%BF%9E%E6%8E%A5%E6%96%B9%E5%BC%8F%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-text">16.Dubbo 支持的连接方式有哪些？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#17-%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%8D%E5%8A%A1%E7%86%94%E6%96%AD%EF%BC%9F"><span class="toc-text">17.什么是服务熔断？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#18-Dubbo-%E5%8F%AF%E4%BB%A5%E5%AF%B9%E7%BB%93%E6%9E%9C%E8%BF%9B%E8%A1%8C%E7%BC%93%E5%AD%98%E5%90%97%EF%BC%9F%E6%94%AF%E6%8C%81%E7%9A%84%E7%BC%93%E5%AD%98%E7%B1%BB%E5%9E%8B%E9%83%BD%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-text">18.Dubbo 可以对结果进行缓存吗？支持的缓存类型都有哪些？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#19-Dubbo-%E6%9C%89%E5%87%A0%E7%A7%8D%E9%9B%86%E7%BE%A4%E5%AE%B9%E9%94%99%E6%A8%A1%E5%BC%8F%EF%BC%9F"><span class="toc-text">19.Dubbo 有几种集群容错模式？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A0-Failover-Cluster"><span class="toc-text">① Failover Cluster</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A1-Failfast-Cluster"><span class="toc-text">② Failfast Cluster</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A2-Failsafe-Cluster"><span class="toc-text">③ Failsafe Cluster</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A3-Failback-Cluster"><span class="toc-text">④ Failback Cluster</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A4-Forking-Cluster"><span class="toc-text">⑤ Forking Cluster</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A5-Broadcast-Cluster"><span class="toc-text">⑥ Broadcast Cluster</span></a></li></ol></li></ol>
-</div></main>
-          <aside class="left-column">
-            
-            <div class="card card-author">
-              
-<img src="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png" class="author-img">
-
-<p class="author-name">blydd</p>
-<p class="author-description">积跬步行千里</p>
-<div class="author-message">
-  <a class="author-posts-count" href="/archives">
-    <span>66</span>
-    <span>文章</span>
-  </a>
-  <a class="author-categories-count" href="/categories">
-    <span>16</span>
-    <span>分类</span>
-  </a>
-  <a class="author-tags-count" href="/tags">
-    <span>92</span>
-    <span>标签</span>
-  </a>
-</div>
-
-            </div>
-            
-            <div class="sticky-tablet">
-  
-  
-  <article class="display-when-two-columns spacer">
-    <div class="card card-content toc-card">
-      <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
-<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF-ZooKeeper%EF%BC%9F"><span class="toc-text">1.什么是 ZooKeeper？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-ZooKeeper-%E6%8F%90%E4%BE%9B%E4%BA%86%E5%93%AA%E4%BA%9B%E5%8A%9F%E8%83%BD%EF%BC%9F"><span class="toc-text">2.ZooKeeper 提供了哪些功能？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-ZooKeeper-%E6%9C%89%E5%87%A0%E7%A7%8D%E6%90%AD%E5%BB%BA%E6%A8%A1%E5%BC%8F%EF%BC%9F"><span class="toc-text">3.ZooKeeper 有几种搭建模式？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-ZooKeeper-%E6%9C%89%E5%93%AA%E4%BA%9B%E7%89%B9%E6%80%A7%EF%BC%9F"><span class="toc-text">4.ZooKeeper 有哪些特性？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E4%BB%A5%E4%B8%8B%E5%85%B3%E4%BA%8E-ZooKeeper-%E6%8F%8F%E8%BF%B0%E9%94%99%E8%AF%AF%E7%9A%84%E6%98%AF%EF%BC%9F"><span class="toc-text">5.以下关于 ZooKeeper 描述错误的是？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-ZooKeeper-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%EF%BC%9F"><span class="toc-text">6.ZooKeeper 如何实现分布式锁？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-ZooKeeper-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%EF%BC%9F"><span class="toc-text">7.ZooKeeper 如何实现分布式事务？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-%E9%9B%86%E7%BE%A4%E4%B8%AD%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%9C%89%E4%B8%BB%E8%8A%82%E7%82%B9%EF%BC%9F"><span class="toc-text">8.集群中为什么要有主节点？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-Dubbo-%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">9.Dubbo 是什么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10-Dubbo-%E6%9C%89%E5%93%AA%E4%BA%9B%E7%89%B9%E6%80%A7%EF%BC%9F"><span class="toc-text">10.Dubbo 有哪些特性？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#11-Dubbo-%E6%9C%89%E5%93%AA%E4%BA%9B%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%EF%BC%9F"><span class="toc-text">11.Dubbo 有哪些核心组件？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#12-Dubbo-%E6%9C%89%E5%93%AA%E4%BA%9B%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5%EF%BC%9F"><span class="toc-text">12.Dubbo 有哪些负载均衡策略？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#13-Dubbo-%E4%B8%8D%E6%94%AF%E6%8C%81%E4%BB%A5%E4%B8%8B%E5%93%AA%E7%A7%8D%E5%8D%8F%E8%AE%AE%EF%BC%9F"><span class="toc-text">13.Dubbo 不支持以下哪种协议？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#14-Dubbo-%E9%BB%98%E8%AE%A4%E4%BD%BF%E7%94%A8%E4%BB%80%E4%B9%88%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%EF%BC%8C%E8%BF%98%E6%9C%89%E5%88%AB%E7%9A%84%E9%80%89%E6%8B%A9%E5%90%97%EF%BC%9F"><span class="toc-text">14.Dubbo 默认使用什么注册中心，还有别的选择吗？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#15-Dubbo-%E6%94%AF%E6%8C%81%E5%A4%9A%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E5%90%97%EF%BC%9F"><span class="toc-text">15.Dubbo 支持多注册中心吗？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#16-Dubbo-%E6%94%AF%E6%8C%81%E7%9A%84%E8%BF%9E%E6%8E%A5%E6%96%B9%E5%BC%8F%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-text">16.Dubbo 支持的连接方式有哪些？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#17-%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%8D%E5%8A%A1%E7%86%94%E6%96%AD%EF%BC%9F"><span class="toc-text">17.什么是服务熔断？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#18-Dubbo-%E5%8F%AF%E4%BB%A5%E5%AF%B9%E7%BB%93%E6%9E%9C%E8%BF%9B%E8%A1%8C%E7%BC%93%E5%AD%98%E5%90%97%EF%BC%9F%E6%94%AF%E6%8C%81%E7%9A%84%E7%BC%93%E5%AD%98%E7%B1%BB%E5%9E%8B%E9%83%BD%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-text">18.Dubbo 可以对结果进行缓存吗？支持的缓存类型都有哪些？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#19-Dubbo-%E6%9C%89%E5%87%A0%E7%A7%8D%E9%9B%86%E7%BE%A4%E5%AE%B9%E9%94%99%E6%A8%A1%E5%BC%8F%EF%BC%9F"><span class="toc-text">19.Dubbo 有几种集群容错模式？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A0-Failover-Cluster"><span class="toc-text">① Failover Cluster</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A1-Failfast-Cluster"><span class="toc-text">② Failfast Cluster</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A2-Failsafe-Cluster"><span class="toc-text">③ Failsafe Cluster</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A3-Failback-Cluster"><span class="toc-text">④ Failback Cluster</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A4-Forking-Cluster"><span class="toc-text">⑤ Forking Cluster</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A5-Broadcast-Cluster"><span class="toc-text">⑥ Broadcast Cluster</span></a></li></ol></li></ol>
     </div>
-  </article>
-  
-  
-  <article class="card card-content categories-widget">
-    <div class="categories-card">
-  <div class="categories-header"><i class="iconfont icon-fenlei" style="padding-right: 2px;"></i>分类</div>
-  <div class="categories-list">
+
     
-      <a href="/categories/工具类">
-        <div class="categories-list-item">
-          工具类
-          <span class="categories-list-item-badge">8</span>
-        </div>
-      </a>
     
-      <a href="/categories/linux">
-        <div class="categories-list-item">
-          linux
-          <span class="categories-list-item-badge">3</span>
-        </div>
-      </a>
     
-      <a href="/categories/mac">
-        <div class="categories-list-item">
-          mac
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/java">
-        <div class="categories-list-item">
-          java
-          <span class="categories-list-item-badge">18</span>
-        </div>
-      </a>
-    
-      <a href="/categories/springboot">
-        <div class="categories-list-item">
-          springboot
-          <span class="categories-list-item-badge">13</span>
-        </div>
-      </a>
-    
-      <a href="/categories/docker">
-        <div class="categories-list-item">
-          docker
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/版本控制">
-        <div class="categories-list-item">
-          版本控制
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/hello world">
-        <div class="categories-list-item">
-          hello world
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/mele">
-        <div class="categories-list-item">
-          mele
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/db">
-        <div class="categories-list-item">
-          db
-          <span class="categories-list-item-badge">7</span>
-        </div>
-      </a>
-    
-      <a href="/categories/其他">
-        <div class="categories-list-item">
-          其他
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/bug">
-        <div class="categories-list-item">
-          bug
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/js">
-        <div class="categories-list-item">
-          js
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/mq">
-        <div class="categories-list-item">
-          mq
-          <span class="categories-list-item-badge">3</span>
-        </div>
-      </a>
-    
-      <a href="/categories/面试">
-        <div class="categories-list-item">
-          面试
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/springCloud">
-        <div class="categories-list-item">
-          springCloud
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-  </div>
-</div>
-  </article>
-  
-  <article class="card card-content tags-widget">
-    <div class="tags-card">
-  <div class="tags-header"><i class="iconfont icon-biaoqian" style="padding-right: 2px;"></i>热门标签</div>
-  <div class="tags-list">
-    
-    <a href="\tags\springboot" title="springboot"><div class="tags-list-item">springboot</div></a>
-    
-    <a href="\tags\java" title="java"><div class="tags-list-item">java</div></a>
-    
-    <a href="\tags\工具类" title="工具类"><div class="tags-list-item">工具类</div></a>
-    
-    <a href="\tags\mybatis" title="mybatis"><div class="tags-list-item">mybatis</div></a>
-    
-    <a href="\tags\ms" title="ms"><div class="tags-list-item">ms</div></a>
-    
-    <a href="\tags\tool" title="tool"><div class="tags-list-item">tool</div></a>
-    
-    <a href="\tags\git" title="git"><div class="tags-list-item">git</div></a>
-    
-    <a href="\tags\linux" title="linux"><div class="tags-list-item">linux</div></a>
-    
-    <a href="\tags\线程池" title="线程池"><div class="tags-list-item">线程池</div></a>
-    
-    <a href="\tags\mq" title="mq"><div class="tags-list-item">mq</div></a>
-    
-    <a href="\tags\常用" title="常用"><div class="tags-list-item">常用</div></a>
-    
-    <a href="\tags\bug" title="bug"><div class="tags-list-item">bug</div></a>
-    
-    <a href="\tags\分布式" title="分布式"><div class="tags-list-item">分布式</div></a>
-    
-    <a href="\tags\acid" title="acid"><div class="tags-list-item">acid</div></a>
-    
-    <a href="\tags\事务" title="事务"><div class="tags-list-item">事务</div></a>
-    
-    <a href="\tags\xml" title="xml"><div class="tags-list-item">xml</div></a>
-    
-  </div>
-</div>
-  </article>
-  
-  
-</div>
-          </aside>
-          <aside class="right-column">
-            <div class="sticky-widescreen">
-  
-  
-  <article class="card card-content toc-card">
-    <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
-<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF-ZooKeeper%EF%BC%9F"><span class="toc-text">1.什么是 ZooKeeper？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-ZooKeeper-%E6%8F%90%E4%BE%9B%E4%BA%86%E5%93%AA%E4%BA%9B%E5%8A%9F%E8%83%BD%EF%BC%9F"><span class="toc-text">2.ZooKeeper 提供了哪些功能？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-ZooKeeper-%E6%9C%89%E5%87%A0%E7%A7%8D%E6%90%AD%E5%BB%BA%E6%A8%A1%E5%BC%8F%EF%BC%9F"><span class="toc-text">3.ZooKeeper 有几种搭建模式？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-ZooKeeper-%E6%9C%89%E5%93%AA%E4%BA%9B%E7%89%B9%E6%80%A7%EF%BC%9F"><span class="toc-text">4.ZooKeeper 有哪些特性？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E4%BB%A5%E4%B8%8B%E5%85%B3%E4%BA%8E-ZooKeeper-%E6%8F%8F%E8%BF%B0%E9%94%99%E8%AF%AF%E7%9A%84%E6%98%AF%EF%BC%9F"><span class="toc-text">5.以下关于 ZooKeeper 描述错误的是？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-ZooKeeper-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%EF%BC%9F"><span class="toc-text">6.ZooKeeper 如何实现分布式锁？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-ZooKeeper-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%EF%BC%9F"><span class="toc-text">7.ZooKeeper 如何实现分布式事务？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-%E9%9B%86%E7%BE%A4%E4%B8%AD%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%9C%89%E4%B8%BB%E8%8A%82%E7%82%B9%EF%BC%9F"><span class="toc-text">8.集群中为什么要有主节点？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-Dubbo-%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">9.Dubbo 是什么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10-Dubbo-%E6%9C%89%E5%93%AA%E4%BA%9B%E7%89%B9%E6%80%A7%EF%BC%9F"><span class="toc-text">10.Dubbo 有哪些特性？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#11-Dubbo-%E6%9C%89%E5%93%AA%E4%BA%9B%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%EF%BC%9F"><span class="toc-text">11.Dubbo 有哪些核心组件？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#12-Dubbo-%E6%9C%89%E5%93%AA%E4%BA%9B%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5%EF%BC%9F"><span class="toc-text">12.Dubbo 有哪些负载均衡策略？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#13-Dubbo-%E4%B8%8D%E6%94%AF%E6%8C%81%E4%BB%A5%E4%B8%8B%E5%93%AA%E7%A7%8D%E5%8D%8F%E8%AE%AE%EF%BC%9F"><span class="toc-text">13.Dubbo 不支持以下哪种协议？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#14-Dubbo-%E9%BB%98%E8%AE%A4%E4%BD%BF%E7%94%A8%E4%BB%80%E4%B9%88%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%EF%BC%8C%E8%BF%98%E6%9C%89%E5%88%AB%E7%9A%84%E9%80%89%E6%8B%A9%E5%90%97%EF%BC%9F"><span class="toc-text">14.Dubbo 默认使用什么注册中心，还有别的选择吗？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#15-Dubbo-%E6%94%AF%E6%8C%81%E5%A4%9A%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E5%90%97%EF%BC%9F"><span class="toc-text">15.Dubbo 支持多注册中心吗？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#16-Dubbo-%E6%94%AF%E6%8C%81%E7%9A%84%E8%BF%9E%E6%8E%A5%E6%96%B9%E5%BC%8F%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-text">16.Dubbo 支持的连接方式有哪些？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#17-%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%8D%E5%8A%A1%E7%86%94%E6%96%AD%EF%BC%9F"><span class="toc-text">17.什么是服务熔断？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#18-Dubbo-%E5%8F%AF%E4%BB%A5%E5%AF%B9%E7%BB%93%E6%9E%9C%E8%BF%9B%E8%A1%8C%E7%BC%93%E5%AD%98%E5%90%97%EF%BC%9F%E6%94%AF%E6%8C%81%E7%9A%84%E7%BC%93%E5%AD%98%E7%B1%BB%E5%9E%8B%E9%83%BD%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-text">18.Dubbo 可以对结果进行缓存吗？支持的缓存类型都有哪些？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#19-Dubbo-%E6%9C%89%E5%87%A0%E7%A7%8D%E9%9B%86%E7%BE%A4%E5%AE%B9%E9%94%99%E6%A8%A1%E5%BC%8F%EF%BC%9F"><span class="toc-text">19.Dubbo 有几种集群容错模式？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A0-Failover-Cluster"><span class="toc-text">① Failover Cluster</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A1-Failfast-Cluster"><span class="toc-text">② Failfast Cluster</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A2-Failsafe-Cluster"><span class="toc-text">③ Failsafe Cluster</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A3-Failback-Cluster"><span class="toc-text">④ Failback Cluster</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A4-Forking-Cluster"><span class="toc-text">⑤ Forking Cluster</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A5-Broadcast-Cluster"><span class="toc-text">⑥ Broadcast Cluster</span></a></li></ol></li></ol>
-  </article>
-  
-  
-  <article class="card card-content">
-    <div class="recent-posts-card">
-  <div class="recent-posts-header"><i class="iconfont icon-wenzhang_huaban" style="padding-right: 2px;"></i>最近文章</div>
-  <div class="recent-posts-list">
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-30</div>
-        <a href="/2021/01/30/java面试题/"><div class="recent-posts-item-content">java面试题</div></a>
-      </div>
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-26</div>
-        <a href="/2021/01/26/编写优雅高效的java代码/"><div class="recent-posts-item-content">编写高效优雅java代码</div></a>
-      </div>
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-23</div>
-        <a href="/2021/01/23/redis教程效率版/"><div class="recent-posts-item-content">redis入门效率版</div></a>
-      </div>
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-22</div>
-        <a href="/2021/01/22/开发注意代码整理/"><div class="recent-posts-item-content">开发中注意的小问题</div></a>
-      </div>
-    
-  </div>
-</div>
-  </article>
-  
-  
-</div>
-          </aside>
-        </div>
-      </div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag"># 分布式</a>
+              <a href="/tags/ms/" rel="tag"># ms</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/04/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86/" rel="prev" title="数据库系统原理">
+      <i class="fa fa-chevron-left"></i> 数据库系统原理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/04/springcloud%E5%85%A5%E9%97%A8/" rel="next" title="springCloud入门">
+      springCloud入门 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-  </div>
+      </footer>
+    
+  </article>
   
-  <footer class="footer">
-  <div class="footer-container">
-    <div>
-      <div class="footer-dsc">
-        <span>Copyright ©
+  
+  
+
+
+
+          </div>
           
-          2020 -
-          
-          2021
-        </span>
-        &nbsp;
-        <a href="/" class="footer-link">mele blog </a>
-      </div>
-    </div>
 
-    
-    <div class="footer-dsc">
-      
-      Powered by
-      <a href="https://hexo.io/" class="footer-link" target="_blank" rel="nofollow noopener noreferrer">&nbsp;Hexo </a>
-      
-      
-      <span>&nbsp;|&nbsp;</span>
-      
-      
-      Theme -
-      <a href="https://github.com/theme-kaze" class="footer-link" target="_blank"
-        rel="nofollow noopener noreferrer">&nbsp;Kaze</a>
-      
-    </div>
-    
-    
-    
-    
-</footer>
-  <a role="button" id="scrollbutton" class="basebutton"  aria-label="回到顶部">
-  <i class="iconfont icon-arrowleft button-icon"></i>
-</a>
-<a role="button" id="menubutton" class="basebutton">
-  <i class="iconfont icon-menu button-icon"></i>
-</a>
-<a role="button" id="popbutton" class="basebutton" aria-label="控制中心">
-  <i class="iconfont icon-expand button-icon"></i>
-</a>
-<a role="button" id="darkbutton" class="basebutton darkwidget" aria-label="夜色模式">
-  <i class="iconfont icon-weather button-icon"></i>
-</a>
-<a role="button" id="searchbutton" class="basebutton searchwidget" aria-label="搜索">
-  <i class="iconfont icon-search button-icon"></i>
-</a>
-
-  
-  
-  
-  <script>
-  var addImgLayout = function () {
-    var img = document.querySelectorAll('.post-content img');
-    var i;
-    for (i = 0; i < img.length; i++) {
-      var wrapper = document.createElement('a');
-      wrapper.setAttribute('href', img[i].getAttribute('data-src'));
-      wrapper.setAttribute('aria-label', 'illustration');
-      wrapper.style.cssText = 'width: 100%; display: flex; justify-content: center;';
-      if (img[i].alt) wrapper.dataset.caption = img[i].alt;
-      wrapper.dataset.nolink = true;
-      img[i].before(wrapper);
-      wrapper.append(img[i]);
-      var divWrap = document.createElement('div');
-      divWrap.classList.add('gallery');
-      wrapper.before(divWrap);
-      divWrap.append(wrapper);
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
     }
-    baguetteBox.run('.gallery');
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
-<script>loadScript("/js/lib/lightbox/baguetteBox.min.js", addImgLayout)</script>
+
+        </div>
+          
   
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF-ZooKeeper%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">1.什么是 ZooKeeper？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-ZooKeeper-%E6%8F%90%E4%BE%9B%E4%BA%86%E5%93%AA%E4%BA%9B%E5%8A%9F%E8%83%BD%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">2.ZooKeeper 提供了哪些功能？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-ZooKeeper-%E6%9C%89%E5%87%A0%E7%A7%8D%E6%90%AD%E5%BB%BA%E6%A8%A1%E5%BC%8F%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">3.ZooKeeper 有几种搭建模式？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-ZooKeeper-%E6%9C%89%E5%93%AA%E4%BA%9B%E7%89%B9%E6%80%A7%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">4.ZooKeeper 有哪些特性？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E4%BB%A5%E4%B8%8B%E5%85%B3%E4%BA%8E-ZooKeeper-%E6%8F%8F%E8%BF%B0%E9%94%99%E8%AF%AF%E7%9A%84%E6%98%AF%EF%BC%9F"><span class="nav-number">5.</span> <span class="nav-text">5.以下关于 ZooKeeper 描述错误的是？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-ZooKeeper-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">6.ZooKeeper 如何实现分布式锁？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-ZooKeeper-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%EF%BC%9F"><span class="nav-number">7.</span> <span class="nav-text">7.ZooKeeper 如何实现分布式事务？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-%E9%9B%86%E7%BE%A4%E4%B8%AD%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%9C%89%E4%B8%BB%E8%8A%82%E7%82%B9%EF%BC%9F"><span class="nav-number">8.</span> <span class="nav-text">8.集群中为什么要有主节点？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-Dubbo-%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">9.</span> <span class="nav-text">9.Dubbo 是什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-Dubbo-%E6%9C%89%E5%93%AA%E4%BA%9B%E7%89%B9%E6%80%A7%EF%BC%9F"><span class="nav-number">10.</span> <span class="nav-text">10.Dubbo 有哪些特性？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-Dubbo-%E6%9C%89%E5%93%AA%E4%BA%9B%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%EF%BC%9F"><span class="nav-number">11.</span> <span class="nav-text">11.Dubbo 有哪些核心组件？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-Dubbo-%E6%9C%89%E5%93%AA%E4%BA%9B%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5%EF%BC%9F"><span class="nav-number">12.</span> <span class="nav-text">12.Dubbo 有哪些负载均衡策略？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-Dubbo-%E4%B8%8D%E6%94%AF%E6%8C%81%E4%BB%A5%E4%B8%8B%E5%93%AA%E7%A7%8D%E5%8D%8F%E8%AE%AE%EF%BC%9F"><span class="nav-number">13.</span> <span class="nav-text">13.Dubbo 不支持以下哪种协议？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-Dubbo-%E9%BB%98%E8%AE%A4%E4%BD%BF%E7%94%A8%E4%BB%80%E4%B9%88%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%EF%BC%8C%E8%BF%98%E6%9C%89%E5%88%AB%E7%9A%84%E9%80%89%E6%8B%A9%E5%90%97%EF%BC%9F"><span class="nav-number">14.</span> <span class="nav-text">14.Dubbo 默认使用什么注册中心，还有别的选择吗？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-Dubbo-%E6%94%AF%E6%8C%81%E5%A4%9A%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E5%90%97%EF%BC%9F"><span class="nav-number">15.</span> <span class="nav-text">15.Dubbo 支持多注册中心吗？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-Dubbo-%E6%94%AF%E6%8C%81%E7%9A%84%E8%BF%9E%E6%8E%A5%E6%96%B9%E5%BC%8F%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="nav-number">16.</span> <span class="nav-text">16.Dubbo 支持的连接方式有哪些？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%8D%E5%8A%A1%E7%86%94%E6%96%AD%EF%BC%9F"><span class="nav-number">17.</span> <span class="nav-text">17.什么是服务熔断？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#18-Dubbo-%E5%8F%AF%E4%BB%A5%E5%AF%B9%E7%BB%93%E6%9E%9C%E8%BF%9B%E8%A1%8C%E7%BC%93%E5%AD%98%E5%90%97%EF%BC%9F%E6%94%AF%E6%8C%81%E7%9A%84%E7%BC%93%E5%AD%98%E7%B1%BB%E5%9E%8B%E9%83%BD%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="nav-number">18.</span> <span class="nav-text">18.Dubbo 可以对结果进行缓存吗？支持的缓存类型都有哪些？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-Dubbo-%E6%9C%89%E5%87%A0%E7%A7%8D%E9%9B%86%E7%BE%A4%E5%AE%B9%E9%94%99%E6%A8%A1%E5%BC%8F%EF%BC%9F"><span class="nav-number">19.</span> <span class="nav-text">19.Dubbo 有几种集群容错模式？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%91%A0-Failover-Cluster"><span class="nav-number">19.1.</span> <span class="nav-text">① Failover Cluster</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%91%A1-Failfast-Cluster"><span class="nav-number">19.2.</span> <span class="nav-text">② Failfast Cluster</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%91%A2-Failsafe-Cluster"><span class="nav-number">19.3.</span> <span class="nav-text">③ Failsafe Cluster</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%91%A3-Failback-Cluster"><span class="nav-number">19.4.</span> <span class="nav-text">④ Failback Cluster</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%91%A4-Forking-Cluster"><span class="nav-number">19.5.</span> <span class="nav-text">⑤ Forking Cluster</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%91%A5-Broadcast-Cluster"><span class="nav-number">19.6.</span> <span class="nav-text">⑥ Broadcast Cluster</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">blydd</p>
+  <div class="site-description" itemprop="description">米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">92</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
   
-  
-<script src="/js/main.js"></script>
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">blydd</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
 
   
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
   
-  <script>
-    var addLazyload = function () {
-      var observer = lozad('.lozad', {
-        load: function (el) {
-          el.srcset = el.getAttribute('data-src');
-        },
-        loaded: function (el) {
-          el.classList.add('loaded');
-        }
-      });
-      observer.observe();
-    }
-  </script>
-  <script>loadScript("/js/lib/lozad.min.js", addLazyload)</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
+
   
+
 </body>
-
 </html>
