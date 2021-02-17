@@ -1,209 +1,250 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html  lang="zh-CN" >
+
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.3.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="theme-color" content="#fff" id="theme-color">
+  <meta name="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+  <link rel="icon" href="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png">
+  <title>消息队列面试题</title>
+  
+  
+  <meta property="og:title" content="消息队列面试题">
+  
+  
+  <meta property="og:url" content="https://www.mele.cool/2020/12/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/index.html">
+  
+  
+  <meta property="og:img" content="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png">
+  
+  
+  <meta property="og:img" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+  
+  
+  <meta property="og:type" content="article">
+  <meta property="og:article:published_time" content="2020-12-04">
+  <meta property="og:article:modified_time" content="2020-12-04">
+  <meta property="og:article:author" content="blydd">
+  
+  
+  <meta property="og:article:tag" content="mq">
+  
+  <meta property="og:article:tag" content="ms">
+  
+  
+  
+  
+  <!-- 百度统计代码 -->
+<script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?52aed7fa581354c5e14562bad1a1def2";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+ <!-- 百度统计代码 --> 
+  <script>
+    // control reverse button
+    var reverseDarkList = {
+      dark: 'light',
+      light: 'dark'
+    };
+    var themeColor = {
+      dark: '#1c1c1e',
+      light: '#fff'
+    }
+    // get the data of css prefers-color-scheme
+    var getCssMediaQuery = function() {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    };
+    // reverse current darkmode setting function
+    var reverseDarkModeSetting = function() {
+      var setting = localStorage.getItem('user-color-scheme');
+      if(reverseDarkList[setting]) {
+        setting = reverseDarkList[setting];
+      } else if(setting === null) {
+        setting = reverseDarkList[getCssMediaQuery()];
+      } else {
+        return;
+      }
+      localStorage.setItem('user-color-scheme', setting);
+      return setting;
+    };
+    // apply current darkmode setting
+    var setDarkmode = function(mode) {
+      var setting = mode || localStorage.getItem('user-color-scheme');
+      if(setting === getCssMediaQuery()) {
+        document.documentElement.removeAttribute('data-user-color-scheme');
+        localStorage.removeItem('user-color-scheme');
+        document.getElementById('theme-color').content = themeColor[setting];
+      } else if(reverseDarkList[setting]) {
+        document.documentElement.setAttribute('data-user-color-scheme', setting);
+        document.getElementById('theme-color').content = themeColor[setting];
+      } else {
+        document.documentElement.removeAttribute('data-user-color-scheme');
+        localStorage.removeItem('user-color-scheme');
+        document.getElementById('theme-color').content = themeColor[getCssMediaQuery()];
+      }
+    };
+    setDarkmode();
+  </script>
+  <script>
+    function loadScript(url, cb) {
+      var script = document.createElement('script');
+      script.src = url;
+      if (cb) script.onload = cb;
+      script.async = true;
+      document.body.appendChild(script);
+    }
+  </script>
+  
+  <link rel="preload" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css" as="style" >
+  <link rel="preload" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css" as="style" >
+  
+  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.js" as="script">
+  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.css" as="style" >
+  
+  
+  <link rel="preload" href="/js/lib/lozad.min.js" as="script">
+  
+  
+  
+  
+  
+  
+  
+  
 <link rel="stylesheet" href="/css/main.css">
 
-
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"www.mele.cool","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
-  </script>
-
-  <meta name="description" content="消息队列面试题">
-<meta property="og:type" content="article">
-<meta property="og:title" content="消息队列面试题">
-<meta property="og:url" content="https://www.mele.cool/2020/12/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/index.html">
-<meta property="og:site_name" content="米乐博客">
-<meta property="og:description" content="消息队列面试题">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://images.gitbook.cn/5a2e5b40-da7f-11e9-b65e-cd2fb825a32b">
-<meta property="article:published_time" content="2020-12-04T02:10:17.000Z">
-<meta property="article:modified_time" content="2020-12-04T12:00:17.979Z">
-<meta property="article:author" content="blydd">
-<meta property="article:tag" content="mq">
-<meta property="article:tag" content="ms">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://images.gitbook.cn/5a2e5b40-da7f-11e9-b65e-cd2fb825a32b">
-
-<link rel="canonical" href="https://www.mele.cool/2020/12/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/">
-
-
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
-
-  <title>消息队列面试题 | 米乐博客</title>
-  
-
-
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
-
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">米乐博客</h1>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-      <p class="site-subtitle" itemprop="description">积跬步至千里</p>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-    </div>
-  </div>
-</div>
-
-
-
-
-<nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
-  </ul>
-</nav>
-
-
-
-
-</div>
-    </header>
-
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
-            
-
-    
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://www.mele.cool/2020/12/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="blydd">
-      <meta itemprop="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
-    </span>
+  
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css">
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="米乐博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          消息队列面试题
-        </h1>
+  
+  
+<link rel="stylesheet" href="/js/lib/lightbox/baguetteBox.min.css">
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
 
-              <time title="创建时间：2020-12-04 10:10:17 / 修改时间：20:00:17" itemprop="dateCreated datePublished" datetime="2020-12-04T10:10:17+08:00">2020-12-04</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/mq/" itemprop="url" rel="index"><span itemprop="name">mq</span></a>
-                </span>
-            </span>
 
-          
-            <div class="post-description">消息队列面试题</div>
-
-        </div>
-      </header>
-
+<body>
+  <div class="wrapper">
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+    <nav class="navbar">
+  <div class="navbar-logo">
+    <span class="navbar-logo-main">
       
-        <h4 id="1-消息队列的应用场景有哪些？"><a href="#1-消息队列的应用场景有哪些？" class="headerlink" title="1.消息队列的应用场景有哪些？"></a>1.消息队列的应用场景有哪些？</h4><p>答：消息队列的应用场景如下。</p>
+      <img class="navbar-logo-img" src="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png" alt="logo">
+      
+      <span class="navbar-logo-dsc">mele blog</span>
+    </span>
+  </div>
+  <div class="navbar-menu">
+    
+    <a href="/" class="navbar-menu-item">
+    
+    首页
+    
+    </a>
+    
+    <a href="/archives" class="navbar-menu-item">
+    
+    归档
+    
+    </a>
+    
+    <a href="/tags" class="navbar-menu-item">
+    
+    标签
+    
+    </a>
+    
+    <a href="/categories" class="navbar-menu-item">
+    
+    分类
+    
+    </a>
+    
+    <a href="/about" class="navbar-menu-item">
+    
+    关于
+    
+    </a>
+    
+    <a href="/links" class="navbar-menu-item">
+    
+    友链
+    
+    </a>
+    
+    <a class="navbar-menu-item darknavbar" id="dark"><i class="iconfont icon-weather"></i></a>
+    <a class="navbar-menu-item searchnavbar" id="search"><i class="iconfont icon-search" style="font-size: 1.2rem; font-weight: 400;"></i></a>
+  </div>
+</nav>
+    
+    <div id="local-search" style="display: none;">
+      <input class="navbar-menu-item" id="search-input" placeholder="请输入搜索内容...">
+      <div id="search-content"></div>
+    </div>
+    
+    <div class="section-wrap">
+      <div class="container">
+        <div class="columns">
+          <main class="main-column">
+<article class="card card-content">
+  <header>
+    <h1 class="post-title">
+      消息队列面试题
+    </h1>
+  </header>
+  <div class="post-meta post-show-meta">
+    <time datetime="2020-12-04T02:10:17.000Z">
+      <i class="iconfont icon-calendar" style="margin-right: 2px;"></i>
+      <span>2020-12-04</span>
+    </time>
+    
+    <span class="dot"></span>
+    
+    <a href="/categories/mq/" class="post-meta-link">mq</a>
+    
+    
+    
+    <span class="dot"></span>
+    <span>2.5k 字</span>
+    
+  </div>
+  
+  <div class="post-meta post-show-meta" style="margin-top: -10px;">
+    <div style="display: flex; align-items: center;">
+      <i class="iconfont icon-biaoqian" style="margin-right: 2px; font-size: 1.15rem;"></i>
+      
+      
+        <a href="/tags/mq/" class="post-meta-link">mq</a>
+      
+      
+      <span class="dot"></span>
+      
+        <a href="/tags/ms/" class="post-meta-link">ms</a>
+      
+    </div>
+  </div>
+  
+  </header>
+  <div id="section" class="post-content">
+    <h4 id="1-消息队列的应用场景有哪些？"><a href="#1-消息队列的应用场景有哪些？" class="headerlink" title="1.消息队列的应用场景有哪些？"></a>1.消息队列的应用场景有哪些？</h4><p>答：消息队列的应用场景如下。</p>
 <ul>
 <li>应用解耦，比如，用户下单后，订单系统需要通知库存系统，假如库存系统无法访问，则订单减库存将失败，从而导致订单失败。订单系统与库存系统耦合，这个时候如果使用消息队列，可以返回给用户成功，先把消息持久化，等库存系统恢复后，就可以正常消费减去库存了。</li>
 <li>削峰填谷，比如，秒杀活动，一般会因为流量过大，从而导致流量暴增，应用挂掉，这个时候加上消息队列，服务器接收到用户的请求后，首先写入消息队列，假如消息队列长度超过最大数量，则直接抛弃用户请求或跳转到错误页面。</li>
@@ -235,7 +276,7 @@
 <li>BindingKey（绑定键）：用于把交换器的消息绑定到队列上。</li>
 </ul>
 <p>运行流程，如下图所示：</p>
-<p><img src="https://images.gitbook.cn/5a2e5b40-da7f-11e9-b65e-cd2fb825a32b" alt="1"></p>
+<p><img src="https://images.gitbook.cn/5a2e5b40-da7f-11e9-b65e-cd2fb825a32b" alt="1" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://images.gitbook.cn/5a2e5b40-da7f-11e9-b65e-cd2fb825a32b" class="lozad post-image"></p>
 <h4 id="5-什么是消息持久化？"><a href="#5-什么是消息持久化？" class="headerlink" title="5.什么是消息持久化？"></a>5.什么是消息持久化？</h4><p>答：消息持久化是把消息保存到物理介质上，以防止消息的丢失。</p>
 <h4 id="6-RabbitMQ-要实现消息持久化，需要满足哪些条件？"><a href="#6-RabbitMQ-要实现消息持久化，需要满足哪些条件？" class="headerlink" title="6.RabbitMQ 要实现消息持久化，需要满足哪些条件？"></a>6.RabbitMQ 要实现消息持久化，需要满足哪些条件？</h4><p>答：RabbitMQ 要实现消息持久化，必须满足以下 4 个条件：</p>
 <ul>
@@ -247,11 +288,11 @@
 <h4 id="7-消息持久化有哪些缺点？如何缓解？"><a href="#7-消息持久化有哪些缺点？如何缓解？" class="headerlink" title="7.消息持久化有哪些缺点？如何缓解？"></a>7.消息持久化有哪些缺点？如何缓解？</h4><p>答：消息持久化的缺点是很消耗性能，因为要写入硬盘要比写入内存性能较低很多，从而降低了服务器的吞吐量。可使用固态硬盘来提高读写速度，以达到缓解消息持久化的缺点。</p>
 <h4 id="8-如何使用-Java-代码连接-RabbitMQ？"><a href="#8-如何使用-Java-代码连接-RabbitMQ？" class="headerlink" title="8.如何使用 Java 代码连接 RabbitMQ？"></a>8.如何使用 Java 代码连接 RabbitMQ？</h4><p>答：使用 Java 代码连接 RabbitMQ 有以下两种方式：</p>
 <p>方式一：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Connection <span class="title">GetRabbitConnection</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ConnectionFactory factory = <span class="keyword">new</span> ConnectionFactory();</span><br><span class="line">    factory.setUsername(Config.UserName);</span><br><span class="line">    factory.setPassword(Config.Password);</span><br><span class="line">    factory.setVirtualHost(Config.VHost);</span><br><span class="line">    factory.setHost(Config.Host);</span><br><span class="line">    factory.setPort(Config.Port);</span><br><span class="line">    Connection conn = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        conn = factory.newConnection();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> conn;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Connection <span class="title">GetRabbitConnection</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ConnectionFactory factory = <span class="keyword">new</span> ConnectionFactory();</span><br><span class="line">    factory.setUsername(Config.UserName);</span><br><span class="line">    factory.setPassword(Config.Password);</span><br><span class="line">    factory.setVirtualHost(Config.VHost);</span><br><span class="line">    factory.setHost(Config.Host);</span><br><span class="line">    factory.setPort(Config.Port);</span><br><span class="line">    Connection conn = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        conn = factory.newConnection();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> conn;</span><br><span class="line">&#125;</span><br></pre>
 <p>方式二：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Connection <span class="title">GetRabbitConnection2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ConnectionFactory factory = <span class="keyword">new</span> ConnectionFactory();</span><br><span class="line">    <span class="comment">// 连接格式：amqp://userName:password@hostName:portNumber/virtualHost</span></span><br><span class="line">    String uri = String.format(<span class="string">&quot;amqp://%s:%s@%s:%d%s&quot;</span>, Config.UserName, Config.Password, Config.Host, Config.Port,</span><br><span class="line">            Config.VHost);</span><br><span class="line">    Connection conn = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        factory.setUri(uri);</span><br><span class="line">        factory.setVirtualHost(Config.VHost);</span><br><span class="line">        conn = factory.newConnection();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> conn;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Connection <span class="title">GetRabbitConnection2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ConnectionFactory factory = <span class="keyword">new</span> ConnectionFactory();</span><br><span class="line">    <span class="comment">// 连接格式：amqp://userName:password@hostName:portNumber/virtualHost</span></span><br><span class="line">    String uri = String.format(<span class="string">&quot;amqp://%s:%s@%s:%d%s&quot;</span>, Config.UserName, Config.Password, Config.Host, Config.Port,</span><br><span class="line">            Config.VHost);</span><br><span class="line">    Connection conn = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        factory.setUri(uri);</span><br><span class="line">        factory.setVirtualHost(Config.VHost);</span><br><span class="line">        conn = factory.newConnection();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> conn;</span><br><span class="line">&#125;</span><br></pre>
 <h4 id="9-使用-Java-代码编写一个-RabbitMQ-消费和生产的示例？"><a href="#9-使用-Java-代码编写一个-RabbitMQ-消费和生产的示例？" class="headerlink" title="9.使用 Java 代码编写一个 RabbitMQ 消费和生产的示例？"></a>9.使用 Java 代码编写一个 RabbitMQ 消费和生产的示例？</h4><p>答：代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    publisher();     <span class="comment">// 生产消息</span></span><br><span class="line">    consumer();     <span class="comment">// 消费消息</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 推送消息</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">publisher</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 创建一个连接</span></span><br><span class="line">    Connection conn = ConnectionFactoryUtil.GetRabbitConnection();</span><br><span class="line">    <span class="keyword">if</span> (conn != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 创建通道</span></span><br><span class="line">            Channel channel = conn.createChannel();</span><br><span class="line">            <span class="comment">// 声明队列【参数说明：参数一：队列名称，参数二：是否持久化；参数三：是否独占模式；参数四：消费者断开连接时是否删除队列；参数五：消息其他参数】</span></span><br><span class="line">            channel.queueDeclare(Config.QueueName, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">null</span>);</span><br><span class="line">            String content = String.format(<span class="string">&quot;当前时间：%s&quot;</span>, <span class="keyword">new</span> Date().getTime());</span><br><span class="line">            <span class="comment">// 发送内容【参数说明：参数一：交换机名称；参数二：队列名称，参数三：消息的其他属性-routing headers，此属性为MessageProperties.PERSISTENT_TEXT_PLAIN用于设置纯文本消息存储到硬盘；参数四：消息主体】</span></span><br><span class="line">            channel.basicPublish(<span class="string">&quot;&quot;</span>, Config.QueueName, <span class="keyword">null</span>, content.getBytes(<span class="string">&quot;UTF-8&quot;</span>));</span><br><span class="line">            System.out.println(<span class="string">&quot;已发送消息：&quot;</span> + content);</span><br><span class="line">            <span class="comment">// 关闭连接</span></span><br><span class="line">            channel.close();</span><br><span class="line">            conn.close();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 消费消息</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">consumer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 创建一个连接</span></span><br><span class="line">    Connection conn = ConnectionFactoryUtil.GetRabbitConnection();</span><br><span class="line">    <span class="keyword">if</span> (conn != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 创建通道</span></span><br><span class="line">            Channel channel = conn.createChannel();</span><br><span class="line">            <span class="comment">// 声明队列【参数说明：参数一：队列名称，参数二：是否持久化；参数三：是否独占模式；参数四：消费者断开连接时是否删除队列；参数五：消息其他参数】</span></span><br><span class="line">            channel.queueDeclare(Config.QueueName, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">null</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 创建订阅器，并接受消息</span></span><br><span class="line">            channel.basicConsume(Config.QueueName, <span class="keyword">false</span>, <span class="string">&quot;&quot;</span>, <span class="keyword">new</span> DefaultConsumer(channel) &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleDelivery</span><span class="params">(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,</span></span></span><br><span class="line"><span class="function"><span class="params">                        <span class="keyword">byte</span>[] body)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">                    String routingKey = envelope.getRoutingKey(); <span class="comment">// 队列名称</span></span><br><span class="line">                    String contentType = properties.getContentType(); <span class="comment">// 内容类型</span></span><br><span class="line">                    String content = <span class="keyword">new</span> String(body, <span class="string">&quot;utf-8&quot;</span>); <span class="comment">// 消息正文</span></span><br><span class="line">                    System.out.println(<span class="string">&quot;消息正文：&quot;</span> + content);</span><br><span class="line">                    channel.basicAck(envelope.getDeliveryTag(), <span class="keyword">false</span>); <span class="comment">// 手动确认消息【参数说明：参数一：该消息的index；参数二：是否批量应答，true批量确认小于index的消息】</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    publisher();     <span class="comment">// 生产消息</span></span><br><span class="line">    consumer();     <span class="comment">// 消费消息</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 推送消息</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">publisher</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 创建一个连接</span></span><br><span class="line">    Connection conn = ConnectionFactoryUtil.GetRabbitConnection();</span><br><span class="line">    <span class="keyword">if</span> (conn != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 创建通道</span></span><br><span class="line">            Channel channel = conn.createChannel();</span><br><span class="line">            <span class="comment">// 声明队列【参数说明：参数一：队列名称，参数二：是否持久化；参数三：是否独占模式；参数四：消费者断开连接时是否删除队列；参数五：消息其他参数】</span></span><br><span class="line">            channel.queueDeclare(Config.QueueName, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">null</span>);</span><br><span class="line">            String content = String.format(<span class="string">&quot;当前时间：%s&quot;</span>, <span class="keyword">new</span> Date().getTime());</span><br><span class="line">            <span class="comment">// 发送内容【参数说明：参数一：交换机名称；参数二：队列名称，参数三：消息的其他属性-routing headers，此属性为MessageProperties.PERSISTENT_TEXT_PLAIN用于设置纯文本消息存储到硬盘；参数四：消息主体】</span></span><br><span class="line">            channel.basicPublish(<span class="string">&quot;&quot;</span>, Config.QueueName, <span class="keyword">null</span>, content.getBytes(<span class="string">&quot;UTF-8&quot;</span>));</span><br><span class="line">            System.out.println(<span class="string">&quot;已发送消息：&quot;</span> + content);</span><br><span class="line">            <span class="comment">// 关闭连接</span></span><br><span class="line">            channel.close();</span><br><span class="line">            conn.close();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 消费消息</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">consumer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 创建一个连接</span></span><br><span class="line">    Connection conn = ConnectionFactoryUtil.GetRabbitConnection();</span><br><span class="line">    <span class="keyword">if</span> (conn != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 创建通道</span></span><br><span class="line">            Channel channel = conn.createChannel();</span><br><span class="line">            <span class="comment">// 声明队列【参数说明：参数一：队列名称，参数二：是否持久化；参数三：是否独占模式；参数四：消费者断开连接时是否删除队列；参数五：消息其他参数】</span></span><br><span class="line">            channel.queueDeclare(Config.QueueName, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">null</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 创建订阅器，并接受消息</span></span><br><span class="line">            channel.basicConsume(Config.QueueName, <span class="keyword">false</span>, <span class="string">&quot;&quot;</span>, <span class="keyword">new</span> DefaultConsumer(channel) &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleDelivery</span><span class="params">(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,</span></span></span><br><span class="line"><span class="function"><span class="params">                        <span class="keyword">byte</span>[] body)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">                    String routingKey = envelope.getRoutingKey(); <span class="comment">// 队列名称</span></span><br><span class="line">                    String contentType = properties.getContentType(); <span class="comment">// 内容类型</span></span><br><span class="line">                    String content = <span class="keyword">new</span> String(body, <span class="string">&quot;utf-8&quot;</span>); <span class="comment">// 消息正文</span></span><br><span class="line">                    System.out.println(<span class="string">&quot;消息正文：&quot;</span> + content);</span><br><span class="line">                    channel.basicAck(envelope.getDeliveryTag(), <span class="keyword">false</span>); <span class="comment">// 手动确认消息【参数说明：参数一：该消息的index；参数二：是否批量应答，true批量确认小于index的消息】</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre>
 <h4 id="10-RabbitMQ-交换器类型有哪些？"><a href="#10-RabbitMQ-交换器类型有哪些？" class="headerlink" title="10.RabbitMQ 交换器类型有哪些？"></a>10.RabbitMQ 交换器类型有哪些？</h4><p>答：RabbitMQ 消费类型也就是交换器（Exchange）类型有以下四种：</p>
 <ul>
 <li>direct：轮询方式</li>
@@ -294,198 +335,397 @@
 <li>集群数量最好是单数，因为超过一半故障集群就不能用了，设置为单数容错率更高。</li>
 </ul>
 
-    </div>
-
-    
-    
-    
-
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/mq/" rel="tag"># mq</a>
-              <a href="/tags/ms/" rel="tag"># ms</a>
-          </div>
-
+  </div>
+  <div>
+  
+  <div class="post-note note-warning copyright" style="margin-top: 42px">
+    <p><span style="font-weight: bold;">作者：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/about">blydd</a></p>
+    <p><span style="font-weight: bold;">文章链接：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/2020/12/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/">https://www.mele.cool/2020/12/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/</a></p>
+    <p><span style="font-weight: bold;">版权声明：</span>本博客所有文章除特别声明外，均采用<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0 协议</a>。转载请注明出处！</p>
+  </div>
+  
+  </div>
+</article>
+<div class="nav">
+  
+  <div class="nav-item-prev">
+    <a href="/2020/12/04/接口和抽象类/" class="nav-link">
+      <i class="iconfont icon-left nav-prev-icon"></i>
+      <div>
+        <div class="nav-label">上一篇</div>
         
-
-
+        <div class="nav-title">接口和抽象类 </div>
         
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2020/12/04/%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0Spring%20Boot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/" rel="prev" title="深入学习springboot自动装配">
-      <i class="fa fa-chevron-left"></i> 深入学习springboot自动装配
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/12/04/%E6%8E%A5%E5%8F%A3%E5%92%8C%E6%8A%BD%E8%B1%A1%E7%B1%BB/" rel="next" title="接口和抽象类">
-      接口和抽象类 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      </div>
+    </a>
+  </div>
+  
+  
+  <div class="nav-item-next">
+    <a href="/2020/12/04/深入学习Spring Boot自动装配/" class="nav-link">
+      <div>
+        <div class="nav-label">下一篇</div>
+        
+        <div class="nav-title">深入学习springboot自动装配 </div>
+        
+      </div>
+      <i class="iconfont icon-right nav-next-icon"></i>
+    </a>
+  </div>
+  
+</div>
+
+<div class="card card-content toc-card" id="mobiletoc">
+  <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
+<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-text">1.消息队列的应用场景有哪些？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-RabbitMQ-%E6%9C%89%E5%93%AA%E4%BA%9B%E4%BC%98%E7%82%B9%EF%BC%9F"><span class="toc-text">2.RabbitMQ 有哪些优点？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-RabbitMQ-%E6%9C%89%E5%93%AA%E4%BA%9B%E9%87%8D%E8%A6%81%E7%9A%84%E8%A7%92%E8%89%B2%EF%BC%9F"><span class="toc-text">3.RabbitMQ 有哪些重要的角色？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-RabbitMQ-%E6%9C%89%E5%93%AA%E4%BA%9B%E9%87%8D%E8%A6%81%E7%9A%84%E7%BB%84%E4%BB%B6%EF%BC%9F%E5%AE%83%E4%BB%AC%E6%9C%89%E4%BB%80%E4%B9%88%E4%BD%9C%E7%94%A8%EF%BC%9F"><span class="toc-text">4.RabbitMQ 有哪些重要的组件？它们有什么作用？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E4%BB%80%E4%B9%88%E6%98%AF%E6%B6%88%E6%81%AF%E6%8C%81%E4%B9%85%E5%8C%96%EF%BC%9F"><span class="toc-text">5.什么是消息持久化？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-RabbitMQ-%E8%A6%81%E5%AE%9E%E7%8E%B0%E6%B6%88%E6%81%AF%E6%8C%81%E4%B9%85%E5%8C%96%EF%BC%8C%E9%9C%80%E8%A6%81%E6%BB%A1%E8%B6%B3%E5%93%AA%E4%BA%9B%E6%9D%A1%E4%BB%B6%EF%BC%9F"><span class="toc-text">6.RabbitMQ 要实现消息持久化，需要满足哪些条件？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-%E6%B6%88%E6%81%AF%E6%8C%81%E4%B9%85%E5%8C%96%E6%9C%89%E5%93%AA%E4%BA%9B%E7%BC%BA%E7%82%B9%EF%BC%9F%E5%A6%82%E4%BD%95%E7%BC%93%E8%A7%A3%EF%BC%9F"><span class="toc-text">7.消息持久化有哪些缺点？如何缓解？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Java-%E4%BB%A3%E7%A0%81%E8%BF%9E%E6%8E%A5-RabbitMQ%EF%BC%9F"><span class="toc-text">8.如何使用 Java 代码连接 RabbitMQ？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-%E4%BD%BF%E7%94%A8-Java-%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AA-RabbitMQ-%E6%B6%88%E8%B4%B9%E5%92%8C%E7%94%9F%E4%BA%A7%E7%9A%84%E7%A4%BA%E4%BE%8B%EF%BC%9F"><span class="toc-text">9.使用 Java 代码编写一个 RabbitMQ 消费和生产的示例？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10-RabbitMQ-%E4%BA%A4%E6%8D%A2%E5%99%A8%E7%B1%BB%E5%9E%8B%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-text">10.RabbitMQ 交换器类型有哪些？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#11-RabbitMQ-%E5%A6%82%E4%BD%95%E7%A1%AE%E4%BF%9D%E6%AF%8F%E4%B8%AA%E6%B6%88%E6%81%AF%E8%83%BD%E8%A2%AB%E6%B6%88%E8%B4%B9%EF%BC%9F"><span class="toc-text">11.RabbitMQ 如何确保每个消息能被消费？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#12-RabbitMQ-%E6%8E%A5%E6%94%B6%E5%88%B0%E6%B6%88%E6%81%AF%E4%B9%8B%E5%90%8E%E5%BF%85%E9%A1%BB%E6%B6%88%E8%B4%B9%E5%90%97%EF%BC%9F"><span class="toc-text">12.RabbitMQ 接收到消息之后必须消费吗？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#13-topic-%E6%A8%A1%E5%BC%8F%E4%B8%8B%E5%8F%91%E5%B8%83%E4%BA%86%E4%B8%80%E4%B8%AA%E8%B7%AF%E7%94%B1%E9%94%AE%E4%B8%BA%E2%80%9Ccom-mq-rabbit-error%E2%80%9D%E7%9A%84%E6%B6%88%E6%81%AF%EF%BC%8C%E8%AF%B7%E9%97%AE%E4%BB%A5%E4%B8%8B%E4%B8%8D%E8%83%BD%E6%8E%A5%E6%94%B6%E5%88%B0%E6%B6%88%E6%81%AF%E7%9A%84%E6%98%AF%EF%BC%9F"><span class="toc-text">13.topic 模式下发布了一个路由键为“com.mq.rabbit.error”的消息，请问以下不能接收到消息的是？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#14-%E4%BB%A5%E4%B8%8B%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%8E%86%E5%8F%B2%E6%B6%88%E6%81%AF%E7%9A%84%E6%98%AF%EF%BC%9F"><span class="toc-text">14.以下可以获取历史消息的是？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#15-RabbitMQ-%E5%8C%85%E5%90%AB%E4%BA%8B%E5%8A%A1%E5%8A%9F%E8%83%BD%E5%90%97%EF%BC%9F%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%EF%BC%9F"><span class="toc-text">15.RabbitMQ 包含事务功能吗？如何使用？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#16-RabbitMQ-%E7%9A%84%E4%BA%8B%E5%8A%A1%E5%9C%A8%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E6%98%AF%E6%97%A0%E6%95%88%E7%9A%84%EF%BC%9F"><span class="toc-text">16.RabbitMQ 的事务在什么情况下是无效的？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#17-Kafka-%E5%8F%AF%E4%BB%A5%E8%84%B1%E7%A6%BB-ZooKeeper-%E5%8D%95%E7%8B%AC%E4%BD%BF%E7%94%A8%E5%90%97%EF%BC%9F"><span class="toc-text">17.Kafka 可以脱离 ZooKeeper 单独使用吗？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#18-Kafka-%E6%9C%89%E5%87%A0%E7%A7%8D%E6%95%B0%E6%8D%AE%E4%BF%9D%E7%95%99%E7%9A%84%E7%AD%96%E7%95%A5%EF%BC%9F"><span class="toc-text">18.Kafka 有几种数据保留的策略？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#19-Kafka-%E5%90%8C%E6%97%B6%E8%AE%BE%E7%BD%AE%E4%BA%86-7-%E5%A4%A9%E5%92%8C-10G-%E6%B8%85%E9%99%A4%E6%95%B0%E6%8D%AE%EF%BC%8C%E5%88%B0%E7%AC%AC%E4%BA%94%E5%A4%A9%E7%9A%84%E6%97%B6%E5%80%99%E6%B6%88%E6%81%AF%E8%BE%BE%E5%88%B0%E4%BA%86-10G%EF%BC%8C%E8%BF%99%E4%B8%AA%E6%97%B6%E5%80%99-Kafka-%E5%B0%86%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%EF%BC%9F"><span class="toc-text">19.Kafka 同时设置了 7 天和 10G 清除数据，到第五天的时候消息达到了 10G，这个时候 Kafka 将如何处理？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#20-%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%BC%9A%E5%AF%BC%E8%87%B4-Kafka-%E8%BF%90%E8%A1%8C%E5%8F%98%E6%85%A2%EF%BC%9F"><span class="toc-text">20.什么情况会导致 Kafka 运行变慢？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#21-%E4%BD%BF%E7%94%A8-Kafka-%E9%9B%86%E7%BE%A4%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">21.使用 Kafka 集群需要注意什么？</span></a></li></ol>
+</div></main>
+          <aside class="left-column">
+            
+            <div class="card card-author">
+              
+<img src="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png" class="author-img">
+
+<p class="author-name">blydd</p>
+<p class="author-description">积跬步行千里</p>
+<div class="author-message">
+  <a class="author-posts-count" href="/archives">
+    <span>66</span>
+    <span>文章</span>
+  </a>
+  <a class="author-categories-count" href="/categories">
+    <span>16</span>
+    <span>分类</span>
+  </a>
+  <a class="author-tags-count" href="/tags">
+    <span>92</span>
+    <span>标签</span>
+  </a>
+</div>
+
+            </div>
+            
+            <div class="sticky-tablet">
+  
+  
+  <article class="display-when-two-columns spacer">
+    <div class="card card-content toc-card">
+      <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
+<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-text">1.消息队列的应用场景有哪些？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-RabbitMQ-%E6%9C%89%E5%93%AA%E4%BA%9B%E4%BC%98%E7%82%B9%EF%BC%9F"><span class="toc-text">2.RabbitMQ 有哪些优点？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-RabbitMQ-%E6%9C%89%E5%93%AA%E4%BA%9B%E9%87%8D%E8%A6%81%E7%9A%84%E8%A7%92%E8%89%B2%EF%BC%9F"><span class="toc-text">3.RabbitMQ 有哪些重要的角色？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-RabbitMQ-%E6%9C%89%E5%93%AA%E4%BA%9B%E9%87%8D%E8%A6%81%E7%9A%84%E7%BB%84%E4%BB%B6%EF%BC%9F%E5%AE%83%E4%BB%AC%E6%9C%89%E4%BB%80%E4%B9%88%E4%BD%9C%E7%94%A8%EF%BC%9F"><span class="toc-text">4.RabbitMQ 有哪些重要的组件？它们有什么作用？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E4%BB%80%E4%B9%88%E6%98%AF%E6%B6%88%E6%81%AF%E6%8C%81%E4%B9%85%E5%8C%96%EF%BC%9F"><span class="toc-text">5.什么是消息持久化？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-RabbitMQ-%E8%A6%81%E5%AE%9E%E7%8E%B0%E6%B6%88%E6%81%AF%E6%8C%81%E4%B9%85%E5%8C%96%EF%BC%8C%E9%9C%80%E8%A6%81%E6%BB%A1%E8%B6%B3%E5%93%AA%E4%BA%9B%E6%9D%A1%E4%BB%B6%EF%BC%9F"><span class="toc-text">6.RabbitMQ 要实现消息持久化，需要满足哪些条件？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-%E6%B6%88%E6%81%AF%E6%8C%81%E4%B9%85%E5%8C%96%E6%9C%89%E5%93%AA%E4%BA%9B%E7%BC%BA%E7%82%B9%EF%BC%9F%E5%A6%82%E4%BD%95%E7%BC%93%E8%A7%A3%EF%BC%9F"><span class="toc-text">7.消息持久化有哪些缺点？如何缓解？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Java-%E4%BB%A3%E7%A0%81%E8%BF%9E%E6%8E%A5-RabbitMQ%EF%BC%9F"><span class="toc-text">8.如何使用 Java 代码连接 RabbitMQ？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-%E4%BD%BF%E7%94%A8-Java-%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AA-RabbitMQ-%E6%B6%88%E8%B4%B9%E5%92%8C%E7%94%9F%E4%BA%A7%E7%9A%84%E7%A4%BA%E4%BE%8B%EF%BC%9F"><span class="toc-text">9.使用 Java 代码编写一个 RabbitMQ 消费和生产的示例？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10-RabbitMQ-%E4%BA%A4%E6%8D%A2%E5%99%A8%E7%B1%BB%E5%9E%8B%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-text">10.RabbitMQ 交换器类型有哪些？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#11-RabbitMQ-%E5%A6%82%E4%BD%95%E7%A1%AE%E4%BF%9D%E6%AF%8F%E4%B8%AA%E6%B6%88%E6%81%AF%E8%83%BD%E8%A2%AB%E6%B6%88%E8%B4%B9%EF%BC%9F"><span class="toc-text">11.RabbitMQ 如何确保每个消息能被消费？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#12-RabbitMQ-%E6%8E%A5%E6%94%B6%E5%88%B0%E6%B6%88%E6%81%AF%E4%B9%8B%E5%90%8E%E5%BF%85%E9%A1%BB%E6%B6%88%E8%B4%B9%E5%90%97%EF%BC%9F"><span class="toc-text">12.RabbitMQ 接收到消息之后必须消费吗？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#13-topic-%E6%A8%A1%E5%BC%8F%E4%B8%8B%E5%8F%91%E5%B8%83%E4%BA%86%E4%B8%80%E4%B8%AA%E8%B7%AF%E7%94%B1%E9%94%AE%E4%B8%BA%E2%80%9Ccom-mq-rabbit-error%E2%80%9D%E7%9A%84%E6%B6%88%E6%81%AF%EF%BC%8C%E8%AF%B7%E9%97%AE%E4%BB%A5%E4%B8%8B%E4%B8%8D%E8%83%BD%E6%8E%A5%E6%94%B6%E5%88%B0%E6%B6%88%E6%81%AF%E7%9A%84%E6%98%AF%EF%BC%9F"><span class="toc-text">13.topic 模式下发布了一个路由键为“com.mq.rabbit.error”的消息，请问以下不能接收到消息的是？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#14-%E4%BB%A5%E4%B8%8B%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%8E%86%E5%8F%B2%E6%B6%88%E6%81%AF%E7%9A%84%E6%98%AF%EF%BC%9F"><span class="toc-text">14.以下可以获取历史消息的是？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#15-RabbitMQ-%E5%8C%85%E5%90%AB%E4%BA%8B%E5%8A%A1%E5%8A%9F%E8%83%BD%E5%90%97%EF%BC%9F%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%EF%BC%9F"><span class="toc-text">15.RabbitMQ 包含事务功能吗？如何使用？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#16-RabbitMQ-%E7%9A%84%E4%BA%8B%E5%8A%A1%E5%9C%A8%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E6%98%AF%E6%97%A0%E6%95%88%E7%9A%84%EF%BC%9F"><span class="toc-text">16.RabbitMQ 的事务在什么情况下是无效的？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#17-Kafka-%E5%8F%AF%E4%BB%A5%E8%84%B1%E7%A6%BB-ZooKeeper-%E5%8D%95%E7%8B%AC%E4%BD%BF%E7%94%A8%E5%90%97%EF%BC%9F"><span class="toc-text">17.Kafka 可以脱离 ZooKeeper 单独使用吗？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#18-Kafka-%E6%9C%89%E5%87%A0%E7%A7%8D%E6%95%B0%E6%8D%AE%E4%BF%9D%E7%95%99%E7%9A%84%E7%AD%96%E7%95%A5%EF%BC%9F"><span class="toc-text">18.Kafka 有几种数据保留的策略？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#19-Kafka-%E5%90%8C%E6%97%B6%E8%AE%BE%E7%BD%AE%E4%BA%86-7-%E5%A4%A9%E5%92%8C-10G-%E6%B8%85%E9%99%A4%E6%95%B0%E6%8D%AE%EF%BC%8C%E5%88%B0%E7%AC%AC%E4%BA%94%E5%A4%A9%E7%9A%84%E6%97%B6%E5%80%99%E6%B6%88%E6%81%AF%E8%BE%BE%E5%88%B0%E4%BA%86-10G%EF%BC%8C%E8%BF%99%E4%B8%AA%E6%97%B6%E5%80%99-Kafka-%E5%B0%86%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%EF%BC%9F"><span class="toc-text">19.Kafka 同时设置了 7 天和 10G 清除数据，到第五天的时候消息达到了 10G，这个时候 Kafka 将如何处理？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#20-%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%BC%9A%E5%AF%BC%E8%87%B4-Kafka-%E8%BF%90%E8%A1%8C%E5%8F%98%E6%85%A2%EF%BC%9F"><span class="toc-text">20.什么情况会导致 Kafka 运行变慢？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#21-%E4%BD%BF%E7%94%A8-Kafka-%E9%9B%86%E7%BE%A4%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">21.使用 Kafka 集群需要注意什么？</span></a></li></ol>
     </div>
-      </footer>
-    
   </article>
   
   
+  <article class="card card-content categories-widget">
+    <div class="categories-card">
+  <div class="categories-header"><i class="iconfont icon-fenlei" style="padding-right: 2px;"></i>分类</div>
+  <div class="categories-list">
+    
+      <a href="/categories/工具类">
+        <div class="categories-list-item">
+          工具类
+          <span class="categories-list-item-badge">8</span>
+        </div>
+      </a>
+    
+      <a href="/categories/linux">
+        <div class="categories-list-item">
+          linux
+          <span class="categories-list-item-badge">3</span>
+        </div>
+      </a>
+    
+      <a href="/categories/mac">
+        <div class="categories-list-item">
+          mac
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/java">
+        <div class="categories-list-item">
+          java
+          <span class="categories-list-item-badge">18</span>
+        </div>
+      </a>
+    
+      <a href="/categories/springboot">
+        <div class="categories-list-item">
+          springboot
+          <span class="categories-list-item-badge">13</span>
+        </div>
+      </a>
+    
+      <a href="/categories/docker">
+        <div class="categories-list-item">
+          docker
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/hello world">
+        <div class="categories-list-item">
+          hello world
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/版本控制">
+        <div class="categories-list-item">
+          版本控制
+          <span class="categories-list-item-badge">2</span>
+        </div>
+      </a>
+    
+      <a href="/categories/mele">
+        <div class="categories-list-item">
+          mele
+          <span class="categories-list-item-badge">2</span>
+        </div>
+      </a>
+    
+      <a href="/categories/db">
+        <div class="categories-list-item">
+          db
+          <span class="categories-list-item-badge">7</span>
+        </div>
+      </a>
+    
+      <a href="/categories/其他">
+        <div class="categories-list-item">
+          其他
+          <span class="categories-list-item-badge">2</span>
+        </div>
+      </a>
+    
+      <a href="/categories/bug">
+        <div class="categories-list-item">
+          bug
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/js">
+        <div class="categories-list-item">
+          js
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/mq">
+        <div class="categories-list-item">
+          mq
+          <span class="categories-list-item-badge">3</span>
+        </div>
+      </a>
+    
+      <a href="/categories/面试">
+        <div class="categories-list-item">
+          面试
+          <span class="categories-list-item-badge">2</span>
+        </div>
+      </a>
+    
+      <a href="/categories/springCloud">
+        <div class="categories-list-item">
+          springCloud
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+  </div>
+</div>
+  </article>
   
-
-
-
-          </div>
+  <article class="card card-content tags-widget">
+    <div class="tags-card">
+  <div class="tags-header"><i class="iconfont icon-biaoqian" style="padding-right: 2px;"></i>热门标签</div>
+  <div class="tags-list">
+    
+    <a href="\tags\springboot" title="springboot"><div class="tags-list-item">springboot</div></a>
+    
+    <a href="\tags\java" title="java"><div class="tags-list-item">java</div></a>
+    
+    <a href="\tags\工具类" title="工具类"><div class="tags-list-item">工具类</div></a>
+    
+    <a href="\tags\mybatis" title="mybatis"><div class="tags-list-item">mybatis</div></a>
+    
+    <a href="\tags\ms" title="ms"><div class="tags-list-item">ms</div></a>
+    
+    <a href="\tags\tool" title="tool"><div class="tags-list-item">tool</div></a>
+    
+    <a href="\tags\git" title="git"><div class="tags-list-item">git</div></a>
+    
+    <a href="\tags\linux" title="linux"><div class="tags-list-item">linux</div></a>
+    
+    <a href="\tags\线程池" title="线程池"><div class="tags-list-item">线程池</div></a>
+    
+    <a href="\tags\mq" title="mq"><div class="tags-list-item">mq</div></a>
+    
+    <a href="\tags\常用" title="常用"><div class="tags-list-item">常用</div></a>
+    
+    <a href="\tags\bug" title="bug"><div class="tags-list-item">bug</div></a>
+    
+    <a href="\tags\分布式" title="分布式"><div class="tags-list-item">分布式</div></a>
+    
+    <a href="\tags\acid" title="acid"><div class="tags-list-item">acid</div></a>
+    
+    <a href="\tags\事务" title="事务"><div class="tags-list-item">事务</div></a>
+    
+    <a href="\tags\xml" title="xml"><div class="tags-list-item">xml</div></a>
+    
+  </div>
+</div>
+  </article>
+  
+  
+</div>
+          </aside>
+          <aside class="right-column">
+            <div class="sticky-widescreen">
+  
+  
+  <article class="card card-content toc-card">
+    <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
+<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-text">1.消息队列的应用场景有哪些？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-RabbitMQ-%E6%9C%89%E5%93%AA%E4%BA%9B%E4%BC%98%E7%82%B9%EF%BC%9F"><span class="toc-text">2.RabbitMQ 有哪些优点？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-RabbitMQ-%E6%9C%89%E5%93%AA%E4%BA%9B%E9%87%8D%E8%A6%81%E7%9A%84%E8%A7%92%E8%89%B2%EF%BC%9F"><span class="toc-text">3.RabbitMQ 有哪些重要的角色？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-RabbitMQ-%E6%9C%89%E5%93%AA%E4%BA%9B%E9%87%8D%E8%A6%81%E7%9A%84%E7%BB%84%E4%BB%B6%EF%BC%9F%E5%AE%83%E4%BB%AC%E6%9C%89%E4%BB%80%E4%B9%88%E4%BD%9C%E7%94%A8%EF%BC%9F"><span class="toc-text">4.RabbitMQ 有哪些重要的组件？它们有什么作用？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E4%BB%80%E4%B9%88%E6%98%AF%E6%B6%88%E6%81%AF%E6%8C%81%E4%B9%85%E5%8C%96%EF%BC%9F"><span class="toc-text">5.什么是消息持久化？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-RabbitMQ-%E8%A6%81%E5%AE%9E%E7%8E%B0%E6%B6%88%E6%81%AF%E6%8C%81%E4%B9%85%E5%8C%96%EF%BC%8C%E9%9C%80%E8%A6%81%E6%BB%A1%E8%B6%B3%E5%93%AA%E4%BA%9B%E6%9D%A1%E4%BB%B6%EF%BC%9F"><span class="toc-text">6.RabbitMQ 要实现消息持久化，需要满足哪些条件？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-%E6%B6%88%E6%81%AF%E6%8C%81%E4%B9%85%E5%8C%96%E6%9C%89%E5%93%AA%E4%BA%9B%E7%BC%BA%E7%82%B9%EF%BC%9F%E5%A6%82%E4%BD%95%E7%BC%93%E8%A7%A3%EF%BC%9F"><span class="toc-text">7.消息持久化有哪些缺点？如何缓解？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Java-%E4%BB%A3%E7%A0%81%E8%BF%9E%E6%8E%A5-RabbitMQ%EF%BC%9F"><span class="toc-text">8.如何使用 Java 代码连接 RabbitMQ？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-%E4%BD%BF%E7%94%A8-Java-%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AA-RabbitMQ-%E6%B6%88%E8%B4%B9%E5%92%8C%E7%94%9F%E4%BA%A7%E7%9A%84%E7%A4%BA%E4%BE%8B%EF%BC%9F"><span class="toc-text">9.使用 Java 代码编写一个 RabbitMQ 消费和生产的示例？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10-RabbitMQ-%E4%BA%A4%E6%8D%A2%E5%99%A8%E7%B1%BB%E5%9E%8B%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-text">10.RabbitMQ 交换器类型有哪些？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#11-RabbitMQ-%E5%A6%82%E4%BD%95%E7%A1%AE%E4%BF%9D%E6%AF%8F%E4%B8%AA%E6%B6%88%E6%81%AF%E8%83%BD%E8%A2%AB%E6%B6%88%E8%B4%B9%EF%BC%9F"><span class="toc-text">11.RabbitMQ 如何确保每个消息能被消费？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#12-RabbitMQ-%E6%8E%A5%E6%94%B6%E5%88%B0%E6%B6%88%E6%81%AF%E4%B9%8B%E5%90%8E%E5%BF%85%E9%A1%BB%E6%B6%88%E8%B4%B9%E5%90%97%EF%BC%9F"><span class="toc-text">12.RabbitMQ 接收到消息之后必须消费吗？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#13-topic-%E6%A8%A1%E5%BC%8F%E4%B8%8B%E5%8F%91%E5%B8%83%E4%BA%86%E4%B8%80%E4%B8%AA%E8%B7%AF%E7%94%B1%E9%94%AE%E4%B8%BA%E2%80%9Ccom-mq-rabbit-error%E2%80%9D%E7%9A%84%E6%B6%88%E6%81%AF%EF%BC%8C%E8%AF%B7%E9%97%AE%E4%BB%A5%E4%B8%8B%E4%B8%8D%E8%83%BD%E6%8E%A5%E6%94%B6%E5%88%B0%E6%B6%88%E6%81%AF%E7%9A%84%E6%98%AF%EF%BC%9F"><span class="toc-text">13.topic 模式下发布了一个路由键为“com.mq.rabbit.error”的消息，请问以下不能接收到消息的是？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#14-%E4%BB%A5%E4%B8%8B%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%8E%86%E5%8F%B2%E6%B6%88%E6%81%AF%E7%9A%84%E6%98%AF%EF%BC%9F"><span class="toc-text">14.以下可以获取历史消息的是？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#15-RabbitMQ-%E5%8C%85%E5%90%AB%E4%BA%8B%E5%8A%A1%E5%8A%9F%E8%83%BD%E5%90%97%EF%BC%9F%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%EF%BC%9F"><span class="toc-text">15.RabbitMQ 包含事务功能吗？如何使用？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#16-RabbitMQ-%E7%9A%84%E4%BA%8B%E5%8A%A1%E5%9C%A8%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E6%98%AF%E6%97%A0%E6%95%88%E7%9A%84%EF%BC%9F"><span class="toc-text">16.RabbitMQ 的事务在什么情况下是无效的？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#17-Kafka-%E5%8F%AF%E4%BB%A5%E8%84%B1%E7%A6%BB-ZooKeeper-%E5%8D%95%E7%8B%AC%E4%BD%BF%E7%94%A8%E5%90%97%EF%BC%9F"><span class="toc-text">17.Kafka 可以脱离 ZooKeeper 单独使用吗？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#18-Kafka-%E6%9C%89%E5%87%A0%E7%A7%8D%E6%95%B0%E6%8D%AE%E4%BF%9D%E7%95%99%E7%9A%84%E7%AD%96%E7%95%A5%EF%BC%9F"><span class="toc-text">18.Kafka 有几种数据保留的策略？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#19-Kafka-%E5%90%8C%E6%97%B6%E8%AE%BE%E7%BD%AE%E4%BA%86-7-%E5%A4%A9%E5%92%8C-10G-%E6%B8%85%E9%99%A4%E6%95%B0%E6%8D%AE%EF%BC%8C%E5%88%B0%E7%AC%AC%E4%BA%94%E5%A4%A9%E7%9A%84%E6%97%B6%E5%80%99%E6%B6%88%E6%81%AF%E8%BE%BE%E5%88%B0%E4%BA%86-10G%EF%BC%8C%E8%BF%99%E4%B8%AA%E6%97%B6%E5%80%99-Kafka-%E5%B0%86%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%EF%BC%9F"><span class="toc-text">19.Kafka 同时设置了 7 天和 10G 清除数据，到第五天的时候消息达到了 10G，这个时候 Kafka 将如何处理？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#20-%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%BC%9A%E5%AF%BC%E8%87%B4-Kafka-%E8%BF%90%E8%A1%8C%E5%8F%98%E6%85%A2%EF%BC%9F"><span class="toc-text">20.什么情况会导致 Kafka 运行变慢？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#21-%E4%BD%BF%E7%94%A8-Kafka-%E9%9B%86%E7%BE%A4%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">21.使用 Kafka 集群需要注意什么？</span></a></li></ol>
+  </article>
+  
+  
+  <article class="card card-content">
+    <div class="recent-posts-card">
+  <div class="recent-posts-header"><i class="iconfont icon-wenzhang_huaban" style="padding-right: 2px;"></i>最近文章</div>
+  <div class="recent-posts-list">
+    
+      <div class="recent-posts-item">
+        <div class="recent-posts-item-title">2021-01-30</div>
+        <a href="/2021/01/30/java面试题/"><div class="recent-posts-item-content">java面试题</div></a>
+      </div>
+    
+      <div class="recent-posts-item">
+        <div class="recent-posts-item-title">2021-01-26</div>
+        <a href="/2021/01/26/编写优雅高效的java代码/"><div class="recent-posts-item-content">编写高效优雅java代码</div></a>
+      </div>
+    
+      <div class="recent-posts-item">
+        <div class="recent-posts-item-title">2021-01-23</div>
+        <a href="/2021/01/23/redis教程效率版/"><div class="recent-posts-item-content">redis入门效率版</div></a>
+      </div>
+    
+      <div class="recent-posts-item">
+        <div class="recent-posts-item-title">2021-01-22</div>
+        <a href="/2021/01/22/开发注意代码整理/"><div class="recent-posts-item-content">开发中注意的小问题</div></a>
+      </div>
+    
+  </div>
+</div>
+  </article>
+  
+  
+</div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer class="footer">
+  <div class="footer-container">
+    <div>
+      <div class="footer-dsc">
+        <span>Copyright ©
           
+          2020 -
+          
+          2021
+        </span>
+        &nbsp;
+        <a href="/" class="footer-link">mele blog </a>
+      </div>
+    </div>
 
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
+    
+    <div class="footer-dsc">
+      
+      Powered by
+      <a href="https://hexo.io/" class="footer-link" target="_blank" rel="nofollow noopener noreferrer">&nbsp;Hexo </a>
+      
+      
+      <span>&nbsp;|&nbsp;</span>
+      
+      
+      Theme -
+      <a href="https://github.com/theme-kaze" class="footer-link" target="_blank"
+        rel="nofollow noopener noreferrer">&nbsp;Kaze</a>
+      
+    </div>
+    
+    
+    
+    
+</footer>
+  <a role="button" id="scrollbutton" class="basebutton"  aria-label="回到顶部">
+  <i class="iconfont icon-arrowleft button-icon"></i>
+</a>
+<a role="button" id="menubutton" class="basebutton">
+  <i class="iconfont icon-menu button-icon"></i>
+</a>
+<a role="button" id="popbutton" class="basebutton" aria-label="控制中心">
+  <i class="iconfont icon-expand button-icon"></i>
+</a>
+<a role="button" id="darkbutton" class="basebutton darkwidget" aria-label="夜色模式">
+  <i class="iconfont icon-weather button-icon"></i>
+</a>
+<a role="button" id="searchbutton" class="basebutton searchwidget" aria-label="搜索">
+  <i class="iconfont icon-search button-icon"></i>
+</a>
+
+  
+  
+  
+  <script>
+  var addImgLayout = function () {
+    var img = document.querySelectorAll('.post-content img');
+    var i;
+    for (i = 0; i < img.length; i++) {
+      var wrapper = document.createElement('a');
+      wrapper.setAttribute('href', img[i].getAttribute('data-src'));
+      wrapper.setAttribute('aria-label', 'illustration');
+      wrapper.style.cssText = 'width: 100%; display: flex; justify-content: center;';
+      if (img[i].alt) wrapper.dataset.caption = img[i].alt;
+      wrapper.dataset.nolink = true;
+      img[i].before(wrapper);
+      wrapper.append(img[i]);
+      var divWrap = document.createElement('div');
+      divWrap.classList.add('gallery');
+      wrapper.before(divWrap);
+      divWrap.append(wrapper);
     }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
+    baguetteBox.run('.gallery');
   }
 </script>
-
-        </div>
-          
+<script>loadScript("/js/lib/lightbox/baguetteBox.min.js", addImgLayout)</script>
   
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">1.消息队列的应用场景有哪些？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-RabbitMQ-%E6%9C%89%E5%93%AA%E4%BA%9B%E4%BC%98%E7%82%B9%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">2.RabbitMQ 有哪些优点？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-RabbitMQ-%E6%9C%89%E5%93%AA%E4%BA%9B%E9%87%8D%E8%A6%81%E7%9A%84%E8%A7%92%E8%89%B2%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">3.RabbitMQ 有哪些重要的角色？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-RabbitMQ-%E6%9C%89%E5%93%AA%E4%BA%9B%E9%87%8D%E8%A6%81%E7%9A%84%E7%BB%84%E4%BB%B6%EF%BC%9F%E5%AE%83%E4%BB%AC%E6%9C%89%E4%BB%80%E4%B9%88%E4%BD%9C%E7%94%A8%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">4.RabbitMQ 有哪些重要的组件？它们有什么作用？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E4%BB%80%E4%B9%88%E6%98%AF%E6%B6%88%E6%81%AF%E6%8C%81%E4%B9%85%E5%8C%96%EF%BC%9F"><span class="nav-number">5.</span> <span class="nav-text">5.什么是消息持久化？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-RabbitMQ-%E8%A6%81%E5%AE%9E%E7%8E%B0%E6%B6%88%E6%81%AF%E6%8C%81%E4%B9%85%E5%8C%96%EF%BC%8C%E9%9C%80%E8%A6%81%E6%BB%A1%E8%B6%B3%E5%93%AA%E4%BA%9B%E6%9D%A1%E4%BB%B6%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">6.RabbitMQ 要实现消息持久化，需要满足哪些条件？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-%E6%B6%88%E6%81%AF%E6%8C%81%E4%B9%85%E5%8C%96%E6%9C%89%E5%93%AA%E4%BA%9B%E7%BC%BA%E7%82%B9%EF%BC%9F%E5%A6%82%E4%BD%95%E7%BC%93%E8%A7%A3%EF%BC%9F"><span class="nav-number">7.</span> <span class="nav-text">7.消息持久化有哪些缺点？如何缓解？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Java-%E4%BB%A3%E7%A0%81%E8%BF%9E%E6%8E%A5-RabbitMQ%EF%BC%9F"><span class="nav-number">8.</span> <span class="nav-text">8.如何使用 Java 代码连接 RabbitMQ？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-%E4%BD%BF%E7%94%A8-Java-%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AA-RabbitMQ-%E6%B6%88%E8%B4%B9%E5%92%8C%E7%94%9F%E4%BA%A7%E7%9A%84%E7%A4%BA%E4%BE%8B%EF%BC%9F"><span class="nav-number">9.</span> <span class="nav-text">9.使用 Java 代码编写一个 RabbitMQ 消费和生产的示例？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-RabbitMQ-%E4%BA%A4%E6%8D%A2%E5%99%A8%E7%B1%BB%E5%9E%8B%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="nav-number">10.</span> <span class="nav-text">10.RabbitMQ 交换器类型有哪些？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-RabbitMQ-%E5%A6%82%E4%BD%95%E7%A1%AE%E4%BF%9D%E6%AF%8F%E4%B8%AA%E6%B6%88%E6%81%AF%E8%83%BD%E8%A2%AB%E6%B6%88%E8%B4%B9%EF%BC%9F"><span class="nav-number">11.</span> <span class="nav-text">11.RabbitMQ 如何确保每个消息能被消费？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-RabbitMQ-%E6%8E%A5%E6%94%B6%E5%88%B0%E6%B6%88%E6%81%AF%E4%B9%8B%E5%90%8E%E5%BF%85%E9%A1%BB%E6%B6%88%E8%B4%B9%E5%90%97%EF%BC%9F"><span class="nav-number">12.</span> <span class="nav-text">12.RabbitMQ 接收到消息之后必须消费吗？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-topic-%E6%A8%A1%E5%BC%8F%E4%B8%8B%E5%8F%91%E5%B8%83%E4%BA%86%E4%B8%80%E4%B8%AA%E8%B7%AF%E7%94%B1%E9%94%AE%E4%B8%BA%E2%80%9Ccom-mq-rabbit-error%E2%80%9D%E7%9A%84%E6%B6%88%E6%81%AF%EF%BC%8C%E8%AF%B7%E9%97%AE%E4%BB%A5%E4%B8%8B%E4%B8%8D%E8%83%BD%E6%8E%A5%E6%94%B6%E5%88%B0%E6%B6%88%E6%81%AF%E7%9A%84%E6%98%AF%EF%BC%9F"><span class="nav-number">13.</span> <span class="nav-text">13.topic 模式下发布了一个路由键为“com.mq.rabbit.error”的消息，请问以下不能接收到消息的是？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-%E4%BB%A5%E4%B8%8B%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%8E%86%E5%8F%B2%E6%B6%88%E6%81%AF%E7%9A%84%E6%98%AF%EF%BC%9F"><span class="nav-number">14.</span> <span class="nav-text">14.以下可以获取历史消息的是？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-RabbitMQ-%E5%8C%85%E5%90%AB%E4%BA%8B%E5%8A%A1%E5%8A%9F%E8%83%BD%E5%90%97%EF%BC%9F%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%EF%BC%9F"><span class="nav-number">15.</span> <span class="nav-text">15.RabbitMQ 包含事务功能吗？如何使用？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-RabbitMQ-%E7%9A%84%E4%BA%8B%E5%8A%A1%E5%9C%A8%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E6%98%AF%E6%97%A0%E6%95%88%E7%9A%84%EF%BC%9F"><span class="nav-number">16.</span> <span class="nav-text">16.RabbitMQ 的事务在什么情况下是无效的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-Kafka-%E5%8F%AF%E4%BB%A5%E8%84%B1%E7%A6%BB-ZooKeeper-%E5%8D%95%E7%8B%AC%E4%BD%BF%E7%94%A8%E5%90%97%EF%BC%9F"><span class="nav-number">17.</span> <span class="nav-text">17.Kafka 可以脱离 ZooKeeper 单独使用吗？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#18-Kafka-%E6%9C%89%E5%87%A0%E7%A7%8D%E6%95%B0%E6%8D%AE%E4%BF%9D%E7%95%99%E7%9A%84%E7%AD%96%E7%95%A5%EF%BC%9F"><span class="nav-number">18.</span> <span class="nav-text">18.Kafka 有几种数据保留的策略？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-Kafka-%E5%90%8C%E6%97%B6%E8%AE%BE%E7%BD%AE%E4%BA%86-7-%E5%A4%A9%E5%92%8C-10G-%E6%B8%85%E9%99%A4%E6%95%B0%E6%8D%AE%EF%BC%8C%E5%88%B0%E7%AC%AC%E4%BA%94%E5%A4%A9%E7%9A%84%E6%97%B6%E5%80%99%E6%B6%88%E6%81%AF%E8%BE%BE%E5%88%B0%E4%BA%86-10G%EF%BC%8C%E8%BF%99%E4%B8%AA%E6%97%B6%E5%80%99-Kafka-%E5%B0%86%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%EF%BC%9F"><span class="nav-number">19.</span> <span class="nav-text">19.Kafka 同时设置了 7 天和 10G 清除数据，到第五天的时候消息达到了 10G，这个时候 Kafka 将如何处理？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%BC%9A%E5%AF%BC%E8%87%B4-Kafka-%E8%BF%90%E8%A1%8C%E5%8F%98%E6%85%A2%EF%BC%9F"><span class="nav-number">20.</span> <span class="nav-text">20.什么情况会导致 Kafka 运行变慢？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#21-%E4%BD%BF%E7%94%A8-Kafka-%E9%9B%86%E7%BE%A4%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">21.</span> <span class="nav-text">21.使用 Kafka 集群需要注意什么？</span></a></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">blydd</p>
-  <div class="site-description" itemprop="description">米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.</div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">66</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">16</span>
-        <span class="site-state-item-name">分类</span>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">92</span>
-        <span class="site-state-item-name">标签</span>
-      </div>
-  </nav>
-</div>
-
-
-
-      </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
   
-  &copy; 
-  <span itemprop="copyrightYear">2021</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">blydd</span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
-  </div>
-
-        
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
-  </div>
+  
+<script src="/js/main.js"></script>
 
   
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/muse.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-
-
   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  <script>
+    var addLazyload = function () {
+      var observer = lozad('.lozad', {
+        load: function (el) {
+          el.srcset = el.getAttribute('data-src');
+        },
+        loaded: function (el) {
+          el.classList.add('loaded');
+        }
+      });
+      observer.observe();
+    }
+  </script>
+  <script>loadScript("/js/lib/lozad.min.js", addLazyload)</script>
   
-
   
-
 </body>
+
 </html>

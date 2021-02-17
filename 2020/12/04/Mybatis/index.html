@@ -1,206 +1,243 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html  lang="zh-CN" >
+
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.3.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="theme-color" content="#fff" id="theme-color">
+  <meta name="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+  <link rel="icon" href="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png">
+  <title>mybatis</title>
+  
+  
+  <meta property="og:title" content="mybatis">
+  
+  
+  <meta property="og:url" content="https://www.mele.cool/2020/12/04/Mybatis/index.html">
+  
+  
+  <meta property="og:img" content="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png">
+  
+  
+  <meta property="og:img" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+  
+  
+  <meta property="og:type" content="article">
+  <meta property="og:article:published_time" content="2020-12-04">
+  <meta property="og:article:modified_time" content="2020-12-04">
+  <meta property="og:article:author" content="blydd">
+  
+  
+  <meta property="og:article:tag" content="mybatis">
+  
+  
+  
+  
+  <!-- 百度统计代码 -->
+<script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?52aed7fa581354c5e14562bad1a1def2";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+ <!-- 百度统计代码 --> 
+  <script>
+    // control reverse button
+    var reverseDarkList = {
+      dark: 'light',
+      light: 'dark'
+    };
+    var themeColor = {
+      dark: '#1c1c1e',
+      light: '#fff'
+    }
+    // get the data of css prefers-color-scheme
+    var getCssMediaQuery = function() {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    };
+    // reverse current darkmode setting function
+    var reverseDarkModeSetting = function() {
+      var setting = localStorage.getItem('user-color-scheme');
+      if(reverseDarkList[setting]) {
+        setting = reverseDarkList[setting];
+      } else if(setting === null) {
+        setting = reverseDarkList[getCssMediaQuery()];
+      } else {
+        return;
+      }
+      localStorage.setItem('user-color-scheme', setting);
+      return setting;
+    };
+    // apply current darkmode setting
+    var setDarkmode = function(mode) {
+      var setting = mode || localStorage.getItem('user-color-scheme');
+      if(setting === getCssMediaQuery()) {
+        document.documentElement.removeAttribute('data-user-color-scheme');
+        localStorage.removeItem('user-color-scheme');
+        document.getElementById('theme-color').content = themeColor[setting];
+      } else if(reverseDarkList[setting]) {
+        document.documentElement.setAttribute('data-user-color-scheme', setting);
+        document.getElementById('theme-color').content = themeColor[setting];
+      } else {
+        document.documentElement.removeAttribute('data-user-color-scheme');
+        localStorage.removeItem('user-color-scheme');
+        document.getElementById('theme-color').content = themeColor[getCssMediaQuery()];
+      }
+    };
+    setDarkmode();
+  </script>
+  <script>
+    function loadScript(url, cb) {
+      var script = document.createElement('script');
+      script.src = url;
+      if (cb) script.onload = cb;
+      script.async = true;
+      document.body.appendChild(script);
+    }
+  </script>
+  
+  <link rel="preload" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css" as="style" >
+  <link rel="preload" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css" as="style" >
+  
+  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.js" as="script">
+  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.css" as="style" >
+  
+  
+  <link rel="preload" href="/js/lib/lozad.min.js" as="script">
+  
+  
+  
+  
+  
+  
+  
+  
 <link rel="stylesheet" href="/css/main.css">
 
-
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"www.mele.cool","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
-  </script>
-
-  <meta name="description" content="mybatis入门">
-<meta property="og:type" content="article">
-<meta property="og:title" content="mybatis">
-<meta property="og:url" content="https://www.mele.cool/2020/12/04/Mybatis/index.html">
-<meta property="og:site_name" content="米乐博客">
-<meta property="og:description" content="mybatis入门">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-12-04T02:10:17.000Z">
-<meta property="article:modified_time" content="2020-12-04T12:00:43.142Z">
-<meta property="article:author" content="blydd">
-<meta property="article:tag" content="mybatis">
-<meta name="twitter:card" content="summary">
-
-<link rel="canonical" href="https://www.mele.cool/2020/12/04/Mybatis/">
-
-
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
-
-  <title>mybatis | 米乐博客</title>
-  
-
-
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
-
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">米乐博客</h1>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-      <p class="site-subtitle" itemprop="description">积跬步至千里</p>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-    </div>
-  </div>
-</div>
-
-
-
-
-<nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
-  </ul>
-</nav>
-
-
-
-
-</div>
-    </header>
-
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
-            
-
-    
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://www.mele.cool/2020/12/04/Mybatis/">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="blydd">
-      <meta itemprop="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
-    </span>
+  
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css">
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="米乐博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          mybatis
-        </h1>
+  
+  
+<link rel="stylesheet" href="/js/lib/lightbox/baguetteBox.min.css">
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
 
-              <time title="创建时间：2020-12-04 10:10:17 / 修改时间：20:00:43" itemprop="dateCreated datePublished" datetime="2020-12-04T10:10:17+08:00">2020-12-04</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-                </span>
-            </span>
 
-          
-            <div class="post-description">mybatis入门</div>
-
-        </div>
-      </header>
-
+<body>
+  <div class="wrapper">
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+    <nav class="navbar">
+  <div class="navbar-logo">
+    <span class="navbar-logo-main">
       
-        <h1 id="1-Mybatis简介"><a href="#1-Mybatis简介" class="headerlink" title="1.Mybatis简介"></a><strong>1.Mybatis</strong>简介</h1><h2 id="1-1原始jdbc操作（查询数据）"><a href="#1-1原始jdbc操作（查询数据）" class="headerlink" title="1.1原始jdbc操作（查询数据）"></a><strong>1.1</strong>原始<strong>jdbc</strong>操作（查询数据）</h2><p>![image-20200912201734197](/Users/boguotong/Library/Application Support/typora-user-images/image-20200912201734197.png)</p>
+      <img class="navbar-logo-img" src="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png" alt="logo">
+      
+      <span class="navbar-logo-dsc">mele blog</span>
+    </span>
+  </div>
+  <div class="navbar-menu">
+    
+    <a href="/" class="navbar-menu-item">
+    
+    首页
+    
+    </a>
+    
+    <a href="/archives" class="navbar-menu-item">
+    
+    归档
+    
+    </a>
+    
+    <a href="/tags" class="navbar-menu-item">
+    
+    标签
+    
+    </a>
+    
+    <a href="/categories" class="navbar-menu-item">
+    
+    分类
+    
+    </a>
+    
+    <a href="/about" class="navbar-menu-item">
+    
+    关于
+    
+    </a>
+    
+    <a href="/links" class="navbar-menu-item">
+    
+    友链
+    
+    </a>
+    
+    <a class="navbar-menu-item darknavbar" id="dark"><i class="iconfont icon-weather"></i></a>
+    <a class="navbar-menu-item searchnavbar" id="search"><i class="iconfont icon-search" style="font-size: 1.2rem; font-weight: 400;"></i></a>
+  </div>
+</nav>
+    
+    <div id="local-search" style="display: none;">
+      <input class="navbar-menu-item" id="search-input" placeholder="请输入搜索内容...">
+      <div id="search-content"></div>
+    </div>
+    
+    <div class="section-wrap">
+      <div class="container">
+        <div class="columns">
+          <main class="main-column">
+<article class="card card-content">
+  <header>
+    <h1 class="post-title">
+      mybatis
+    </h1>
+  </header>
+  <div class="post-meta post-show-meta">
+    <time datetime="2020-12-04T02:10:17.000Z">
+      <i class="iconfont icon-calendar" style="margin-right: 2px;"></i>
+      <span>2020-12-04</span>
+    </time>
+    
+    <span class="dot"></span>
+    
+    <a href="/categories/java/" class="post-meta-link">java</a>
+    
+    
+    
+    <span class="dot"></span>
+    <span>2.5k 字</span>
+    
+  </div>
+  
+  <div class="post-meta post-show-meta" style="margin-top: -10px;">
+    <div style="display: flex; align-items: center;">
+      <i class="iconfont icon-biaoqian" style="margin-right: 2px; font-size: 1.15rem;"></i>
+      
+      
+        <a href="/tags/mybatis/" class="post-meta-link">mybatis</a>
+      
+    </div>
+  </div>
+  
+  </header>
+  <div id="section" class="post-content">
+    <h1 id="1-Mybatis简介"><a href="#1-Mybatis简介" class="headerlink" title="1.Mybatis简介"></a><strong>1.Mybatis</strong>简介</h1><h2 id="1-1原始jdbc操作（查询数据）"><a href="#1-1原始jdbc操作（查询数据）" class="headerlink" title="1.1原始jdbc操作（查询数据）"></a><strong>1.1</strong>原始<strong>jdbc</strong>操作（查询数据）</h2><p>![image-20200912201734197](/Users/boguotong/Library/Application Support/typora-user-images/image-20200912201734197.png)</p>
 <h2 id="1-2原始jdbc操作（插⼊数据）"><a href="#1-2原始jdbc操作（插⼊数据）" class="headerlink" title="1.2原始jdbc操作（插⼊数据）"></a><strong>1.2</strong>原始<strong>jdbc</strong>操作（插⼊数据）</h2><p>![image-20200912201752789](/Users/boguotong/Library/Application Support/typora-user-images/image-20200912201752789.png)</p>
 <h2 id="1-3-原始jdbc操作的分析"><a href="#1-3-原始jdbc操作的分析" class="headerlink" title="1.3 原始jdbc操作的分析"></a><strong>1.3</strong> 原始<strong>jdbc</strong>操作的分析</h2><p><strong>原始jdbc开发存在的问题如下：</strong></p>
 <blockquote>
@@ -234,23 +271,23 @@
 <li>编写核⼼⽂件SqlMapConfifig.xml</li>
 <li>编写测试类</li>
 </ol>
-<h2 id="2-2-环境搭建"><a href="#2-2-环境搭建" class="headerlink" title="2.2 环境搭建"></a><strong>2.2</strong> 环境搭建</h2><h3 id="1-导⼊MyBatis的坐标和其他相关坐标"><a href="#1-导⼊MyBatis的坐标和其他相关坐标" class="headerlink" title="1)导⼊MyBatis的坐标和其他相关坐标"></a>1)导⼊MyBatis的坐标和其他相关坐标</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--mybatis坐标--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.4.5<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--mysql驱动坐标--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--单元测试坐标--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--⽇志坐标--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>log4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="2-2-环境搭建"><a href="#2-2-环境搭建" class="headerlink" title="2.2 环境搭建"></a><strong>2.2</strong> 环境搭建</h2><h3 id="1-导⼊MyBatis的坐标和其他相关坐标"><a href="#1-导⼊MyBatis的坐标和其他相关坐标" class="headerlink" title="1)导⼊MyBatis的坐标和其他相关坐标"></a>1)导⼊MyBatis的坐标和其他相关坐标</h3><pre class="highlight"><span class="line"><span class="comment">&lt;!--mybatis坐标--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.4.5<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--mysql驱动坐标--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--单元测试坐标--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--⽇志坐标--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>log4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre>
 
 
 <h3 id="2-创建user数据表"><a href="#2-创建user数据表" class="headerlink" title="2) 创建user数据表"></a>2) 创建user数据表</h3><p>![image-20200912202818749](/Users/boguotong/Library/Application Support/typora-user-images/image-20200912202818749.png)</p>
-<h3 id="3-编写User实体"><a href="#3-编写User实体" class="headerlink" title="3) 编写User实体"></a>3) 编写User实体</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123; </span><br><span class="line">      <span class="keyword">private</span> <span class="keyword">int</span> id; </span><br><span class="line">      <span class="keyword">private</span> String username; </span><br><span class="line">      <span class="keyword">private</span> String password;</span><br><span class="line">      <span class="comment">//省略get个set⽅法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-编写User实体"><a href="#3-编写User实体" class="headerlink" title="3) 编写User实体"></a>3) 编写User实体</h3><pre class="highlight"><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123; </span><br><span class="line">      <span class="keyword">private</span> <span class="keyword">int</span> id; </span><br><span class="line">      <span class="keyword">private</span> String username; </span><br><span class="line">      <span class="keyword">private</span> String password;</span><br><span class="line">      <span class="comment">//省略get个set⽅法</span></span><br><span class="line">&#125;</span><br></pre>
 
 
-<h3 id="4-编写UserMapper映射⽂件"><a href="#4-编写UserMapper映射⽂件" class="headerlink" title="4)编写UserMapper映射⽂件"></a>4)编写UserMapper映射⽂件</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">mapper</span> </span></span><br><span class="line"><span class="meta">PUBLIC <span class="meta-string">&quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;</span> </span></span><br><span class="line"><span class="meta"><span class="meta-string">&quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">&quot;userMapper&quot;</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findAll&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;com.itheima.domain.User&quot;</span>&gt;</span></span><br><span class="line">        select * from User </span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="4-编写UserMapper映射⽂件"><a href="#4-编写UserMapper映射⽂件" class="headerlink" title="4)编写UserMapper映射⽂件"></a>4)编写UserMapper映射⽂件</h3><pre class="highlight"><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">mapper</span> </span></span><br><span class="line"><span class="meta">PUBLIC <span class="meta-string">&quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;</span> </span></span><br><span class="line"><span class="meta"><span class="meta-string">&quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">&quot;userMapper&quot;</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findAll&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;com.itheima.domain.User&quot;</span>&gt;</span></span><br><span class="line">        select * from User </span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre>
 
 
-<h3 id="5-编写MyBatis核⼼⽂件"><a href="#5-编写MyBatis核⼼⽂件" class="headerlink" title="5) 编写MyBatis核⼼⽂件"></a>5) 编写MyBatis核⼼⽂件</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">configuration</span> <span class="meta-keyword">PUBLIC</span> <span class="meta-string">&quot;-//mybatis.org//DTD Config 3.0//EN“</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">&quot;</span>http://mybatis.org/dtd/mybatis-3-config.dtd<span class="meta-string">&quot;&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta-string"></span></span></span><br><span class="line"><span class="meta"><span class="meta-string">&lt;configuration&gt; </span></span></span><br><span class="line"><span class="meta"><span class="meta-string">    &lt;environments default=&quot;</span>development<span class="meta-string">&quot;&gt; </span></span></span><br><span class="line"><span class="meta"><span class="meta-string">        &lt;environment id=&quot;</span>development<span class="meta-string">&quot;&gt; </span></span></span><br><span class="line"><span class="meta"><span class="meta-string">        		&lt;transactionManager type=&quot;</span>JDBC<span class="meta-string">&quot;/&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">            &lt;dataSource type=&quot;</span>POOLED<span class="meta-string">&quot;&gt; </span></span></span><br><span class="line"><span class="meta"><span class="meta-string">                &lt;property name=&quot;</span>driver<span class="meta-string">&quot; value=&quot;</span>com.mysql.jdbc.Driver<span class="meta-string">&quot;/&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">                &lt;property name=&quot;</span>url<span class="meta-string">&quot; value=&quot;</span>jdbc:mysql:///test<span class="meta-string">&quot;/&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">                &lt;property name=&quot;</span>username<span class="meta-string">&quot; value=&quot;</span>root<span class="meta-string">&quot;/&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">                &lt;property name=&quot;</span>password<span class="meta-string">&quot; value=&quot;</span>root<span class="meta-string">&quot;/&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">            &lt;/dataSource&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">        &lt;/environment&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">    &lt;/environments&gt; </span></span></span><br><span class="line"><span class="meta"><span class="meta-string">    &lt;mappers&gt; </span></span></span><br><span class="line"><span class="meta"><span class="meta-string">   		 &lt;mapper resource=&quot;</span>com/itheima/mapper/UserMapper.xml<span class="meta-string">&quot;/&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">    &lt;/mappers&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">&lt;/configuration&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="5-编写MyBatis核⼼⽂件"><a href="#5-编写MyBatis核⼼⽂件" class="headerlink" title="5) 编写MyBatis核⼼⽂件"></a>5) 编写MyBatis核⼼⽂件</h3><pre class="highlight"><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">configuration</span> <span class="meta-keyword">PUBLIC</span> <span class="meta-string">&quot;-//mybatis.org//DTD Config 3.0//EN“</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">&quot;</span>http://mybatis.org/dtd/mybatis-3-config.dtd<span class="meta-string">&quot;&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta-string"></span></span></span><br><span class="line"><span class="meta"><span class="meta-string">&lt;configuration&gt; </span></span></span><br><span class="line"><span class="meta"><span class="meta-string">    &lt;environments default=&quot;</span>development<span class="meta-string">&quot;&gt; </span></span></span><br><span class="line"><span class="meta"><span class="meta-string">        &lt;environment id=&quot;</span>development<span class="meta-string">&quot;&gt; </span></span></span><br><span class="line"><span class="meta"><span class="meta-string">        		&lt;transactionManager type=&quot;</span>JDBC<span class="meta-string">&quot;/&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">            &lt;dataSource type=&quot;</span>POOLED<span class="meta-string">&quot;&gt; </span></span></span><br><span class="line"><span class="meta"><span class="meta-string">                &lt;property name=&quot;</span>driver<span class="meta-string">&quot; value=&quot;</span>com.mysql.jdbc.Driver<span class="meta-string">&quot;/&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">                &lt;property name=&quot;</span>url<span class="meta-string">&quot; value=&quot;</span>jdbc:mysql:///test<span class="meta-string">&quot;/&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">                &lt;property name=&quot;</span>username<span class="meta-string">&quot; value=&quot;</span>root<span class="meta-string">&quot;/&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">                &lt;property name=&quot;</span>password<span class="meta-string">&quot; value=&quot;</span>root<span class="meta-string">&quot;/&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">            &lt;/dataSource&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">        &lt;/environment&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">    &lt;/environments&gt; </span></span></span><br><span class="line"><span class="meta"><span class="meta-string">    &lt;mappers&gt; </span></span></span><br><span class="line"><span class="meta"><span class="meta-string">   		 &lt;mapper resource=&quot;</span>com/itheima/mapper/UserMapper.xml<span class="meta-string">&quot;/&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">    &lt;/mappers&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">&lt;/configuration&gt;</span></span></span><br></pre>
 
 
-<h2 id="2-3-编写测试代码-加载核⼼配置⽂件"><a href="#2-3-编写测试代码-加载核⼼配置⽂件" class="headerlink" title="2.3 编写测试代码//加载核⼼配置⽂件"></a><strong>2.3</strong> 编写测试代码//加载核⼼配置⽂件</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">InputStream resourceAsStream = Resources.getResourceAsStream(<span class="string">&quot;SqlMapConfig.xml&quot;</span>);</span><br><span class="line"><span class="comment">//获得sqlSession⼯⼚对象</span></span><br><span class="line">SqlSessionFactory sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(resourceAsStream);</span><br><span class="line"><span class="comment">//获得sqlSession对象</span></span><br><span class="line">SqlSession sqlSession = sqlSessionFactory.openSession();</span><br><span class="line"><span class="comment">//执⾏sql语句</span></span><br><span class="line">List&lt;User&gt; userList = sqlSession.selectList(<span class="string">&quot;userMapper.findAll&quot;</span>);</span><br><span class="line"><span class="comment">//打印结果</span></span><br><span class="line">System.out.println(userList);</span><br><span class="line"><span class="comment">//释放资源</span></span><br><span class="line">sqlSession.close();</span><br></pre></td></tr></table></figure>
+<h2 id="2-3-编写测试代码-加载核⼼配置⽂件"><a href="#2-3-编写测试代码-加载核⼼配置⽂件" class="headerlink" title="2.3 编写测试代码//加载核⼼配置⽂件"></a><strong>2.3</strong> 编写测试代码//加载核⼼配置⽂件</h2><pre class="highlight"><span class="line">InputStream resourceAsStream = Resources.getResourceAsStream(<span class="string">&quot;SqlMapConfig.xml&quot;</span>);</span><br><span class="line"><span class="comment">//获得sqlSession⼯⼚对象</span></span><br><span class="line">SqlSessionFactory sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(resourceAsStream);</span><br><span class="line"><span class="comment">//获得sqlSession对象</span></span><br><span class="line">SqlSession sqlSession = sqlSessionFactory.openSession();</span><br><span class="line"><span class="comment">//执⾏sql语句</span></span><br><span class="line">List&lt;User&gt; userList = sqlSession.selectList(<span class="string">&quot;userMapper.findAll&quot;</span>);</span><br><span class="line"><span class="comment">//打印结果</span></span><br><span class="line">System.out.println(userList);</span><br><span class="line"><span class="comment">//释放资源</span></span><br><span class="line">sqlSession.close();</span><br></pre>
 <h1 id="3-MyBatis的映射⽂件概述"><a href="#3-MyBatis的映射⽂件概述" class="headerlink" title="3. MyBatis的映射⽂件概述"></a><strong>3. MyBatis</strong>的映射⽂件概述</h1><p>![image-20200912203231052](/Users/boguotong/Library/Application Support/typora-user-images/image-20200912203231052.png)</p>
-<h1 id="4-MyBatis的增删改查操作"><a href="#4-MyBatis的增删改查操作" class="headerlink" title="4. MyBatis的增删改查操作"></a><strong>4. MyBatis</strong>的增删改查操作</h1><h2 id="4-1-MyBatis的插⼊数据操作"><a href="#4-1-MyBatis的插⼊数据操作" class="headerlink" title="4.1 MyBatis的插⼊数据操作"></a><strong>4.1 MyBatis</strong>的插⼊数据操作</h2><h3 id="1-编写UserMapper-映射⽂件"><a href="#1-编写UserMapper-映射⽂件" class="headerlink" title="1)**编写UserMapper**映射⽂件"></a><strong>1)**编写</strong>UserMapper**映射⽂件</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">&quot;userMapper&quot;</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">&quot;add&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;com.itheima.domain.User&quot;</span>&gt;</span></span><br><span class="line">    		insert into user values(#&#123;id&#125;,#&#123;username&#125;,#&#123;password&#125;) </span><br><span class="line">    <span class="tag">&lt;/<span class="name">insert</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="2-编写插⼊实体User-的代码"><a href="#2-编写插⼊实体User-的代码" class="headerlink" title="2)**编写插⼊实体User**的代码"></a><strong>2)**编写插⼊实体</strong>User**的代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">InputStream resourceAsStream =</span><br><span class="line">Resources.getResourceAsStream(<span class="string">&quot;SqlMapConfig.xml&quot;</span>);</span><br><span class="line">SqlSessionFactory sqlSessionFactory = <span class="keyword">new</span></span><br><span class="line">SqlSessionFactoryBuilder().build(resourceAsStream);</span><br><span class="line">SqlSession sqlSession = sqlSessionFactory.openSession();</span><br><span class="line"><span class="keyword">int</span> insert = sqlSession.insert(<span class="string">&quot;userMapper.add&quot;</span>, user);</span><br><span class="line">System.out.println(insert);</span><br><span class="line"><span class="comment">//提交事务</span></span><br><span class="line">sqlSession.commit();</span><br><span class="line">sqlSession.close();</span><br></pre></td></tr></table></figure>
+<h1 id="4-MyBatis的增删改查操作"><a href="#4-MyBatis的增删改查操作" class="headerlink" title="4. MyBatis的增删改查操作"></a><strong>4. MyBatis</strong>的增删改查操作</h1><h2 id="4-1-MyBatis的插⼊数据操作"><a href="#4-1-MyBatis的插⼊数据操作" class="headerlink" title="4.1 MyBatis的插⼊数据操作"></a><strong>4.1 MyBatis</strong>的插⼊数据操作</h2><h3 id="1-编写UserMapper-映射⽂件"><a href="#1-编写UserMapper-映射⽂件" class="headerlink" title="1)**编写UserMapper**映射⽂件"></a><strong>1)**编写</strong>UserMapper**映射⽂件</h3><pre class="highlight"><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">&quot;userMapper&quot;</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">&quot;add&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;com.itheima.domain.User&quot;</span>&gt;</span></span><br><span class="line">    		insert into user values(#&#123;id&#125;,#&#123;username&#125;,#&#123;password&#125;) </span><br><span class="line">    <span class="tag">&lt;/<span class="name">insert</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre>
+<h3 id="2-编写插⼊实体User-的代码"><a href="#2-编写插⼊实体User-的代码" class="headerlink" title="2)**编写插⼊实体User**的代码"></a><strong>2)**编写插⼊实体</strong>User**的代码</h3><pre class="highlight"><span class="line">InputStream resourceAsStream =</span><br><span class="line">Resources.getResourceAsStream(<span class="string">&quot;SqlMapConfig.xml&quot;</span>);</span><br><span class="line">SqlSessionFactory sqlSessionFactory = <span class="keyword">new</span></span><br><span class="line">SqlSessionFactoryBuilder().build(resourceAsStream);</span><br><span class="line">SqlSession sqlSession = sqlSessionFactory.openSession();</span><br><span class="line"><span class="keyword">int</span> insert = sqlSession.insert(<span class="string">&quot;userMapper.add&quot;</span>, user);</span><br><span class="line">System.out.println(insert);</span><br><span class="line"><span class="comment">//提交事务</span></span><br><span class="line">sqlSession.commit();</span><br><span class="line">sqlSession.close();</span><br></pre>
 
 
 <h3 id="3-插⼊操作注意问题"><a href="#3-插⼊操作注意问题" class="headerlink" title="**3)**插⼊操作注意问题"></a>**3)**插⼊操作注意问题</h3><ul>
@@ -260,20 +297,20 @@
 <li>插⼊操作使⽤的API是sqlSession.insert(“命名空间.id”,实体对象);</li>
 <li>插⼊操作涉及数据库数据变化，所以要使⽤sqlSession对象显示的提交事务，即sqlSession.commit()</li>
 </ul>
-<h2 id="4-2-MyBatis的修改数据操作"><a href="#4-2-MyBatis的修改数据操作" class="headerlink" title="4.2 MyBatis的修改数据操作"></a><strong>4.2 MyBatis</strong>的修改数据操作</h2><h3 id="1-编写UserMapper-映射⽂件-1"><a href="#1-编写UserMapper-映射⽂件-1" class="headerlink" title="1)**编写UserMapper**映射⽂件"></a><strong>1)**编写</strong>UserMapper**映射⽂件</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">&quot;userMapper&quot;</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">update</span> <span class="attr">id</span>=<span class="string">&quot;update&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;com.itheima.domain.User&quot;</span>&gt;</span></span><br><span class="line">     		update user set username=#&#123;username&#125;,password=#&#123;password&#125; where id=#&#123;id&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">update</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-2-MyBatis的修改数据操作"><a href="#4-2-MyBatis的修改数据操作" class="headerlink" title="4.2 MyBatis的修改数据操作"></a><strong>4.2 MyBatis</strong>的修改数据操作</h2><h3 id="1-编写UserMapper-映射⽂件-1"><a href="#1-编写UserMapper-映射⽂件-1" class="headerlink" title="1)**编写UserMapper**映射⽂件"></a><strong>1)**编写</strong>UserMapper**映射⽂件</h3><pre class="highlight"><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">&quot;userMapper&quot;</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">update</span> <span class="attr">id</span>=<span class="string">&quot;update&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;com.itheima.domain.User&quot;</span>&gt;</span></span><br><span class="line">     		update user set username=#&#123;username&#125;,password=#&#123;password&#125; where id=#&#123;id&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">update</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre>
 
 
-<h3 id="2-编写修改实体User-的代码InputStream-resourceAsStream"><a href="#2-编写修改实体User-的代码InputStream-resourceAsStream" class="headerlink" title="2)**编写修改实体User**的代码InputStream resourceAsStream ="></a><strong>2)**编写修改实体</strong>User**的代码InputStream resourceAsStream =</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Resources.getResourceAsStream(<span class="string">&quot;SqlMapConfig.xml&quot;</span>);</span><br><span class="line">SqlSessionFactory sqlSessionFactory = <span class="keyword">new</span></span><br><span class="line">SqlSessionFactoryBuilder().build(resourceAsStream);</span><br><span class="line">SqlSession sqlSession = sqlSessionFactory.openSession();</span><br><span class="line"><span class="keyword">int</span> update = sqlSession.update(<span class="string">&quot;userMapper.update&quot;</span>, user);</span><br><span class="line">System.out.println(update);</span><br><span class="line">sqlSession.commit();</span><br><span class="line">sqlSession.close();</span><br></pre></td></tr></table></figure>
+<h3 id="2-编写修改实体User-的代码InputStream-resourceAsStream"><a href="#2-编写修改实体User-的代码InputStream-resourceAsStream" class="headerlink" title="2)**编写修改实体User**的代码InputStream resourceAsStream ="></a><strong>2)**编写修改实体</strong>User**的代码InputStream resourceAsStream =</h3><pre class="highlight"><span class="line">Resources.getResourceAsStream(<span class="string">&quot;SqlMapConfig.xml&quot;</span>);</span><br><span class="line">SqlSessionFactory sqlSessionFactory = <span class="keyword">new</span></span><br><span class="line">SqlSessionFactoryBuilder().build(resourceAsStream);</span><br><span class="line">SqlSession sqlSession = sqlSessionFactory.openSession();</span><br><span class="line"><span class="keyword">int</span> update = sqlSession.update(<span class="string">&quot;userMapper.update&quot;</span>, user);</span><br><span class="line">System.out.println(update);</span><br><span class="line">sqlSession.commit();</span><br><span class="line">sqlSession.close();</span><br></pre>
 
 
 <h3 id="3-修改操作注意问题"><a href="#3-修改操作注意问题" class="headerlink" title="**3)**修改操作注意问题"></a>**3)**修改操作注意问题</h3><ul>
 <li>• 修改语句使⽤update标签</li>
 <li>• 修改操作使⽤的API是sqlSession.update(“命名空间.id”,实体对象);</li>
 </ul>
-<h2 id="4-3-MyBatis的删除数据操作"><a href="#4-3-MyBatis的删除数据操作" class="headerlink" title="4.3 MyBatis的删除数据操作"></a><strong>4.3 MyBatis</strong>的删除数据操作</h2><h3 id="1-编写UserMapper-映射⽂件-2"><a href="#1-编写UserMapper-映射⽂件-2" class="headerlink" title="1)**编写UserMapper**映射⽂件"></a><strong>1)**编写</strong>UserMapper**映射⽂件</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">&quot;userMapper&quot;</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">delete</span> <span class="attr">id</span>=<span class="string">&quot;delete&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;java.lang.Integer&quot;</span>&gt;</span></span><br><span class="line">     		delete from user where id=#&#123;id&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">delete</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-3-MyBatis的删除数据操作"><a href="#4-3-MyBatis的删除数据操作" class="headerlink" title="4.3 MyBatis的删除数据操作"></a><strong>4.3 MyBatis</strong>的删除数据操作</h2><h3 id="1-编写UserMapper-映射⽂件-2"><a href="#1-编写UserMapper-映射⽂件-2" class="headerlink" title="1)**编写UserMapper**映射⽂件"></a><strong>1)**编写</strong>UserMapper**映射⽂件</h3><pre class="highlight"><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">&quot;userMapper&quot;</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">delete</span> <span class="attr">id</span>=<span class="string">&quot;delete&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;java.lang.Integer&quot;</span>&gt;</span></span><br><span class="line">     		delete from user where id=#&#123;id&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">delete</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre>
 
 
-<h3 id="2-编写删除数据的代码"><a href="#2-编写删除数据的代码" class="headerlink" title="**2)**编写删除数据的代码"></a>**2)**编写删除数据的代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">InputStream resourceAsStream =</span><br><span class="line">Resources.getResourceAsStream(<span class="string">&quot;SqlMapConfig.xml&quot;</span>);</span><br><span class="line">SqlSessionFactory sqlSessionFactory = <span class="keyword">new</span></span><br><span class="line">SqlSessionFactoryBuilder().build(resourceAsStream);</span><br><span class="line">SqlSession sqlSession = sqlSessionFactory.openSession();</span><br><span class="line"><span class="keyword">int</span> delete = sqlSession.delete(<span class="string">&quot;userMapper.delete&quot;</span>,<span class="number">3</span>);</span><br><span class="line">System.out.println(delete);</span><br><span class="line">sqlSession.commit();</span><br><span class="line">sqlSession.close();</span><br></pre></td></tr></table></figure>
+<h3 id="2-编写删除数据的代码"><a href="#2-编写删除数据的代码" class="headerlink" title="**2)**编写删除数据的代码"></a>**2)**编写删除数据的代码</h3><pre class="highlight"><span class="line">InputStream resourceAsStream =</span><br><span class="line">Resources.getResourceAsStream(<span class="string">&quot;SqlMapConfig.xml&quot;</span>);</span><br><span class="line">SqlSessionFactory sqlSessionFactory = <span class="keyword">new</span></span><br><span class="line">SqlSessionFactoryBuilder().build(resourceAsStream);</span><br><span class="line">SqlSession sqlSession = sqlSessionFactory.openSession();</span><br><span class="line"><span class="keyword">int</span> delete = sqlSession.delete(<span class="string">&quot;userMapper.delete&quot;</span>,<span class="number">3</span>);</span><br><span class="line">System.out.println(delete);</span><br><span class="line">sqlSession.commit();</span><br><span class="line">sqlSession.close();</span><br></pre>
 
 
 <h3 id="3-删除操作注意问题"><a href="#3-删除操作注意问题" class="headerlink" title="**3)**删除操作注意问题"></a>**3)**删除操作注意问题</h3><ul>
@@ -281,7 +318,7 @@
 <li>Sql语句中使⽤#{任意字符串}⽅式引⽤传递的单个参数</li>
 <li>删除操作使⽤的API是sqlSession.delete(“命名空间.id”,Object);</li>
 </ul>
-<h2 id="4-4-知识⼩结"><a href="#4-4-知识⼩结" class="headerlink" title="4.4 知识⼩结"></a><strong>4.4</strong> 知识⼩结</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">增删改查映射配置与API：</span><br><span class="line">查询数据： List<span class="tag">&lt;<span class="name">User</span>&gt;</span> userList = sqlSession.selectList(&quot;userMapper.findAll&quot;);</span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findAll&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;com.itheima.domain.User&quot;</span>&gt;</span></span><br><span class="line">		select * from User</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">添加数据： sqlSession.insert(&quot;userMapper.add&quot;, user);</span><br><span class="line"><span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">&quot;add&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;com.itheima.domain.User&quot;</span>&gt;</span></span><br><span class="line">		insert into user values(#&#123;id&#125;,#&#123;username&#125;,#&#123;password&#125;)</span><br><span class="line"><span class="tag">&lt;/<span class="name">insert</span>&gt;</span></span><br><span class="line">修改数据： sqlSession.update(&quot;userMapper.update&quot;, user);</span><br><span class="line"><span class="tag">&lt;<span class="name">update</span> <span class="attr">id</span>=<span class="string">&quot;update&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;com.itheima.domain.User&quot;</span>&gt;</span></span><br><span class="line">		update user set username=#&#123;username&#125;,password=#&#123;password&#125; where id=# &#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">update</span>&gt;</span></span><br><span class="line">删除数据：sqlSession.delete(&quot;userMapper.delete&quot;,3);</span><br><span class="line"><span class="tag">&lt;<span class="name">delete</span> <span class="attr">id</span>=<span class="string">&quot;delete&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;java.lang.Integer&quot;</span>&gt;</span></span><br><span class="line">		delete from user where id=#&#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">delete</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-4-知识⼩结"><a href="#4-4-知识⼩结" class="headerlink" title="4.4 知识⼩结"></a><strong>4.4</strong> 知识⼩结</h2><pre class="highlight"><span class="line">增删改查映射配置与API：</span><br><span class="line">查询数据： List<span class="tag">&lt;<span class="name">User</span>&gt;</span> userList = sqlSession.selectList(&quot;userMapper.findAll&quot;);</span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findAll&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;com.itheima.domain.User&quot;</span>&gt;</span></span><br><span class="line">		select * from User</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">添加数据： sqlSession.insert(&quot;userMapper.add&quot;, user);</span><br><span class="line"><span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">&quot;add&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;com.itheima.domain.User&quot;</span>&gt;</span></span><br><span class="line">		insert into user values(#&#123;id&#125;,#&#123;username&#125;,#&#123;password&#125;)</span><br><span class="line"><span class="tag">&lt;/<span class="name">insert</span>&gt;</span></span><br><span class="line">修改数据： sqlSession.update(&quot;userMapper.update&quot;, user);</span><br><span class="line"><span class="tag">&lt;<span class="name">update</span> <span class="attr">id</span>=<span class="string">&quot;update&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;com.itheima.domain.User&quot;</span>&gt;</span></span><br><span class="line">		update user set username=#&#123;username&#125;,password=#&#123;password&#125; where id=# &#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">update</span>&gt;</span></span><br><span class="line">删除数据：sqlSession.delete(&quot;userMapper.delete&quot;,3);</span><br><span class="line"><span class="tag">&lt;<span class="name">delete</span> <span class="attr">id</span>=<span class="string">&quot;delete&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;java.lang.Integer&quot;</span>&gt;</span></span><br><span class="line">		delete from user where id=#&#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">delete</span>&gt;</span></span><br></pre>
 
 
 <h1 id="5-MyBatis核⼼配置⽂件概述"><a href="#5-MyBatis核⼼配置⽂件概述" class="headerlink" title="5. MyBatis核⼼配置⽂件概述"></a><strong>5. MyBatis</strong>核⼼配置⽂件概述</h1><h2 id="5-1-MyBatis核⼼配置⽂件层级关系"><a href="#5-1-MyBatis核⼼配置⽂件层级关系" class="headerlink" title="5.1 MyBatis核⼼配置⽂件层级关系"></a><strong>5.1 MyBatis</strong>核⼼配置⽂件层级关系</h2><p>![image-20200912203616928](/Users/boguotong/Library/Application Support/typora-user-images/image-20200912203616928.png)</p>
@@ -311,209 +348,409 @@
 <p>![image-20200912204004237](/Users/boguotong/Library/Application Support/typora-user-images/image-20200912204004237.png)</p>
 <h1 id="6-MyBatis相应API"><a href="#6-MyBatis相应API" class="headerlink" title="6.MyBatis相应API"></a><strong>6.MyBatis</strong>相应<strong>API</strong></h1><h2 id="6-1-SqlSession⼯⼚构建器SqlSessionFactoryBuilder"><a href="#6-1-SqlSession⼯⼚构建器SqlSessionFactoryBuilder" class="headerlink" title="6.1 SqlSession⼯⼚构建器SqlSessionFactoryBuilder"></a><strong>6.1 SqlSession</strong>⼯⼚构建器<strong>SqlSessionFactoryBuilder</strong></h2><p>常⽤API：SqlSessionFactory build(InputStream inputStream)</p>
 <p>通过加载mybatis的核⼼⽂件的输⼊流的形式构建⼀个SqlSessionFactory对象</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String resource = <span class="string">&quot;org/mybatis/builder/mybatis-config.xml&quot;</span>;</span><br><span class="line">InputStream inputStream = Resources.getResourceAsStream(resource);</span><br><span class="line">SqlSessionFactoryBuilder builder = <span class="keyword">new</span> SqlSessionFactoryBuilder();</span><br><span class="line">SqlSessionFactory factory = builder.build(inputStream);</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line">String resource = <span class="string">&quot;org/mybatis/builder/mybatis-config.xml&quot;</span>;</span><br><span class="line">InputStream inputStream = Resources.getResourceAsStream(resource);</span><br><span class="line">SqlSessionFactoryBuilder builder = <span class="keyword">new</span> SqlSessionFactoryBuilder();</span><br><span class="line">SqlSessionFactory factory = builder.build(inputStream);</span><br></pre>
 <p>其中， Resources ⼯具类，这个类在 org.apache.ibatis.io 包中。Resources 类帮助你从类路径下、⽂</p>
 <p>件系统或⼀个 web URL 中加载资源⽂件。</p>
 <h2 id="6-2-SqlSession⼯⼚对象SqlSessionFactory"><a href="#6-2-SqlSession⼯⼚对象SqlSessionFactory" class="headerlink" title="6.2 SqlSession⼯⼚对象SqlSessionFactory"></a><strong>6.2 SqlSession</strong>⼯⼚对象<strong>SqlSessionFactory</strong></h2><p>SqlSessionFactory 有多个个⽅法创建SqlSession 实例。常⽤的有如下两个：</p>
 <p>![image-20200912204118454](/Users/boguotong/Library/Application Support/typora-user-images/image-20200912204118454.png)</p>
 <h2 id="6-3-SqlSession会话对象"><a href="#6-3-SqlSession会话对象" class="headerlink" title="6.3 SqlSession会话对象"></a>6.3 <strong>SqlSession</strong>会话对象</h2><p>SqlSession 实例在 MyBatis 中是⾮常强⼤的⼀个类。在这⾥你会看到所有执⾏语句、提交或回滚事务</p>
 <p>和获取映射器实例的⽅法。执⾏语句的⽅法主要有：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;T&gt; <span class="function">T <span class="title">selectOne</span><span class="params">(String statement, Object parameter)</span> </span></span><br><span class="line"><span class="function">&lt;E&gt; List&lt;E&gt; <span class="title">selectList</span><span class="params">(String statement, Object parameter)</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">insert</span><span class="params">(String statement, Object parameter)</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">update</span><span class="params">(String statement, Object parameter)</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">delete</span><span class="params">(String statement, Object parameter)</span></span></span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line">&lt;T&gt; <span class="function">T <span class="title">selectOne</span><span class="params">(String statement, Object parameter)</span> </span></span><br><span class="line"><span class="function">&lt;E&gt; List&lt;E&gt; <span class="title">selectList</span><span class="params">(String statement, Object parameter)</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">insert</span><span class="params">(String statement, Object parameter)</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">update</span><span class="params">(String statement, Object parameter)</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">delete</span><span class="params">(String statement, Object parameter)</span></span></span><br></pre>
 <p>操作事务的⽅法主要有：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">commit</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rollback</span><span class="params">()</span></span></span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">commit</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rollback</span><span class="params">()</span></span></span><br></pre>
 <p>####</p>
 
-    </div>
-
-    
-    
-    
-
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/mybatis/" rel="tag"># mybatis</a>
-          </div>
-
+  </div>
+  <div>
+  
+  <div class="post-note note-warning copyright" style="margin-top: 42px">
+    <p><span style="font-weight: bold;">作者：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/about">blydd</a></p>
+    <p><span style="font-weight: bold;">文章链接：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/2020/12/04/Mybatis/">https://www.mele.cool/2020/12/04/Mybatis/</a></p>
+    <p><span style="font-weight: bold;">版权声明：</span>本博客所有文章除特别声明外，均采用<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0 协议</a>。转载请注明出处！</p>
+  </div>
+  
+  </div>
+</article>
+<div class="nav">
+  
+  <div class="nav-item-prev">
+    <a href="/2020/12/04/MAC电脑常用命令/" class="nav-link">
+      <i class="iconfont icon-left nav-prev-icon"></i>
+      <div>
+        <div class="nav-label">上一篇</div>
         
-
-
+        <div class="nav-title">mac常用命令 </div>
         
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2020/12/04/Spring%20Boot%20%E4%B8%AD%E7%9A%84%E5%BC%82%E6%AD%A5%E8%B0%83%E7%94%A8/" rel="prev" title="Spring Boot 中的异步调用">
-      <i class="fa fa-chevron-left"></i> Spring Boot 中的异步调用
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/12/04/MAC%E7%94%B5%E8%84%91%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" rel="next" title="mac常用命令">
-      mac常用命令 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      </div>
+    </a>
+  </div>
+  
+  
+  <div class="nav-item-next">
+    <a href="/2020/12/04/Spring Boot 中的异步调用/" class="nav-link">
+      <div>
+        <div class="nav-label">下一篇</div>
+        
+        <div class="nav-title">Spring Boot 中的异步调用 </div>
+        
+      </div>
+      <i class="iconfont icon-right nav-next-icon"></i>
+    </a>
+  </div>
+  
+</div>
+
+<div class="card card-content toc-card" id="mobiletoc">
+  <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
+<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Mybatis%E7%AE%80%E4%BB%8B"><span class="toc-text">1.Mybatis简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1%E5%8E%9F%E5%A7%8Bjdbc%E6%93%8D%E4%BD%9C%EF%BC%88%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE%EF%BC%89"><span class="toc-text">1.1原始jdbc操作（查询数据）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2%E5%8E%9F%E5%A7%8Bjdbc%E6%93%8D%E4%BD%9C%EF%BC%88%E6%8F%92%E2%BC%8A%E6%95%B0%E6%8D%AE%EF%BC%89"><span class="toc-text">1.2原始jdbc操作（插⼊数据）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E5%8E%9F%E5%A7%8Bjdbc%E6%93%8D%E4%BD%9C%E7%9A%84%E5%88%86%E6%9E%90"><span class="toc-text">1.3 原始jdbc操作的分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-%E4%BB%80%E4%B9%88%E6%98%AFMybatis"><span class="toc-text">1.4 什么是Mybatis</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Mybatis%E7%9A%84%E5%BF%AB%E9%80%9F%E2%BC%8A%E2%BB%94"><span class="toc-text">2.Mybatis的快速⼊⻔</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-MyBatis%E5%BC%80%E5%8F%91%E6%AD%A5%E9%AA%A4"><span class="toc-text">2.1 MyBatis开发步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-text">2.2 环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AF%BC%E2%BC%8AMyBatis%E7%9A%84%E5%9D%90%E6%A0%87%E5%92%8C%E5%85%B6%E4%BB%96%E7%9B%B8%E5%85%B3%E5%9D%90%E6%A0%87"><span class="toc-text">1)导⼊MyBatis的坐标和其他相关坐标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%88%9B%E5%BB%BAuser%E6%95%B0%E6%8D%AE%E8%A1%A8"><span class="toc-text">2) 创建user数据表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%BC%96%E5%86%99User%E5%AE%9E%E4%BD%93"><span class="toc-text">3) 编写User实体</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%BC%96%E5%86%99UserMapper%E6%98%A0%E5%B0%84%E2%BD%82%E4%BB%B6"><span class="toc-text">4)编写UserMapper映射⽂件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E7%BC%96%E5%86%99MyBatis%E6%A0%B8%E2%BC%BC%E2%BD%82%E4%BB%B6"><span class="toc-text">5) 编写MyBatis核⼼⽂件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E7%BC%96%E5%86%99%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81-%E5%8A%A0%E8%BD%BD%E6%A0%B8%E2%BC%BC%E9%85%8D%E7%BD%AE%E2%BD%82%E4%BB%B6"><span class="toc-text">2.3 编写测试代码&#x2F;&#x2F;加载核⼼配置⽂件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-MyBatis%E7%9A%84%E6%98%A0%E5%B0%84%E2%BD%82%E4%BB%B6%E6%A6%82%E8%BF%B0"><span class="toc-text">3. MyBatis的映射⽂件概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-MyBatis%E7%9A%84%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5%E6%93%8D%E4%BD%9C"><span class="toc-text">4. MyBatis的增删改查操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-MyBatis%E7%9A%84%E6%8F%92%E2%BC%8A%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C"><span class="toc-text">4.1 MyBatis的插⼊数据操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%BC%96%E5%86%99UserMapper-%E6%98%A0%E5%B0%84%E2%BD%82%E4%BB%B6"><span class="toc-text">1)**编写UserMapper**映射⽂件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%BC%96%E5%86%99%E6%8F%92%E2%BC%8A%E5%AE%9E%E4%BD%93User-%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="toc-text">2)**编写插⼊实体User**的代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%8F%92%E2%BC%8A%E6%93%8D%E4%BD%9C%E6%B3%A8%E6%84%8F%E9%97%AE%E9%A2%98"><span class="toc-text">**3)**插⼊操作注意问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-MyBatis%E7%9A%84%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C"><span class="toc-text">4.2 MyBatis的修改数据操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%BC%96%E5%86%99UserMapper-%E6%98%A0%E5%B0%84%E2%BD%82%E4%BB%B6-1"><span class="toc-text">1)**编写UserMapper**映射⽂件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%BC%96%E5%86%99%E4%BF%AE%E6%94%B9%E5%AE%9E%E4%BD%93User-%E7%9A%84%E4%BB%A3%E7%A0%81InputStream-resourceAsStream"><span class="toc-text">2)**编写修改实体User**的代码InputStream resourceAsStream &#x3D;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BF%AE%E6%94%B9%E6%93%8D%E4%BD%9C%E6%B3%A8%E6%84%8F%E9%97%AE%E9%A2%98"><span class="toc-text">**3)**修改操作注意问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-MyBatis%E7%9A%84%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C"><span class="toc-text">4.3 MyBatis的删除数据操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%BC%96%E5%86%99UserMapper-%E6%98%A0%E5%B0%84%E2%BD%82%E4%BB%B6-2"><span class="toc-text">1)**编写UserMapper**映射⽂件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%BC%96%E5%86%99%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="toc-text">**2)**编写删除数据的代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%88%A0%E9%99%A4%E6%93%8D%E4%BD%9C%E6%B3%A8%E6%84%8F%E9%97%AE%E9%A2%98"><span class="toc-text">**3)**删除操作注意问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-%E7%9F%A5%E8%AF%86%E2%BC%A9%E7%BB%93"><span class="toc-text">4.4 知识⼩结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-MyBatis%E6%A0%B8%E2%BC%BC%E9%85%8D%E7%BD%AE%E2%BD%82%E4%BB%B6%E6%A6%82%E8%BF%B0"><span class="toc-text">5. MyBatis核⼼配置⽂件概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-MyBatis%E6%A0%B8%E2%BC%BC%E9%85%8D%E7%BD%AE%E2%BD%82%E4%BB%B6%E5%B1%82%E7%BA%A7%E5%85%B3%E7%B3%BB"><span class="toc-text">5.1 MyBatis核⼼配置⽂件层级关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-MyBatis%E5%B8%B8%E2%BD%A4%E9%85%8D%E7%BD%AE%E8%A7%A3%E6%9E%90"><span class="toc-text">5.2 MyBatis常⽤配置解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-environments%E6%A0%87%E7%AD%BE"><span class="toc-text">1)environments标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-mapper%E6%A0%87%E7%AD%BE"><span class="toc-text">2)mapper标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Properties%E6%A0%87%E7%AD%BE"><span class="toc-text">3)Properties标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-typeAliases%E6%A0%87%E7%AD%BE"><span class="toc-text">4)typeAliases标签</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-MyBatis%E7%9B%B8%E5%BA%94API"><span class="toc-text">6.MyBatis相应API</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1-SqlSession%E2%BC%AF%E2%BC%9A%E6%9E%84%E5%BB%BA%E5%99%A8SqlSessionFactoryBuilder"><span class="toc-text">6.1 SqlSession⼯⼚构建器SqlSessionFactoryBuilder</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-2-SqlSession%E2%BC%AF%E2%BC%9A%E5%AF%B9%E8%B1%A1SqlSessionFactory"><span class="toc-text">6.2 SqlSession⼯⼚对象SqlSessionFactory</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-3-SqlSession%E4%BC%9A%E8%AF%9D%E5%AF%B9%E8%B1%A1"><span class="toc-text">6.3 SqlSession会话对象</span></a></li></ol></li></ol>
+</div></main>
+          <aside class="left-column">
+            
+            <div class="card card-author">
+              
+<img src="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png" class="author-img">
+
+<p class="author-name">blydd</p>
+<p class="author-description">积跬步行千里</p>
+<div class="author-message">
+  <a class="author-posts-count" href="/archives">
+    <span>66</span>
+    <span>文章</span>
+  </a>
+  <a class="author-categories-count" href="/categories">
+    <span>16</span>
+    <span>分类</span>
+  </a>
+  <a class="author-tags-count" href="/tags">
+    <span>92</span>
+    <span>标签</span>
+  </a>
+</div>
+
+            </div>
+            
+            <div class="sticky-tablet">
+  
+  
+  <article class="display-when-two-columns spacer">
+    <div class="card card-content toc-card">
+      <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
+<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Mybatis%E7%AE%80%E4%BB%8B"><span class="toc-text">1.Mybatis简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1%E5%8E%9F%E5%A7%8Bjdbc%E6%93%8D%E4%BD%9C%EF%BC%88%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE%EF%BC%89"><span class="toc-text">1.1原始jdbc操作（查询数据）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2%E5%8E%9F%E5%A7%8Bjdbc%E6%93%8D%E4%BD%9C%EF%BC%88%E6%8F%92%E2%BC%8A%E6%95%B0%E6%8D%AE%EF%BC%89"><span class="toc-text">1.2原始jdbc操作（插⼊数据）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E5%8E%9F%E5%A7%8Bjdbc%E6%93%8D%E4%BD%9C%E7%9A%84%E5%88%86%E6%9E%90"><span class="toc-text">1.3 原始jdbc操作的分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-%E4%BB%80%E4%B9%88%E6%98%AFMybatis"><span class="toc-text">1.4 什么是Mybatis</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Mybatis%E7%9A%84%E5%BF%AB%E9%80%9F%E2%BC%8A%E2%BB%94"><span class="toc-text">2.Mybatis的快速⼊⻔</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-MyBatis%E5%BC%80%E5%8F%91%E6%AD%A5%E9%AA%A4"><span class="toc-text">2.1 MyBatis开发步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-text">2.2 环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AF%BC%E2%BC%8AMyBatis%E7%9A%84%E5%9D%90%E6%A0%87%E5%92%8C%E5%85%B6%E4%BB%96%E7%9B%B8%E5%85%B3%E5%9D%90%E6%A0%87"><span class="toc-text">1)导⼊MyBatis的坐标和其他相关坐标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%88%9B%E5%BB%BAuser%E6%95%B0%E6%8D%AE%E8%A1%A8"><span class="toc-text">2) 创建user数据表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%BC%96%E5%86%99User%E5%AE%9E%E4%BD%93"><span class="toc-text">3) 编写User实体</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%BC%96%E5%86%99UserMapper%E6%98%A0%E5%B0%84%E2%BD%82%E4%BB%B6"><span class="toc-text">4)编写UserMapper映射⽂件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E7%BC%96%E5%86%99MyBatis%E6%A0%B8%E2%BC%BC%E2%BD%82%E4%BB%B6"><span class="toc-text">5) 编写MyBatis核⼼⽂件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E7%BC%96%E5%86%99%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81-%E5%8A%A0%E8%BD%BD%E6%A0%B8%E2%BC%BC%E9%85%8D%E7%BD%AE%E2%BD%82%E4%BB%B6"><span class="toc-text">2.3 编写测试代码&#x2F;&#x2F;加载核⼼配置⽂件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-MyBatis%E7%9A%84%E6%98%A0%E5%B0%84%E2%BD%82%E4%BB%B6%E6%A6%82%E8%BF%B0"><span class="toc-text">3. MyBatis的映射⽂件概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-MyBatis%E7%9A%84%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5%E6%93%8D%E4%BD%9C"><span class="toc-text">4. MyBatis的增删改查操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-MyBatis%E7%9A%84%E6%8F%92%E2%BC%8A%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C"><span class="toc-text">4.1 MyBatis的插⼊数据操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%BC%96%E5%86%99UserMapper-%E6%98%A0%E5%B0%84%E2%BD%82%E4%BB%B6"><span class="toc-text">1)**编写UserMapper**映射⽂件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%BC%96%E5%86%99%E6%8F%92%E2%BC%8A%E5%AE%9E%E4%BD%93User-%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="toc-text">2)**编写插⼊实体User**的代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%8F%92%E2%BC%8A%E6%93%8D%E4%BD%9C%E6%B3%A8%E6%84%8F%E9%97%AE%E9%A2%98"><span class="toc-text">**3)**插⼊操作注意问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-MyBatis%E7%9A%84%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C"><span class="toc-text">4.2 MyBatis的修改数据操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%BC%96%E5%86%99UserMapper-%E6%98%A0%E5%B0%84%E2%BD%82%E4%BB%B6-1"><span class="toc-text">1)**编写UserMapper**映射⽂件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%BC%96%E5%86%99%E4%BF%AE%E6%94%B9%E5%AE%9E%E4%BD%93User-%E7%9A%84%E4%BB%A3%E7%A0%81InputStream-resourceAsStream"><span class="toc-text">2)**编写修改实体User**的代码InputStream resourceAsStream &#x3D;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BF%AE%E6%94%B9%E6%93%8D%E4%BD%9C%E6%B3%A8%E6%84%8F%E9%97%AE%E9%A2%98"><span class="toc-text">**3)**修改操作注意问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-MyBatis%E7%9A%84%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C"><span class="toc-text">4.3 MyBatis的删除数据操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%BC%96%E5%86%99UserMapper-%E6%98%A0%E5%B0%84%E2%BD%82%E4%BB%B6-2"><span class="toc-text">1)**编写UserMapper**映射⽂件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%BC%96%E5%86%99%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="toc-text">**2)**编写删除数据的代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%88%A0%E9%99%A4%E6%93%8D%E4%BD%9C%E6%B3%A8%E6%84%8F%E9%97%AE%E9%A2%98"><span class="toc-text">**3)**删除操作注意问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-%E7%9F%A5%E8%AF%86%E2%BC%A9%E7%BB%93"><span class="toc-text">4.4 知识⼩结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-MyBatis%E6%A0%B8%E2%BC%BC%E9%85%8D%E7%BD%AE%E2%BD%82%E4%BB%B6%E6%A6%82%E8%BF%B0"><span class="toc-text">5. MyBatis核⼼配置⽂件概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-MyBatis%E6%A0%B8%E2%BC%BC%E9%85%8D%E7%BD%AE%E2%BD%82%E4%BB%B6%E5%B1%82%E7%BA%A7%E5%85%B3%E7%B3%BB"><span class="toc-text">5.1 MyBatis核⼼配置⽂件层级关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-MyBatis%E5%B8%B8%E2%BD%A4%E9%85%8D%E7%BD%AE%E8%A7%A3%E6%9E%90"><span class="toc-text">5.2 MyBatis常⽤配置解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-environments%E6%A0%87%E7%AD%BE"><span class="toc-text">1)environments标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-mapper%E6%A0%87%E7%AD%BE"><span class="toc-text">2)mapper标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Properties%E6%A0%87%E7%AD%BE"><span class="toc-text">3)Properties标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-typeAliases%E6%A0%87%E7%AD%BE"><span class="toc-text">4)typeAliases标签</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-MyBatis%E7%9B%B8%E5%BA%94API"><span class="toc-text">6.MyBatis相应API</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1-SqlSession%E2%BC%AF%E2%BC%9A%E6%9E%84%E5%BB%BA%E5%99%A8SqlSessionFactoryBuilder"><span class="toc-text">6.1 SqlSession⼯⼚构建器SqlSessionFactoryBuilder</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-2-SqlSession%E2%BC%AF%E2%BC%9A%E5%AF%B9%E8%B1%A1SqlSessionFactory"><span class="toc-text">6.2 SqlSession⼯⼚对象SqlSessionFactory</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-3-SqlSession%E4%BC%9A%E8%AF%9D%E5%AF%B9%E8%B1%A1"><span class="toc-text">6.3 SqlSession会话对象</span></a></li></ol></li></ol>
     </div>
-      </footer>
-    
   </article>
   
   
+  <article class="card card-content categories-widget">
+    <div class="categories-card">
+  <div class="categories-header"><i class="iconfont icon-fenlei" style="padding-right: 2px;"></i>分类</div>
+  <div class="categories-list">
+    
+      <a href="/categories/工具类">
+        <div class="categories-list-item">
+          工具类
+          <span class="categories-list-item-badge">8</span>
+        </div>
+      </a>
+    
+      <a href="/categories/linux">
+        <div class="categories-list-item">
+          linux
+          <span class="categories-list-item-badge">3</span>
+        </div>
+      </a>
+    
+      <a href="/categories/mac">
+        <div class="categories-list-item">
+          mac
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/java">
+        <div class="categories-list-item">
+          java
+          <span class="categories-list-item-badge">18</span>
+        </div>
+      </a>
+    
+      <a href="/categories/springboot">
+        <div class="categories-list-item">
+          springboot
+          <span class="categories-list-item-badge">13</span>
+        </div>
+      </a>
+    
+      <a href="/categories/docker">
+        <div class="categories-list-item">
+          docker
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/hello world">
+        <div class="categories-list-item">
+          hello world
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/版本控制">
+        <div class="categories-list-item">
+          版本控制
+          <span class="categories-list-item-badge">2</span>
+        </div>
+      </a>
+    
+      <a href="/categories/mele">
+        <div class="categories-list-item">
+          mele
+          <span class="categories-list-item-badge">2</span>
+        </div>
+      </a>
+    
+      <a href="/categories/db">
+        <div class="categories-list-item">
+          db
+          <span class="categories-list-item-badge">7</span>
+        </div>
+      </a>
+    
+      <a href="/categories/其他">
+        <div class="categories-list-item">
+          其他
+          <span class="categories-list-item-badge">2</span>
+        </div>
+      </a>
+    
+      <a href="/categories/bug">
+        <div class="categories-list-item">
+          bug
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/js">
+        <div class="categories-list-item">
+          js
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/mq">
+        <div class="categories-list-item">
+          mq
+          <span class="categories-list-item-badge">3</span>
+        </div>
+      </a>
+    
+      <a href="/categories/面试">
+        <div class="categories-list-item">
+          面试
+          <span class="categories-list-item-badge">2</span>
+        </div>
+      </a>
+    
+      <a href="/categories/springCloud">
+        <div class="categories-list-item">
+          springCloud
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+  </div>
+</div>
+  </article>
   
-
-
-
-          </div>
+  <article class="card card-content tags-widget">
+    <div class="tags-card">
+  <div class="tags-header"><i class="iconfont icon-biaoqian" style="padding-right: 2px;"></i>热门标签</div>
+  <div class="tags-list">
+    
+    <a href="\tags\springboot" title="springboot"><div class="tags-list-item">springboot</div></a>
+    
+    <a href="\tags\java" title="java"><div class="tags-list-item">java</div></a>
+    
+    <a href="\tags\工具类" title="工具类"><div class="tags-list-item">工具类</div></a>
+    
+    <a href="\tags\mybatis" title="mybatis"><div class="tags-list-item">mybatis</div></a>
+    
+    <a href="\tags\ms" title="ms"><div class="tags-list-item">ms</div></a>
+    
+    <a href="\tags\tool" title="tool"><div class="tags-list-item">tool</div></a>
+    
+    <a href="\tags\git" title="git"><div class="tags-list-item">git</div></a>
+    
+    <a href="\tags\linux" title="linux"><div class="tags-list-item">linux</div></a>
+    
+    <a href="\tags\线程池" title="线程池"><div class="tags-list-item">线程池</div></a>
+    
+    <a href="\tags\mq" title="mq"><div class="tags-list-item">mq</div></a>
+    
+    <a href="\tags\常用" title="常用"><div class="tags-list-item">常用</div></a>
+    
+    <a href="\tags\bug" title="bug"><div class="tags-list-item">bug</div></a>
+    
+    <a href="\tags\分布式" title="分布式"><div class="tags-list-item">分布式</div></a>
+    
+    <a href="\tags\acid" title="acid"><div class="tags-list-item">acid</div></a>
+    
+    <a href="\tags\事务" title="事务"><div class="tags-list-item">事务</div></a>
+    
+    <a href="\tags\xml" title="xml"><div class="tags-list-item">xml</div></a>
+    
+  </div>
+</div>
+  </article>
+  
+  
+</div>
+          </aside>
+          <aside class="right-column">
+            <div class="sticky-widescreen">
+  
+  
+  <article class="card card-content toc-card">
+    <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
+<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Mybatis%E7%AE%80%E4%BB%8B"><span class="toc-text">1.Mybatis简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1%E5%8E%9F%E5%A7%8Bjdbc%E6%93%8D%E4%BD%9C%EF%BC%88%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE%EF%BC%89"><span class="toc-text">1.1原始jdbc操作（查询数据）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2%E5%8E%9F%E5%A7%8Bjdbc%E6%93%8D%E4%BD%9C%EF%BC%88%E6%8F%92%E2%BC%8A%E6%95%B0%E6%8D%AE%EF%BC%89"><span class="toc-text">1.2原始jdbc操作（插⼊数据）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E5%8E%9F%E5%A7%8Bjdbc%E6%93%8D%E4%BD%9C%E7%9A%84%E5%88%86%E6%9E%90"><span class="toc-text">1.3 原始jdbc操作的分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-%E4%BB%80%E4%B9%88%E6%98%AFMybatis"><span class="toc-text">1.4 什么是Mybatis</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Mybatis%E7%9A%84%E5%BF%AB%E9%80%9F%E2%BC%8A%E2%BB%94"><span class="toc-text">2.Mybatis的快速⼊⻔</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-MyBatis%E5%BC%80%E5%8F%91%E6%AD%A5%E9%AA%A4"><span class="toc-text">2.1 MyBatis开发步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-text">2.2 环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AF%BC%E2%BC%8AMyBatis%E7%9A%84%E5%9D%90%E6%A0%87%E5%92%8C%E5%85%B6%E4%BB%96%E7%9B%B8%E5%85%B3%E5%9D%90%E6%A0%87"><span class="toc-text">1)导⼊MyBatis的坐标和其他相关坐标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%88%9B%E5%BB%BAuser%E6%95%B0%E6%8D%AE%E8%A1%A8"><span class="toc-text">2) 创建user数据表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%BC%96%E5%86%99User%E5%AE%9E%E4%BD%93"><span class="toc-text">3) 编写User实体</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%BC%96%E5%86%99UserMapper%E6%98%A0%E5%B0%84%E2%BD%82%E4%BB%B6"><span class="toc-text">4)编写UserMapper映射⽂件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E7%BC%96%E5%86%99MyBatis%E6%A0%B8%E2%BC%BC%E2%BD%82%E4%BB%B6"><span class="toc-text">5) 编写MyBatis核⼼⽂件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E7%BC%96%E5%86%99%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81-%E5%8A%A0%E8%BD%BD%E6%A0%B8%E2%BC%BC%E9%85%8D%E7%BD%AE%E2%BD%82%E4%BB%B6"><span class="toc-text">2.3 编写测试代码&#x2F;&#x2F;加载核⼼配置⽂件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-MyBatis%E7%9A%84%E6%98%A0%E5%B0%84%E2%BD%82%E4%BB%B6%E6%A6%82%E8%BF%B0"><span class="toc-text">3. MyBatis的映射⽂件概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-MyBatis%E7%9A%84%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5%E6%93%8D%E4%BD%9C"><span class="toc-text">4. MyBatis的增删改查操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-MyBatis%E7%9A%84%E6%8F%92%E2%BC%8A%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C"><span class="toc-text">4.1 MyBatis的插⼊数据操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%BC%96%E5%86%99UserMapper-%E6%98%A0%E5%B0%84%E2%BD%82%E4%BB%B6"><span class="toc-text">1)**编写UserMapper**映射⽂件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%BC%96%E5%86%99%E6%8F%92%E2%BC%8A%E5%AE%9E%E4%BD%93User-%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="toc-text">2)**编写插⼊实体User**的代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%8F%92%E2%BC%8A%E6%93%8D%E4%BD%9C%E6%B3%A8%E6%84%8F%E9%97%AE%E9%A2%98"><span class="toc-text">**3)**插⼊操作注意问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-MyBatis%E7%9A%84%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C"><span class="toc-text">4.2 MyBatis的修改数据操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%BC%96%E5%86%99UserMapper-%E6%98%A0%E5%B0%84%E2%BD%82%E4%BB%B6-1"><span class="toc-text">1)**编写UserMapper**映射⽂件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%BC%96%E5%86%99%E4%BF%AE%E6%94%B9%E5%AE%9E%E4%BD%93User-%E7%9A%84%E4%BB%A3%E7%A0%81InputStream-resourceAsStream"><span class="toc-text">2)**编写修改实体User**的代码InputStream resourceAsStream &#x3D;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BF%AE%E6%94%B9%E6%93%8D%E4%BD%9C%E6%B3%A8%E6%84%8F%E9%97%AE%E9%A2%98"><span class="toc-text">**3)**修改操作注意问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-MyBatis%E7%9A%84%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C"><span class="toc-text">4.3 MyBatis的删除数据操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%BC%96%E5%86%99UserMapper-%E6%98%A0%E5%B0%84%E2%BD%82%E4%BB%B6-2"><span class="toc-text">1)**编写UserMapper**映射⽂件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%BC%96%E5%86%99%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="toc-text">**2)**编写删除数据的代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%88%A0%E9%99%A4%E6%93%8D%E4%BD%9C%E6%B3%A8%E6%84%8F%E9%97%AE%E9%A2%98"><span class="toc-text">**3)**删除操作注意问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-%E7%9F%A5%E8%AF%86%E2%BC%A9%E7%BB%93"><span class="toc-text">4.4 知识⼩结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-MyBatis%E6%A0%B8%E2%BC%BC%E9%85%8D%E7%BD%AE%E2%BD%82%E4%BB%B6%E6%A6%82%E8%BF%B0"><span class="toc-text">5. MyBatis核⼼配置⽂件概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-MyBatis%E6%A0%B8%E2%BC%BC%E9%85%8D%E7%BD%AE%E2%BD%82%E4%BB%B6%E5%B1%82%E7%BA%A7%E5%85%B3%E7%B3%BB"><span class="toc-text">5.1 MyBatis核⼼配置⽂件层级关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-MyBatis%E5%B8%B8%E2%BD%A4%E9%85%8D%E7%BD%AE%E8%A7%A3%E6%9E%90"><span class="toc-text">5.2 MyBatis常⽤配置解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-environments%E6%A0%87%E7%AD%BE"><span class="toc-text">1)environments标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-mapper%E6%A0%87%E7%AD%BE"><span class="toc-text">2)mapper标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Properties%E6%A0%87%E7%AD%BE"><span class="toc-text">3)Properties标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-typeAliases%E6%A0%87%E7%AD%BE"><span class="toc-text">4)typeAliases标签</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-MyBatis%E7%9B%B8%E5%BA%94API"><span class="toc-text">6.MyBatis相应API</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1-SqlSession%E2%BC%AF%E2%BC%9A%E6%9E%84%E5%BB%BA%E5%99%A8SqlSessionFactoryBuilder"><span class="toc-text">6.1 SqlSession⼯⼚构建器SqlSessionFactoryBuilder</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-2-SqlSession%E2%BC%AF%E2%BC%9A%E5%AF%B9%E8%B1%A1SqlSessionFactory"><span class="toc-text">6.2 SqlSession⼯⼚对象SqlSessionFactory</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-3-SqlSession%E4%BC%9A%E8%AF%9D%E5%AF%B9%E8%B1%A1"><span class="toc-text">6.3 SqlSession会话对象</span></a></li></ol></li></ol>
+  </article>
+  
+  
+  <article class="card card-content">
+    <div class="recent-posts-card">
+  <div class="recent-posts-header"><i class="iconfont icon-wenzhang_huaban" style="padding-right: 2px;"></i>最近文章</div>
+  <div class="recent-posts-list">
+    
+      <div class="recent-posts-item">
+        <div class="recent-posts-item-title">2021-01-30</div>
+        <a href="/2021/01/30/java面试题/"><div class="recent-posts-item-content">java面试题</div></a>
+      </div>
+    
+      <div class="recent-posts-item">
+        <div class="recent-posts-item-title">2021-01-26</div>
+        <a href="/2021/01/26/编写优雅高效的java代码/"><div class="recent-posts-item-content">编写高效优雅java代码</div></a>
+      </div>
+    
+      <div class="recent-posts-item">
+        <div class="recent-posts-item-title">2021-01-23</div>
+        <a href="/2021/01/23/redis教程效率版/"><div class="recent-posts-item-content">redis入门效率版</div></a>
+      </div>
+    
+      <div class="recent-posts-item">
+        <div class="recent-posts-item-title">2021-01-22</div>
+        <a href="/2021/01/22/开发注意代码整理/"><div class="recent-posts-item-content">开发中注意的小问题</div></a>
+      </div>
+    
+  </div>
+</div>
+  </article>
+  
+  
+</div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer class="footer">
+  <div class="footer-container">
+    <div>
+      <div class="footer-dsc">
+        <span>Copyright ©
           
+          2020 -
+          
+          2021
+        </span>
+        &nbsp;
+        <a href="/" class="footer-link">mele blog </a>
+      </div>
+    </div>
 
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
+    
+    <div class="footer-dsc">
+      
+      Powered by
+      <a href="https://hexo.io/" class="footer-link" target="_blank" rel="nofollow noopener noreferrer">&nbsp;Hexo </a>
+      
+      
+      <span>&nbsp;|&nbsp;</span>
+      
+      
+      Theme -
+      <a href="https://github.com/theme-kaze" class="footer-link" target="_blank"
+        rel="nofollow noopener noreferrer">&nbsp;Kaze</a>
+      
+    </div>
+    
+    
+    
+    
+</footer>
+  <a role="button" id="scrollbutton" class="basebutton"  aria-label="回到顶部">
+  <i class="iconfont icon-arrowleft button-icon"></i>
+</a>
+<a role="button" id="menubutton" class="basebutton">
+  <i class="iconfont icon-menu button-icon"></i>
+</a>
+<a role="button" id="popbutton" class="basebutton" aria-label="控制中心">
+  <i class="iconfont icon-expand button-icon"></i>
+</a>
+<a role="button" id="darkbutton" class="basebutton darkwidget" aria-label="夜色模式">
+  <i class="iconfont icon-weather button-icon"></i>
+</a>
+<a role="button" id="searchbutton" class="basebutton searchwidget" aria-label="搜索">
+  <i class="iconfont icon-search button-icon"></i>
+</a>
+
+  
+  
+  
+  <script>
+  var addImgLayout = function () {
+    var img = document.querySelectorAll('.post-content img');
+    var i;
+    for (i = 0; i < img.length; i++) {
+      var wrapper = document.createElement('a');
+      wrapper.setAttribute('href', img[i].getAttribute('data-src'));
+      wrapper.setAttribute('aria-label', 'illustration');
+      wrapper.style.cssText = 'width: 100%; display: flex; justify-content: center;';
+      if (img[i].alt) wrapper.dataset.caption = img[i].alt;
+      wrapper.dataset.nolink = true;
+      img[i].before(wrapper);
+      wrapper.append(img[i]);
+      var divWrap = document.createElement('div');
+      divWrap.classList.add('gallery');
+      wrapper.before(divWrap);
+      divWrap.append(wrapper);
     }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
+    baguetteBox.run('.gallery');
   }
 </script>
-
-        </div>
-          
+<script>loadScript("/js/lib/lightbox/baguetteBox.min.js", addImgLayout)</script>
   
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Mybatis%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">1.Mybatis简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1%E5%8E%9F%E5%A7%8Bjdbc%E6%93%8D%E4%BD%9C%EF%BC%88%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE%EF%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">1.1原始jdbc操作（查询数据）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2%E5%8E%9F%E5%A7%8Bjdbc%E6%93%8D%E4%BD%9C%EF%BC%88%E6%8F%92%E2%BC%8A%E6%95%B0%E6%8D%AE%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">1.2原始jdbc操作（插⼊数据）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E5%8E%9F%E5%A7%8Bjdbc%E6%93%8D%E4%BD%9C%E7%9A%84%E5%88%86%E6%9E%90"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 原始jdbc操作的分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-%E4%BB%80%E4%B9%88%E6%98%AFMybatis"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 什么是Mybatis</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Mybatis%E7%9A%84%E5%BF%AB%E9%80%9F%E2%BC%8A%E2%BB%94"><span class="nav-number">2.</span> <span class="nav-text">2.Mybatis的快速⼊⻔</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-MyBatis%E5%BC%80%E5%8F%91%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 MyBatis开发步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AF%BC%E2%BC%8AMyBatis%E7%9A%84%E5%9D%90%E6%A0%87%E5%92%8C%E5%85%B6%E4%BB%96%E7%9B%B8%E5%85%B3%E5%9D%90%E6%A0%87"><span class="nav-number">2.2.1.</span> <span class="nav-text">1)导⼊MyBatis的坐标和其他相关坐标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%88%9B%E5%BB%BAuser%E6%95%B0%E6%8D%AE%E8%A1%A8"><span class="nav-number">2.2.2.</span> <span class="nav-text">2) 创建user数据表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%BC%96%E5%86%99User%E5%AE%9E%E4%BD%93"><span class="nav-number">2.2.3.</span> <span class="nav-text">3) 编写User实体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E7%BC%96%E5%86%99UserMapper%E6%98%A0%E5%B0%84%E2%BD%82%E4%BB%B6"><span class="nav-number">2.2.4.</span> <span class="nav-text">4)编写UserMapper映射⽂件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E7%BC%96%E5%86%99MyBatis%E6%A0%B8%E2%BC%BC%E2%BD%82%E4%BB%B6"><span class="nav-number">2.2.5.</span> <span class="nav-text">5) 编写MyBatis核⼼⽂件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E7%BC%96%E5%86%99%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81-%E5%8A%A0%E8%BD%BD%E6%A0%B8%E2%BC%BC%E9%85%8D%E7%BD%AE%E2%BD%82%E4%BB%B6"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 编写测试代码&#x2F;&#x2F;加载核⼼配置⽂件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-MyBatis%E7%9A%84%E6%98%A0%E5%B0%84%E2%BD%82%E4%BB%B6%E6%A6%82%E8%BF%B0"><span class="nav-number">3.</span> <span class="nav-text">3. MyBatis的映射⽂件概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-MyBatis%E7%9A%84%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5%E6%93%8D%E4%BD%9C"><span class="nav-number">4.</span> <span class="nav-text">4. MyBatis的增删改查操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-MyBatis%E7%9A%84%E6%8F%92%E2%BC%8A%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 MyBatis的插⼊数据操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%BC%96%E5%86%99UserMapper-%E6%98%A0%E5%B0%84%E2%BD%82%E4%BB%B6"><span class="nav-number">4.1.1.</span> <span class="nav-text">1)**编写UserMapper**映射⽂件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BC%96%E5%86%99%E6%8F%92%E2%BC%8A%E5%AE%9E%E4%BD%93User-%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="nav-number">4.1.2.</span> <span class="nav-text">2)**编写插⼊实体User**的代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%8F%92%E2%BC%8A%E6%93%8D%E4%BD%9C%E6%B3%A8%E6%84%8F%E9%97%AE%E9%A2%98"><span class="nav-number">4.1.3.</span> <span class="nav-text">**3)**插⼊操作注意问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-MyBatis%E7%9A%84%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 MyBatis的修改数据操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%BC%96%E5%86%99UserMapper-%E6%98%A0%E5%B0%84%E2%BD%82%E4%BB%B6-1"><span class="nav-number">4.2.1.</span> <span class="nav-text">1)**编写UserMapper**映射⽂件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BC%96%E5%86%99%E4%BF%AE%E6%94%B9%E5%AE%9E%E4%BD%93User-%E7%9A%84%E4%BB%A3%E7%A0%81InputStream-resourceAsStream"><span class="nav-number">4.2.2.</span> <span class="nav-text">2)**编写修改实体User**的代码InputStream resourceAsStream &#x3D;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%BF%AE%E6%94%B9%E6%93%8D%E4%BD%9C%E6%B3%A8%E6%84%8F%E9%97%AE%E9%A2%98"><span class="nav-number">4.2.3.</span> <span class="nav-text">**3)**修改操作注意问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-MyBatis%E7%9A%84%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 MyBatis的删除数据操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%BC%96%E5%86%99UserMapper-%E6%98%A0%E5%B0%84%E2%BD%82%E4%BB%B6-2"><span class="nav-number">4.3.1.</span> <span class="nav-text">1)**编写UserMapper**映射⽂件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BC%96%E5%86%99%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="nav-number">4.3.2.</span> <span class="nav-text">**2)**编写删除数据的代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%88%A0%E9%99%A4%E6%93%8D%E4%BD%9C%E6%B3%A8%E6%84%8F%E9%97%AE%E9%A2%98"><span class="nav-number">4.3.3.</span> <span class="nav-text">**3)**删除操作注意问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4-%E7%9F%A5%E8%AF%86%E2%BC%A9%E7%BB%93"><span class="nav-number">4.4.</span> <span class="nav-text">4.4 知识⼩结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-MyBatis%E6%A0%B8%E2%BC%BC%E9%85%8D%E7%BD%AE%E2%BD%82%E4%BB%B6%E6%A6%82%E8%BF%B0"><span class="nav-number">5.</span> <span class="nav-text">5. MyBatis核⼼配置⽂件概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-MyBatis%E6%A0%B8%E2%BC%BC%E9%85%8D%E7%BD%AE%E2%BD%82%E4%BB%B6%E5%B1%82%E7%BA%A7%E5%85%B3%E7%B3%BB"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 MyBatis核⼼配置⽂件层级关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-MyBatis%E5%B8%B8%E2%BD%A4%E9%85%8D%E7%BD%AE%E8%A7%A3%E6%9E%90"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 MyBatis常⽤配置解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-environments%E6%A0%87%E7%AD%BE"><span class="nav-number">5.2.1.</span> <span class="nav-text">1)environments标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-mapper%E6%A0%87%E7%AD%BE"><span class="nav-number">5.2.2.</span> <span class="nav-text">2)mapper标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Properties%E6%A0%87%E7%AD%BE"><span class="nav-number">5.2.3.</span> <span class="nav-text">3)Properties标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-typeAliases%E6%A0%87%E7%AD%BE"><span class="nav-number">5.2.4.</span> <span class="nav-text">4)typeAliases标签</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-MyBatis%E7%9B%B8%E5%BA%94API"><span class="nav-number">6.</span> <span class="nav-text">6.MyBatis相应API</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-SqlSession%E2%BC%AF%E2%BC%9A%E6%9E%84%E5%BB%BA%E5%99%A8SqlSessionFactoryBuilder"><span class="nav-number">6.1.</span> <span class="nav-text">6.1 SqlSession⼯⼚构建器SqlSessionFactoryBuilder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-SqlSession%E2%BC%AF%E2%BC%9A%E5%AF%B9%E8%B1%A1SqlSessionFactory"><span class="nav-number">6.2.</span> <span class="nav-text">6.2 SqlSession⼯⼚对象SqlSessionFactory</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3-SqlSession%E4%BC%9A%E8%AF%9D%E5%AF%B9%E8%B1%A1"><span class="nav-number">6.3.</span> <span class="nav-text">6.3 SqlSession会话对象</span></a></li></ol></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">blydd</p>
-  <div class="site-description" itemprop="description">米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.</div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">66</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">16</span>
-        <span class="site-state-item-name">分类</span>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">92</span>
-        <span class="site-state-item-name">标签</span>
-      </div>
-  </nav>
-</div>
-
-
-
-      </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
   
-  &copy; 
-  <span itemprop="copyrightYear">2021</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">blydd</span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
-  </div>
-
-        
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
-  </div>
+  
+<script src="/js/main.js"></script>
 
   
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/muse.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-
-
   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  <script>
+    var addLazyload = function () {
+      var observer = lozad('.lozad', {
+        load: function (el) {
+          el.srcset = el.getAttribute('data-src');
+        },
+        loaded: function (el) {
+          el.classList.add('loaded');
+        }
+      });
+      observer.observe();
+    }
+  </script>
+  <script>loadScript("/js/lib/lozad.min.js", addLazyload)</script>
   
-
   
-
 </body>
+
 </html>

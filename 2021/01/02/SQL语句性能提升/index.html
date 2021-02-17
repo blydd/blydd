@@ -1,253 +1,250 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html  lang="zh-CN" >
+
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.3.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="theme-color" content="#fff" id="theme-color">
+  <meta name="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+  <link rel="icon" href="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png">
+  <title>SQL语句性能提升</title>
+  
+  
+  <meta property="og:title" content="SQL语句性能提升">
+  
+  
+  <meta property="og:url" content="https://www.mele.cool/2021/01/02/SQL%E8%AF%AD%E5%8F%A5%E6%80%A7%E8%83%BD%E6%8F%90%E5%8D%87/index.html">
+  
+  
+  <meta property="og:img" content="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png">
+  
+  
+  <meta property="og:img" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+  
+  
+  <meta property="og:type" content="article">
+  <meta property="og:article:published_time" content="2021-01-02">
+  <meta property="og:article:modified_time" content="2021-01-27">
+  <meta property="og:article:author" content="blydd">
+  
+  
+  <meta property="og:article:tag" content="sql优化">
+  
+  <meta property="og:article:tag" content="explain">
+  
+  
+  
+  
+  <!-- 百度统计代码 -->
+<script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?52aed7fa581354c5e14562bad1a1def2";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+ <!-- 百度统计代码 --> 
+  <script>
+    // control reverse button
+    var reverseDarkList = {
+      dark: 'light',
+      light: 'dark'
+    };
+    var themeColor = {
+      dark: '#1c1c1e',
+      light: '#fff'
+    }
+    // get the data of css prefers-color-scheme
+    var getCssMediaQuery = function() {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    };
+    // reverse current darkmode setting function
+    var reverseDarkModeSetting = function() {
+      var setting = localStorage.getItem('user-color-scheme');
+      if(reverseDarkList[setting]) {
+        setting = reverseDarkList[setting];
+      } else if(setting === null) {
+        setting = reverseDarkList[getCssMediaQuery()];
+      } else {
+        return;
+      }
+      localStorage.setItem('user-color-scheme', setting);
+      return setting;
+    };
+    // apply current darkmode setting
+    var setDarkmode = function(mode) {
+      var setting = mode || localStorage.getItem('user-color-scheme');
+      if(setting === getCssMediaQuery()) {
+        document.documentElement.removeAttribute('data-user-color-scheme');
+        localStorage.removeItem('user-color-scheme');
+        document.getElementById('theme-color').content = themeColor[setting];
+      } else if(reverseDarkList[setting]) {
+        document.documentElement.setAttribute('data-user-color-scheme', setting);
+        document.getElementById('theme-color').content = themeColor[setting];
+      } else {
+        document.documentElement.removeAttribute('data-user-color-scheme');
+        localStorage.removeItem('user-color-scheme');
+        document.getElementById('theme-color').content = themeColor[getCssMediaQuery()];
+      }
+    };
+    setDarkmode();
+  </script>
+  <script>
+    function loadScript(url, cb) {
+      var script = document.createElement('script');
+      script.src = url;
+      if (cb) script.onload = cb;
+      script.async = true;
+      document.body.appendChild(script);
+    }
+  </script>
+  
+  <link rel="preload" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css" as="style" >
+  <link rel="preload" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css" as="style" >
+  
+  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.js" as="script">
+  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.css" as="style" >
+  
+  
+  <link rel="preload" href="/js/lib/lozad.min.js" as="script">
+  
+  
+  
+  
+  
+  
+  
+  
 <link rel="stylesheet" href="/css/main.css">
 
-
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"www.mele.cool","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
-  </script>
-
-  <meta name="description" content="SQL语句性能提升,explain执行计划.">
-<meta property="og:type" content="article">
-<meta property="og:title" content="SQL语句性能提升">
-<meta property="og:url" content="https://www.mele.cool/2021/01/02/SQL%E8%AF%AD%E5%8F%A5%E6%80%A7%E8%83%BD%E6%8F%90%E5%8D%87/index.html">
-<meta property="og:site_name" content="米乐博客">
-<meta property="og:description" content="SQL语句性能提升,explain执行计划.">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/SGiZcupD41oEatb.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/JeUKX5qvBN3j7RH.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/izRODAIKxePq31j.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/bHvPgI5tRZSywch.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/g4VqDdLWCairyMX.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/uov1YTpgXFAW7bx.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/FPJBk3ZUbVK9Eli.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/mBeIr3fAGSPZLqt.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/PIwM6cmglUkn1bB.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/nhPkS2TCuWrcGzA.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/WJsj84friFpEq7B.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/uRkcvPQbArmEYVJ.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/d196yFjRzvuwC8O.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/vtYSXkhM8GKAmNy.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/5wTQco1LvV7FEan.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/ZDN1zF2IC4tJL8l.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/HpVSzP5ctUOxX4C.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/RcKYmrQLfxqtUDT.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/seBKYAxgf96SnqT.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/uTwAGnFo8iv124D.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/TaXJYNcr3SPBGDk.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/kEnMAZFh21TR6q9.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/5eQYGLuVTdZ3bKJ.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/RGQ7YvF6mhrwxJo.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/mnRHa4UgSekjiuG.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/8rkhgI94KERP7i6.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/khUqeCluLPzTGOB.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/bUs12rNhJeOGVZo.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/QqZWDExtG1amPj4.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/gwpP7O2Y13AWjRx.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/hZ6bxFES31iHe5U.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/W3iZJFjywgxD5vq.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/nE1w9LgHGBcK2x3.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/BPMWOQzAGDK7U3L.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/r4kIxJOpmMygEuc.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/DXFIvx3KHBpLlOq.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/6aDBX3nVytQCP4z.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/l8DwIRpVJnSi2Ft.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/xEo8Tbgqv46SFMY.png">
-<meta property="article:published_time" content="2021-01-02T14:10:17.000Z">
-<meta property="article:modified_time" content="2021-01-27T15:51:12.219Z">
-<meta property="article:author" content="blydd">
-<meta property="article:tag" content="sql优化">
-<meta property="article:tag" content="explain">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.loli.net/2021/01/27/SGiZcupD41oEatb.png">
-
-<link rel="canonical" href="https://www.mele.cool/2021/01/02/SQL%E8%AF%AD%E5%8F%A5%E6%80%A7%E8%83%BD%E6%8F%90%E5%8D%87/">
-
-
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
-
-  <title>SQL语句性能提升 | 米乐博客</title>
-  
-
-
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
-
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">米乐博客</h1>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-      <p class="site-subtitle" itemprop="description">积跬步至千里</p>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-    </div>
-  </div>
-</div>
-
-
-
-
-<nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
-  </ul>
-</nav>
-
-
-
-
-</div>
-    </header>
-
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
-            
-
-    
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://www.mele.cool/2021/01/02/SQL%E8%AF%AD%E5%8F%A5%E6%80%A7%E8%83%BD%E6%8F%90%E5%8D%87/">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="blydd">
-      <meta itemprop="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
-    </span>
+  
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css">
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="米乐博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          SQL语句性能提升
-        </h1>
+  
+  
+<link rel="stylesheet" href="/js/lib/lightbox/baguetteBox.min.css">
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
 
-              <time title="创建时间：2021-01-02 22:10:17" itemprop="dateCreated datePublished" datetime="2021-01-02T22:10:17+08:00">2021-01-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-27 23:51:12" itemprop="dateModified" datetime="2021-01-27T23:51:12+08:00">2021-01-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/db/" itemprop="url" rel="index"><span itemprop="name">db</span></a>
-                </span>
-            </span>
 
-          
-            <div class="post-description">SQL语句性能提升,explain执行计划.</div>
-
-        </div>
-      </header>
-
+<body>
+  <div class="wrapper">
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+    <nav class="navbar">
+  <div class="navbar-logo">
+    <span class="navbar-logo-main">
       
-        <h2 id="1-数据准备"><a href="#1-数据准备" class="headerlink" title="1.数据准备"></a>1.数据准备</h2><blockquote>
+      <img class="navbar-logo-img" src="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png" alt="logo">
+      
+      <span class="navbar-logo-dsc">mele blog</span>
+    </span>
+  </div>
+  <div class="navbar-menu">
+    
+    <a href="/" class="navbar-menu-item">
+    
+    首页
+    
+    </a>
+    
+    <a href="/archives" class="navbar-menu-item">
+    
+    归档
+    
+    </a>
+    
+    <a href="/tags" class="navbar-menu-item">
+    
+    标签
+    
+    </a>
+    
+    <a href="/categories" class="navbar-menu-item">
+    
+    分类
+    
+    </a>
+    
+    <a href="/about" class="navbar-menu-item">
+    
+    关于
+    
+    </a>
+    
+    <a href="/links" class="navbar-menu-item">
+    
+    友链
+    
+    </a>
+    
+    <a class="navbar-menu-item darknavbar" id="dark"><i class="iconfont icon-weather"></i></a>
+    <a class="navbar-menu-item searchnavbar" id="search"><i class="iconfont icon-search" style="font-size: 1.2rem; font-weight: 400;"></i></a>
+  </div>
+</nav>
+    
+    <div id="local-search" style="display: none;">
+      <input class="navbar-menu-item" id="search-input" placeholder="请输入搜索内容...">
+      <div id="search-content"></div>
+    </div>
+    
+    <div class="section-wrap">
+      <div class="container">
+        <div class="columns">
+          <main class="main-column">
+<article class="card card-content">
+  <header>
+    <h1 class="post-title">
+      SQL语句性能提升
+    </h1>
+  </header>
+  <div class="post-meta post-show-meta">
+    <time datetime="2021-01-02T14:10:17.000Z">
+      <i class="iconfont icon-calendar" style="margin-right: 2px;"></i>
+      <span>2021-01-02</span>
+    </time>
+    
+    <span class="dot"></span>
+    
+    <a href="/categories/db/" class="post-meta-link">db</a>
+    
+    
+    
+    <span class="dot"></span>
+    <span>4.6k 字</span>
+    
+  </div>
+  
+  <div class="post-meta post-show-meta" style="margin-top: -10px;">
+    <div style="display: flex; align-items: center;">
+      <i class="iconfont icon-biaoqian" style="margin-right: 2px; font-size: 1.15rem;"></i>
+      
+      
+        <a href="/tags/sql优化/" class="post-meta-link">sql优化</a>
+      
+      
+      <span class="dot"></span>
+      
+        <a href="/tags/explain/" class="post-meta-link">explain</a>
+      
+    </div>
+  </div>
+  
+  </header>
+  <div id="section" class="post-content">
+    <h2 id="1-数据准备"><a href="#1-数据准备" class="headerlink" title="1.数据准备"></a>1.数据准备</h2><blockquote>
 <p>1). 准备tb_sku表, 导入数据 - 数据1000w</p>
 <p>2). 准备tb_seller表,导入数据 - 数据12条 </p>
 </blockquote>
@@ -255,19 +252,19 @@
 <p>show profiles 是mysql提供可以用来分析当前会话中语句执行的资源消耗情况。可以用于SQL的调优测量,show profiles 能够在做SQL优化时帮助我们了解时间都耗费到哪里去了。</p>
 </blockquote>
 <p>通过 have_profiling 参数，能够看到当前MySQL是否支持profile：</p>
-<p><img src="https://i.loli.net/2021/01/27/SGiZcupD41oEatb.png" alt="image-20210127232625161"></p>
+<p><img src="https://i.loli.net/2021/01/27/SGiZcupD41oEatb.png" alt="image-20210127232625161" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/SGiZcupD41oEatb.png" class="lozad post-image"></p>
 <p>默认profiling是关闭的，可以通过set语句在Session级别开启profiling： </p>
-<p><img src="https://i.loli.net/2021/01/27/JeUKX5qvBN3j7RH.png" alt="image-20210127232726228"></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> profiling<span class="operator">=</span><span class="number">1</span>; <span class="operator">/</span><span class="operator">/</span>开启profiling 开关；</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2021/01/27/JeUKX5qvBN3j7RH.png" alt="image-20210127232726228" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/JeUKX5qvBN3j7RH.png" class="lozad post-image"></p>
+<pre class="highlight"><span class="line"><span class="keyword">set</span> profiling<span class="operator">=</span><span class="number">1</span>; <span class="operator">/</span><span class="operator">/</span>开启profiling 开关；</span><br></pre>
 <p>通过profile，我们能够更清楚地了解SQL执行的过程。<br>首先，我们可以执行一系列的操作:</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> databases; </span><br><span class="line">use db01; </span><br><span class="line"><span class="keyword">show</span> tables; </span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> tb_ksu <span class="keyword">where</span> id <span class="operator">&lt;</span> <span class="number">5</span>; </span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> tb_ksu;</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="keyword">show</span> databases; </span><br><span class="line">use db01; </span><br><span class="line"><span class="keyword">show</span> tables; </span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> tb_ksu <span class="keyword">where</span> id <span class="operator">&lt;</span> <span class="number">5</span>; </span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> tb_ksu;</span><br></pre>
 <p>执行完上述命令之后，再执行show profiles 指令， 来查看SQL语句执行的耗时：<br>通过show profile for query query_id 语句可以查看到该SQL执行过程中每个线程的状态和消耗的时间：</p>
 <blockquote>
-<p><img src="https://i.loli.net/2021/01/27/izRODAIKxePq31j.png" alt="image-20210127232818823">TIP ：</p>
+<p><img src="https://i.loli.net/2021/01/27/izRODAIKxePq31j.png" alt="image-20210127232818823" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/izRODAIKxePq31j.png" class="lozad post-image">TIP ：</p>
 <p>Sending data 状态表示MySQL线程开始访问数据行并把结果返回给客户端，而不仅仅是返回个客户端。 </p>
 <p>由于在Sending data状态下，MySQL线程往往需要做大量的磁盘读取操作，所以经常是整各查询中耗时最长的状态。 </p>
 </blockquote>
-<p>在获取到最消耗时间的线程状态后，MySQL支持进一步选择all、cpu、block io 、context switch、page faults等明细类型类查看MySQL在使用什么资源上耗费了过高的时间。例如，选择查看CPU的耗费时间 ： <img src="https://i.loli.net/2021/01/27/bHvPgI5tRZSywch.png" alt="image-20210127232907674"></p>
+<p>在获取到最消耗时间的线程状态后，MySQL支持进一步选择all、cpu、block io 、context switch、page faults等明细类型类查看MySQL在使用什么资源上耗费了过高的时间。例如，选择查看CPU的耗费时间 ： <img src="https://i.loli.net/2021/01/27/bHvPgI5tRZSywch.png" alt="image-20210127232907674" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/bHvPgI5tRZSywch.png" class="lozad post-image"></p>
 <table>
 <thead>
 <tr>
@@ -296,21 +293,21 @@
 <p>慢查询日志记录了所有执行时间超过参数 long_query_time 设置值并且扫描记录数不小于<br>min_examined_row_limit 的所有的SQL语句的日志。long_query_time 默认为 10 秒，最小<br>为 0， 精度可以到微秒。</p>
 </blockquote>
 <h4 id="2-2-1-文件位置和格式"><a href="#2-2-1-文件位置和格式" class="headerlink" title="2.2.1 文件位置和格式"></a>2.2.1 文件位置和格式</h4><p>慢查询日志默认是关闭的 。可以通过两个参数来控制慢查询日志 ： </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 该参数用来控制慢查询日志是否开启， 可取值： 1 和 0 ， 1 代表开启， 0 代表关闭</span> </span><br><span class="line">slow_query_log=1 </span><br><span class="line"><span class="meta">#</span><span class="bash"> 该参数用来指定慢查询日志的文件名</span> </span><br><span class="line">slow_query_log_file=slow_query.log</span><br><span class="line"><span class="meta">#</span><span class="bash"> 该选项用来配置查询的时间限制， 超过这个时间将认为是慢查询， 将进行日志记录， 默认10s</span> </span><br><span class="line">long_query_time=10</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash"> 该参数用来控制慢查询日志是否开启， 可取值： 1 和 0 ， 1 代表开启， 0 代表关闭</span> </span><br><span class="line">slow_query_log=1 </span><br><span class="line"><span class="meta">#</span><span class="bash"> 该参数用来指定慢查询日志的文件名</span> </span><br><span class="line">slow_query_log_file=slow_query.log</span><br><span class="line"><span class="meta">#</span><span class="bash"> 该选项用来配置查询的时间限制， 超过这个时间将认为是慢查询， 将进行日志记录， 默认10s</span> </span><br><span class="line">long_query_time=10</span><br></pre>
 <h4 id="2-2-2-日志的读取"><a href="#2-2-2-日志的读取" class="headerlink" title="2.2.2 日志的读取"></a>2.2.2 日志的读取</h4><p>慢查询日志记录的格式也是纯文本，可以被直接读取。</p>
 <p>1） 查询long_query_time 的值。</p>
-<p><img src="https://i.loli.net/2021/01/27/g4VqDdLWCairyMX.png" alt="image-20210127233009526">2） 执行查询操作</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 由于该语句执行时间很短，为0s ， 所以不会记录在慢查询日志中。</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> tb_sku <span class="keyword">where</span> id <span class="operator">=</span> <span class="string">&#x27;100000030074&#x27;</span>\G;  <span class="comment">-- \G表示换行显示数据</span></span><br><span class="line"><span class="comment">-- 该SQL语句 ， 执行时长为 24.28s ，超过10s ， 所以会记录在慢查询日志文件中。</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> tb_sku <span class="keyword">where</span> name <span class="keyword">like</span> <span class="string">&#x27;%HuaWei手机Meta87384 Pro%&#x27;</span>\G;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2021/01/27/g4VqDdLWCairyMX.png" alt="image-20210127233009526" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/g4VqDdLWCairyMX.png" class="lozad post-image">2） 执行查询操作</p>
+<pre class="highlight"><span class="line"><span class="comment">-- 由于该语句执行时间很短，为0s ， 所以不会记录在慢查询日志中。</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> tb_sku <span class="keyword">where</span> id <span class="operator">=</span> <span class="string">&#x27;100000030074&#x27;</span>\G;  <span class="comment">-- \G表示换行显示数据</span></span><br><span class="line"><span class="comment">-- 该SQL语句 ， 执行时长为 24.28s ，超过10s ， 所以会记录在慢查询日志文件中。</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> tb_sku <span class="keyword">where</span> name <span class="keyword">like</span> <span class="string">&#x27;%HuaWei手机Meta87384 Pro%&#x27;</span>\G;</span><br></pre>
 <p>3） 查看慢查询日志文件</p>
-<p>直接通过cat 指令查询该日志文件 ：<img src="https://i.loli.net/2021/01/27/uov1YTpgXFAW7bx.png" alt="image-20210127233051622"></p>
+<p>直接通过cat 指令查询该日志文件 ：<img src="https://i.loli.net/2021/01/27/uov1YTpgXFAW7bx.png" alt="image-20210127233051622" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/uov1YTpgXFAW7bx.png" class="lozad post-image"></p>
 <p>如果慢查询日志内容很多， 直接查看文件，比较麻烦， 这个时候可以借助于mysql自带的</p>
 <p>mysqldumpslow 工具， 来对慢查询日志进行分类汇总。</p>
-<p><img src="https://i.loli.net/2021/01/27/FPJBk3ZUbVK9Eli.png" alt="image-20210127233130483"></p>
+<p><img src="https://i.loli.net/2021/01/27/FPJBk3ZUbVK9Eli.png" alt="image-20210127233130483" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/FPJBk3ZUbVK9Eli.png" class="lozad post-image"></p>
 <h2 id="3-explain执行计划"><a href="#3-explain执行计划" class="headerlink" title="3. explain执行计划"></a>3. explain执行计划</h2><p>通过以上步骤查询到效率低的 SQL 语句后，可以通过 EXPLAIN或者 DESC命令获取 MySQL如何执</p>
 <p>行 SELECT 语句的信息，包括在 SELECT 语句执行过程中表如何连接和连接的顺序。</p>
 <p>查询SQL语句的执行计划 ： </p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">explain <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> tb_sku <span class="keyword">where</span> id <span class="operator">=</span> <span class="string">&#x27;100000030074&#x27;</span>;</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.loli.net/2021/01/27/mBeIr3fAGSPZLqt.png" alt="image-20210127233204260"></p>
+<pre class="highlight"><span class="line">explain <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> tb_sku <span class="keyword">where</span> id <span class="operator">=</span> <span class="string">&#x27;100000030074&#x27;</span>;</span><br></pre>
+<p><img src="https://i.loli.net/2021/01/27/mBeIr3fAGSPZLqt.png" alt="image-20210127233204260" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/mBeIr3fAGSPZLqt.png" class="lozad post-image"></p>
 <table>
 <thead>
 <tr>
@@ -363,8 +360,8 @@
 <p>C. id 有相同，也有不同，同时存在。id相同的可以认为是一组，从上往下顺序执行；在所有的组中，id的值越大，优先级越高，越先执行。</p>
 <p>2). select_type</p>
 <p>表示 SELECT 的类型，常见的取值，如下表所示：</p>
-<p><img src="https://i.loli.net/2021/01/27/PIwM6cmglUkn1bB.png" alt="image-20210127233330290">3). type</p>
-<p>type 显示的是访问类型，是较为重要的一个指标，可取值为：<img src="https://i.loli.net/2021/01/27/nhPkS2TCuWrcGzA.png" alt="image-20210127233431857"></p>
+<p><img src="https://i.loli.net/2021/01/27/PIwM6cmglUkn1bB.png" alt="image-20210127233330290" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/PIwM6cmglUkn1bB.png" class="lozad post-image">3). type</p>
+<p>type 显示的是访问类型，是较为重要的一个指标，可取值为：<img src="https://i.loli.net/2021/01/27/nhPkS2TCuWrcGzA.png" alt="image-20210127233431857" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/nhPkS2TCuWrcGzA.png" class="lozad post-image"></p>
 <p>一般来说， 我们需要保证查询至少达到 range 级别， 最好达到ref</p>
 <p>4). key</p>
 <p>A. possible_keys : 显示可能应用在这张表的索引， 一个或多个。</p>
@@ -383,53 +380,53 @@
 <p>2） 虽然索引大大提高了查询效率，同时却也降低更新表的速度，如对表进行INSERT、UPDATE、DELETE。因为更新表时，MySQL 不仅要保存数据，还要保存一下索引文件每次更新添加了索引列的字段，都会调整因为更新所带来的键值变化后的索引信息。</p>
 <h3 id="4-2-索引结构"><a href="#4-2-索引结构" class="headerlink" title="4.2 索引结构"></a>4.2 索引结构</h3><p>MySQL数据库中默认的存储引擎InnoDB的索引结构为B+树，而根据叶子节点的内存存储不同，索引类</p>
 <p>型分为主键索引和非主键索引。</p>
-<p>主键索引的叶子节点存储的是整行数据，在InnoDB中主键索引页被称为聚簇索引。其结构如下：<img src="https://i.loli.net/2021/01/27/WJsj84friFpEq7B.png" alt="image-20210127233731435"></p>
+<p>主键索引的叶子节点存储的是整行数据，在InnoDB中主键索引页被称为聚簇索引。其结构如下：<img src="https://i.loli.net/2021/01/27/WJsj84friFpEq7B.png" alt="image-20210127233731435" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/WJsj84friFpEq7B.png" class="lozad post-image"></p>
 <p>而非主键索引的叶子节点内容存储时的主键的值，在InnoDB中，非主键索引也被称为二级索引或辅助索引。其结构如下：</p>
-<h3 id="4-3-验证索引"><a href="#4-3-验证索引" class="headerlink" title="4.3 验证索引"></a><img src="https://i.loli.net/2021/01/27/uRkcvPQbArmEYVJ.png" alt="image-20210102114005619">4.3 验证索引</h3><p>在tb_sku表中一共存在1000w的记录 ;</p>
+<h3 id="4-3-验证索引"><a href="#4-3-验证索引" class="headerlink" title="4.3 验证索引"></a><img src="https://i.loli.net/2021/01/27/uRkcvPQbArmEYVJ.png" alt="image-20210102114005619" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/uRkcvPQbArmEYVJ.png" class="lozad post-image">4.3 验证索引</h3><p>在tb_sku表中一共存在1000w的记录 ;</p>
 <p>A. 根据主键ID查询速度很快</p>
-<p><img src="https://i.loli.net/2021/01/27/d196yFjRzvuwC8O.png" alt="image-20210102114138923">B. 根据name查询速度变慢</p>
+<p><img src="https://i.loli.net/2021/01/27/d196yFjRzvuwC8O.png" alt="image-20210102114138923" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/d196yFjRzvuwC8O.png" class="lozad post-image">B. 根据name查询速度变慢</p>
 <p>C.对name字段建立索引再次查询,速度很快.</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> index idx_sku_name <span class="keyword">on</span> tb_sku(name);</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="keyword">create</span> index idx_sku_name <span class="keyword">on</span> tb_sku(name);</span><br></pre>
 <h3 id="4-4-索引使用规则"><a href="#4-4-索引使用规则" class="headerlink" title="4.4 索引使用规则"></a>4.4 索引使用规则</h3><p>没有建立索引之前, 执行计划如下</p>
-<p><img src="https://i.loli.net/2021/01/27/vtYSXkhM8GKAmNy.png" alt="image-20210102114309709.png"></p>
+<p><img src="https://i.loli.net/2021/01/27/vtYSXkhM8GKAmNy.png" alt="image-20210102114309709.png" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/vtYSXkhM8GKAmNy.png" class="lozad post-image"></p>
 <p>建立索引 : </p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> index idx_seller_name_status_address <span class="keyword">on</span> tb_seller(name, status, seller);</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="keyword">create</span> index idx_seller_name_status_address <span class="keyword">on</span> tb_seller(name, status, seller);</span><br></pre>
 <p>1). 全值匹配 ，对索引中所有列都指定具体值。</p>
 <p>该情况下，索引生效，执行效率高。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">explain <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> tb_seller <span class="keyword">where</span> name<span class="operator">=</span><span class="string">&#x27;小米科技&#x27;</span> <span class="keyword">and</span> status<span class="operator">=</span><span class="string">&#x27;1&#x27;</span> <span class="keyword">and</span> address<span class="operator">=</span><span class="string">&#x27;北京市&#x27;</span>;</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.loli.net/2021/01/27/5wTQco1LvV7FEan.png" alt="image-20210102114412770">2). 最左前缀法则</p>
+<pre class="highlight"><span class="line">explain <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> tb_seller <span class="keyword">where</span> name<span class="operator">=</span><span class="string">&#x27;小米科技&#x27;</span> <span class="keyword">and</span> status<span class="operator">=</span><span class="string">&#x27;1&#x27;</span> <span class="keyword">and</span> address<span class="operator">=</span><span class="string">&#x27;北京市&#x27;</span>;</span><br></pre>
+<p><img src="https://i.loli.net/2021/01/27/5wTQco1LvV7FEan.png" alt="image-20210102114412770" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/5wTQco1LvV7FEan.png" class="lozad post-image">2). 最左前缀法则</p>
 <p>如果索引了多列，要遵守最左前缀法则。指的是查询从索引的最左前列开始，并且不跳过索引中的列(并非要求索引第一字段必须在第一位,出现即可.)。</p>
 <p>匹配最左前缀法则，走索引：</p>
-<p><img src="https://i.loli.net/2021/01/27/ZDN1zF2IC4tJL8l.png" alt="image-20210102114537793">违法最左前缀法则 ， 索引失效:</p>
-<p><img src="https://i.loli.net/2021/01/27/HpVSzP5ctUOxX4C.png" alt="image-20210102114555809">如果符合最左法则，但是出现跳跃某一列，只有最左列索引生效：</p>
-<p><img src="https://i.loli.net/2021/01/27/RcKYmrQLfxqtUDT.png" alt="image-20210102114620872"></p>
+<p><img src="https://i.loli.net/2021/01/27/ZDN1zF2IC4tJL8l.png" alt="image-20210102114537793" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/ZDN1zF2IC4tJL8l.png" class="lozad post-image">违法最左前缀法则 ， 索引失效:</p>
+<p><img src="https://i.loli.net/2021/01/27/HpVSzP5ctUOxX4C.png" alt="image-20210102114555809" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/HpVSzP5ctUOxX4C.png" class="lozad post-image">如果符合最左法则，但是出现跳跃某一列，只有最左列索引生效：</p>
+<p><img src="https://i.loli.net/2021/01/27/RcKYmrQLfxqtUDT.png" alt="image-20210102114620872" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/RcKYmrQLfxqtUDT.png" class="lozad post-image"></p>
 <p>3). 范围查询右边的列，不能使用索引 。</p>
-<p><img src="https://i.loli.net/2021/01/27/seBKYAxgf96SnqT.png" alt="image-20210102114702779"></p>
+<p><img src="https://i.loli.net/2021/01/27/seBKYAxgf96SnqT.png" alt="image-20210102114702779" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/seBKYAxgf96SnqT.png" class="lozad post-image"></p>
 <p>根据前面的两个字段name ， status 查询是走索引的， 但是最后一个条件address 没有用到索引。</p>
 <p>4). 不要在索引列上进行运算操作， 索引将失效。</p>
-<p><img src="https://i.loli.net/2021/01/27/uTwAGnFo8iv124D.png" alt="image-20210102114742534"></p>
+<p><img src="https://i.loli.net/2021/01/27/uTwAGnFo8iv124D.png" alt="image-20210102114742534" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/uTwAGnFo8iv124D.png" class="lozad post-image"></p>
 <p>5). 字符串不加单引号，造成索引失效。</p>
-<p><img src="https://i.loli.net/2021/01/27/TaXJYNcr3SPBGDk.png" alt="image-20210102114759976"></p>
+<p><img src="https://i.loli.net/2021/01/27/TaXJYNcr3SPBGDk.png" alt="image-20210102114759976" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/TaXJYNcr3SPBGDk.png" class="lozad post-image"></p>
 <p>由于，在查询时，没有对字符串加单引号，MySQL的查询优化器，会自动的进行类型转换，造成索引失效。</p>
 <p>6). 用or分割开的条件， 如果or前的条件中的列有索引，而后面的列中没有索引，那么涉及的索引都不会被用到。</p>
 <p>示例，name字段是索引列 ， 而createtime不是索引列，中间是or进行连接是不走索引的 :</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">explain <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> tb_seller <span class="keyword">where</span> name<span class="operator">=</span><span class="string">&#x27;黑马程序员&#x27;</span> <span class="keyword">or</span> createtime <span class="operator">=</span> <span class="string">&#x27;2088-01-01 12:00:00&#x27;</span>\G;</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.loli.net/2021/01/27/kEnMAZFh21TR6q9.png" alt="image-20210102114914453"></p>
+<pre class="highlight"><span class="line">explain <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> tb_seller <span class="keyword">where</span> name<span class="operator">=</span><span class="string">&#x27;黑马程序员&#x27;</span> <span class="keyword">or</span> createtime <span class="operator">=</span> <span class="string">&#x27;2088-01-01 12:00:00&#x27;</span>\G;</span><br></pre>
+<p><img src="https://i.loli.net/2021/01/27/kEnMAZFh21TR6q9.png" alt="image-20210102114914453" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/kEnMAZFh21TR6q9.png" class="lozad post-image"></p>
 <p>7). 以%开头的Like模糊查询，索引失效。</p>
 <p>如果仅仅是尾部模糊匹配，索引不会失效。如果是头部模糊匹配，索引失效。</p>
-<p><img src="https://i.loli.net/2021/01/27/5eQYGLuVTdZ3bKJ.png" alt="image-20210102114937160"></p>
+<p><img src="https://i.loli.net/2021/01/27/5eQYGLuVTdZ3bKJ.png" alt="image-20210102114937160" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/5eQYGLuVTdZ3bKJ.png" class="lozad post-image"></p>
 <p>解决方案 ：</p>
 <p>通过覆盖索引来解决</p>
-<p><img src="https://i.loli.net/2021/01/27/RGQ7YvF6mhrwxJo.png" alt="image-20210102115000614"></p>
+<p><img src="https://i.loli.net/2021/01/27/RGQ7YvF6mhrwxJo.png" alt="image-20210102115000614" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/RGQ7YvF6mhrwxJo.png" class="lozad post-image"></p>
 <p>8). 如果MySQL评估使用索引比全表更慢，则不使用索引。</p>
-<p><img src="https://i.loli.net/2021/01/27/mnRHa4UgSekjiuG.png" alt="image-20210102115253554"></p>
+<p><img src="https://i.loli.net/2021/01/27/mnRHa4UgSekjiuG.png" alt="image-20210102115253554" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/mnRHa4UgSekjiuG.png" class="lozad post-image"></p>
 <p>9). is NULL ， is NOT NULL 有时索引失效。</p>
-<p><img src="https://i.loli.net/2021/01/27/8rkhgI94KERP7i6.png" alt="image-20210102115311582"></p>
+<p><img src="https://i.loli.net/2021/01/27/8rkhgI94KERP7i6.png" alt="image-20210102115311582" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/8rkhgI94KERP7i6.png" class="lozad post-image"></p>
 <p>10). in ， not in 有时索引失效</p>
-<p><img src="https://i.loli.net/2021/01/27/khUqeCluLPzTGOB.png" alt="image-20210102115328409"></p>
+<p><img src="https://i.loli.net/2021/01/27/khUqeCluLPzTGOB.png" alt="image-20210102115328409" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/khUqeCluLPzTGOB.png" class="lozad post-image"></p>
 <p>11). 尽量使用覆盖索引，避免select *</p>
 <p>尽量使用覆盖索引（只访问索引的查询（索引列完全包含查询列）），减少select * 。</p>
-<p><img src="https://i.loli.net/2021/01/27/bUs12rNhJeOGVZo.png" alt="image-20210102115353112"></p>
+<p><img src="https://i.loli.net/2021/01/27/bUs12rNhJeOGVZo.png" alt="image-20210102115353112" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/bUs12rNhJeOGVZo.png" class="lozad post-image"></p>
 <p>如果查询列，超出索引列，也会降低性能。</p>
 <blockquote>
 <p>TIP :</p>
@@ -452,31 +449,31 @@
 <li><p>利用最左前缀，N个列组合而成的组合索引，那么相当于是创建了N个索引，如果查询时where子句中使用了组成该索引的前几个字段，那么这条查询SQL可以利用组合索引来提升查询效率。</p>
 </li>
 </ul>
-<h2 id="5-常见的SQL优化"><a href="#5-常见的SQL优化" class="headerlink" title="5. 常见的SQL优化"></a>5. 常见的SQL优化</h2><h3 id="5-1-环境准备"><a href="#5-1-环境准备" class="headerlink" title="5.1 环境准备"></a>5.1 环境准备</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> `emp` ( </span><br><span class="line">  `id` <span class="type">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> AUTO_INCREMENT, </span><br><span class="line">  `name` <span class="type">varchar</span>(<span class="number">100</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>, `age` <span class="type">int</span>(<span class="number">3</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>, </span><br><span class="line">  `salary` <span class="type">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>, <span class="keyword">PRIMARY</span> <span class="keyword">KEY</span> (`id`) </span><br><span class="line">) ENGINE<span class="operator">=</span>InnoDB <span class="keyword">DEFAULT</span> CHARSET<span class="operator">=</span>utf8mb4;</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `emp` (`id`, `name`, `age`, `salary`) <span class="keyword">values</span>(<span class="string">&#x27;1&#x27;</span>,<span class="string">&#x27;Tom&#x27;</span>,<span class="string">&#x27;25&#x27;</span>,<span class="string">&#x27;2300&#x27;</span>); </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `emp` (`id`, `name`, `age`, `salary`) <span class="keyword">values</span>(<span class="string">&#x27;2&#x27;</span>,<span class="string">&#x27;Jerry&#x27;</span>,<span class="string">&#x27;30&#x27;</span>,<span class="string">&#x27;3500&#x27;</span>); </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `emp` (`id`, `name`, `age`, `salary`) <span class="keyword">values</span>(<span class="string">&#x27;3&#x27;</span>,<span class="string">&#x27;Luci&#x27;</span>,<span class="string">&#x27;25&#x27;</span>,<span class="string">&#x27;2800&#x27;</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `emp` (`id`, `name`, `age`, `salary`) <span class="keyword">values</span>(<span class="string">&#x27;4&#x27;</span>,<span class="string">&#x27;Jay&#x27;</span>,<span class="string">&#x27;36&#x27;</span>,<span class="string">&#x27;3500&#x27;</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `emp` (`id`, `name`, `age`, `salary`) <span class="keyword">values</span>(<span class="string">&#x27;5&#x27;</span>,<span class="string">&#x27;Tom2&#x27;</span>,<span class="string">&#x27;21&#x27;</span>,<span class="string">&#x27;2200&#x27;</span>); </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `emp` (`id`, `name`, `age`, `salary`) <span class="keyword">values</span>(<span class="string">&#x27;6&#x27;</span>,<span class="string">&#x27;Jerry2&#x27;</span>,<span class="string">&#x27;31&#x27;</span>,<span class="string">&#x27;3300&#x27;</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `emp` (`id`, `name`, `age`, `salary`) <span class="keyword">values</span>(<span class="string">&#x27;7&#x27;</span>,<span class="string">&#x27;Luci2&#x27;</span>,<span class="string">&#x27;26&#x27;</span>,<span class="string">&#x27;2700&#x27;</span>); </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `emp` (`id`, `name`, `age`, `salary`) <span class="keyword">values</span>(<span class="string">&#x27;8&#x27;</span>,<span class="string">&#x27;Jay2&#x27;</span>,<span class="string">&#x27;33&#x27;</span>,<span class="string">&#x27;3500&#x27;</span>); </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `emp` (`id`, `name`, `age`, `salary`) <span class="keyword">values</span>(<span class="string">&#x27;9&#x27;</span>,<span class="string">&#x27;Tom3&#x27;</span>,<span class="string">&#x27;23&#x27;</span>,<span class="string">&#x27;2400&#x27;</span>); </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `emp` (`id`, `name`, `age`, `salary`) <span class="keyword">values</span>(<span class="string">&#x27;10&#x27;</span>,<span class="string">&#x27;Jerry3&#x27;</span>,<span class="string">&#x27;32&#x27;</span>,<span class="string">&#x27;3100&#x27;</span>); </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `emp` (`id`, `name`, `age`, `salary`) <span class="keyword">values</span>(<span class="string">&#x27;11&#x27;</span>,<span class="string">&#x27;Luci3&#x27;</span>,<span class="string">&#x27;26&#x27;</span>,<span class="string">&#x27;2900&#x27;</span>);</span><br></pre></td></tr></table></figure>
-<h3 id="5-2-order-by优化"><a href="#5-2-order-by优化" class="headerlink" title="5.2 order by优化"></a>5.2 order by优化</h3><h4 id="5-2-1-两种排序方式"><a href="#5-2-1-两种排序方式" class="headerlink" title="5.2.1 两种排序方式"></a>5.2.1 两种排序方式</h4><p>1). 第一种是通过对返回数据进行排序，也就是通常说的 filesort 排序，所有不是通过索引直接返回排序结果的排序都叫 FileSort 排序。<img src="https://i.loli.net/2021/01/27/QqZWDExtG1amPj4.png" alt="image-20210102115948644"></p>
+<h2 id="5-常见的SQL优化"><a href="#5-常见的SQL优化" class="headerlink" title="5. 常见的SQL优化"></a>5. 常见的SQL优化</h2><h3 id="5-1-环境准备"><a href="#5-1-环境准备" class="headerlink" title="5.1 环境准备"></a>5.1 环境准备</h3><pre class="highlight"><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> `emp` ( </span><br><span class="line">  `id` <span class="type">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> AUTO_INCREMENT, </span><br><span class="line">  `name` <span class="type">varchar</span>(<span class="number">100</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>, `age` <span class="type">int</span>(<span class="number">3</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>, </span><br><span class="line">  `salary` <span class="type">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>, <span class="keyword">PRIMARY</span> <span class="keyword">KEY</span> (`id`) </span><br><span class="line">) ENGINE<span class="operator">=</span>InnoDB <span class="keyword">DEFAULT</span> CHARSET<span class="operator">=</span>utf8mb4;</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `emp` (`id`, `name`, `age`, `salary`) <span class="keyword">values</span>(<span class="string">&#x27;1&#x27;</span>,<span class="string">&#x27;Tom&#x27;</span>,<span class="string">&#x27;25&#x27;</span>,<span class="string">&#x27;2300&#x27;</span>); </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `emp` (`id`, `name`, `age`, `salary`) <span class="keyword">values</span>(<span class="string">&#x27;2&#x27;</span>,<span class="string">&#x27;Jerry&#x27;</span>,<span class="string">&#x27;30&#x27;</span>,<span class="string">&#x27;3500&#x27;</span>); </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `emp` (`id`, `name`, `age`, `salary`) <span class="keyword">values</span>(<span class="string">&#x27;3&#x27;</span>,<span class="string">&#x27;Luci&#x27;</span>,<span class="string">&#x27;25&#x27;</span>,<span class="string">&#x27;2800&#x27;</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `emp` (`id`, `name`, `age`, `salary`) <span class="keyword">values</span>(<span class="string">&#x27;4&#x27;</span>,<span class="string">&#x27;Jay&#x27;</span>,<span class="string">&#x27;36&#x27;</span>,<span class="string">&#x27;3500&#x27;</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `emp` (`id`, `name`, `age`, `salary`) <span class="keyword">values</span>(<span class="string">&#x27;5&#x27;</span>,<span class="string">&#x27;Tom2&#x27;</span>,<span class="string">&#x27;21&#x27;</span>,<span class="string">&#x27;2200&#x27;</span>); </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `emp` (`id`, `name`, `age`, `salary`) <span class="keyword">values</span>(<span class="string">&#x27;6&#x27;</span>,<span class="string">&#x27;Jerry2&#x27;</span>,<span class="string">&#x27;31&#x27;</span>,<span class="string">&#x27;3300&#x27;</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `emp` (`id`, `name`, `age`, `salary`) <span class="keyword">values</span>(<span class="string">&#x27;7&#x27;</span>,<span class="string">&#x27;Luci2&#x27;</span>,<span class="string">&#x27;26&#x27;</span>,<span class="string">&#x27;2700&#x27;</span>); </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `emp` (`id`, `name`, `age`, `salary`) <span class="keyword">values</span>(<span class="string">&#x27;8&#x27;</span>,<span class="string">&#x27;Jay2&#x27;</span>,<span class="string">&#x27;33&#x27;</span>,<span class="string">&#x27;3500&#x27;</span>); </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `emp` (`id`, `name`, `age`, `salary`) <span class="keyword">values</span>(<span class="string">&#x27;9&#x27;</span>,<span class="string">&#x27;Tom3&#x27;</span>,<span class="string">&#x27;23&#x27;</span>,<span class="string">&#x27;2400&#x27;</span>); </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `emp` (`id`, `name`, `age`, `salary`) <span class="keyword">values</span>(<span class="string">&#x27;10&#x27;</span>,<span class="string">&#x27;Jerry3&#x27;</span>,<span class="string">&#x27;32&#x27;</span>,<span class="string">&#x27;3100&#x27;</span>); </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `emp` (`id`, `name`, `age`, `salary`) <span class="keyword">values</span>(<span class="string">&#x27;11&#x27;</span>,<span class="string">&#x27;Luci3&#x27;</span>,<span class="string">&#x27;26&#x27;</span>,<span class="string">&#x27;2900&#x27;</span>);</span><br></pre>
+<h3 id="5-2-order-by优化"><a href="#5-2-order-by优化" class="headerlink" title="5.2 order by优化"></a>5.2 order by优化</h3><h4 id="5-2-1-两种排序方式"><a href="#5-2-1-两种排序方式" class="headerlink" title="5.2.1 两种排序方式"></a>5.2.1 两种排序方式</h4><p>1). 第一种是通过对返回数据进行排序，也就是通常说的 filesort 排序，所有不是通过索引直接返回排序结果的排序都叫 FileSort 排序。<img src="https://i.loli.net/2021/01/27/QqZWDExtG1amPj4.png" alt="image-20210102115948644" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/QqZWDExtG1amPj4.png" class="lozad post-image"></p>
 <p>2). 第二种通过有序索引顺序扫描直接返回有序数据，这种情况即为 using index，不需要额外排序，操作效率高。</p>
-<p><img src="https://i.loli.net/2021/01/27/gwpP7O2Y13AWjRx.png" alt="image-20210102120019132"></p>
-<p>多字段排序<img src="https://i.loli.net/2021/01/27/hZ6bxFES31iHe5U.png" alt="image-20210102120101808"></p>
+<p><img src="https://i.loli.net/2021/01/27/gwpP7O2Y13AWjRx.png" alt="image-20210102120019132" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/gwpP7O2Y13AWjRx.png" class="lozad post-image"></p>
+<p>多字段排序<img src="https://i.loli.net/2021/01/27/hZ6bxFES31iHe5U.png" alt="image-20210102120101808" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/hZ6bxFES31iHe5U.png" class="lozad post-image"></p>
 <p>了解了MySQL的排序方式，优化目标就清晰了：尽量减少额外的排序，通过索引直接返回有序数据。</p>
 <p>where 条件和Order by 使用相同的索引，并且Order By 的顺序和索引顺序相同， 并且Order by 的字段都是升序，或者都是降序。否则肯定需要额外的操作，这样就会出现FileSort。</p>
 <h4 id="5-2-2-Filesort-的优化"><a href="#5-2-2-Filesort-的优化" class="headerlink" title="5.2.2 Filesort 的优化"></a>5.2.2 Filesort 的优化</h4><p>通过创建合适的索引，能够减少 Filesort 的出现，但是在某些情况下，条件限制不能让Filesort消失，那就需要加快 Filesort的排序操作。对于Filesort ， MySQL 现在采用的是一次扫描算法：一次性取出满足条件的所有字段，然后在排序区 sort buffer 中排序后直接输出结果集。排序时内存开销较大，但是排序效率比两次扫描算法要高。</p>
 <p>MySQL 通过比较系统变量 max_length_for_sort_data 的大小和Query语句取出的字段总大小， 来判定是否那种排序算法，如果max_length_for_sort_data 更大，那么使用第二种优化之后的算法；否则使用第一种。</p>
 <p>可以适当提高 sort_buffer_size 和 max_length_for_sort_data 系统变量，来增大排序区的大小，提高排序的效率。</p>
-<p><img src="https://i.loli.net/2021/01/27/W3iZJFjywgxD5vq.png" alt="image-20210102120229796"></p>
+<p><img src="https://i.loli.net/2021/01/27/W3iZJFjywgxD5vq.png" alt="image-20210102120229796" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/W3iZJFjywgxD5vq.png" class="lozad post-image"></p>
 <h3 id="5-3-group-by优化"><a href="#5-3-group-by优化" class="headerlink" title="5.3 group by优化"></a>5.3 group by优化</h3><p>由于GROUP BY 实际上也同样会进行排序操作，而且与ORDER BY 相比，GROUP BY 主要只是多了排序之后的分组操作。当然，如果在分组的时候还使用了其他的一些聚合函数，那么还需要一些聚合函数的计算。所以，在GROUP BY 的实现过程中，与 ORDER BY 一样也可以利用到索引。</p>
 <p>如果查询包含 group by 但是用户想要避免排序结果的消耗， 则可以执行order by null 禁止排序。如下 ：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">explain <span class="keyword">select</span> age,<span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> emp <span class="keyword">group</span> <span class="keyword">by</span> age;</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.loli.net/2021/01/27/nE1w9LgHGBcK2x3.png" alt="image-20210102120357530"></p>
+<pre class="highlight"><span class="line">explain <span class="keyword">select</span> age,<span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> emp <span class="keyword">group</span> <span class="keyword">by</span> age;</span><br></pre>
+<p><img src="https://i.loli.net/2021/01/27/nE1w9LgHGBcK2x3.png" alt="image-20210102120357530" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/nE1w9LgHGBcK2x3.png" class="lozad post-image"></p>
 <p>优化后:</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">explain <span class="keyword">select</span> age,<span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> emp <span class="keyword">group</span> <span class="keyword">by</span> age <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">null</span>;</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.loli.net/2021/01/27/BPMWOQzAGDK7U3L.png" alt="image-20210102120425871"></p>
+<pre class="highlight"><span class="line">explain <span class="keyword">select</span> age,<span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> emp <span class="keyword">group</span> <span class="keyword">by</span> age <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">null</span>;</span><br></pre>
+<p><img src="https://i.loli.net/2021/01/27/BPMWOQzAGDK7U3L.png" alt="image-20210102120425871" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/BPMWOQzAGDK7U3L.png" class="lozad post-image"></p>
 <p>从上面的例子可以看出，第一个SQL语句需要进行”filesort”，而第二个SQL由于order by null 不需要进行 “filesort”， 而上文提过Filesort往往非常耗费时间。</p>
 <p>创建索引 ： </p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> index idx_emp_age_salary <span class="keyword">on</span> emp(age,salary);</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.loli.net/2021/01/27/r4kIxJOpmMygEuc.png" alt="image-20210102120521652"></p>
+<pre class="highlight"><span class="line"><span class="keyword">create</span> index idx_emp_age_salary <span class="keyword">on</span> emp(age,salary);</span><br></pre>
+<p><img src="https://i.loli.net/2021/01/27/r4kIxJOpmMygEuc.png" alt="image-20210102120521652" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/r4kIxJOpmMygEuc.png" class="lozad post-image"></p>
 <h3 id="5-4-limit优化"><a href="#5-4-limit优化" class="headerlink" title="5.4 limit优化"></a>5.4 limit优化</h3><p>limit分页操作, 越往后, 性能越低 :</p>
 <p>优化方案: </p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> tb_sku t , (<span class="keyword">select</span> id <span class="keyword">from</span> tb_sku <span class="keyword">order</span> <span class="keyword">by</span> id limit <span class="number">9000000</span>,<span class="number">1</span>) a <span class="keyword">where</span> t.id <span class="operator">=</span> a.id;</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> tb_sku t , (<span class="keyword">select</span> id <span class="keyword">from</span> tb_sku <span class="keyword">order</span> <span class="keyword">by</span> id limit <span class="number">9000000</span>,<span class="number">1</span>) a <span class="keyword">where</span> t.id <span class="operator">=</span> a.id;</span><br></pre>
 <h3 id="5-5-count优化"><a href="#5-5-count优化" class="headerlink" title="5.5 count优化"></a>5.5 count优化</h3><p>在很多的业务系统中，都需要考虑进行分页操作，但是当我们执行分页操作时，都需要进行一次count操作，求取总记录数，如果数据库表的数据量大，在InnoDB引擎中，执行count操作的性能是比较低的，需要遍历全表数据，对计数进行累加。</p>
 <p>优化方案：</p>
 <p>①. 在大数据量的查询中，只查询数据， 而不展示总记录数 ； </p>
@@ -485,207 +482,406 @@
 <p>弊端:无法满足各种带where条件的count查询.</p>
 <h3 id="5-6-大批量插入优化"><a href="#5-6-大批量插入优化" class="headerlink" title="5.6 大批量插入优化"></a>5.6 大批量插入优化</h3><p>使用load命令!</p>
 <p>环境准备:</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> `tb_user` (</span><br><span class="line">  `id` <span class="type">INT</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> AUTO_INCREMENT, </span><br><span class="line">  `username` <span class="type">VARCHAR</span>(<span class="number">50</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>, </span><br><span class="line">  `password` <span class="type">VARCHAR</span>(<span class="number">50</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>, </span><br><span class="line">  `name` <span class="type">VARCHAR</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>, </span><br><span class="line">  `birthday` <span class="type">DATE</span> <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  `sex` <span class="type">CHAR</span>(<span class="number">1</span>) <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>, </span><br><span class="line">  <span class="keyword">PRIMARY</span> <span class="keyword">KEY</span> (`id`), </span><br><span class="line">  <span class="keyword">UNIQUE</span> KEY `unique_user_username` (`username`)</span><br><span class="line">) ENGINE<span class="operator">=</span>INNODB <span class="keyword">DEFAULT</span> CHARSET<span class="operator">=</span>utf8 ;</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> `tb_user` (</span><br><span class="line">  `id` <span class="type">INT</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> AUTO_INCREMENT, </span><br><span class="line">  `username` <span class="type">VARCHAR</span>(<span class="number">50</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>, </span><br><span class="line">  `password` <span class="type">VARCHAR</span>(<span class="number">50</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>, </span><br><span class="line">  `name` <span class="type">VARCHAR</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>, </span><br><span class="line">  `birthday` <span class="type">DATE</span> <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  `sex` <span class="type">CHAR</span>(<span class="number">1</span>) <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>, </span><br><span class="line">  <span class="keyword">PRIMARY</span> <span class="keyword">KEY</span> (`id`), </span><br><span class="line">  <span class="keyword">UNIQUE</span> KEY `unique_user_username` (`username`)</span><br><span class="line">) ENGINE<span class="operator">=</span>INNODB <span class="keyword">DEFAULT</span> CHARSET<span class="operator">=</span>utf8 ;</span><br></pre>
 <p>Load使用:</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- fields terminated by &#x27;,&#x27; lines terminated by &#x27;\n&#x27;可自定义别的符号.</span></span><br><span class="line">load data <span class="keyword">local</span> infile <span class="string">&#x27;/root/sql1.log&#x27;</span> <span class="keyword">into</span> <span class="keyword">table</span> `tb_user` fields terminated <span class="keyword">by</span> <span class="string">&#x27;,&#x27;</span> lines terminated <span class="keyword">by</span> <span class="string">&#x27;\n&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<pre class="highlight"><span class="line"><span class="comment">-- fields terminated by &#x27;,&#x27; lines terminated by &#x27;\n&#x27;可自定义别的符号.</span></span><br><span class="line">load data <span class="keyword">local</span> infile <span class="string">&#x27;/root/sql1.log&#x27;</span> <span class="keyword">into</span> <span class="keyword">table</span> `tb_user` fields terminated <span class="keyword">by</span> <span class="string">&#x27;,&#x27;</span> lines terminated <span class="keyword">by</span> <span class="string">&#x27;\n&#x27;</span>;</span><br></pre>
 <h4 id="5-6-1-对于-InnoDB-类型的表，有以下几种方式可以提高导入的效率："><a href="#5-6-1-对于-InnoDB-类型的表，有以下几种方式可以提高导入的效率：" class="headerlink" title="5.6.1 对于 InnoDB 类型的表，有以下几种方式可以提高导入的效率："></a>5.6.1 对于 InnoDB 类型的表，有以下几种方式可以提高导入的效率：</h4><h5 id="1）-主键顺序插入"><a href="#1）-主键顺序插入" class="headerlink" title="1） 主键顺序插入"></a>1） 主键顺序插入</h5><p>因为InnoDB类型的表是按照主键的顺序保存的，所以将导入的数据按照主键的顺序排列，可以有效的提高导入数据的效率。如果InnoDB表没有主键，那么系统会自动默认创建一个内部列作为主键，所以如果可以给表创建一个主键，将可以利用这点，来提高导入数据的效率。</p>
-<p><img src="https://i.loli.net/2021/01/27/DXFIvx3KHBpLlOq.png" alt="image-20210102121542033"></p>
-<h5 id="2）-关闭唯一性校验"><a href="#2）-关闭唯一性校验" class="headerlink" title="2） 关闭唯一性校验"></a><img src="https://i.loli.net/2021/01/27/6aDBX3nVytQCP4z.png" alt="image-20210102121518728">2） 关闭唯一性校验</h5><p>在导入数据前执行 SET UNIQUE_CHECKS=0，关闭唯一性校验，在导入结束后执行 SET UNIQUE_CHECKS=1，恢复唯一性校验，可以提高导入的效率。</p>
-<h5 id="3）-手动提交事务"><a href="#3）-手动提交事务" class="headerlink" title="3） 手动提交事务"></a><img src="https://i.loli.net/2021/01/27/l8DwIRpVJnSi2Ft.png" alt="image-20210102121608494">3） 手动提交事务</h5><p>如果应用使用自动提交的方式，建议在导入前执行 SET AUTOCOMMIT=0，关闭自动提交，导入结束后再执行 SET AUTOCOMMIT=1，打开自动提交，也可以提高导入的效率。</p>
-<p><img src="https://i.loli.net/2021/01/27/xEo8Tbgqv46SFMY.png" alt="image-20210102121630297"></p>
+<p><img src="https://i.loli.net/2021/01/27/DXFIvx3KHBpLlOq.png" alt="image-20210102121542033" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/DXFIvx3KHBpLlOq.png" class="lozad post-image"></p>
+<h5 id="2）-关闭唯一性校验"><a href="#2）-关闭唯一性校验" class="headerlink" title="2） 关闭唯一性校验"></a><img src="https://i.loli.net/2021/01/27/6aDBX3nVytQCP4z.png" alt="image-20210102121518728" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/6aDBX3nVytQCP4z.png" class="lozad post-image">2） 关闭唯一性校验</h5><p>在导入数据前执行 SET UNIQUE_CHECKS=0，关闭唯一性校验，在导入结束后执行 SET UNIQUE_CHECKS=1，恢复唯一性校验，可以提高导入的效率。</p>
+<h5 id="3）-手动提交事务"><a href="#3）-手动提交事务" class="headerlink" title="3） 手动提交事务"></a><img src="https://i.loli.net/2021/01/27/l8DwIRpVJnSi2Ft.png" alt="image-20210102121608494" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/l8DwIRpVJnSi2Ft.png" class="lozad post-image">3） 手动提交事务</h5><p>如果应用使用自动提交的方式，建议在导入前执行 SET AUTOCOMMIT=0，关闭自动提交，导入结束后再执行 SET AUTOCOMMIT=1，打开自动提交，也可以提高导入的效率。</p>
+<p><img src="https://i.loli.net/2021/01/27/xEo8Tbgqv46SFMY.png" alt="image-20210102121630297" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/01/27/xEo8Tbgqv46SFMY.png" class="lozad post-image"></p>
 
-    </div>
-
-    
-    
-    
-
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/sql%E4%BC%98%E5%8C%96/" rel="tag"># sql优化</a>
-              <a href="/tags/explain/" rel="tag"># explain</a>
-          </div>
-
+  </div>
+  <div>
+  
+  <div class="post-note note-warning copyright" style="margin-top: 42px">
+    <p><span style="font-weight: bold;">作者：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/about">blydd</a></p>
+    <p><span style="font-weight: bold;">文章链接：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/2021/01/02/SQL%E8%AF%AD%E5%8F%A5%E6%80%A7%E8%83%BD%E6%8F%90%E5%8D%87/">https://www.mele.cool/2021/01/02/SQL%E8%AF%AD%E5%8F%A5%E6%80%A7%E8%83%BD%E6%8F%90%E5%8D%87/</a></p>
+    <p><span style="font-weight: bold;">版权声明：</span>本博客所有文章除特别声明外，均采用<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0 协议</a>。转载请注明出处！</p>
+  </div>
+  
+  </div>
+</article>
+<div class="nav">
+  
+  <div class="nav-item-prev">
+    <a href="/2021/01/22/开发注意代码整理/" class="nav-link">
+      <i class="iconfont icon-left nav-prev-icon"></i>
+      <div>
+        <div class="nav-label">上一篇</div>
         
-
-
+        <div class="nav-title">开发中注意的小问题 </div>
         
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2020/12/15/%E9%9B%86%E5%90%88%E5%88%86%E9%A1%B5%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="prev" title="集合分页工具类">
-      <i class="fa fa-chevron-left"></i> 集合分页工具类
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/01/22/%E5%BC%80%E5%8F%91%E6%B3%A8%E6%84%8F%E4%BB%A3%E7%A0%81%E6%95%B4%E7%90%86/" rel="next" title="开发中注意的小问题">
-      开发中注意的小问题 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      </div>
+    </a>
+  </div>
+  
+  
+  <div class="nav-item-next">
+    <a href="/2020/12/15/集合分页工具类/" class="nav-link">
+      <div>
+        <div class="nav-label">下一篇</div>
+        
+        <div class="nav-title">集合分页工具类 </div>
+        
+      </div>
+      <i class="iconfont icon-right nav-next-icon"></i>
+    </a>
+  </div>
+  
+</div>
+
+<div class="card card-content toc-card" id="mobiletoc">
+  <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87"><span class="toc-text">1.数据准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%85%A2%E6%9F%A5%E8%AF%A2%E5%88%86%E6%9E%90"><span class="toc-text">2.慢查询分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-show-profiles"><span class="toc-text">2.1.show profiles</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97"><span class="toc-text">2.2 慢查询日志</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-1-%E6%96%87%E4%BB%B6%E4%BD%8D%E7%BD%AE%E5%92%8C%E6%A0%BC%E5%BC%8F"><span class="toc-text">2.2.1 文件位置和格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-2-%E6%97%A5%E5%BF%97%E7%9A%84%E8%AF%BB%E5%8F%96"><span class="toc-text">2.2.2 日志的读取</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-explain%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92"><span class="toc-text">3. explain执行计划</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%B4%A2%E5%BC%95%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">4. 索引的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E6%A6%82%E8%BF%B0%E5%8F%8A%E4%BD%9C%E7%94%A8"><span class="toc-text">4.1 概述及作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E7%B4%A2%E5%BC%95%E7%BB%93%E6%9E%84"><span class="toc-text">4.2 索引结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E9%AA%8C%E8%AF%81%E7%B4%A2%E5%BC%95"><span class="toc-text">4.3 验证索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E7%B4%A2%E5%BC%95%E4%BD%BF%E7%94%A8%E8%A7%84%E5%88%99"><span class="toc-text">4.4 索引使用规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-%E7%B4%A2%E5%BC%95%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="toc-text">4.5 索引设计原则</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%B8%B8%E8%A7%81%E7%9A%84SQL%E4%BC%98%E5%8C%96"><span class="toc-text">5. 常见的SQL优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-text">5.1 环境准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-order-by%E4%BC%98%E5%8C%96"><span class="toc-text">5.2 order by优化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-1-%E4%B8%A4%E7%A7%8D%E6%8E%92%E5%BA%8F%E6%96%B9%E5%BC%8F"><span class="toc-text">5.2.1 两种排序方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-2-Filesort-%E7%9A%84%E4%BC%98%E5%8C%96"><span class="toc-text">5.2.2 Filesort 的优化</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-group-by%E4%BC%98%E5%8C%96"><span class="toc-text">5.3 group by优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-limit%E4%BC%98%E5%8C%96"><span class="toc-text">5.4 limit优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-count%E4%BC%98%E5%8C%96"><span class="toc-text">5.5 count优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-6-%E5%A4%A7%E6%89%B9%E9%87%8F%E6%8F%92%E5%85%A5%E4%BC%98%E5%8C%96"><span class="toc-text">5.6 大批量插入优化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-6-1-%E5%AF%B9%E4%BA%8E-InnoDB-%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A1%A8%EF%BC%8C%E6%9C%89%E4%BB%A5%E4%B8%8B%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%8F%AF%E4%BB%A5%E6%8F%90%E9%AB%98%E5%AF%BC%E5%85%A5%E7%9A%84%E6%95%88%E7%8E%87%EF%BC%9A"><span class="toc-text">5.6.1 对于 InnoDB 类型的表，有以下几种方式可以提高导入的效率：</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1%EF%BC%89-%E4%B8%BB%E9%94%AE%E9%A1%BA%E5%BA%8F%E6%8F%92%E5%85%A5"><span class="toc-text">1） 主键顺序插入</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2%EF%BC%89-%E5%85%B3%E9%97%AD%E5%94%AF%E4%B8%80%E6%80%A7%E6%A0%A1%E9%AA%8C"><span class="toc-text">2） 关闭唯一性校验</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3%EF%BC%89-%E6%89%8B%E5%8A%A8%E6%8F%90%E4%BA%A4%E4%BA%8B%E5%8A%A1"><span class="toc-text">3） 手动提交事务</span></a></li></ol></li></ol></li></ol></li></ol>
+</div></main>
+          <aside class="left-column">
+            
+            <div class="card card-author">
+              
+<img src="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png" class="author-img">
+
+<p class="author-name">blydd</p>
+<p class="author-description">积跬步行千里</p>
+<div class="author-message">
+  <a class="author-posts-count" href="/archives">
+    <span>66</span>
+    <span>文章</span>
+  </a>
+  <a class="author-categories-count" href="/categories">
+    <span>16</span>
+    <span>分类</span>
+  </a>
+  <a class="author-tags-count" href="/tags">
+    <span>92</span>
+    <span>标签</span>
+  </a>
+</div>
+
+            </div>
+            
+            <div class="sticky-tablet">
+  
+  
+  <article class="display-when-two-columns spacer">
+    <div class="card card-content toc-card">
+      <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87"><span class="toc-text">1.数据准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%85%A2%E6%9F%A5%E8%AF%A2%E5%88%86%E6%9E%90"><span class="toc-text">2.慢查询分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-show-profiles"><span class="toc-text">2.1.show profiles</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97"><span class="toc-text">2.2 慢查询日志</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-1-%E6%96%87%E4%BB%B6%E4%BD%8D%E7%BD%AE%E5%92%8C%E6%A0%BC%E5%BC%8F"><span class="toc-text">2.2.1 文件位置和格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-2-%E6%97%A5%E5%BF%97%E7%9A%84%E8%AF%BB%E5%8F%96"><span class="toc-text">2.2.2 日志的读取</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-explain%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92"><span class="toc-text">3. explain执行计划</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%B4%A2%E5%BC%95%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">4. 索引的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E6%A6%82%E8%BF%B0%E5%8F%8A%E4%BD%9C%E7%94%A8"><span class="toc-text">4.1 概述及作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E7%B4%A2%E5%BC%95%E7%BB%93%E6%9E%84"><span class="toc-text">4.2 索引结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E9%AA%8C%E8%AF%81%E7%B4%A2%E5%BC%95"><span class="toc-text">4.3 验证索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E7%B4%A2%E5%BC%95%E4%BD%BF%E7%94%A8%E8%A7%84%E5%88%99"><span class="toc-text">4.4 索引使用规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-%E7%B4%A2%E5%BC%95%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="toc-text">4.5 索引设计原则</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%B8%B8%E8%A7%81%E7%9A%84SQL%E4%BC%98%E5%8C%96"><span class="toc-text">5. 常见的SQL优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-text">5.1 环境准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-order-by%E4%BC%98%E5%8C%96"><span class="toc-text">5.2 order by优化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-1-%E4%B8%A4%E7%A7%8D%E6%8E%92%E5%BA%8F%E6%96%B9%E5%BC%8F"><span class="toc-text">5.2.1 两种排序方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-2-Filesort-%E7%9A%84%E4%BC%98%E5%8C%96"><span class="toc-text">5.2.2 Filesort 的优化</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-group-by%E4%BC%98%E5%8C%96"><span class="toc-text">5.3 group by优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-limit%E4%BC%98%E5%8C%96"><span class="toc-text">5.4 limit优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-count%E4%BC%98%E5%8C%96"><span class="toc-text">5.5 count优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-6-%E5%A4%A7%E6%89%B9%E9%87%8F%E6%8F%92%E5%85%A5%E4%BC%98%E5%8C%96"><span class="toc-text">5.6 大批量插入优化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-6-1-%E5%AF%B9%E4%BA%8E-InnoDB-%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A1%A8%EF%BC%8C%E6%9C%89%E4%BB%A5%E4%B8%8B%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%8F%AF%E4%BB%A5%E6%8F%90%E9%AB%98%E5%AF%BC%E5%85%A5%E7%9A%84%E6%95%88%E7%8E%87%EF%BC%9A"><span class="toc-text">5.6.1 对于 InnoDB 类型的表，有以下几种方式可以提高导入的效率：</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1%EF%BC%89-%E4%B8%BB%E9%94%AE%E9%A1%BA%E5%BA%8F%E6%8F%92%E5%85%A5"><span class="toc-text">1） 主键顺序插入</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2%EF%BC%89-%E5%85%B3%E9%97%AD%E5%94%AF%E4%B8%80%E6%80%A7%E6%A0%A1%E9%AA%8C"><span class="toc-text">2） 关闭唯一性校验</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3%EF%BC%89-%E6%89%8B%E5%8A%A8%E6%8F%90%E4%BA%A4%E4%BA%8B%E5%8A%A1"><span class="toc-text">3） 手动提交事务</span></a></li></ol></li></ol></li></ol></li></ol>
     </div>
-      </footer>
-    
   </article>
   
   
+  <article class="card card-content categories-widget">
+    <div class="categories-card">
+  <div class="categories-header"><i class="iconfont icon-fenlei" style="padding-right: 2px;"></i>分类</div>
+  <div class="categories-list">
+    
+      <a href="/categories/工具类">
+        <div class="categories-list-item">
+          工具类
+          <span class="categories-list-item-badge">8</span>
+        </div>
+      </a>
+    
+      <a href="/categories/linux">
+        <div class="categories-list-item">
+          linux
+          <span class="categories-list-item-badge">3</span>
+        </div>
+      </a>
+    
+      <a href="/categories/mac">
+        <div class="categories-list-item">
+          mac
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/java">
+        <div class="categories-list-item">
+          java
+          <span class="categories-list-item-badge">18</span>
+        </div>
+      </a>
+    
+      <a href="/categories/springboot">
+        <div class="categories-list-item">
+          springboot
+          <span class="categories-list-item-badge">13</span>
+        </div>
+      </a>
+    
+      <a href="/categories/docker">
+        <div class="categories-list-item">
+          docker
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/hello world">
+        <div class="categories-list-item">
+          hello world
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/版本控制">
+        <div class="categories-list-item">
+          版本控制
+          <span class="categories-list-item-badge">2</span>
+        </div>
+      </a>
+    
+      <a href="/categories/mele">
+        <div class="categories-list-item">
+          mele
+          <span class="categories-list-item-badge">2</span>
+        </div>
+      </a>
+    
+      <a href="/categories/db">
+        <div class="categories-list-item">
+          db
+          <span class="categories-list-item-badge">7</span>
+        </div>
+      </a>
+    
+      <a href="/categories/其他">
+        <div class="categories-list-item">
+          其他
+          <span class="categories-list-item-badge">2</span>
+        </div>
+      </a>
+    
+      <a href="/categories/bug">
+        <div class="categories-list-item">
+          bug
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/js">
+        <div class="categories-list-item">
+          js
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+      <a href="/categories/mq">
+        <div class="categories-list-item">
+          mq
+          <span class="categories-list-item-badge">3</span>
+        </div>
+      </a>
+    
+      <a href="/categories/面试">
+        <div class="categories-list-item">
+          面试
+          <span class="categories-list-item-badge">2</span>
+        </div>
+      </a>
+    
+      <a href="/categories/springCloud">
+        <div class="categories-list-item">
+          springCloud
+          <span class="categories-list-item-badge">1</span>
+        </div>
+      </a>
+    
+  </div>
+</div>
+  </article>
   
-
-
-
-          </div>
+  <article class="card card-content tags-widget">
+    <div class="tags-card">
+  <div class="tags-header"><i class="iconfont icon-biaoqian" style="padding-right: 2px;"></i>热门标签</div>
+  <div class="tags-list">
+    
+    <a href="\tags\springboot" title="springboot"><div class="tags-list-item">springboot</div></a>
+    
+    <a href="\tags\java" title="java"><div class="tags-list-item">java</div></a>
+    
+    <a href="\tags\工具类" title="工具类"><div class="tags-list-item">工具类</div></a>
+    
+    <a href="\tags\mybatis" title="mybatis"><div class="tags-list-item">mybatis</div></a>
+    
+    <a href="\tags\ms" title="ms"><div class="tags-list-item">ms</div></a>
+    
+    <a href="\tags\tool" title="tool"><div class="tags-list-item">tool</div></a>
+    
+    <a href="\tags\git" title="git"><div class="tags-list-item">git</div></a>
+    
+    <a href="\tags\linux" title="linux"><div class="tags-list-item">linux</div></a>
+    
+    <a href="\tags\线程池" title="线程池"><div class="tags-list-item">线程池</div></a>
+    
+    <a href="\tags\mq" title="mq"><div class="tags-list-item">mq</div></a>
+    
+    <a href="\tags\常用" title="常用"><div class="tags-list-item">常用</div></a>
+    
+    <a href="\tags\bug" title="bug"><div class="tags-list-item">bug</div></a>
+    
+    <a href="\tags\分布式" title="分布式"><div class="tags-list-item">分布式</div></a>
+    
+    <a href="\tags\acid" title="acid"><div class="tags-list-item">acid</div></a>
+    
+    <a href="\tags\事务" title="事务"><div class="tags-list-item">事务</div></a>
+    
+    <a href="\tags\xml" title="xml"><div class="tags-list-item">xml</div></a>
+    
+  </div>
+</div>
+  </article>
+  
+  
+</div>
+          </aside>
+          <aside class="right-column">
+            <div class="sticky-widescreen">
+  
+  
+  <article class="card card-content toc-card">
+    <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87"><span class="toc-text">1.数据准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%85%A2%E6%9F%A5%E8%AF%A2%E5%88%86%E6%9E%90"><span class="toc-text">2.慢查询分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-show-profiles"><span class="toc-text">2.1.show profiles</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97"><span class="toc-text">2.2 慢查询日志</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-1-%E6%96%87%E4%BB%B6%E4%BD%8D%E7%BD%AE%E5%92%8C%E6%A0%BC%E5%BC%8F"><span class="toc-text">2.2.1 文件位置和格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-2-%E6%97%A5%E5%BF%97%E7%9A%84%E8%AF%BB%E5%8F%96"><span class="toc-text">2.2.2 日志的读取</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-explain%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92"><span class="toc-text">3. explain执行计划</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%B4%A2%E5%BC%95%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">4. 索引的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E6%A6%82%E8%BF%B0%E5%8F%8A%E4%BD%9C%E7%94%A8"><span class="toc-text">4.1 概述及作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E7%B4%A2%E5%BC%95%E7%BB%93%E6%9E%84"><span class="toc-text">4.2 索引结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E9%AA%8C%E8%AF%81%E7%B4%A2%E5%BC%95"><span class="toc-text">4.3 验证索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E7%B4%A2%E5%BC%95%E4%BD%BF%E7%94%A8%E8%A7%84%E5%88%99"><span class="toc-text">4.4 索引使用规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-%E7%B4%A2%E5%BC%95%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="toc-text">4.5 索引设计原则</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%B8%B8%E8%A7%81%E7%9A%84SQL%E4%BC%98%E5%8C%96"><span class="toc-text">5. 常见的SQL优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-text">5.1 环境准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-order-by%E4%BC%98%E5%8C%96"><span class="toc-text">5.2 order by优化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-1-%E4%B8%A4%E7%A7%8D%E6%8E%92%E5%BA%8F%E6%96%B9%E5%BC%8F"><span class="toc-text">5.2.1 两种排序方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-2-Filesort-%E7%9A%84%E4%BC%98%E5%8C%96"><span class="toc-text">5.2.2 Filesort 的优化</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-group-by%E4%BC%98%E5%8C%96"><span class="toc-text">5.3 group by优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-limit%E4%BC%98%E5%8C%96"><span class="toc-text">5.4 limit优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-count%E4%BC%98%E5%8C%96"><span class="toc-text">5.5 count优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-6-%E5%A4%A7%E6%89%B9%E9%87%8F%E6%8F%92%E5%85%A5%E4%BC%98%E5%8C%96"><span class="toc-text">5.6 大批量插入优化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-6-1-%E5%AF%B9%E4%BA%8E-InnoDB-%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A1%A8%EF%BC%8C%E6%9C%89%E4%BB%A5%E4%B8%8B%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%8F%AF%E4%BB%A5%E6%8F%90%E9%AB%98%E5%AF%BC%E5%85%A5%E7%9A%84%E6%95%88%E7%8E%87%EF%BC%9A"><span class="toc-text">5.6.1 对于 InnoDB 类型的表，有以下几种方式可以提高导入的效率：</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1%EF%BC%89-%E4%B8%BB%E9%94%AE%E9%A1%BA%E5%BA%8F%E6%8F%92%E5%85%A5"><span class="toc-text">1） 主键顺序插入</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2%EF%BC%89-%E5%85%B3%E9%97%AD%E5%94%AF%E4%B8%80%E6%80%A7%E6%A0%A1%E9%AA%8C"><span class="toc-text">2） 关闭唯一性校验</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3%EF%BC%89-%E6%89%8B%E5%8A%A8%E6%8F%90%E4%BA%A4%E4%BA%8B%E5%8A%A1"><span class="toc-text">3） 手动提交事务</span></a></li></ol></li></ol></li></ol></li></ol>
+  </article>
+  
+  
+  <article class="card card-content">
+    <div class="recent-posts-card">
+  <div class="recent-posts-header"><i class="iconfont icon-wenzhang_huaban" style="padding-right: 2px;"></i>最近文章</div>
+  <div class="recent-posts-list">
+    
+      <div class="recent-posts-item">
+        <div class="recent-posts-item-title">2021-01-30</div>
+        <a href="/2021/01/30/java面试题/"><div class="recent-posts-item-content">java面试题</div></a>
+      </div>
+    
+      <div class="recent-posts-item">
+        <div class="recent-posts-item-title">2021-01-26</div>
+        <a href="/2021/01/26/编写优雅高效的java代码/"><div class="recent-posts-item-content">编写高效优雅java代码</div></a>
+      </div>
+    
+      <div class="recent-posts-item">
+        <div class="recent-posts-item-title">2021-01-23</div>
+        <a href="/2021/01/23/redis教程效率版/"><div class="recent-posts-item-content">redis入门效率版</div></a>
+      </div>
+    
+      <div class="recent-posts-item">
+        <div class="recent-posts-item-title">2021-01-22</div>
+        <a href="/2021/01/22/开发注意代码整理/"><div class="recent-posts-item-content">开发中注意的小问题</div></a>
+      </div>
+    
+  </div>
+</div>
+  </article>
+  
+  
+</div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer class="footer">
+  <div class="footer-container">
+    <div>
+      <div class="footer-dsc">
+        <span>Copyright ©
           
+          2020 -
+          
+          2021
+        </span>
+        &nbsp;
+        <a href="/" class="footer-link">mele blog </a>
+      </div>
+    </div>
 
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
+    
+    <div class="footer-dsc">
+      
+      Powered by
+      <a href="https://hexo.io/" class="footer-link" target="_blank" rel="nofollow noopener noreferrer">&nbsp;Hexo </a>
+      
+      
+      <span>&nbsp;|&nbsp;</span>
+      
+      
+      Theme -
+      <a href="https://github.com/theme-kaze" class="footer-link" target="_blank"
+        rel="nofollow noopener noreferrer">&nbsp;Kaze</a>
+      
+    </div>
+    
+    
+    
+    
+</footer>
+  <a role="button" id="scrollbutton" class="basebutton"  aria-label="回到顶部">
+  <i class="iconfont icon-arrowleft button-icon"></i>
+</a>
+<a role="button" id="menubutton" class="basebutton">
+  <i class="iconfont icon-menu button-icon"></i>
+</a>
+<a role="button" id="popbutton" class="basebutton" aria-label="控制中心">
+  <i class="iconfont icon-expand button-icon"></i>
+</a>
+<a role="button" id="darkbutton" class="basebutton darkwidget" aria-label="夜色模式">
+  <i class="iconfont icon-weather button-icon"></i>
+</a>
+<a role="button" id="searchbutton" class="basebutton searchwidget" aria-label="搜索">
+  <i class="iconfont icon-search button-icon"></i>
+</a>
+
+  
+  
+  
+  <script>
+  var addImgLayout = function () {
+    var img = document.querySelectorAll('.post-content img');
+    var i;
+    for (i = 0; i < img.length; i++) {
+      var wrapper = document.createElement('a');
+      wrapper.setAttribute('href', img[i].getAttribute('data-src'));
+      wrapper.setAttribute('aria-label', 'illustration');
+      wrapper.style.cssText = 'width: 100%; display: flex; justify-content: center;';
+      if (img[i].alt) wrapper.dataset.caption = img[i].alt;
+      wrapper.dataset.nolink = true;
+      img[i].before(wrapper);
+      wrapper.append(img[i]);
+      var divWrap = document.createElement('div');
+      divWrap.classList.add('gallery');
+      wrapper.before(divWrap);
+      divWrap.append(wrapper);
     }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
+    baguetteBox.run('.gallery');
   }
 </script>
-
-        </div>
-          
+<script>loadScript("/js/lib/lightbox/baguetteBox.min.js", addImgLayout)</script>
   
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87"><span class="nav-number">1.</span> <span class="nav-text">1.数据准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%85%A2%E6%9F%A5%E8%AF%A2%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">2.慢查询分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-show-profiles"><span class="nav-number">2.1.</span> <span class="nav-text">2.1.show profiles</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 慢查询日志</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-%E6%96%87%E4%BB%B6%E4%BD%8D%E7%BD%AE%E5%92%8C%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.2.1 文件位置和格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-%E6%97%A5%E5%BF%97%E7%9A%84%E8%AF%BB%E5%8F%96"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2.2 日志的读取</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-explain%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92"><span class="nav-number">3.</span> <span class="nav-text">3. explain执行计划</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E7%B4%A2%E5%BC%95%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">4. 索引的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E6%A6%82%E8%BF%B0%E5%8F%8A%E4%BD%9C%E7%94%A8"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 概述及作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E7%B4%A2%E5%BC%95%E7%BB%93%E6%9E%84"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 索引结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-%E9%AA%8C%E8%AF%81%E7%B4%A2%E5%BC%95"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 验证索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-%E7%B4%A2%E5%BC%95%E4%BD%BF%E7%94%A8%E8%A7%84%E5%88%99"><span class="nav-number">4.4.</span> <span class="nav-text">4.4 索引使用规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-%E7%B4%A2%E5%BC%95%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="nav-number">4.5.</span> <span class="nav-text">4.5 索引设计原则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%B8%B8%E8%A7%81%E7%9A%84SQL%E4%BC%98%E5%8C%96"><span class="nav-number">5.</span> <span class="nav-text">5. 常见的SQL优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 环境准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-order-by%E4%BC%98%E5%8C%96"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 order by优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-1-%E4%B8%A4%E7%A7%8D%E6%8E%92%E5%BA%8F%E6%96%B9%E5%BC%8F"><span class="nav-number">5.2.1.</span> <span class="nav-text">5.2.1 两种排序方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-2-Filesort-%E7%9A%84%E4%BC%98%E5%8C%96"><span class="nav-number">5.2.2.</span> <span class="nav-text">5.2.2 Filesort 的优化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-group-by%E4%BC%98%E5%8C%96"><span class="nav-number">5.3.</span> <span class="nav-text">5.3 group by优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-limit%E4%BC%98%E5%8C%96"><span class="nav-number">5.4.</span> <span class="nav-text">5.4 limit优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-5-count%E4%BC%98%E5%8C%96"><span class="nav-number">5.5.</span> <span class="nav-text">5.5 count优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-6-%E5%A4%A7%E6%89%B9%E9%87%8F%E6%8F%92%E5%85%A5%E4%BC%98%E5%8C%96"><span class="nav-number">5.6.</span> <span class="nav-text">5.6 大批量插入优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-6-1-%E5%AF%B9%E4%BA%8E-InnoDB-%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A1%A8%EF%BC%8C%E6%9C%89%E4%BB%A5%E4%B8%8B%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%8F%AF%E4%BB%A5%E6%8F%90%E9%AB%98%E5%AF%BC%E5%85%A5%E7%9A%84%E6%95%88%E7%8E%87%EF%BC%9A"><span class="nav-number">5.6.1.</span> <span class="nav-text">5.6.1 对于 InnoDB 类型的表，有以下几种方式可以提高导入的效率：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1%EF%BC%89-%E4%B8%BB%E9%94%AE%E9%A1%BA%E5%BA%8F%E6%8F%92%E5%85%A5"><span class="nav-number">5.6.1.1.</span> <span class="nav-text">1） 主键顺序插入</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2%EF%BC%89-%E5%85%B3%E9%97%AD%E5%94%AF%E4%B8%80%E6%80%A7%E6%A0%A1%E9%AA%8C"><span class="nav-number">5.6.1.2.</span> <span class="nav-text">2） 关闭唯一性校验</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3%EF%BC%89-%E6%89%8B%E5%8A%A8%E6%8F%90%E4%BA%A4%E4%BA%8B%E5%8A%A1"><span class="nav-number">5.6.1.3.</span> <span class="nav-text">3） 手动提交事务</span></a></li></ol></li></ol></li></ol></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">blydd</p>
-  <div class="site-description" itemprop="description">米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.</div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">66</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">16</span>
-        <span class="site-state-item-name">分类</span>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">92</span>
-        <span class="site-state-item-name">标签</span>
-      </div>
-  </nav>
-</div>
-
-
-
-      </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
   
-  &copy; 
-  <span itemprop="copyrightYear">2021</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">blydd</span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
-  </div>
-
-        
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
-  </div>
+  
+<script src="/js/main.js"></script>
 
   
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/muse.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-
-
   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  <script>
+    var addLazyload = function () {
+      var observer = lozad('.lozad', {
+        load: function (el) {
+          el.srcset = el.getAttribute('data-src');
+        },
+        loaded: function (el) {
+          el.classList.add('loaded');
+        }
+      });
+      observer.observe();
+    }
+  </script>
+  <script>loadScript("/js/lib/lozad.min.js", addLazyload)</script>
   
-
   
-
 </body>
+
 </html>
