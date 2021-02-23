@@ -1,257 +1,218 @@
 <!DOCTYPE html>
-<html  lang="zh-CN" >
-
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="theme-color" content="#fff" id="theme-color">
-  <meta name="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
-  <link rel="icon" href="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png">
-  <title>不重启清空catalina.out</title>
-  
-  
-  <meta property="og:title" content="不重启清空catalina.out">
-  
-  
-  <meta property="og:url" content="https://www.mele.cool/2020/12/04/%E4%B8%8D%E9%87%8D%E5%90%AF%E6%B8%85%E7%A9%BAcatalina.out/index.html">
-  
-  
-  <meta property="og:img" content="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png">
-  
-  
-  <meta property="og:img" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
-  
-  
-  <meta property="og:type" content="article">
-  <meta property="og:article:published_time" content="2020-12-04">
-  <meta property="og:article:modified_time" content="2020-12-04">
-  <meta property="og:article:author" content="blydd">
-  
-  
-  <meta property="og:article:tag" content="linux">
-  
-  <meta property="og:article:tag" content="tomcat">
-  
-  <meta property="og:article:tag" content="日志">
-  
-  
-  
-  
-  <!-- 百度统计代码 -->
-<script>
-  var _hmt = _hmt || [];
-  (function() {
-    var hm = document.createElement("script");
-    hm.src = "https://hm.baidu.com/hm.js?52aed7fa581354c5e14562bad1a1def2";
-    var s = document.getElementsByTagName("script")[0]; 
-    s.parentNode.insertBefore(hm, s);
-  })();
-  </script>
- <!-- 百度统计代码 --> 
-  <script>
-    // control reverse button
-    var reverseDarkList = {
-      dark: 'light',
-      light: 'dark'
-    };
-    var themeColor = {
-      dark: '#1c1c1e',
-      light: '#fff'
-    }
-    // get the data of css prefers-color-scheme
-    var getCssMediaQuery = function() {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    };
-    // reverse current darkmode setting function
-    var reverseDarkModeSetting = function() {
-      var setting = localStorage.getItem('user-color-scheme');
-      if(reverseDarkList[setting]) {
-        setting = reverseDarkList[setting];
-      } else if(setting === null) {
-        setting = reverseDarkList[getCssMediaQuery()];
-      } else {
-        return;
-      }
-      localStorage.setItem('user-color-scheme', setting);
-      return setting;
-    };
-    // apply current darkmode setting
-    var setDarkmode = function(mode) {
-      var setting = mode || localStorage.getItem('user-color-scheme');
-      if(setting === getCssMediaQuery()) {
-        document.documentElement.removeAttribute('data-user-color-scheme');
-        localStorage.removeItem('user-color-scheme');
-        document.getElementById('theme-color').content = themeColor[setting];
-      } else if(reverseDarkList[setting]) {
-        document.documentElement.setAttribute('data-user-color-scheme', setting);
-        document.getElementById('theme-color').content = themeColor[setting];
-      } else {
-        document.documentElement.removeAttribute('data-user-color-scheme');
-        localStorage.removeItem('user-color-scheme');
-        document.getElementById('theme-color').content = themeColor[getCssMediaQuery()];
-      }
-    };
-    setDarkmode();
-  </script>
-  <script>
-    function loadScript(url, cb) {
-      var script = document.createElement('script');
-      script.src = url;
-      if (cb) script.onload = cb;
-      script.async = true;
-      document.body.appendChild(script);
-    }
-  </script>
-  
-  <link rel="preload" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css" as="style" >
-  <link rel="preload" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css" as="style" >
-  
-  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.js" as="script">
-  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.css" as="style" >
-  
-  
-  <link rel="preload" href="/js/lib/lozad.min.js" as="script">
-  
-  
-  
-  
-  
-  
-  
-  
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
 <link rel="stylesheet" href="/css/main.css">
 
-  
-  
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css">
 
-  
-  
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-  
-  
-<link rel="stylesheet" href="/js/lib/lightbox/baguetteBox.min.css">
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.mele.cool","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
 
-  
-  
-  
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
+  <meta name="description" content="不重启清空catalina.out">
+<meta property="og:type" content="article">
+<meta property="og:title" content="不重启清空catalina.out">
+<meta property="og:url" content="https://www.mele.cool/2020/12/04/%E4%B8%8D%E9%87%8D%E5%90%AF%E6%B8%85%E7%A9%BAcatalina.out/index.html">
+<meta property="og:site_name" content="米乐博客">
+<meta property="og:description" content="不重启清空catalina.out">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-04T02:10:17.000Z">
+<meta property="article:modified_time" content="2020-12-04T12:00:13.586Z">
+<meta property="article:author" content="blydd">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="tomcat">
+<meta property="article:tag" content="日志">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.mele.cool/2020/12/04/%E4%B8%8D%E9%87%8D%E5%90%AF%E6%B8%85%E7%A9%BAcatalina.out/">
 
 
-<body>
-  <div class="wrapper">
-    
-    <nav class="navbar">
-  <div class="navbar-logo">
-    <span class="navbar-logo-main">
-      
-      <img class="navbar-logo-img" src="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png" alt="logo">
-      
-      <span class="navbar-logo-dsc">mele blog</span>
-    </span>
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>不重启清空catalina.out | 米乐博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
   </div>
-  <div class="navbar-menu">
-    
-    <a href="/" class="navbar-menu-item">
-    
-    首页
-    
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">米乐博客</h1>
+      <span class="logo-line-after"><i></i></span>
     </a>
-    
-    <a href="/archives" class="navbar-menu-item">
-    
-    归档
-    
-    </a>
-    
-    <a href="/tags" class="navbar-menu-item">
-    
-    标签
-    
-    </a>
-    
-    <a href="/categories" class="navbar-menu-item">
-    
-    分类
-    
-    </a>
-    
-    <a href="/about" class="navbar-menu-item">
-    
-    关于
-    
-    </a>
-    
-    <a href="/links" class="navbar-menu-item">
-    
-    友链
-    
-    </a>
-    
-    <a class="navbar-menu-item darknavbar" id="dark"><i class="iconfont icon-weather"></i></a>
-    <a class="navbar-menu-item searchnavbar" id="search"><i class="iconfont icon-search" style="font-size: 1.2rem; font-weight: 400;"></i></a>
+      <p class="site-subtitle" itemprop="description">积跬步至千里</p>
   </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
 </nav>
+
+
+
+
+</div>
+    </header>
+
     
-    <div id="local-search" style="display: none;">
-      <input class="navbar-menu-item" id="search-input" placeholder="请输入搜索内容...">
-      <div id="search-content"></div>
-    </div>
-    
-    <div class="section-wrap">
-      <div class="container">
-        <div class="columns">
-          <main class="main-column">
-<article class="card card-content">
-  <header>
-    <h1 class="post-title">
-      不重启清空catalina.out
-    </h1>
-  </header>
-  <div class="post-meta post-show-meta">
-    <time datetime="2020-12-04T02:10:17.000Z">
-      <i class="iconfont icon-calendar" style="margin-right: 2px;"></i>
-      <span>2020-12-04</span>
-    </time>
-    
-    <span class="dot"></span>
-    
-    <a href="/categories/linux/" class="post-meta-link">linux</a>
-    
-    
-    
-    <span class="dot"></span>
-    <span>207 字</span>
-    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
   </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
   
-  <div class="post-meta post-show-meta" style="margin-top: -10px;">
-    <div style="display: flex; align-items: center;">
-      <i class="iconfont icon-biaoqian" style="margin-right: 2px; font-size: 1.15rem;"></i>
-      
-      
-        <a href="/tags/linux/" class="post-meta-link">linux</a>
-      
-      
-      <span class="dot"></span>
-      
-        <a href="/tags/tomcat/" class="post-meta-link">tomcat</a>
-      
-      
-      <span class="dot"></span>
-      
-        <a href="/tags/日志/" class="post-meta-link">日志</a>
-      
-    </div>
-  </div>
   
-  </header>
-  <div id="section" class="post-content">
-    <h2 id="1-重定向方法清空文件"><a href="#1-重定向方法清空文件" class="headerlink" title="1.重定向方法清空文件"></a>1.重定向方法清空文件</h2><pre class="highlight"><span class="line">[root@localhost logs]# du -h catalina.out  查看文件大小</span><br><span class="line">17M catalina.out</span><br><span class="line">[root@localhost logs]# &gt; catalina.out             重定向清空文件</span><br><span class="line">[root@localhost logs]# du -h catalina.out       查看文件大小</span><br><span class="line">0 catalina.out </span><br></pre>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.mele.cool/2020/12/04/%E4%B8%8D%E9%87%8D%E5%90%AF%E6%B8%85%E7%A9%BAcatalina.out/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="blydd">
+      <meta itemprop="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="米乐博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          不重启清空catalina.out
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-04 10:10:17 / 修改时间：20:00:13" itemprop="dateCreated datePublished" datetime="2020-12-04T10:10:17+08:00">2020-12-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">不重启清空catalina.out</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="1-重定向方法清空文件"><a href="#1-重定向方法清空文件" class="headerlink" title="1.重定向方法清空文件"></a>1.重定向方法清空文件</h2><pre class="highlight"><span class="line">[root@localhost logs]# du -h catalina.out  查看文件大小</span><br><span class="line">17M catalina.out</span><br><span class="line">[root@localhost logs]# &gt; catalina.out             重定向清空文件</span><br><span class="line">[root@localhost logs]# du -h catalina.out       查看文件大小</span><br><span class="line">0 catalina.out </span><br></pre>
 <h2 id="2-使用true命令重定向清空文件"><a href="#2-使用true命令重定向清空文件" class="headerlink" title="2.使用true命令重定向清空文件"></a>2.使用true命令重定向清空文件</h2><pre class="highlight"><span class="line">[root@localhost logs]# du -h catalina.out</span><br><span class="line">448K catalina.out</span><br><span class="line">[root@localhost logs]# true &gt; catalina.out </span><br><span class="line">[root@localhost logs]# du -h catalina.out </span><br><span class="line">0 catalina.out</span><br></pre>
 <h2 id="3、使用cat-cp-dd命令及-dev-null设备来清空文件"><a href="#3、使用cat-cp-dd命令及-dev-null设备来清空文件" class="headerlink" title="3、使用cat/cp/dd命令及/dev/null设备来清空文件"></a>3、使用cat/cp/dd命令及/dev/null设备来清空文件</h2><pre class="highlight"><span class="line">cat /dev/null &gt; catalina.out</span><br><span class="line"></span><br><span class="line">cp  /dev/null &gt; catalina.out</span><br><span class="line"></span><br><span class="line">dd if=/dev/null of=catalina.out</span><br><span class="line"></span><br></pre>
 <h2 id="4、使用echo命令清空文件"><a href="#4、使用echo命令清空文件" class="headerlink" title="4、使用echo命令清空文件"></a>4、使用echo命令清空文件</h2><pre class="highlight"><span class="line">echo -n  &quot; &quot; &gt; catalina.out   </span><br></pre>
@@ -260,411 +221,203 @@
 <p>-s参数是设置文件的大小，清空文件的话，就设定为0</p>
 <p>from  <a target="_blank" rel="noopener" href="https://www.cnblogs.com/centos2017/p/9922959.html">https://www.cnblogs.com/centos2017/p/9922959.html</a></p>
 
-  </div>
-  <div>
-  
-  <div class="post-note note-warning copyright" style="margin-top: 42px">
-    <p><span style="font-weight: bold;">作者：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/about">blydd</a></p>
-    <p><span style="font-weight: bold;">文章链接：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/2020/12/04/%E4%B8%8D%E9%87%8D%E5%90%AF%E6%B8%85%E7%A9%BAcatalina.out/">https://www.mele.cool/2020/12/04/%E4%B8%8D%E9%87%8D%E5%90%AF%E6%B8%85%E7%A9%BAcatalina.out/</a></p>
-    <p><span style="font-weight: bold;">版权声明：</span>本博客所有文章除特别声明外，均采用<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0 协议</a>。转载请注明出处！</p>
-  </div>
-  
-  </div>
-</article>
-<div class="nav">
-  
-  <div class="nav-item-prev">
-    <a href="/2020/12/04/一个家越过越好的3个迹象/" class="nav-link">
-      <i class="iconfont icon-left nav-prev-icon"></i>
-      <div>
-        <div class="nav-label">上一篇</div>
-        
-        <div class="nav-title">一个家越过越好的三个迹象 </div>
-        
-      </div>
-    </a>
-  </div>
-  
-  
-  <div class="nav-item-next">
-    <a href="/2020/12/04/事务隔离级别/" class="nav-link">
-      <div>
-        <div class="nav-label">下一篇</div>
-        
-        <div class="nav-title">事务隔离级别 </div>
-        
-      </div>
-      <i class="iconfont icon-right nav-next-icon"></i>
-    </a>
-  </div>
-  
-</div>
-
-<div class="card card-content toc-card" id="mobiletoc">
-  <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%87%8D%E5%AE%9A%E5%90%91%E6%96%B9%E6%B3%95%E6%B8%85%E7%A9%BA%E6%96%87%E4%BB%B6"><span class="toc-text">1.重定向方法清空文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%BD%BF%E7%94%A8true%E5%91%BD%E4%BB%A4%E9%87%8D%E5%AE%9A%E5%90%91%E6%B8%85%E7%A9%BA%E6%96%87%E4%BB%B6"><span class="toc-text">2.使用true命令重定向清空文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E4%BD%BF%E7%94%A8cat-cp-dd%E5%91%BD%E4%BB%A4%E5%8F%8A-dev-null%E8%AE%BE%E5%A4%87%E6%9D%A5%E6%B8%85%E7%A9%BA%E6%96%87%E4%BB%B6"><span class="toc-text">3、使用cat&#x2F;cp&#x2F;dd命令及&#x2F;dev&#x2F;null设备来清空文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81%E4%BD%BF%E7%94%A8echo%E5%91%BD%E4%BB%A4%E6%B8%85%E7%A9%BA%E6%96%87%E4%BB%B6"><span class="toc-text">4、使用echo命令清空文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81%E4%BD%BF%E7%94%A8truncate%E5%91%BD%E4%BB%A4%E6%B8%85%E7%A9%BA%E6%96%87%E4%BB%B6"><span class="toc-text">5、使用truncate命令清空文件</span></a></li></ol>
-</div></main>
-          <aside class="left-column">
-            
-            <div class="card card-author">
-              
-<img src="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png" class="author-img">
-
-<p class="author-name">blydd</p>
-<p class="author-description">积跬步行千里</p>
-<div class="author-message">
-  <a class="author-posts-count" href="/archives">
-    <span>68</span>
-    <span>文章</span>
-  </a>
-  <a class="author-categories-count" href="/categories">
-    <span>18</span>
-    <span>分类</span>
-  </a>
-  <a class="author-tags-count" href="/tags">
-    <span>95</span>
-    <span>标签</span>
-  </a>
-</div>
-
-            </div>
-            
-            <div class="sticky-tablet">
-  
-  
-  <article class="display-when-two-columns spacer">
-    <div class="card card-content toc-card">
-      <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%87%8D%E5%AE%9A%E5%90%91%E6%96%B9%E6%B3%95%E6%B8%85%E7%A9%BA%E6%96%87%E4%BB%B6"><span class="toc-text">1.重定向方法清空文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%BD%BF%E7%94%A8true%E5%91%BD%E4%BB%A4%E9%87%8D%E5%AE%9A%E5%90%91%E6%B8%85%E7%A9%BA%E6%96%87%E4%BB%B6"><span class="toc-text">2.使用true命令重定向清空文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E4%BD%BF%E7%94%A8cat-cp-dd%E5%91%BD%E4%BB%A4%E5%8F%8A-dev-null%E8%AE%BE%E5%A4%87%E6%9D%A5%E6%B8%85%E7%A9%BA%E6%96%87%E4%BB%B6"><span class="toc-text">3、使用cat&#x2F;cp&#x2F;dd命令及&#x2F;dev&#x2F;null设备来清空文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81%E4%BD%BF%E7%94%A8echo%E5%91%BD%E4%BB%A4%E6%B8%85%E7%A9%BA%E6%96%87%E4%BB%B6"><span class="toc-text">4、使用echo命令清空文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81%E4%BD%BF%E7%94%A8truncate%E5%91%BD%E4%BB%A4%E6%B8%85%E7%A9%BA%E6%96%87%E4%BB%B6"><span class="toc-text">5、使用truncate命令清空文件</span></a></li></ol>
     </div>
-  </article>
-  
-  
-  <article class="card card-content categories-widget">
-    <div class="categories-card">
-  <div class="categories-header"><i class="iconfont icon-fenlei" style="padding-right: 2px;"></i>分类</div>
-  <div class="categories-list">
+
     
-      <a href="/categories/工具类">
-        <div class="categories-list-item">
-          工具类
-          <span class="categories-list-item-badge">8</span>
-        </div>
-      </a>
     
-      <a href="/categories/linux">
-        <div class="categories-list-item">
-          linux
-          <span class="categories-list-item-badge">3</span>
-        </div>
-      </a>
     
-      <a href="/categories/mac">
-        <div class="categories-list-item">
-          mac
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/java">
-        <div class="categories-list-item">
-          java
-          <span class="categories-list-item-badge">18</span>
-        </div>
-      </a>
-    
-      <a href="/categories/springboot">
-        <div class="categories-list-item">
-          springboot
-          <span class="categories-list-item-badge">13</span>
-        </div>
-      </a>
-    
-      <a href="/categories/docker">
-        <div class="categories-list-item">
-          docker
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/版本控制">
-        <div class="categories-list-item">
-          版本控制
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/hello world">
-        <div class="categories-list-item">
-          hello world
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/mele">
-        <div class="categories-list-item">
-          mele
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/db">
-        <div class="categories-list-item">
-          db
-          <span class="categories-list-item-badge">7</span>
-        </div>
-      </a>
-    
-      <a href="/categories/springcloud">
-        <div class="categories-list-item">
-          springcloud
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/其他">
-        <div class="categories-list-item">
-          其他
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/bug">
-        <div class="categories-list-item">
-          bug
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/js">
-        <div class="categories-list-item">
-          js
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/mq">
-        <div class="categories-list-item">
-          mq
-          <span class="categories-list-item-badge">3</span>
-        </div>
-      </a>
-    
-      <a href="/categories/面试">
-        <div class="categories-list-item">
-          面试
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/日志">
-        <div class="categories-list-item">
-          日志
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/springCloud">
-        <div class="categories-list-item">
-          springCloud
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-  </div>
-</div>
-  </article>
-  
-  <article class="card card-content tags-widget">
-    <div class="tags-card">
-  <div class="tags-header"><i class="iconfont icon-biaoqian" style="padding-right: 2px;"></i>热门标签</div>
-  <div class="tags-list">
-    
-    <a href="\tags\springboot" title="springboot"><div class="tags-list-item">springboot</div></a>
-    
-    <a href="\tags\java" title="java"><div class="tags-list-item">java</div></a>
-    
-    <a href="\tags\工具类" title="工具类"><div class="tags-list-item">工具类</div></a>
-    
-    <a href="\tags\mybatis" title="mybatis"><div class="tags-list-item">mybatis</div></a>
-    
-    <a href="\tags\ms" title="ms"><div class="tags-list-item">ms</div></a>
-    
-    <a href="\tags\tool" title="tool"><div class="tags-list-item">tool</div></a>
-    
-    <a href="\tags\日志" title="日志"><div class="tags-list-item">日志</div></a>
-    
-    <a href="\tags\git" title="git"><div class="tags-list-item">git</div></a>
-    
-    <a href="\tags\linux" title="linux"><div class="tags-list-item">linux</div></a>
-    
-    <a href="\tags\线程池" title="线程池"><div class="tags-list-item">线程池</div></a>
-    
-    <a href="\tags\mq" title="mq"><div class="tags-list-item">mq</div></a>
-    
-    <a href="\tags\常用" title="常用"><div class="tags-list-item">常用</div></a>
-    
-    <a href="\tags\bug" title="bug"><div class="tags-list-item">bug</div></a>
-    
-    <a href="\tags\分布式" title="分布式"><div class="tags-list-item">分布式</div></a>
-    
-    <a href="\tags\acid" title="acid"><div class="tags-list-item">acid</div></a>
-    
-    <a href="\tags\事务" title="事务"><div class="tags-list-item">事务</div></a>
-    
-  </div>
-</div>
-  </article>
-  
-  
-</div>
-          </aside>
-          <aside class="right-column">
-            <div class="sticky-widescreen">
-  
-  
-  <article class="card card-content toc-card">
-    <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%87%8D%E5%AE%9A%E5%90%91%E6%96%B9%E6%B3%95%E6%B8%85%E7%A9%BA%E6%96%87%E4%BB%B6"><span class="toc-text">1.重定向方法清空文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%BD%BF%E7%94%A8true%E5%91%BD%E4%BB%A4%E9%87%8D%E5%AE%9A%E5%90%91%E6%B8%85%E7%A9%BA%E6%96%87%E4%BB%B6"><span class="toc-text">2.使用true命令重定向清空文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E4%BD%BF%E7%94%A8cat-cp-dd%E5%91%BD%E4%BB%A4%E5%8F%8A-dev-null%E8%AE%BE%E5%A4%87%E6%9D%A5%E6%B8%85%E7%A9%BA%E6%96%87%E4%BB%B6"><span class="toc-text">3、使用cat&#x2F;cp&#x2F;dd命令及&#x2F;dev&#x2F;null设备来清空文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81%E4%BD%BF%E7%94%A8echo%E5%91%BD%E4%BB%A4%E6%B8%85%E7%A9%BA%E6%96%87%E4%BB%B6"><span class="toc-text">4、使用echo命令清空文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81%E4%BD%BF%E7%94%A8truncate%E5%91%BD%E4%BB%A4%E6%B8%85%E7%A9%BA%E6%96%87%E4%BB%B6"><span class="toc-text">5、使用truncate命令清空文件</span></a></li></ol>
-  </article>
-  
-  
-  <article class="card card-content">
-    <div class="recent-posts-card">
-  <div class="recent-posts-header"><i class="iconfont icon-wenzhang_huaban" style="padding-right: 2px;"></i>最近文章</div>
-  <div class="recent-posts-list">
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-02-22</div>
-        <a href="/2021/02/22/集中化日志管理系统的应用/"><div class="recent-posts-item-content">集中化日志管理平台的应用</div></a>
-      </div>
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-02-18</div>
-        <a href="/2021/02/18/springSecurity/"><div class="recent-posts-item-content">springsecurity</div></a>
-      </div>
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-30</div>
-        <a href="/2021/01/30/java面试题/"><div class="recent-posts-item-content">java面试题</div></a>
-      </div>
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-26</div>
-        <a href="/2021/01/26/编写优雅高效的java代码/"><div class="recent-posts-item-content">编写高效优雅java代码</div></a>
-      </div>
-    
-  </div>
-</div>
-  </article>
-  
-  
-</div>
-          </aside>
-        </div>
-      </div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/tomcat/" rel="tag"># tomcat</a>
+              <a href="/tags/%E6%97%A5%E5%BF%97/" rel="tag"># 日志</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/04/%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/" rel="prev" title="事务隔离级别">
+      <i class="fa fa-chevron-left"></i> 事务隔离级别
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/04/%E4%B8%80%E4%B8%AA%E5%AE%B6%E8%B6%8A%E8%BF%87%E8%B6%8A%E5%A5%BD%E7%9A%843%E4%B8%AA%E8%BF%B9%E8%B1%A1/" rel="next" title="一个家越过越好的三个迹象">
+      一个家越过越好的三个迹象 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-  </div>
+      </footer>
+    
+  </article>
   
-  <footer class="footer">
-  <div class="footer-container">
-    <div>
-      <div class="footer-dsc">
-        <span>Copyright ©
+  
+  
+
+
+
+          </div>
           
-          2020 -
-          
-          2021
-        </span>
-        &nbsp;
-        <a href="/" class="footer-link">mele blog </a>
-      </div>
-    </div>
 
-    
-    <div class="footer-dsc">
-      
-      Powered by
-      <a href="https://hexo.io/" class="footer-link" target="_blank" rel="nofollow noopener noreferrer">&nbsp;Hexo </a>
-      
-      
-      <span>&nbsp;|&nbsp;</span>
-      
-      
-      Theme -
-      <a href="https://github.com/theme-kaze" class="footer-link" target="_blank"
-        rel="nofollow noopener noreferrer">&nbsp;Kaze</a>
-      
-    </div>
-    
-    
-    
-    
-</footer>
-  <a role="button" id="scrollbutton" class="basebutton"  aria-label="回到顶部">
-  <i class="iconfont icon-arrowleft button-icon"></i>
-</a>
-<a role="button" id="menubutton" class="basebutton">
-  <i class="iconfont icon-menu button-icon"></i>
-</a>
-<a role="button" id="popbutton" class="basebutton" aria-label="控制中心">
-  <i class="iconfont icon-expand button-icon"></i>
-</a>
-<a role="button" id="darkbutton" class="basebutton darkwidget" aria-label="夜色模式">
-  <i class="iconfont icon-weather button-icon"></i>
-</a>
-<a role="button" id="searchbutton" class="basebutton searchwidget" aria-label="搜索">
-  <i class="iconfont icon-search button-icon"></i>
-</a>
-
-  
-  
-  
-  <script>
-  var addImgLayout = function () {
-    var img = document.querySelectorAll('.post-content img');
-    var i;
-    for (i = 0; i < img.length; i++) {
-      var wrapper = document.createElement('a');
-      wrapper.setAttribute('href', img[i].getAttribute('data-src'));
-      wrapper.setAttribute('aria-label', 'illustration');
-      wrapper.style.cssText = 'width: 100%; display: flex; justify-content: center;';
-      if (img[i].alt) wrapper.dataset.caption = img[i].alt;
-      wrapper.dataset.nolink = true;
-      img[i].before(wrapper);
-      wrapper.append(img[i]);
-      var divWrap = document.createElement('div');
-      divWrap.classList.add('gallery');
-      wrapper.before(divWrap);
-      divWrap.append(wrapper);
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
     }
-    baguetteBox.run('.gallery');
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
-<script>loadScript("/js/lib/lightbox/baguetteBox.min.js", addImgLayout)</script>
+
+        </div>
+          
   
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%87%8D%E5%AE%9A%E5%90%91%E6%96%B9%E6%B3%95%E6%B8%85%E7%A9%BA%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">1.重定向方法清空文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BD%BF%E7%94%A8true%E5%91%BD%E4%BB%A4%E9%87%8D%E5%AE%9A%E5%90%91%E6%B8%85%E7%A9%BA%E6%96%87%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">2.使用true命令重定向清空文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E4%BD%BF%E7%94%A8cat-cp-dd%E5%91%BD%E4%BB%A4%E5%8F%8A-dev-null%E8%AE%BE%E5%A4%87%E6%9D%A5%E6%B8%85%E7%A9%BA%E6%96%87%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">3、使用cat&#x2F;cp&#x2F;dd命令及&#x2F;dev&#x2F;null设备来清空文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81%E4%BD%BF%E7%94%A8echo%E5%91%BD%E4%BB%A4%E6%B8%85%E7%A9%BA%E6%96%87%E4%BB%B6"><span class="nav-number">4.</span> <span class="nav-text">4、使用echo命令清空文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%E3%80%81%E4%BD%BF%E7%94%A8truncate%E5%91%BD%E4%BB%A4%E6%B8%85%E7%A9%BA%E6%96%87%E4%BB%B6"><span class="nav-number">5.</span> <span class="nav-text">5、使用truncate命令清空文件</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">blydd</p>
+  <div class="site-description" itemprop="description">米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">95</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
   
-  
-<script src="/js/main.js"></script>
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">blydd</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
 
   
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
   
-  <script>
-    var addLazyload = function () {
-      var observer = lozad('.lozad', {
-        load: function (el) {
-          el.srcset = el.getAttribute('data-src');
-        },
-        loaded: function (el) {
-          el.classList.add('loaded');
-        }
-      });
-      observer.observe();
-    }
-  </script>
-  <script>loadScript("/js/lib/lozad.min.js", addLazyload)</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
+
   
+
 </body>
-
 </html>

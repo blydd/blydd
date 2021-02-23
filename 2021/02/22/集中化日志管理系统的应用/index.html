@@ -1,258 +1,256 @@
 <!DOCTYPE html>
-<html  lang="zh-CN" >
-
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="theme-color" content="#fff" id="theme-color">
-  <meta name="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
-  <link rel="icon" href="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png">
-  <title>集中化日志管理平台的应用</title>
-  
-  
-  <meta property="og:title" content="集中化日志管理平台的应用">
-  
-  
-  <meta property="og:url" content="https://www.mele.cool/2021/02/22/%E9%9B%86%E4%B8%AD%E5%8C%96%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%BA%94%E7%94%A8/index.html">
-  
-  
-  <meta property="og:img" content="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png">
-  
-  
-  <meta property="og:img" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
-  
-  
-  <meta property="og:type" content="article">
-  <meta property="og:article:published_time" content="2021-02-22">
-  <meta property="og:article:modified_time" content="2021-02-23">
-  <meta property="og:article:author" content="blydd">
-  
-  
-  <meta property="og:article:tag" content="日志">
-  
-  <meta property="og:article:tag" content="kibana">
-  
-  <meta property="og:article:tag" content="elk">
-  
-  
-  
-  
-  <!-- 百度统计代码 -->
-<script>
-  var _hmt = _hmt || [];
-  (function() {
-    var hm = document.createElement("script");
-    hm.src = "https://hm.baidu.com/hm.js?52aed7fa581354c5e14562bad1a1def2";
-    var s = document.getElementsByTagName("script")[0]; 
-    s.parentNode.insertBefore(hm, s);
-  })();
-  </script>
- <!-- 百度统计代码 --> 
-  <script>
-    // control reverse button
-    var reverseDarkList = {
-      dark: 'light',
-      light: 'dark'
-    };
-    var themeColor = {
-      dark: '#1c1c1e',
-      light: '#fff'
-    }
-    // get the data of css prefers-color-scheme
-    var getCssMediaQuery = function() {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    };
-    // reverse current darkmode setting function
-    var reverseDarkModeSetting = function() {
-      var setting = localStorage.getItem('user-color-scheme');
-      if(reverseDarkList[setting]) {
-        setting = reverseDarkList[setting];
-      } else if(setting === null) {
-        setting = reverseDarkList[getCssMediaQuery()];
-      } else {
-        return;
-      }
-      localStorage.setItem('user-color-scheme', setting);
-      return setting;
-    };
-    // apply current darkmode setting
-    var setDarkmode = function(mode) {
-      var setting = mode || localStorage.getItem('user-color-scheme');
-      if(setting === getCssMediaQuery()) {
-        document.documentElement.removeAttribute('data-user-color-scheme');
-        localStorage.removeItem('user-color-scheme');
-        document.getElementById('theme-color').content = themeColor[setting];
-      } else if(reverseDarkList[setting]) {
-        document.documentElement.setAttribute('data-user-color-scheme', setting);
-        document.getElementById('theme-color').content = themeColor[setting];
-      } else {
-        document.documentElement.removeAttribute('data-user-color-scheme');
-        localStorage.removeItem('user-color-scheme');
-        document.getElementById('theme-color').content = themeColor[getCssMediaQuery()];
-      }
-    };
-    setDarkmode();
-  </script>
-  <script>
-    function loadScript(url, cb) {
-      var script = document.createElement('script');
-      script.src = url;
-      if (cb) script.onload = cb;
-      script.async = true;
-      document.body.appendChild(script);
-    }
-  </script>
-  
-  <link rel="preload" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css" as="style" >
-  <link rel="preload" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css" as="style" >
-  
-  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.js" as="script">
-  <link rel="preload" href="/js/lib/lightbox/baguetteBox.min.css" as="style" >
-  
-  
-  <link rel="preload" href="/js/lib/lozad.min.js" as="script">
-  
-  
-  
-  
-  
-  
-  
-  
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
 <link rel="stylesheet" href="/css/main.css">
 
-  
-  
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1946621_i1kgafibvw.css">
 
-  
-  
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1952792_89b4ac4k4up.css">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-  
-  
-<link rel="stylesheet" href="/js/lib/lightbox/baguetteBox.min.css">
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.mele.cool","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
 
-  
-  
-  
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
+  <meta name="description" content="集中化日志管理平台的应用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="集中化日志管理平台的应用">
+<meta property="og:url" content="https://www.mele.cool/2021/02/22/%E9%9B%86%E4%B8%AD%E5%8C%96%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%BA%94%E7%94%A8/index.html">
+<meta property="og:site_name" content="米乐博客">
+<meta property="og:description" content="集中化日志管理平台的应用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/VSe9bsOZTJNX6f5.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/ZOuTY8J6CzyUsla.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/32Cl1tQcan7qP5I.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/qAQIFP2WuVrR7Xi.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/wCBaLuEnlR4V2k3.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/IakqHitFJneMKC6.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/4RWPGpV5ZdJavSh.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/4JpjPzYLByI9m3x.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/9rjhB1f3eqOWlZR.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/TVrsIuji45XeboL.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/QRcPBGsVyMTdEoC.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/er4jlGQqUf1yIK9.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/4Nm9e8BCERHt1vx.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/DsLxhIkonr2jYmN.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/26yDqaQk4K8UNYr.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/6SNxCJO2fBLsc5Y.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/68K7omrcPTdpMyX.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/YWvEGwLg3VA78Iq.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/TE2Cq49biQKponF.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/Z3Gmve8YtN7jOSb.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/huxR98bkMQwGmJ3.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/qlXB1wLaVRMKSmz.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/x4HnyKuYvsR2G1k.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/aWAfYxjSpCTUrGy.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/Z9AS453NkW2XohR.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/P2H5SYngMamqvG4.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/W9QU5bmVZwT8EzB.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/KRaPLI1k3ZCW9z2.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/IRzy1skS3aO6nBZ.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/23/ZgEmKbIfaRcLNPX.png">
+<meta property="article:published_time" content="2021-02-22T15:10:17.000Z">
+<meta property="article:modified_time" content="2021-02-23T14:49:56.722Z">
+<meta property="article:author" content="blydd">
+<meta property="article:tag" content="日志">
+<meta property="article:tag" content="kibana">
+<meta property="article:tag" content="Elk">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/23/VSe9bsOZTJNX6f5.png">
+
+<link rel="canonical" href="https://www.mele.cool/2021/02/22/%E9%9B%86%E4%B8%AD%E5%8C%96%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%BA%94%E7%94%A8/">
 
 
-<body>
-  <div class="wrapper">
-    
-    <nav class="navbar">
-  <div class="navbar-logo">
-    <span class="navbar-logo-main">
-      
-      <img class="navbar-logo-img" src="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png" alt="logo">
-      
-      <span class="navbar-logo-dsc">mele blog</span>
-    </span>
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>集中化日志管理平台的应用 | 米乐博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
   </div>
-  <div class="navbar-menu">
-    
-    <a href="/" class="navbar-menu-item">
-    
-    首页
-    
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">米乐博客</h1>
+      <span class="logo-line-after"><i></i></span>
     </a>
-    
-    <a href="/archives" class="navbar-menu-item">
-    
-    归档
-    
-    </a>
-    
-    <a href="/tags" class="navbar-menu-item">
-    
-    标签
-    
-    </a>
-    
-    <a href="/categories" class="navbar-menu-item">
-    
-    分类
-    
-    </a>
-    
-    <a href="/about" class="navbar-menu-item">
-    
-    关于
-    
-    </a>
-    
-    <a href="/links" class="navbar-menu-item">
-    
-    友链
-    
-    </a>
-    
-    <a class="navbar-menu-item darknavbar" id="dark"><i class="iconfont icon-weather"></i></a>
-    <a class="navbar-menu-item searchnavbar" id="search"><i class="iconfont icon-search" style="font-size: 1.2rem; font-weight: 400;"></i></a>
+      <p class="site-subtitle" itemprop="description">积跬步至千里</p>
   </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
 </nav>
+
+
+
+
+</div>
+    </header>
+
     
-    <div id="local-search" style="display: none;">
-      <input class="navbar-menu-item" id="search-input" placeholder="请输入搜索内容...">
-      <div id="search-content"></div>
-    </div>
-    
-    <div class="section-wrap">
-      <div class="container">
-        <div class="columns">
-          <main class="main-column">
-<article class="card card-content">
-  <header>
-    <h1 class="post-title">
-      集中化日志管理平台的应用
-    </h1>
-  </header>
-  <div class="post-meta post-show-meta">
-    <time datetime="2021-02-22T15:10:17.000Z">
-      <i class="iconfont icon-calendar" style="margin-right: 2px;"></i>
-      <span>2021-02-22</span>
-    </time>
-    
-    <span class="dot"></span>
-    
-    <a href="/categories/日志/" class="post-meta-link">日志</a>
-    
-    
-    
-    <span class="dot"></span>
-    <span>4.3k 字</span>
-    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
   </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
   
-  <div class="post-meta post-show-meta" style="margin-top: -10px;">
-    <div style="display: flex; align-items: center;">
-      <i class="iconfont icon-biaoqian" style="margin-right: 2px; font-size: 1.15rem;"></i>
-      
-      
-        <a href="/tags/日志/" class="post-meta-link">日志</a>
-      
-      
-      <span class="dot"></span>
-      
-        <a href="/tags/kibana/" class="post-meta-link">kibana</a>
-      
-      
-      <span class="dot"></span>
-      
-        <a href="/tags/elk/" class="post-meta-link">elk</a>
-      
-    </div>
-  </div>
   
-  </header>
-  <div id="section" class="post-content">
-    <p><img src="https://i.loli.net/2021/02/23/VSe9bsOZTJNX6f5.png" alt="image-20210223202623285" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/VSe9bsOZTJNX6f5.png" class="lozad post-image"></p>
-<h1 id="1-、日志体系"><a href="#1-、日志体系" class="headerlink" title="1 、日志体系"></a>1 、日志体系</h1><p><img src="https://i.loli.net/2021/02/23/ZOuTY8J6CzyUsla.png" alt="image-20210223202640038" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/ZOuTY8J6CzyUsla.png" class="lozad post-image"></p>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.mele.cool/2021/02/22/%E9%9B%86%E4%B8%AD%E5%8C%96%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%BA%94%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="blydd">
+      <meta itemprop="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="米乐博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          集中化日志管理平台的应用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-02-22 23:10:17" itemprop="dateCreated datePublished" datetime="2021-02-22T23:10:17+08:00">2021-02-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-02-23 22:49:56" itemprop="dateModified" datetime="2021-02-23T22:49:56+08:00">2021-02-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">日志</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">集中化日志管理平台的应用</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://i.loli.net/2021/02/23/VSe9bsOZTJNX6f5.png" alt="image-20210223202623285"></p>
+<h1 id="1-、日志体系"><a href="#1-、日志体系" class="headerlink" title="1 、日志体系"></a>1 、日志体系</h1><p><img src="https://i.loli.net/2021/02/23/ZOuTY8J6CzyUsla.png" alt="image-20210223202640038"></p>
 <h2 id="1-1-体系概述"><a href="#1-1-体系概述" class="headerlink" title="1.1 体系概述"></a>1.1 体系概述</h2><h4 id="1-）日志接口"><a href="#1-）日志接口" class="headerlink" title="1 ）日志接口"></a>1 ）日志接口</h4><p>JCL：Apache基⾦金金会所属的项⽬目，之前叫Jakarta Commons Logging，简称JCL</p>
 <p>SLF4J：Simple Logging Facade for Java，缩写Slf4j，只提供相关接，和其他⽇日志⼯工具之间需要桥接</p>
 <h4 id="2-）⽇志实现"><a href="#2-）⽇志实现" class="headerlink" title="2 ）⽇志实现"></a>2 ）⽇志实现</h4><p>JUL：JDK中的⽇日志⼯工具，也称为jdklog、jdk-logging，⾃自Java1.4以来sun的官⽅方提供。</p>
@@ -262,13 +260,13 @@
 <h2 id="1-2-发展历程"><a href="#1-2-发展历程" class="headerlink" title="1.2 发展历程"></a>1.2 发展历程</h2><h4 id="1-）原始输出"><a href="#1-）原始输出" class="headerlink" title="1 ）原始输出"></a>1 ）原始输出</h4><p>问题：</p>
 <p>⾮非常机械，⽆无法定制，⽇日志粒度不不够细分。</p>
 <h4 id="2-）开创先驱"><a href="#2-）开创先驱" class="headerlink" title="2 ）开创先驱"></a>2 ）开创先驱</h4><p>2001 年年Log4j诞⽣生，定义的Logger、Appender、Level，对后续的 Java Log框架有深远的影响</p>
-<pre class="highlight"><span class="line"><span class="keyword">import</span> org.apache.log4j.Logger;</span><br><span class="line"></span><br><span class="line">Logger logger = Logger.getLogger(Demo.class);</span><br><span class="line">logger.info(<span class="string">&quot;xxxx&quot;</span>);</span><br></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.log4j.Logger;</span><br><span class="line"></span><br><span class="line">Logger logger = Logger.getLogger(Demo.class);</span><br><span class="line">logger.info(<span class="string">&quot;xxxx&quot;</span>);</span><br></pre></td></tr></table></figure>
 
 
 <p>问题：</p>
 <p>性能是个问题，不不再维护，建议所有相关项⽬目升级到Log4j</p>
 <h4 id="3-）搞事情的JUL"><a href="#3-）搞事情的JUL" class="headerlink" title="3 ）搞事情的JUL"></a>3 ）搞事情的JUL</h4><p>sun公司对于log4j的出现内⼼心隐隐表示嫉妒。于是在jdk1.4版本后，开始搞事情，增加了了⼀一个包为java.util.logging，简称为JUL，⽤用以对抗log4j</p>
-<pre class="highlight"><span class="line"><span class="keyword">import</span> java.util.logging.Logger；</span><br><span class="line">Logger loggger=Logger.getLogger(Demo.class.getName());</span><br><span class="line">logger.finest(<span class="string">&quot;xxxx&quot;</span>);</span><br></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.logging.Logger；</span><br><span class="line">Logger loggger=Logger.getLogger(Demo.class.getName());</span><br><span class="line">logger.finest(<span class="string">&quot;xxxx&quot;</span>);</span><br></pre></td></tr></table></figure>
 
 
 <p>问题：</p>
@@ -276,21 +274,21 @@
 <p>JUL功能远不不如log4j完善，性能和可⽤用性上也⼀一般。</p>
 <h4 id="4-）-JCL应运⽽而⽣生"><a href="#4-）-JCL应运⽽而⽣生" class="headerlink" title="4 ） JCL应运⽽而⽣生"></a>4 ） JCL应运⽽而⽣生</h4><p>log4j和jul闹的不不可开交，commons推出了了jcl（commons-logging-xx.jar），试图⽤用⾯面向接形式来统⼀一⽇日志⼯工具。</p>
 <p>那接下真实的⽇日志是谁呢？参考下图：</p>
-<p><img src="https://i.loli.net/2021/02/23/32Cl1tQcan7qP5I.png" alt="image-20210223203227867" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/32Cl1tQcan7qP5I.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/02/23/32Cl1tQcan7qP5I.png" alt="image-20210223203227867"></p>
 <p>JCL会在ClassLoader中进⾏行行查找，顺序是：Log4j &gt; JUL &gt;SimpleLog（jcl⾃自带）</p>
-<pre class="highlight"><span class="line"><span class="keyword">import</span> org.apache.commons.logging.Log;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.logging.LogFactory;</span><br><span class="line">Loglog=LogFactory.getLog(Demo.class);</span><br><span class="line">log.info(<span class="string">&#x27;xxx&#x27;</span>);</span><br></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.commons.logging.Log;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.logging.LogFactory;</span><br><span class="line">Loglog=LogFactory.getLog(Demo.class);</span><br><span class="line">log.info(<span class="string">&#x27;xxx&#x27;</span>);</span><br></pre></td></tr></table></figure>
 <p>问题：</p>
 <p>效率较低，需要查找下⾯面的⽇日志组件</p>
 <p>由框架去选择，容易易引发混乱</p>
 <h4 id="5-）再起波澜"><a href="#5-）再起波澜" class="headerlink" title="5 ）再起波澜"></a>5 ）再起波澜</h4><p>log4j的作者不不服，他觉得JCL不不好⽤用，⾃自⼰己⼜又写了了⼀一个新的接api，就是slf4j，并且为了了追求更更极致的性能，新增了了⼀一套⽇日志的实现，就是logback，⼀一时间烽烟⼜又起……</p>
 <p>由于slf4j是⼀一套⽇日志接，和jcl⼀一样，⽀支持更更多的⽇日志实现，参考下图：</p>
-<p><img src="https://i.loli.net/2021/02/23/qAQIFP2WuVrR7Xi.png" alt="image-20210223203402131" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/qAQIFP2WuVrR7Xi.png" class="lozad post-image"></p>
-<pre class="highlight"><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.logging.log4j.LogManager;</span><br><span class="line"><span class="keyword">import</span> org.apache.logging.log4j.Logger;</span><br><span class="line">Logger logger=LogManager.getLogger(Demo.class);</span><br><span class="line">logger.debug(<span class="string">&quot;debug Msg&quot;</span>);</span><br></pre>
+<p><img src="https://i.loli.net/2021/02/23/qAQIFP2WuVrR7Xi.png" alt="image-20210223203402131"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.logging.log4j.LogManager;</span><br><span class="line"><span class="keyword">import</span> org.apache.logging.log4j.Logger;</span><br><span class="line">Logger logger=LogManager.getLogger(Demo.class);</span><br><span class="line">logger.debug(<span class="string">&quot;debug Msg&quot;</span>);</span><br></pre></td></tr></table></figure>
 
 
 <p>事情结束了了吗？没有，log4j的粉丝们并不不开⼼心，于是下⼀一代诞⽣生了了……</p>
 <h4 id="6-）再度⻘青春"><a href="#6-）再度⻘青春" class="headerlink" title="6 ）再度⻘青春"></a>6 ）再度⻘青春</h4><p>log4j 2015 年年后不不再维护。log4j2扛起了了性能的⼤大旗。实际上，这俩完全是两回事。</p>
-<pre class="highlight"><span class="line"><span class="keyword">import</span> org.apache.logging.log4j.LogManager;</span><br><span class="line"><span class="keyword">import</span> org.apache.logging.log4j.Logger;</span><br><span class="line">Logger logger = LogManager.getLogger(Demo.class);</span><br><span class="line">logger.debug(<span class="string">&quot;debug Msg&quot;</span>);</span><br></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.logging.log4j.LogManager;</span><br><span class="line"><span class="keyword">import</span> org.apache.logging.log4j.Logger;</span><br><span class="line">Logger logger = LogManager.getLogger(Demo.class);</span><br><span class="line">logger.debug(<span class="string">&quot;debug Msg&quot;</span>);</span><br></pre></td></tr></table></figure>
 
 
 
@@ -299,38 +297,38 @@
 <h4 id="2-）单⼀一原则"><a href="#2-）单⼀一原则" class="headerlink" title="2 ）单⼀一原则"></a>2 ）单⼀一原则</h4><p>只添加⼀一个⽇日志实现</p>
 <p>经验：jul性能⼀一般，log4j性能也有问题⽽而且不不再维护，建议使⽤用 Logback或者Log4j2。</p>
 <h4 id="3-）-依赖约束"><a href="#3-）-依赖约束" class="headerlink" title="3 ） 依赖约束"></a>3 ） 依赖约束</h4><p>日志实现坐标应该设置为optional并使⽤用runtime scope</p>
-<pre class="highlight"><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.logging.log4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;log4j.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">optional</span>&gt;</span>true<span class="tag">&lt;/<span class="name">optional</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.logging.log4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;log4j.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">optional</span>&gt;</span>true<span class="tag">&lt;/<span class="name">optional</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 
 <p>设为optional，依赖不不会传递，防⽌止别⼈人⽤用你的坐标时，被迫引⼊入你的⽇日志Scope设置为runtime，防⽌止开发⼈人员编码时，直接使⽤用⽇日志实现</p>
 <h4 id="4-）-避免传递"><a href="#4-）-避免传递" class="headerlink" title="4 ） 避免传递"></a>4 ） 避免传递</h4><p>如果对⽅方没有遵守上条，⽽而你⼜又不不得不不⽤用他的类库，怎么办？</p>
 <p>答：exclusion主动排除他的⽇日志坐标</p>
 <h4 id="5-）-精简⾄至上"><a href="#5-）-精简⾄至上" class="headerlink" title="5 ） 精简⾄至上"></a>5 ） 精简⾄至上</h4><p>log中尽量量不不要输出稀奇古怪的字符，这是个习惯和约束问题。有的同学习惯⽤用这种语句:</p>
-<pre class="highlight"><span class="line">logger.debug(&quot;=====================================：&#123;&#125;&quot;,message);</span><br></pre>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logger.debug(&quot;=====================================：&#123;&#125;&quot;,message);</span><br></pre></td></tr></table></figure>
 <h1 id="2-、⽇志平台"><a href="#2-、⽇志平台" class="headerlink" title="2 、⽇志平台"></a>2 、⽇志平台</h1><h2 id="2-1-生命周期"><a href="#2-1-生命周期" class="headerlink" title="2.1 生命周期"></a>2.1 生命周期</h2><p>⽇日志的⽣生命周期⼀一般分为采集，传输，存储和分析四个环节，每个步骤有可用的中间件和⼯工具。</p>
 <p>选⽤用中间件时所关注的⻆角度：性能、可靠性、插件⽀支持程度、配置复杂度</p>
-<h3 id="2-1-1-可选⽅方案"><a href="#2-1-1-可选⽅方案" class="headerlink" title="2.1.1 可选⽅方案"></a>2.1.1 可选⽅方案</h3><p><img src="https://i.loli.net/2021/02/23/wCBaLuEnlR4V2k3.png" alt="image-20210223204122208" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/wCBaLuEnlR4V2k3.png" class="lozad post-image"><img src="https://i.loli.net/2021/02/23/IakqHitFJneMKC6.png" alt="image-20210223204137523" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/IakqHitFJneMKC6.png" class="lozad post-image"></p>
+<h3 id="2-1-1-可选⽅方案"><a href="#2-1-1-可选⽅方案" class="headerlink" title="2.1.1 可选⽅方案"></a>2.1.1 可选⽅方案</h3><p><img src="https://i.loli.net/2021/02/23/wCBaLuEnlR4V2k3.png" alt="image-20210223204122208"><img src="https://i.loli.net/2021/02/23/IakqHitFJneMKC6.png" alt="image-20210223204137523"></p>
 <h3 id="2-1-2-总结"><a href="#2-1-2-总结" class="headerlink" title="2.1.2 总结"></a>2.1.2 总结</h3><ul>
 <li>企业实际实战中, elk是成熟且广泛使用的方案。</li>
 <li>进入elk前,部署kafka,作为统一入口和出口,假如大数据部门需要,自己连kafka即可。</li>
 <li>日志两种收集方式,一是吐(业务信息, kafka appender) ,二是抓(日志文件, filebeat) 。</li>
 <li>主动吐更适合当前场景, kafka的另一头, 日志平台订阅消息接收</li>
 </ul>
-<h2 id="2-2-kafka"><a href="#2-2-kafka" class="headerlink" title="2.2 kafka"></a>2.2 kafka</h2><h3 id="2-2-1-启动"><a href="#2-2-1-启动" class="headerlink" title="2.2.1 启动"></a>2.2.1 启动</h3><pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">docker启动</span></span><br><span class="line"><span class="meta">#</span><span class="bash">启动zookeeper</span></span><br><span class="line">mkdir -p /opt/data/zksingle</span><br><span class="line"></span><br><span class="line">docker run --name zookeeper -v /opt/data/zksingle:/data -p</span><br><span class="line">2181 :2181 -e ZOO_LOG4J_PROP=&quot;INFO,ROLLINGFILE&quot; -d</span><br><span class="line">zookeeper:3.4.13</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">启动kafka</span></span><br><span class="line">docker run -d --name kafka \</span><br><span class="line">        -p 9103 :9092 \</span><br><span class="line">        --link zookeeper:zookeeper \</span><br><span class="line">        --env KAFKA_BROKER_ID= 100 \</span><br><span class="line">        # 物理机地址</span><br><span class="line">        --env HOST_IP= 52 .82.98.209 \ </span><br><span class="line">        --env KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 \</span><br><span class="line">        --env KAFKA_ADVERTISED_HOST_NAME= 52 .82.98.209 \</span><br><span class="line">        --env KAFKA_ADVERTISED_PORT= 9103 \</span><br><span class="line">        --restart=always \</span><br><span class="line">        --volume /etc/localtime:/etc/localtime \</span><br><span class="line">        wurstmeister/kafka:2.12-2.2.2</span><br></pre>
-<h3 id="2-2-2-验证"><a href="#2-2-2-验证" class="headerlink" title="2.2.2 验证"></a>2.2.2 验证</h3><pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">进⼊容器</span></span><br><span class="line">docker exec -it kafka sh</span><br><span class="line">cd /opt/kafka_2.12-2.2.2/bin</span><br><span class="line"><span class="meta">#</span><span class="bash">客户端监听（该步会⾃动创建topic）</span></span><br><span class="line">./kafka-console-consumer.sh --bootstrap-server</span><br><span class="line">localhost:9092 --topic demo --from-beginning</span><br><span class="line"><span class="meta">#</span><span class="bash">另起⼀个终端，验证发送</span></span><br><span class="line">./kafka-console-producer.sh --broker-list localhost:9092 --</span><br><span class="line">topic demo</span><br></pre>
+<h2 id="2-2-kafka"><a href="#2-2-kafka" class="headerlink" title="2.2 kafka"></a>2.2 kafka</h2><h3 id="2-2-1-启动"><a href="#2-2-1-启动" class="headerlink" title="2.2.1 启动"></a>2.2.1 启动</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">docker启动</span></span><br><span class="line"><span class="meta">#</span><span class="bash">启动zookeeper</span></span><br><span class="line">mkdir -p /opt/data/zksingle</span><br><span class="line"></span><br><span class="line">docker run --name zookeeper -v /opt/data/zksingle:/data -p</span><br><span class="line">2181 :2181 -e ZOO_LOG4J_PROP=&quot;INFO,ROLLINGFILE&quot; -d</span><br><span class="line">zookeeper:3.4.13</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">启动kafka</span></span><br><span class="line">docker run -d --name kafka \</span><br><span class="line">        -p 9103 :9092 \</span><br><span class="line">        --link zookeeper:zookeeper \</span><br><span class="line">        --env KAFKA_BROKER_ID= 100 \</span><br><span class="line">        # 物理机地址</span><br><span class="line">        --env HOST_IP= 52 .82.98.209 \ </span><br><span class="line">        --env KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 \</span><br><span class="line">        --env KAFKA_ADVERTISED_HOST_NAME= 52 .82.98.209 \</span><br><span class="line">        --env KAFKA_ADVERTISED_PORT= 9103 \</span><br><span class="line">        --restart=always \</span><br><span class="line">        --volume /etc/localtime:/etc/localtime \</span><br><span class="line">        wurstmeister/kafka:2.12-2.2.2</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-2-验证"><a href="#2-2-2-验证" class="headerlink" title="2.2.2 验证"></a>2.2.2 验证</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">进⼊容器</span></span><br><span class="line">docker exec -it kafka sh</span><br><span class="line">cd /opt/kafka_2.12-2.2.2/bin</span><br><span class="line"><span class="meta">#</span><span class="bash">客户端监听（该步会⾃动创建topic）</span></span><br><span class="line">./kafka-console-consumer.sh --bootstrap-server</span><br><span class="line">localhost:9092 --topic demo --from-beginning</span><br><span class="line"><span class="meta">#</span><span class="bash">另起⼀个终端，验证发送</span></span><br><span class="line">./kafka-console-producer.sh --broker-list localhost:9092 --</span><br><span class="line">topic demo</span><br></pre></td></tr></table></figure>
 
 
 <h2 id="2-3-km"><a href="#2-3-km" class="headerlink" title="2.3 km"></a>2.3 km</h2><h3 id="2-3-1-启动"><a href="#2-3-1-启动" class="headerlink" title="2.3.1 启动"></a>2.3.1 启动</h3><p>kafka-manager是⽬目前最受欢迎的kafka集群管理理⼯工具，最早由雅⻁虎开源。</p>
 <p>提供可视化kafka集群操作</p>
 <p>官网：<a target="_blank" rel="noopener" href="https://github.com/yahoo/kafka-manager/releases">https://github.com/yahoo/kafka-manager/releases</a></p>
 <p>注意它的版本，docker社区的景象版本滞后于kafka，我们⾃自己来打镜像。</p>
-<pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">Dockerfile</span></span><br><span class="line">FROM daocloud.io/library/java:openjdk-8u40-jdk</span><br><span class="line">ADD kafka-manager-2.0.0.2/ /opt/km2002/</span><br><span class="line">CMD [&quot;/opt/km2002/bin/kafka-manager&quot;,&quot;-</span><br><span class="line">Dconfig.file=/opt/km2002/conf/application.conf&quot;]</span><br><span class="line"><span class="meta">#</span><span class="bash">打包，注意将kafka-manager-2.0.0.2放到同⼀⽬录</span></span><br><span class="line">docker build -t km:2002 .</span><br><span class="line"><span class="meta">#</span><span class="bash">启动</span></span><br><span class="line">docker run --link zookeeper:zookeeper -d --name km -p</span><br><span class="line">9104:9000 km:2002</span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">Dockerfile</span></span><br><span class="line">FROM daocloud.io/library/java:openjdk-8u40-jdk</span><br><span class="line">ADD kafka-manager-2.0.0.2/ /opt/km2002/</span><br><span class="line">CMD [&quot;/opt/km2002/bin/kafka-manager&quot;,&quot;-</span><br><span class="line">Dconfig.file=/opt/km2002/conf/application.conf&quot;]</span><br><span class="line"><span class="meta">#</span><span class="bash">打包，注意将kafka-manager-2.0.0.2放到同⼀⽬录</span></span><br><span class="line">docker build -t km:2002 .</span><br><span class="line"><span class="meta">#</span><span class="bash">启动</span></span><br><span class="line">docker run --link zookeeper:zookeeper -d --name km -p</span><br><span class="line">9104:9000 km:2002</span><br></pre></td></tr></table></figure>
 
 
 <h3 id="2-3-2-验证"><a href="#2-3-2-验证" class="headerlink" title="2.3.2 验证"></a>2.3.2 验证</h3><p>访问 9104 端，查看集群启动状态</p>
 <p>查看topic是否有前⾯面的demo</p>
 <h2 id="2-4-elk"><a href="#2-4-elk" class="headerlink" title="2.4 elk"></a>2.4 elk</h2><h3 id="2-4-1-启动"><a href="#2-4-1-启动" class="headerlink" title="2.4.1 启动"></a>2.4.1 启动</h3><p>镜像启动很简单：</p>
-<pre class="highlight"><span class="line">docker run -d-p9102:5601 -p9200:9200 -p5044:5044 -e</span><br><span class="line">ES_MIN_MEM=128m -eES_MAX_MEM=1024m -it--name elk</span><br><span class="line">docker.io/sebp/elk:751</span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -d-p9102:5601 -p9200:9200 -p5044:5044 -e</span><br><span class="line">ES_MIN_MEM=128m -eES_MAX_MEM=1024m -it--name elk</span><br><span class="line">docker.io/sebp/elk:751</span><br></pre></td></tr></table></figure>
 <p>但是这个官⽅方镜像同样存在问题：（进镜像验证）</p>
 <ul>
 <li><p>原始的elk镜像没有集成中⽂文分词</p>
@@ -341,15 +339,15 @@
 <p>下⾯面解决它！</p>
 <h3 id="2-4-2-重打镜像"><a href="#2-4-2-重打镜像" class="headerlink" title="2.4.2 重打镜像"></a>2.4.2 重打镜像</h3><p>1 ）将分词器器打进去</p>
 <p>ik分词器器下载地址（注意对应版本！）： <a target="_blank" rel="noopener" href="https://github.com/medcl/elasticsearch-analysis-ik/releases">https://github.com/medcl/elasticsearch-analysis-ik/releases</a></p>
-<pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">Dockerfile</span></span><br><span class="line">FROM docker.io/sebp/elk:793</span><br><span class="line">ADD ik/ /opt/elasticsearch/plugins/ik/</span><br><span class="line">RUN chown -R elasticsearch:elasticsearch</span><br><span class="line">/opt/elasticsearch/plugins/ik/</span><br><span class="line"><span class="meta">#</span><span class="bash">打包，注意将分词器⽂件夹ik，和dockerfile放在同⼀⽬录下</span></span><br><span class="line">docker build -t elk:v1 .</span><br></pre>
-<pre class="highlight"><span class="line"><span class="meta">#</span><span class="bash">启动，注意将logstash的配置挂上去(启动前将下⾯的kafka.conf放到 -v</span></span><br><span class="line">后⾯的第⼀个⽬录⾥!)</span><br><span class="line">docker run -d-v</span><br><span class="line">/opt/app/elk/docker/elk/logstash:/etc/logstash/conf.d -p</span><br><span class="line">9102:5601 -p9200:9200 -p9300:9300 -eES_MIN_MEM=128m -e</span><br><span class="line">ES_MAX_MEM=1024m -it--name elk elk:793</span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">Dockerfile</span></span><br><span class="line">FROM docker.io/sebp/elk:793</span><br><span class="line">ADD ik/ /opt/elasticsearch/plugins/ik/</span><br><span class="line">RUN chown -R elasticsearch:elasticsearch</span><br><span class="line">/opt/elasticsearch/plugins/ik/</span><br><span class="line"><span class="meta">#</span><span class="bash">打包，注意将分词器⽂件夹ik，和dockerfile放在同⼀⽬录下</span></span><br><span class="line">docker build -t elk:v1 .</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">启动，注意将logstash的配置挂上去(启动前将下⾯的kafka.conf放到 -v</span></span><br><span class="line">后⾯的第⼀个⽬录⾥!)</span><br><span class="line">docker run -d-v</span><br><span class="line">/opt/app/elk/docker/elk/logstash:/etc/logstash/conf.d -p</span><br><span class="line">9102:5601 -p9200:9200 -p9300:9300 -eES_MIN_MEM=128m -e</span><br><span class="line">ES_MAX_MEM=1024m -it--name elk elk:793</span><br></pre></td></tr></table></figure>
 <p>附：kafka.conf文件</p>
-<pre class="highlight"><span class="line">input &#123;</span><br><span class="line">  kafka &#123;</span><br><span class="line">    bootstrap_servers=&gt; [&quot;52.82.98.209:9103&quot;]</span><br><span class="line">    group_id=&gt;&quot;logstash&quot;</span><br><span class="line">    topics=&gt; [&quot;mylog&quot;]</span><br><span class="line">    add_field=&gt; &#123;&quot;channel&quot;=&gt;&quot;kafka&quot;&#125;</span><br><span class="line">    codec=&gt;json &#123;</span><br><span class="line">    	charset=&gt;&quot;UTF-8&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">output &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">      hosts=&gt;&quot;localhost:9200&quot;</span><br><span class="line">      index=&gt;&quot;mylog&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  stdout &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">  kafka &#123;</span><br><span class="line">    bootstrap_servers=&gt; [&quot;52.82.98.209:9103&quot;]</span><br><span class="line">    group_id=&gt;&quot;logstash&quot;</span><br><span class="line">    topics=&gt; [&quot;mylog&quot;]</span><br><span class="line">    add_field=&gt; &#123;&quot;channel&quot;=&gt;&quot;kafka&quot;&#125;</span><br><span class="line">    codec=&gt;json &#123;</span><br><span class="line">    	charset=&gt;&quot;UTF-8&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">output &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">      hosts=&gt;&quot;localhost:9200&quot;</span><br><span class="line">      index=&gt;&quot;mylog&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  stdout &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>2 ）验证</p>
 <p>使⽤用post⼯工具，或者curl指令：</p>
 <p>curl <a target="_blank" rel="noopener" href="http://localhost:9200/_analyze">http://localhost:9200/_analyze</a> -X POST -H ‘Content-Type:application/json’ -d ‘{“text”:”test elasticsearch 测试分词效果”,”analyzer”: “ik_smart”}’</p>
 <p>结果:</p>
-<pre class="highlight"><span class="line">&#123;</span><br><span class="line">  &quot;tokens&quot;: [</span><br><span class="line">      &#123;</span><br><span class="line">      &quot;token&quot;: &quot;test&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 0,</span><br><span class="line">      &quot;end_offset&quot;: 4,</span><br><span class="line">      &quot;type&quot;: &quot;ENGLISH&quot;,</span><br><span class="line">      &quot;position&quot;: 0</span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">      &quot;token&quot;: &quot;elasticsearch&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 5,</span><br><span class="line">      &quot;end_offset&quot;: 18,</span><br><span class="line">      &quot;type&quot;: &quot;ENGLISH&quot;,</span><br><span class="line">      &quot;position&quot;: 1</span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">      &quot;token&quot;: &quot;测试&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 19,</span><br><span class="line">      &quot;end_offset&quot;: 21,</span><br><span class="line">      &quot;type&quot;: &quot;CN_WORD&quot;,</span><br><span class="line">      &quot;position&quot;: 2</span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">      &quot;token&quot;: &quot;分词&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 21,</span><br><span class="line">      &quot;end_offset&quot;: 23,</span><br><span class="line">      &quot;type&quot;: &quot;CN_WORD&quot;,</span><br><span class="line">      &quot;position&quot;: 3</span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">      &quot;token&quot;: &quot;效果&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 23,</span><br><span class="line">      &quot;end_offset&quot;: 25,</span><br><span class="line">      &quot;type&quot;: &quot;CN_WORD&quot;,</span><br><span class="line">      &quot;position&quot;: 4</span><br><span class="line">          &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;tokens&quot;: [</span><br><span class="line">      &#123;</span><br><span class="line">      &quot;token&quot;: &quot;test&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 0,</span><br><span class="line">      &quot;end_offset&quot;: 4,</span><br><span class="line">      &quot;type&quot;: &quot;ENGLISH&quot;,</span><br><span class="line">      &quot;position&quot;: 0</span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">      &quot;token&quot;: &quot;elasticsearch&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 5,</span><br><span class="line">      &quot;end_offset&quot;: 18,</span><br><span class="line">      &quot;type&quot;: &quot;ENGLISH&quot;,</span><br><span class="line">      &quot;position&quot;: 1</span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">      &quot;token&quot;: &quot;测试&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 19,</span><br><span class="line">      &quot;end_offset&quot;: 21,</span><br><span class="line">      &quot;type&quot;: &quot;CN_WORD&quot;,</span><br><span class="line">      &quot;position&quot;: 2</span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">      &quot;token&quot;: &quot;分词&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 21,</span><br><span class="line">      &quot;end_offset&quot;: 23,</span><br><span class="line">      &quot;type&quot;: &quot;CN_WORD&quot;,</span><br><span class="line">      &quot;position&quot;: 3</span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">      &quot;token&quot;: &quot;效果&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 23,</span><br><span class="line">      &quot;end_offset&quot;: 25,</span><br><span class="line">      &quot;type&quot;: &quot;CN_WORD&quot;,</span><br><span class="line">      &quot;position&quot;: 4</span><br><span class="line">          &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
@@ -365,7 +363,7 @@
 <p>⽇日志服务不不要影响主业务的进⾏行行，⽇日志down机不不能阻断业务执⾏行行</p>
 <h3 id="3-1-4-时效性"><a href="#3-1-4-时效性" class="headerlink" title="3.1.4 时效性"></a>3.1.4 时效性</h3><p>⽇日志在分布式环境中⽆无法做到完全实时</p>
 <p>那就准实时，但要尽量量避免过⻓长的时间差</p>
-<h2 id="3-2-系统痛点"><a href="#3-2-系统痛点" class="headerlink" title="3.2 系统痛点"></a>3.2 系统痛点</h2><p><img src="https://i.loli.net/2021/02/23/4RWPGpV5ZdJavSh.png" alt="image-20210223222202775" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/4RWPGpV5ZdJavSh.png" class="lozad post-image"></p>
+<h2 id="3-2-系统痛点"><a href="#3-2-系统痛点" class="headerlink" title="3.2 系统痛点"></a>3.2 系统痛点</h2><p><img src="https://i.loli.net/2021/02/23/4RWPGpV5ZdJavSh.png" alt="image-20210223222202775"></p>
 <h3 id="3-2-1-基本概念"><a href="#3-2-1-基本概念" class="headerlink" title="3.2.1 基本概念"></a>3.2.1 基本概念</h3><p>为满⾜足上⾯面的三个维度采集，需要约定⼏几个变量量：</p>
 <p>rid（requestId）：每次请求⽣生成⼀一个新的，⽣生成后⼀一直传递到调⽤用结束</p>
 <p>sid（sessionId）：⽤用户的标记，⽤用户登陆后记录，后续所有请求都带上</p>
@@ -381,7 +379,7 @@
 <p>2 ）⽇日志信息后续的⽣生命流程 - 搭建kafka通道与elk</p>
 <p>3 ）数据的采集和传递会遇到哪些问题？</p>
 <h1 id="4-、项⽬目实施"><a href="#4-、项⽬目实施" class="headerlink" title="4 、项⽬目实施"></a>4 、项⽬目实施</h1><h2 id="4-1-基本规划"><a href="#4-1-基本规划" class="headerlink" title="4.1 基本规划"></a>4.1 基本规划</h2><h3 id="4-1-1-项⽬目模块"><a href="#4-1-1-项⽬目模块" class="headerlink" title="4.1.1 项⽬目模块"></a>4.1.1 项⽬目模块</h3><p>注册中⼼心使⽤用nacos</p>
-<h4 id="1-）nacos启动："><a href="#1-）nacos启动：" class="headerlink" title="1 ）nacos启动："></a>1 ）nacos启动：</h4><pre class="highlight"><span class="line">docker run --name nacos -eMODE=standalone -p9105:8848 -d</span><br><span class="line">nacos/nacos-server:latest</span><br></pre>
+<h4 id="1-）nacos启动："><a href="#1-）nacos启动：" class="headerlink" title="1 ）nacos启动："></a>1 ）nacos启动：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run --name nacos -eMODE=standalone -p9105:8848 -d</span><br><span class="line">nacos/nacos-server:latest</span><br></pre></td></tr></table></figure>
 
 
 <h4 id="2-）项⽬目⽬目录："><a href="#2-）项⽬目⽬目录：" class="headerlink" title="2 ）项⽬目⽬目录："></a>2 ）项⽬目⽬目录：</h4><p>父pom：公共依赖，继承boot，引⼊入cloud</p>
@@ -391,22 +389,22 @@
 <p>详细⽂文件，参考源代码</p>
 <h3 id="4-1-2-Kafka集成"><a href="#4-1-2-Kafka集成" class="headerlink" title="4.1.2 Kafka集成"></a>4.1.2 Kafka集成</h3><p>1 ）使⽤用第三⽅方插件</p>
 <p>配置参考：<a target="_blank" rel="noopener" href="https://github.com/danielwegener/logback-kafka-appender">https://github.com/danielwegener/logback-kafka-appender</a></p>
-<pre class="highlight"><span class="line">docker run --name nacos -e MODE&#x3D;standalone -p 9105 :8848 -d</span><br><span class="line">nacos&#x2F;nacos-server:latest</span><br></pre>
-<pre class="highlight"><span class="line"><span class="comment">&lt;!-- 在⽗父pom.xml⾥里里添加 --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.danielwegener<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>logback-kafka-appender<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">version</span>&gt;</span>0.2.0-RC2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.kafka<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>kafka-clients<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span>	</span><br></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run --name nacos -e MODE&#x3D;standalone -p 9105 :8848 -d</span><br><span class="line">nacos&#x2F;nacos-server:latest</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 在⽗父pom.xml⾥里里添加 --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.danielwegener<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>logback-kafka-appender<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">version</span>&gt;</span>0.2.0-RC2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.kafka<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>kafka-clients<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span>	</span><br></pre></td></tr></table></figure>
 
 
-<pre class="highlight"><span class="line"><span class="comment">&lt;!-- 在web和user的logback.xml⾥里里添加 --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">&quot;third_kafka&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.github.danielwegener.logback.kafka.KafkaAppender&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">encoder</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>%msg%n<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">producerConfig</span>&gt;</span>bootstrap.servers=52.82.98.209:9103<span class="tag">&lt;/<span class="name">producerConfig</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">topic</span>&gt;</span>mylog<span class="tag">&lt;/<span class="name">topic</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">&quot;kafka&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">&quot;third_kafka&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">logger</span>&gt;</span></span><br></pre>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 在web和user的logback.xml⾥里里添加 --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">&quot;third_kafka&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.github.danielwegener.logback.kafka.KafkaAppender&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">encoder</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>%msg%n<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">producerConfig</span>&gt;</span>bootstrap.servers=52.82.98.209:9103<span class="tag">&lt;/<span class="name">producerConfig</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">topic</span>&gt;</span>mylog<span class="tag">&lt;/<span class="name">topic</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">&quot;kafka&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">&quot;third_kafka&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">logger</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>测试：在web模块⾥里里加⼀一个请求 /test，打log到kafka，通过kibana查看……</p>
-<pre class="highlight"><span class="line"><span class="comment">//详细代码在ApiController⾥！</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Loggerlogger= LoggerFactory.getLogger(<span class="string">&quot;kafka&quot;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@GetMapping(&quot;/test&quot;)</span></span><br><span class="line">  publicObjecttest()&#123;</span><br><span class="line">    logger.info(<span class="string">&quot;this is a test&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span><span class="string">&quot;this is a test&quot;</span>;</span><br><span class="line">	&#125;	</span><br></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//详细代码在ApiController⾥！</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Loggerlogger= LoggerFactory.getLogger(<span class="string">&quot;kafka&quot;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@GetMapping(&quot;/test&quot;)</span></span><br><span class="line">  publicObjecttest()&#123;</span><br><span class="line">    logger.info(<span class="string">&quot;this is a test&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span><span class="string">&quot;this is a test&quot;</span>;</span><br><span class="line">	&#125;	</span><br></pre></td></tr></table></figure>
 
 
 <p>最终结果：</p>
-<p><img src="https://i.loli.net/2021/02/23/4JpjPzYLByI9m3x.png" alt="image-20210223222957837" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/4JpjPzYLByI9m3x.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/02/23/4JpjPzYLByI9m3x.png" alt="image-20210223222957837"></p>
 <p>2 ）⾃己实现</p>
 <p>继承AppenderBase，实现start和append⽅方法即可</p>
-<pre class="highlight"><span class="line"><span class="comment">//详细代码在utils模块</span></span><br><span class="line">packagecom.itheima.logdemo.utils;</span><br><span class="line">importch.qos.logback.classic.spi.ILoggingEvent;</span><br><span class="line">importch.qos.logback.core.AppenderBase;</span><br><span class="line">importorg.apache.kafka.clients.producer.ProducerConfig;</span><br><span class="line"><span class="keyword">import</span></span><br><span class="line">org.apache.kafka.common.serialization.StringSerializer;</span><br><span class="line"><span class="keyword">import</span></span><br><span class="line">org.springframework.kafka.core.DefaultKafkaProducerFactory;</span><br><span class="line">importorg.springframework.kafka.core.KafkaTemplate;</span><br><span class="line">importjava.util.HashMap;</span><br><span class="line">importjava.util.Map;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">⾃定义kafkaAppender</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">publicclassKafkaAppenderextends</span><br><span class="line">AppenderBase&lt;ILoggingEvent&gt; &#123;</span><br><span class="line">  privateStringbrokers;</span><br><span class="line">privateStringtopic;</span><br><span class="line">KafkaTemplatekafkaTemplate ;</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line">publicvoidstart() &#123;</span><br><span class="line">Mapprops=newHashMap();</span><br><span class="line"><span class="comment">//kafka的机器地址</span></span><br><span class="line">  props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,brokers)</span><br><span class="line">;</span><br><span class="line"><span class="comment">//序列化⽅式</span></span><br><span class="line">props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,Strin</span><br><span class="line">gSerializer.class);</span><br><span class="line">props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,Str</span><br><span class="line">ingSerializer.class);</span><br><span class="line">props.put(ProducerConfig.RETRIES_CONFIG,<span class="number">1</span>);</span><br><span class="line">props.put(ProducerConfig.BATCH_SIZE_CONFIG,<span class="number">10240</span>);</span><br><span class="line">props.put(ProducerConfig.LINGER_MS_CONFIG,<span class="number">1</span>);</span><br><span class="line">props.put(ProducerConfig.BUFFER_MEMORY_CONFIG,<span class="number">1024000</span>);</span><br><span class="line">kafkaTemplate=newKafkaTemplate(<span class="keyword">new</span></span><br><span class="line">DefaultKafkaProducerFactory(props));</span><br><span class="line"><span class="keyword">super</span>.start();</span><br><span class="line">    &#125;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">protectedvoidappend(ILoggingEventiLoggingEvent) &#123;</span><br><span class="line">kafkaTemplate.send(topic,iLoggingEvent.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">publicStringgetBrokers() &#123;</span><br><span class="line">returnbrokers;</span><br><span class="line">    &#125;</span><br><span class="line">publicvoidsetBrokers(Stringbrokers) &#123;</span><br><span class="line"><span class="keyword">this</span>.brokers=brokers;</span><br><span class="line">    &#125;</span><br><span class="line">publicStringgetTopic() &#123;</span><br><span class="line">returntopic;</span><br><span class="line">   &#125;</span><br><span class="line">publicvoidsetTopic(Stringtopic) &#123;</span><br><span class="line"><span class="keyword">this</span>.topic=topic;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//详细代码在utils模块</span></span><br><span class="line">packagecom.itheima.logdemo.utils;</span><br><span class="line">importch.qos.logback.classic.spi.ILoggingEvent;</span><br><span class="line">importch.qos.logback.core.AppenderBase;</span><br><span class="line">importorg.apache.kafka.clients.producer.ProducerConfig;</span><br><span class="line"><span class="keyword">import</span></span><br><span class="line">org.apache.kafka.common.serialization.StringSerializer;</span><br><span class="line"><span class="keyword">import</span></span><br><span class="line">org.springframework.kafka.core.DefaultKafkaProducerFactory;</span><br><span class="line">importorg.springframework.kafka.core.KafkaTemplate;</span><br><span class="line">importjava.util.HashMap;</span><br><span class="line">importjava.util.Map;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">⾃定义kafkaAppender</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">publicclassKafkaAppenderextends</span><br><span class="line">AppenderBase&lt;ILoggingEvent&gt; &#123;</span><br><span class="line">  privateStringbrokers;</span><br><span class="line">privateStringtopic;</span><br><span class="line">KafkaTemplatekafkaTemplate ;</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line">publicvoidstart() &#123;</span><br><span class="line">Mapprops=newHashMap();</span><br><span class="line"><span class="comment">//kafka的机器地址</span></span><br><span class="line">  props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,brokers)</span><br><span class="line">;</span><br><span class="line"><span class="comment">//序列化⽅式</span></span><br><span class="line">props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,Strin</span><br><span class="line">gSerializer.class);</span><br><span class="line">props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,Str</span><br><span class="line">ingSerializer.class);</span><br><span class="line">props.put(ProducerConfig.RETRIES_CONFIG,<span class="number">1</span>);</span><br><span class="line">props.put(ProducerConfig.BATCH_SIZE_CONFIG,<span class="number">10240</span>);</span><br><span class="line">props.put(ProducerConfig.LINGER_MS_CONFIG,<span class="number">1</span>);</span><br><span class="line">props.put(ProducerConfig.BUFFER_MEMORY_CONFIG,<span class="number">1024000</span>);</span><br><span class="line">kafkaTemplate=newKafkaTemplate(<span class="keyword">new</span></span><br><span class="line">DefaultKafkaProducerFactory(props));</span><br><span class="line"><span class="keyword">super</span>.start();</span><br><span class="line">    &#125;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">protectedvoidappend(ILoggingEventiLoggingEvent) &#123;</span><br><span class="line">kafkaTemplate.send(topic,iLoggingEvent.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">publicStringgetBrokers() &#123;</span><br><span class="line">returnbrokers;</span><br><span class="line">    &#125;</span><br><span class="line">publicvoidsetBrokers(Stringbrokers) &#123;</span><br><span class="line"><span class="keyword">this</span>.brokers=brokers;</span><br><span class="line">    &#125;</span><br><span class="line">publicStringgetTopic() &#123;</span><br><span class="line">returntopic;</span><br><span class="line">   &#125;</span><br><span class="line">publicvoidsetTopic(Stringtopic) &#123;</span><br><span class="line"><span class="keyword">this</span>.topic=topic;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>logback.xml⾥里里改成⾃自⼰己的类</p>
-<pre class="highlight"><span class="line"><span class="comment">&lt;!--⾃定义kafkaAppender--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">&quot;my_kafka&quot;</span></span></span><br><span class="line"><span class="tag"><span class="attr">class</span>=<span class="string">&quot;com.itheima.logdemo.utils.KafkaAppender&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">brokers</span>&gt;</span>52.82.98.209:9103<span class="tag">&lt;/<span class="name">brokers</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">topic</span>&gt;</span>mylog<span class="tag">&lt;/<span class="name">topic</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">&quot;kafka&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">&quot;my_kafka&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">logger</span>&gt;</span></span><br></pre>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--⾃定义kafkaAppender--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">&quot;my_kafka&quot;</span></span></span><br><span class="line"><span class="tag"><span class="attr">class</span>=<span class="string">&quot;com.itheima.logdemo.utils.KafkaAppender&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">brokers</span>&gt;</span>52.82.98.209:9103<span class="tag">&lt;/<span class="name">brokers</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">topic</span>&gt;</span>mylog<span class="tag">&lt;/<span class="name">topic</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">&quot;kafka&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">&quot;my_kafka&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">logger</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>重新测试上⾯面的请求，得到同样的结果。</p>
 <h2 id="4-2-⽇志采集"><a href="#4-2-⽇志采集" class="headerlink" title="4.2 ⽇志采集"></a>4.2 ⽇志采集</h2><h3 id="4-2-1-服务内采集"><a href="#4-2-1-服务内采集" class="headerlink" title="4.2.1 服务内采集"></a>4.2.1 服务内采集</h3><p>1 ）LogBean：</p>
 <p>做三件事 （详细源码： util 模块 - LogBean.java , LogUtil.java ）</p>
@@ -414,39 +412,39 @@
 <p>LogUtil作为⼯工具类定义kafka通道的⽇日志输出器器，提供log⽅方法将⽇日志送出去</p>
 <p>上下⽂文追踪，借助ThreadLocal存储当前id</p>
 <p>验证结果：修改test⽅方法，⽤用LogBean打印</p>
-<pre class="highlight"><span class="line"><span class="meta">@GetMapping(&quot;/kafka-test&quot;)</span></span><br><span class="line">publicObjecttest() &#123;</span><br><span class="line">LogBeanlogBean=newLogBean(<span class="string">&quot;a&quot;</span>,<span class="string">&quot;b&quot;</span>,<span class="string">&quot;c&quot;</span>);</span><br><span class="line">LogUtil.setLocalInstance(logBean);</span><br><span class="line">LogUtil.log(<span class="string">&quot;this is a test&quot;</span>);</span><br><span class="line"><span class="keyword">return</span><span class="string">&quot;this is a test&quot;</span>;</span><br><span class="line">&#125;</span><br></pre>
-<p><img src="https://i.loli.net/2021/02/23/9rjhB1f3eqOWlZR.png" alt="image-20210223223444829" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/9rjhB1f3eqOWlZR.png" class="lozad post-image"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping(&quot;/kafka-test&quot;)</span></span><br><span class="line">publicObjecttest() &#123;</span><br><span class="line">LogBeanlogBean=newLogBean(<span class="string">&quot;a&quot;</span>,<span class="string">&quot;b&quot;</span>,<span class="string">&quot;c&quot;</span>);</span><br><span class="line">LogUtil.setLocalInstance(logBean);</span><br><span class="line">LogUtil.log(<span class="string">&quot;this is a test&quot;</span>);</span><br><span class="line"><span class="keyword">return</span><span class="string">&quot;this is a test&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2021/02/23/9rjhB1f3eqOWlZR.png" alt="image-20210223223444829"></p>
 <p>2 ）Filter：</p>
 <p>做两件事 （详细源码： util 模块 - LogFilter.java ）</p>
 <p>截获请求⼊入打一条日志信息。</p>
 <p>负责⽣生成LogBean，⽣生成相关id（rid，tid，sid）</p>
 <p>验证结果：⽤用swagger再次请求 /test</p>
-<pre class="highlight"><span class="line"><span class="meta">@GetMapping(&quot;/kafka-test&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="comment">//LogBean logBean = new LogBean(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;);</span></span><br><span class="line"><span class="comment">//LogUtil.setLocalInstance(logBean);</span></span><br><span class="line">LogUtil.log(<span class="string">&quot;this is a test&quot;</span>);</span><br><span class="line"><span class="keyword">return</span> <span class="string">&quot;this is a test&quot;</span>;</span><br><span class="line">&#125;</span><br></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping(&quot;/kafka-test&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="comment">//LogBean logBean = new LogBean(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;);</span></span><br><span class="line"><span class="comment">//LogUtil.setLocalInstance(logBean);</span></span><br><span class="line">LogUtil.log(<span class="string">&quot;this is a test&quot;</span>);</span><br><span class="line"><span class="keyword">return</span> <span class="string">&quot;this is a test&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>再次请求查看kibana，发现filter⽣生效！</p>
-<p><img src="https://i.loli.net/2021/02/23/TVrsIuji45XeboL.png" alt="image-20210223223549973" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/TVrsIuji45XeboL.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/02/23/TVrsIuji45XeboL.png" alt="image-20210223223549973"></p>
 <p>3 ）sid是空的？</p>
 <p>加一个login⽅方法模拟登陆，帮filter⽣生成cookie</p>
-<pre class="highlight"><span class="line"><span class="meta">@GetMapping(&quot;/login-test&quot;)</span></span><br><span class="line">publicStringlogin(<span class="meta">@RequestParamStringusername</span>,</span><br><span class="line"><span class="meta">@RequestParamStringpassword</span>, HttpServletResponse</span><br><span class="line">response) &#123;</span><br><span class="line"><span class="comment">//实际业务：从数据库验证⽤户名密码，省略……</span></span><br><span class="line">Cookiecookie=newCookie(<span class="string">&quot;sid&quot;</span>, username);</span><br><span class="line"><span class="comment">//设置path，让所有请求均可以获取</span></span><br><span class="line">cookie.setPath(<span class="string">&quot;/&quot;</span>);</span><br><span class="line">response.addCookie(cookie);</span><br><span class="line"><span class="keyword">return</span><span class="string">&quot;success&quot;</span>;</span><br><span class="line">&#125;</span><br></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping(&quot;/login-test&quot;)</span></span><br><span class="line">publicStringlogin(<span class="meta">@RequestParamStringusername</span>,</span><br><span class="line"><span class="meta">@RequestParamStringpassword</span>, HttpServletResponse</span><br><span class="line">response) &#123;</span><br><span class="line"><span class="comment">//实际业务：从数据库验证⽤户名密码，省略……</span></span><br><span class="line">Cookiecookie=newCookie(<span class="string">&quot;sid&quot;</span>, username);</span><br><span class="line"><span class="comment">//设置path，让所有请求均可以获取</span></span><br><span class="line">cookie.setPath(<span class="string">&quot;/&quot;</span>);</span><br><span class="line">response.addCookie(cookie);</span><br><span class="line"><span class="keyword">return</span><span class="string">&quot;success&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>4 ）验证：</p>
 <p>先请求login，再请求 /test，查看是否有sid了了？</p>
-<p><img src="https://i.loli.net/2021/02/23/QRcPBGsVyMTdEoC.png" alt="image-20210223223653406" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/QRcPBGsVyMTdEoC.png" class="lozad post-image"></p>
-<p><img src="https://i.loli.net/2021/02/23/er4jlGQqUf1yIK9.png" alt="image-20210223223704379" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/er4jlGQqUf1yIK9.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/02/23/QRcPBGsVyMTdEoC.png" alt="image-20210223223653406"></p>
+<p><img src="https://i.loli.net/2021/02/23/er4jlGQqUf1yIK9.png" alt="image-20210223223704379"></p>
 <h3 id="4-2-2-跨服务采集"><a href="#4-2-2-跨服务采集" class="headerlink" title="4.2.2 跨服务采集"></a>4.2.2 跨服务采集</h3><p>1 ）定义info请求，web远程调user模块。根据id查询⽤用户名</p>
 <p>详细代码参考：</p>
 <p>web ： ApiController 、 ApiService</p>
 <p>user ： UserController</p>
 <p>2 ）验证</p>
 <p>通过swagger查看调⽤用信息</p>
-<p><img src="https://i.loli.net/2021/02/23/4Nm9e8BCERHt1vx.png" alt="image-20210223223753656" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/4Nm9e8BCERHt1vx.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/02/23/4Nm9e8BCERHt1vx.png" alt="image-20210223223753656"></p>
 <p>调⽤用成功，但是……</p>
-<p><img src="https://i.loli.net/2021/02/23/DsLxhIkonr2jYmN.png" alt="image-20210223223824400" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/DsLxhIkonr2jYmN.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/02/23/DsLxhIkonr2jYmN.png" alt="image-20210223223824400"></p>
 <p>ThreadLocal只是解决了了同⼀一jvm内部的上下⽂文传递，跨服务会失灵了了，怎么处理？</p>
 <p>3 ）解决思路路</p>
 <p>在RestTemplate上做⽂文章！⾃自⼰己定义⼀一个！</p>
 <p>获取当前ThreadLocal的LogBean，装到header头⾥里里，调远程的时候就能带过去</p>
 <p>详细源码： util 模块 - MyRestTemplate.java</p>
 <p>4 ）验证</p>
-<p>将web⾥里里的App.java中RestTemplate换成⾃自⼰己的，再调info试试<img src="https://i.loli.net/2021/02/23/26yDqaQk4K8UNYr.png" alt="image-20210223223858999" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/26yDqaQk4K8UNYr.png" class="lozad post-image"></p>
+<p>将web⾥里里的App.java中RestTemplate换成⾃自⼰己的，再调info试试<img src="https://i.loli.net/2021/02/23/26yDqaQk4K8UNYr.png" alt="image-20210223223858999"></p>
 <h3 id="4-2-3-⾃动采集"><a href="#4-2-3-⾃动采集" class="headerlink" title="4.2.3 ⾃动采集"></a>4.2.3 ⾃动采集</h3><p>1 ）问题与背景</p>
 <p>我们需要截获时间做差⽤用于调⽤用时⻓长分析，那就需要在每个⽅方法前后打印并统计开始结束时间。</p>
 <p>给每个⽅方法开头结尾添加⼀一⾏行行代码？显然不不合理理！</p>
@@ -456,53 +454,53 @@
 <p>采集⽅法的调⽤用时间</p>
 <p>详细源码： util 模块 - LogInfo 与 LogAspect</p>
 <p>3 ）验证⽅方法</p>
-<p>在⽅方法上打@LogInfo注解，进kibana验证⽇日志是否能⾃自动采集到<img src="https://i.loli.net/2021/02/23/6SNxCJO2fBLsc5Y.png" alt="image-20210223224011062" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/6SNxCJO2fBLsc5Y.png" class="lozad post-image"></p>
+<p>在⽅方法上打@LogInfo注解，进kibana验证⽇日志是否能⾃自动采集到<img src="https://i.loli.net/2021/02/23/6SNxCJO2fBLsc5Y.png" alt="image-20210223224011062"></p>
 <h3 id="4-2-4-附："><a href="#4-2-4-附：" class="headerlink" title="4.2.4 附："></a>4.2.4 附：</h3><p>如果你在项⽬目中⽤用到了了hystrix，并且恰好⽤用的线程池模式，要留留⼼心线程复⽤用引发ThreadLocal错乱问题！</p>
-<p>1 ）连续两次请求引发fallback（请求前注释掉HystrixAutoConfiguration的@Configuration）<img src="https://i.loli.net/2021/02/23/68K7omrcPTdpMyX.png" alt="image-20210223224057383" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/68K7omrcPTdpMyX.png" class="lozad post-image"></p>
-<p>2 ）查看⽇日志输出的rid<img src="https://i.loli.net/2021/02/23/YWvEGwLg3VA78Iq.png" alt="image-20210223224130707" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/YWvEGwLg3VA78Iq.png" class="lozad post-image"></p>
+<p>1 ）连续两次请求引发fallback（请求前注释掉HystrixAutoConfiguration的@Configuration）<img src="https://i.loli.net/2021/02/23/68K7omrcPTdpMyX.png" alt="image-20210223224057383"></p>
+<p>2 ）查看⽇日志输出的rid<img src="https://i.loli.net/2021/02/23/YWvEGwLg3VA78Iq.png" alt="image-20210223224130707"></p>
 <p>3 ）怎么解决？</p>
 <p>详细代码参考： utils 模块 - HystrixAutoConfiguration.java</p>
-<p>打开@Configuration后，再次请求两次swagger，查看rid：<img src="https://i.loli.net/2021/02/23/TE2Cq49biQKponF.png" alt="image-20210223224157780" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/TE2Cq49biQKponF.png" class="lozad post-image"></p>
+<p>打开@Configuration后，再次请求两次swagger，查看rid：<img src="https://i.loli.net/2021/02/23/TE2Cq49biQKponF.png" alt="image-20210223224157780"></p>
 <p>4 ）原理理解析</p>
-<p><img src="https://i.loli.net/2021/02/23/Z3Gmve8YtN7jOSb.png" alt="image-20210223224217045" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/Z3Gmve8YtN7jOSb.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/02/23/Z3Gmve8YtN7jOSb.png" alt="image-20210223224217045"></p>
 <ul>
 <li>⾃自定义Hystrix的配置，返回⼀一个HystrixThreadLocalConfiguration类型的Bean</li>
 </ul>
-<pre class="highlight"><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConditionalOnClass(com.netflix.hystrix.Hystrix.class)</span></span><br><span class="line">publicclassHystrixAutoConfiguration &#123;</span><br><span class="line"><span class="meta">@ConditionalOnClass</span></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line">publicHystrixThreadLocalConfiguration</span><br><span class="line">HystrixThreadLocalConfiguration() &#123;</span><br><span class="line">returnnewHystrixThreadLocalConfiguration();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConditionalOnClass(com.netflix.hystrix.Hystrix.class)</span></span><br><span class="line">publicclassHystrixAutoConfiguration &#123;</span><br><span class="line"><span class="meta">@ConditionalOnClass</span></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line">publicHystrixThreadLocalConfiguration</span><br><span class="line">HystrixThreadLocalConfiguration() &#123;</span><br><span class="line">returnnewHystrixThreadLocalConfiguration();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 <ul>
 <li>在HystrixThreadLocalConfiguration的init⽅方法中，注册我们⾃自⼰己的ThreadLocalAwareStrategy</li>
 </ul>
-<pre class="highlight"><span class="line">HystrixPlugins.getInstance().registerConcurrencyStrategy(ne</span><br><span class="line"><span class="function">w <span class="title">ThreadLocalAwareStrategy</span><span class="params">(existingConcurrencyStrategy)</span>)</span>;</span><br></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">HystrixPlugins.getInstance().registerConcurrencyStrategy(ne</span><br><span class="line"><span class="function">w <span class="title">ThreadLocalAwareStrategy</span><span class="params">(existingConcurrencyStrategy)</span>)</span>;</span><br></pre></td></tr></table></figure>
 
 
 <p>ThreadLocalAwareStrategy 继承了了 HystrixConcurrencyStrategy，重写wrapCallable⽅方法</p>
-<pre class="highlight"><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">Callable&lt;T&gt; <span class="title">wrapCallable</span><span class="params">(Callable&lt;T&gt; callable)</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> existingConcurrencyStrategy != <span class="keyword">null</span></span><br><span class="line">? existingConcurrencyStrategy</span><br><span class="line">.wrapCallable(<span class="keyword">new</span></span><br><span class="line">DelegatingWormholeContextCallable&lt;&gt;(callable,</span><br><span class="line">LogUtil.getLocalInstance()))</span><br><span class="line">: <span class="keyword">super</span>.wrapCallable(<span class="keyword">new</span></span><br><span class="line">DelegatingWormholeContextCallable&lt;T&gt;(callable,</span><br><span class="line">LogUtil.getLocalInstance()));</span><br><span class="line">&#125;</span><br></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">Callable&lt;T&gt; <span class="title">wrapCallable</span><span class="params">(Callable&lt;T&gt; callable)</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> existingConcurrencyStrategy != <span class="keyword">null</span></span><br><span class="line">? existingConcurrencyStrategy</span><br><span class="line">.wrapCallable(<span class="keyword">new</span></span><br><span class="line">DelegatingWormholeContextCallable&lt;&gt;(callable,</span><br><span class="line">LogUtil.getLocalInstance()))</span><br><span class="line">: <span class="keyword">super</span>.wrapCallable(<span class="keyword">new</span></span><br><span class="line">DelegatingWormholeContextCallable&lt;T&gt;(callable,</span><br><span class="line">LogUtil.getLocalInstance()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>DelegatingWormholeContextCallable继承callable接，实现ThreadLocal的处理理</li>
 </ul>
-<pre class="highlight"><span class="line">publicVcall() throwsException &#123;</span><br><span class="line">LogUtil.removeLocalInstance();</span><br><span class="line"><span class="comment">// 将当前的⽤户上下⽂设置进Hystrix线程的TreadLocal中</span></span><br><span class="line">LogUtil.setLocalInstance(logBean);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">returndelegate.call();</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line"><span class="comment">// 执⾏完毕，记得清理ThreadLocal资源</span></span><br><span class="line">LogUtil.removeLocalInstance();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">publicVcall() throwsException &#123;</span><br><span class="line">LogUtil.removeLocalInstance();</span><br><span class="line"><span class="comment">// 将当前的⽤户上下⽂设置进Hystrix线程的TreadLocal中</span></span><br><span class="line">LogUtil.setLocalInstance(logBean);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">returndelegate.call();</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line"><span class="comment">// 执⾏完毕，记得清理ThreadLocal资源</span></span><br><span class="line">LogUtil.removeLocalInstance();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 <h2 id="4-3-⽇志分析"><a href="#4-3-⽇志分析" class="headerlink" title="4.3 ⽇志分析"></a>4.3 ⽇志分析</h2><p>使⽤用kibana的图表功能，按下图，逐个创建，注意所选的x和y坐标</p>
-<p><img src="https://i.loli.net/2021/02/23/huxR98bkMQwGmJ3.png" alt="image-20210223224447393" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/huxR98bkMQwGmJ3.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/02/23/huxR98bkMQwGmJ3.png" alt="image-20210223224447393"></p>
 <h3 id="4-3-1-基本链路路分析"><a href="#4-3-1-基本链路路分析" class="headerlink" title="4.3.1 基本链路路分析"></a>4.3.1 基本链路路分析</h3><p>元数据：基本⽇日志追踪功能</p>
-<p><img src="https://i.loli.net/2021/02/23/qlXB1wLaVRMKSmz.png" alt="image-20210223224509467" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/qlXB1wLaVRMKSmz.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/02/23/qlXB1wLaVRMKSmz.png" alt="image-20210223224509467"></p>
 <h3 id="4-3-2-慢请求追踪"><a href="#4-3-2-慢请求追踪" class="headerlink" title="4.3.2 慢请求追踪"></a>4.3.2 慢请求追踪</h3><p>横向条形图：x=url , y=avg(time)</p>
-<p><img src="https://i.loli.net/2021/02/23/x4HnyKuYvsR2G1k.png" alt="image-20210223224526907" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/x4HnyKuYvsR2G1k.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/02/23/x4HnyKuYvsR2G1k.png" alt="image-20210223224526907"></p>
 <h3 id="4-3-3-⽤用户访问统计"><a href="#4-3-3-⽤用户访问统计" class="headerlink" title="4.3.3 ⽤用户访问统计"></a>4.3.3 ⽤用户访问统计</h3><p>柱状图：x=sid , y=count</p>
-<p><img src="https://i.loli.net/2021/02/23/aWAfYxjSpCTUrGy.png" alt="image-20210223224548437" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/aWAfYxjSpCTUrGy.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/02/23/aWAfYxjSpCTUrGy.png" alt="image-20210223224548437"></p>
 <h3 id="4-3-4-请求调⽤用统计"><a href="#4-3-4-请求调⽤用统计" class="headerlink" title="4.3.4 请求调⽤用统计"></a>4.3.4 请求调⽤用统计</h3><p>数据表：x=url , y=count</p>
-<p><img src="https://i.loli.net/2021/02/23/Z9AS453NkW2XohR.png" alt="image-20210223224619174" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/Z9AS453NkW2XohR.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/02/23/Z9AS453NkW2XohR.png" alt="image-20210223224619174"></p>
 <h3 id="4-3-5-访问流量量趋势"><a href="#4-3-5-访问流量量趋势" class="headerlink" title="4.3.5 访问流量量趋势"></a>4.3.5 访问流量量趋势</h3><p>折线图：x=Date Histogram , y=count</p>
-<p><img src="https://i.loli.net/2021/02/23/P2H5SYngMamqvG4.png" alt="image-20210223224629925" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/P2H5SYngMamqvG4.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/02/23/P2H5SYngMamqvG4.png" alt="image-20210223224629925"></p>
 <h3 id="4-3-6-服务调⽤用占⽐比"><a href="#4-3-6-服务调⽤用占⽐比" class="headerlink" title="4.3.6 服务调⽤用占⽐比"></a>4.3.6 服务调⽤用占⽐比</h3><p>（Lens！beta版本）饼图：x=from , y=count</p>
-<p><img src="https://i.loli.net/2021/02/23/W9QU5bmVZwT8EzB.png" alt="image-20210223224643786" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/W9QU5bmVZwT8EzB.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/02/23/W9QU5bmVZwT8EzB.png" alt="image-20210223224643786"></p>
 <h3 id="4-3-7-终端占⽐比"><a href="#4-3-7-终端占⽐比" class="headerlink" title="4.3.7 终端占⽐比"></a>4.3.7 终端占⽐比</h3><p>（Lens！beta版本）空⼼心圆：x=tid , y=count</p>
-<p><img src="https://i.loli.net/2021/02/23/KRaPLI1k3ZCW9z2.png" alt="image-20210223224656609" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/KRaPLI1k3ZCW9z2.png" class="lozad post-image"></p>
-<h2 id="4-4-Dashboard⼤大屏"><a href="#4-4-Dashboard⼤大屏" class="headerlink" title="4.4 Dashboard⼤大屏"></a>4.4 Dashboard⼤大屏</h2><p>1 ）选Dashboard，按以下步骤添加<img src="https://i.loli.net/2021/02/23/IRzy1skS3aO6nBZ.png" alt="image-20210223224722286" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/IRzy1skS3aO6nBZ.png" class="lozad post-image"></p>
-<p>2 ）添加后效果展示<img src="https://i.loli.net/2021/02/23/ZgEmKbIfaRcLNPX.png" alt="image-20210223224731197" srcset="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" data-src="https://i.loli.net/2021/02/23/ZgEmKbIfaRcLNPX.png" class="lozad post-image"></p>
+<p><img src="https://i.loli.net/2021/02/23/KRaPLI1k3ZCW9z2.png" alt="image-20210223224656609"></p>
+<h2 id="4-4-Dashboard⼤大屏"><a href="#4-4-Dashboard⼤大屏" class="headerlink" title="4.4 Dashboard⼤大屏"></a>4.4 Dashboard⼤大屏</h2><p>1 ）选Dashboard，按以下步骤添加<img src="https://i.loli.net/2021/02/23/IRzy1skS3aO6nBZ.png" alt="image-20210223224722286"></p>
+<p>2 ）添加后效果展示<img src="https://i.loli.net/2021/02/23/ZgEmKbIfaRcLNPX.png" alt="image-20210223224731197"></p>
 <h2 id="4-5-总结"><a href="#4-5-总结" class="headerlink" title="4.5 总结"></a>4.5 总结</h2><ul>
 <li>微服务filter，第一道关卡</li>
 <li>threadlocal服务内上下⽂文传递</li>
@@ -511,399 +509,200 @@
 <li>kibana的各种图表分析</li>
 </ul>
 
-  </div>
-  <div>
-  
-  <div class="post-note note-warning copyright" style="margin-top: 42px">
-    <p><span style="font-weight: bold;">作者：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/about">blydd</a></p>
-    <p><span style="font-weight: bold;">文章链接：</span><a target="_blank" rel="nofollow noopener noreferrer" href="https://www.mele.cool/2021/02/22/%E9%9B%86%E4%B8%AD%E5%8C%96%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%BA%94%E7%94%A8/">https://www.mele.cool/2021/02/22/%E9%9B%86%E4%B8%AD%E5%8C%96%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%BA%94%E7%94%A8/</a></p>
-    <p><span style="font-weight: bold;">版权声明：</span>本博客所有文章除特别声明外，均采用<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0 协议</a>。转载请注明出处！</p>
-  </div>
-  
-  </div>
-</article>
-<div class="nav">
-  
-  
-  <div class="nav-item-next">
-    <a href="/2021/02/18/springSecurity/" class="nav-link">
-      <div>
-        <div class="nav-label">下一篇</div>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%97%A5%E5%BF%97/" rel="tag"># 日志</a>
+              <a href="/tags/kibana/" rel="tag"># kibana</a>
+              <a href="/tags/Elk/" rel="tag"># Elk</a>
+          </div>
+
         
-        <div class="nav-title">springsecurity </div>
+
+
         
-      </div>
-      <i class="iconfont icon-right nav-next-icon"></i>
-    </a>
-  </div>
-  
-</div>
-
-<div class="card card-content toc-card" id="mobiletoc">
-  <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
-<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E3%80%81%E6%97%A5%E5%BF%97%E4%BD%93%E7%B3%BB"><span class="toc-text">1 、日志体系</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E4%BD%93%E7%B3%BB%E6%A6%82%E8%BF%B0"><span class="toc-text">1.1 体系概述</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%EF%BC%89%E6%97%A5%E5%BF%97%E6%8E%A5%E5%8F%A3"><span class="toc-text">1 ）日志接口</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%EF%BC%89%E2%BD%87%E5%BF%97%E5%AE%9E%E7%8E%B0"><span class="toc-text">2 ）⽇志实现</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B"><span class="toc-text">1.2 发展历程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%EF%BC%89%E5%8E%9F%E5%A7%8B%E8%BE%93%E5%87%BA"><span class="toc-text">1 ）原始输出</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%EF%BC%89%E5%BC%80%E5%88%9B%E5%85%88%E9%A9%B1"><span class="toc-text">2 ）开创先驱</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%EF%BC%89%E6%90%9E%E4%BA%8B%E6%83%85%E7%9A%84JUL"><span class="toc-text">3 ）搞事情的JUL</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%EF%BC%89-JCL%E5%BA%94%E8%BF%90%E2%BD%BD%E8%80%8C%E2%BD%A3%E7%94%9F"><span class="toc-text">4 ） JCL应运⽽而⽣生</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%EF%BC%89%E5%86%8D%E8%B5%B7%E6%B3%A2%E6%BE%9C"><span class="toc-text">5 ）再起波澜</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-%EF%BC%89%E5%86%8D%E5%BA%A6%E2%BB%98%E9%9D%92%E6%98%A5"><span class="toc-text">6 ）再度⻘青春</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E7%BB%8F%E9%AA%8C%E4%B9%8B%E8%B0%88"><span class="toc-text">1.3 经验之谈</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%EF%BC%89%E9%97%A8%E2%BE%AF%E7%BA%A6%E6%9D%9F"><span class="toc-text">1 ）门⾯约束</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%EF%BC%89%E5%8D%95%E2%BC%80%E4%B8%80%E5%8E%9F%E5%88%99"><span class="toc-text">2 ）单⼀一原则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%EF%BC%89-%E4%BE%9D%E8%B5%96%E7%BA%A6%E6%9D%9F"><span class="toc-text">3 ） 依赖约束</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%EF%BC%89-%E9%81%BF%E5%85%8D%E4%BC%A0%E9%80%92"><span class="toc-text">4 ） 避免传递</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%EF%BC%89-%E7%B2%BE%E7%AE%80%E2%BE%84%E8%87%B3%E4%B8%8A"><span class="toc-text">5 ） 精简⾄至上</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E3%80%81%E2%BD%87%E5%BF%97%E5%B9%B3%E5%8F%B0"><span class="toc-text">2 、⽇志平台</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">2.1 生命周期</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-%E5%8F%AF%E9%80%89%E2%BD%85%E6%96%B9%E6%A1%88"><span class="toc-text">2.1.1 可选⽅方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2-%E6%80%BB%E7%BB%93"><span class="toc-text">2.1.2 总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-kafka"><span class="toc-text">2.2 kafka</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-%E5%90%AF%E5%8A%A8"><span class="toc-text">2.2.1 启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-%E9%AA%8C%E8%AF%81"><span class="toc-text">2.2.2 验证</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-km"><span class="toc-text">2.3 km</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-%E5%90%AF%E5%8A%A8"><span class="toc-text">2.3.1 启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-%E9%AA%8C%E8%AF%81"><span class="toc-text">2.3.2 验证</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-elk"><span class="toc-text">2.4 elk</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-1-%E5%90%AF%E5%8A%A8"><span class="toc-text">2.4.1 启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-2-%E9%87%8D%E6%89%93%E9%95%9C%E5%83%8F"><span class="toc-text">2.4.2 重打镜像</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-3-kibana%E9%AA%8C%E8%AF%81"><span class="toc-text">2.4.3 kibana验证</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E3%80%81%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="toc-text">3 、架构设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E9%87%87%E9%9B%86%E8%A6%81%E6%B1%82"><span class="toc-text">3.1 采集要求</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-1-%E9%87%87%E9%9B%86%E7%BB%B4%E5%BA%A6"><span class="toc-text">3.1.1 采集维度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-2-%E9%87%87%E9%9B%86%E7%82%B9"><span class="toc-text">3.1.2 采集点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-3-%E4%BD%8E%E2%BC%8A%E5%85%A5%E4%BE%B5"><span class="toc-text">3.1.3 低⼊入侵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-4-%E6%97%B6%E6%95%88%E6%80%A7"><span class="toc-text">3.1.4 时效性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E7%B3%BB%E7%BB%9F%E7%97%9B%E7%82%B9"><span class="toc-text">3.2 系统痛点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-text">3.2.1 基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-2-%E6%80%8E%E4%B9%88%E4%BA%A7%E2%BD%A3%E7%94%9F"><span class="toc-text">3.2.2 怎么产⽣生</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-3-%E6%80%8E%E4%B9%88%E4%BC%A0%E9%80%92"><span class="toc-text">3.2.3 怎么传递</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-4-%E6%80%8E%E4%B9%88%E8%BE%93%E5%87%BA"><span class="toc-text">3.2.4 怎么输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-5-%E6%80%8E%E4%B9%88%E6%8B%A6%E6%88%AA"><span class="toc-text">3.2.5 怎么拦截</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E6%80%BB%E7%BB%93"><span class="toc-text">3.3 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E3%80%81%E9%A1%B9%E2%BD%AC%E7%9B%AE%E5%AE%9E%E6%96%BD"><span class="toc-text">4 、项⽬目实施</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E5%9F%BA%E6%9C%AC%E8%A7%84%E5%88%92"><span class="toc-text">4.1 基本规划</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-1-%E9%A1%B9%E2%BD%AC%E7%9B%AE%E6%A8%A1%E5%9D%97"><span class="toc-text">4.1.1 项⽬目模块</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%EF%BC%89nacos%E5%90%AF%E5%8A%A8%EF%BC%9A"><span class="toc-text">1 ）nacos启动：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%EF%BC%89%E9%A1%B9%E2%BD%AC%E7%9B%AE%E2%BD%AC%E7%9B%AE%E5%BD%95%EF%BC%9A"><span class="toc-text">2 ）项⽬目⽬目录：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-2-Kafka%E9%9B%86%E6%88%90"><span class="toc-text">4.1.2 Kafka集成</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E2%BD%87%E5%BF%97%E9%87%87%E9%9B%86"><span class="toc-text">4.2 ⽇志采集</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-1-%E6%9C%8D%E5%8A%A1%E5%86%85%E9%87%87%E9%9B%86"><span class="toc-text">4.2.1 服务内采集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-2-%E8%B7%A8%E6%9C%8D%E5%8A%A1%E9%87%87%E9%9B%86"><span class="toc-text">4.2.2 跨服务采集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-3-%E2%BE%83%E5%8A%A8%E9%87%87%E9%9B%86"><span class="toc-text">4.2.3 ⾃动采集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-4-%E9%99%84%EF%BC%9A"><span class="toc-text">4.2.4 附：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-%E2%BD%87%E5%BF%97%E5%88%86%E6%9E%90"><span class="toc-text">4.3 ⽇志分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-1-%E5%9F%BA%E6%9C%AC%E9%93%BE%E8%B7%AF%E8%B7%AF%E5%88%86%E6%9E%90"><span class="toc-text">4.3.1 基本链路路分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-2-%E6%85%A2%E8%AF%B7%E6%B1%82%E8%BF%BD%E8%B8%AA"><span class="toc-text">4.3.2 慢请求追踪</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-3-%E2%BD%A4%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E7%BB%9F%E8%AE%A1"><span class="toc-text">4.3.3 ⽤用户访问统计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-4-%E8%AF%B7%E6%B1%82%E8%B0%83%E2%BD%A4%E7%94%A8%E7%BB%9F%E8%AE%A1"><span class="toc-text">4.3.4 请求调⽤用统计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-5-%E8%AE%BF%E9%97%AE%E6%B5%81%E9%87%8F%E9%87%8F%E8%B6%8B%E5%8A%BF"><span class="toc-text">4.3.5 访问流量量趋势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-6-%E6%9C%8D%E5%8A%A1%E8%B0%83%E2%BD%A4%E7%94%A8%E5%8D%A0%E2%BD%90%E6%AF%94"><span class="toc-text">4.3.6 服务调⽤用占⽐比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-7-%E7%BB%88%E7%AB%AF%E5%8D%A0%E2%BD%90%E6%AF%94"><span class="toc-text">4.3.7 终端占⽐比</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-Dashboard%E2%BC%A4%E5%A4%A7%E5%B1%8F"><span class="toc-text">4.4 Dashboard⼤大屏</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-%E6%80%BB%E7%BB%93"><span class="toc-text">4.5 总结</span></a></li></ol></li></ol>
-</div></main>
-          <aside class="left-column">
-            
-            <div class="card card-author">
-              
-<img src="https://i.loli.net/2021/01/27/IrkEAwO1ujK6Z9y.png" class="author-img">
-
-<p class="author-name">blydd</p>
-<p class="author-description">积跬步行千里</p>
-<div class="author-message">
-  <a class="author-posts-count" href="/archives">
-    <span>68</span>
-    <span>文章</span>
-  </a>
-  <a class="author-categories-count" href="/categories">
-    <span>18</span>
-    <span>分类</span>
-  </a>
-  <a class="author-tags-count" href="/tags">
-    <span>95</span>
-    <span>标签</span>
-  </a>
-</div>
-
-            </div>
-            
-            <div class="sticky-tablet">
-  
-  
-  <article class="display-when-two-columns spacer">
-    <div class="card card-content toc-card">
-      <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
-<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E3%80%81%E6%97%A5%E5%BF%97%E4%BD%93%E7%B3%BB"><span class="toc-text">1 、日志体系</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E4%BD%93%E7%B3%BB%E6%A6%82%E8%BF%B0"><span class="toc-text">1.1 体系概述</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%EF%BC%89%E6%97%A5%E5%BF%97%E6%8E%A5%E5%8F%A3"><span class="toc-text">1 ）日志接口</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%EF%BC%89%E2%BD%87%E5%BF%97%E5%AE%9E%E7%8E%B0"><span class="toc-text">2 ）⽇志实现</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B"><span class="toc-text">1.2 发展历程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%EF%BC%89%E5%8E%9F%E5%A7%8B%E8%BE%93%E5%87%BA"><span class="toc-text">1 ）原始输出</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%EF%BC%89%E5%BC%80%E5%88%9B%E5%85%88%E9%A9%B1"><span class="toc-text">2 ）开创先驱</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%EF%BC%89%E6%90%9E%E4%BA%8B%E6%83%85%E7%9A%84JUL"><span class="toc-text">3 ）搞事情的JUL</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%EF%BC%89-JCL%E5%BA%94%E8%BF%90%E2%BD%BD%E8%80%8C%E2%BD%A3%E7%94%9F"><span class="toc-text">4 ） JCL应运⽽而⽣生</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%EF%BC%89%E5%86%8D%E8%B5%B7%E6%B3%A2%E6%BE%9C"><span class="toc-text">5 ）再起波澜</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-%EF%BC%89%E5%86%8D%E5%BA%A6%E2%BB%98%E9%9D%92%E6%98%A5"><span class="toc-text">6 ）再度⻘青春</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E7%BB%8F%E9%AA%8C%E4%B9%8B%E8%B0%88"><span class="toc-text">1.3 经验之谈</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%EF%BC%89%E9%97%A8%E2%BE%AF%E7%BA%A6%E6%9D%9F"><span class="toc-text">1 ）门⾯约束</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%EF%BC%89%E5%8D%95%E2%BC%80%E4%B8%80%E5%8E%9F%E5%88%99"><span class="toc-text">2 ）单⼀一原则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%EF%BC%89-%E4%BE%9D%E8%B5%96%E7%BA%A6%E6%9D%9F"><span class="toc-text">3 ） 依赖约束</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%EF%BC%89-%E9%81%BF%E5%85%8D%E4%BC%A0%E9%80%92"><span class="toc-text">4 ） 避免传递</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%EF%BC%89-%E7%B2%BE%E7%AE%80%E2%BE%84%E8%87%B3%E4%B8%8A"><span class="toc-text">5 ） 精简⾄至上</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E3%80%81%E2%BD%87%E5%BF%97%E5%B9%B3%E5%8F%B0"><span class="toc-text">2 、⽇志平台</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">2.1 生命周期</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-%E5%8F%AF%E9%80%89%E2%BD%85%E6%96%B9%E6%A1%88"><span class="toc-text">2.1.1 可选⽅方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2-%E6%80%BB%E7%BB%93"><span class="toc-text">2.1.2 总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-kafka"><span class="toc-text">2.2 kafka</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-%E5%90%AF%E5%8A%A8"><span class="toc-text">2.2.1 启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-%E9%AA%8C%E8%AF%81"><span class="toc-text">2.2.2 验证</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-km"><span class="toc-text">2.3 km</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-%E5%90%AF%E5%8A%A8"><span class="toc-text">2.3.1 启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-%E9%AA%8C%E8%AF%81"><span class="toc-text">2.3.2 验证</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-elk"><span class="toc-text">2.4 elk</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-1-%E5%90%AF%E5%8A%A8"><span class="toc-text">2.4.1 启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-2-%E9%87%8D%E6%89%93%E9%95%9C%E5%83%8F"><span class="toc-text">2.4.2 重打镜像</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-3-kibana%E9%AA%8C%E8%AF%81"><span class="toc-text">2.4.3 kibana验证</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E3%80%81%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="toc-text">3 、架构设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E9%87%87%E9%9B%86%E8%A6%81%E6%B1%82"><span class="toc-text">3.1 采集要求</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-1-%E9%87%87%E9%9B%86%E7%BB%B4%E5%BA%A6"><span class="toc-text">3.1.1 采集维度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-2-%E9%87%87%E9%9B%86%E7%82%B9"><span class="toc-text">3.1.2 采集点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-3-%E4%BD%8E%E2%BC%8A%E5%85%A5%E4%BE%B5"><span class="toc-text">3.1.3 低⼊入侵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-4-%E6%97%B6%E6%95%88%E6%80%A7"><span class="toc-text">3.1.4 时效性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E7%B3%BB%E7%BB%9F%E7%97%9B%E7%82%B9"><span class="toc-text">3.2 系统痛点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-text">3.2.1 基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-2-%E6%80%8E%E4%B9%88%E4%BA%A7%E2%BD%A3%E7%94%9F"><span class="toc-text">3.2.2 怎么产⽣生</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-3-%E6%80%8E%E4%B9%88%E4%BC%A0%E9%80%92"><span class="toc-text">3.2.3 怎么传递</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-4-%E6%80%8E%E4%B9%88%E8%BE%93%E5%87%BA"><span class="toc-text">3.2.4 怎么输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-5-%E6%80%8E%E4%B9%88%E6%8B%A6%E6%88%AA"><span class="toc-text">3.2.5 怎么拦截</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E6%80%BB%E7%BB%93"><span class="toc-text">3.3 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E3%80%81%E9%A1%B9%E2%BD%AC%E7%9B%AE%E5%AE%9E%E6%96%BD"><span class="toc-text">4 、项⽬目实施</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E5%9F%BA%E6%9C%AC%E8%A7%84%E5%88%92"><span class="toc-text">4.1 基本规划</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-1-%E9%A1%B9%E2%BD%AC%E7%9B%AE%E6%A8%A1%E5%9D%97"><span class="toc-text">4.1.1 项⽬目模块</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%EF%BC%89nacos%E5%90%AF%E5%8A%A8%EF%BC%9A"><span class="toc-text">1 ）nacos启动：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%EF%BC%89%E9%A1%B9%E2%BD%AC%E7%9B%AE%E2%BD%AC%E7%9B%AE%E5%BD%95%EF%BC%9A"><span class="toc-text">2 ）项⽬目⽬目录：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-2-Kafka%E9%9B%86%E6%88%90"><span class="toc-text">4.1.2 Kafka集成</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E2%BD%87%E5%BF%97%E9%87%87%E9%9B%86"><span class="toc-text">4.2 ⽇志采集</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-1-%E6%9C%8D%E5%8A%A1%E5%86%85%E9%87%87%E9%9B%86"><span class="toc-text">4.2.1 服务内采集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-2-%E8%B7%A8%E6%9C%8D%E5%8A%A1%E9%87%87%E9%9B%86"><span class="toc-text">4.2.2 跨服务采集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-3-%E2%BE%83%E5%8A%A8%E9%87%87%E9%9B%86"><span class="toc-text">4.2.3 ⾃动采集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-4-%E9%99%84%EF%BC%9A"><span class="toc-text">4.2.4 附：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-%E2%BD%87%E5%BF%97%E5%88%86%E6%9E%90"><span class="toc-text">4.3 ⽇志分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-1-%E5%9F%BA%E6%9C%AC%E9%93%BE%E8%B7%AF%E8%B7%AF%E5%88%86%E6%9E%90"><span class="toc-text">4.3.1 基本链路路分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-2-%E6%85%A2%E8%AF%B7%E6%B1%82%E8%BF%BD%E8%B8%AA"><span class="toc-text">4.3.2 慢请求追踪</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-3-%E2%BD%A4%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E7%BB%9F%E8%AE%A1"><span class="toc-text">4.3.3 ⽤用户访问统计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-4-%E8%AF%B7%E6%B1%82%E8%B0%83%E2%BD%A4%E7%94%A8%E7%BB%9F%E8%AE%A1"><span class="toc-text">4.3.4 请求调⽤用统计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-5-%E8%AE%BF%E9%97%AE%E6%B5%81%E9%87%8F%E9%87%8F%E8%B6%8B%E5%8A%BF"><span class="toc-text">4.3.5 访问流量量趋势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-6-%E6%9C%8D%E5%8A%A1%E8%B0%83%E2%BD%A4%E7%94%A8%E5%8D%A0%E2%BD%90%E6%AF%94"><span class="toc-text">4.3.6 服务调⽤用占⽐比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-7-%E7%BB%88%E7%AB%AF%E5%8D%A0%E2%BD%90%E6%AF%94"><span class="toc-text">4.3.7 终端占⽐比</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-Dashboard%E2%BC%A4%E5%A4%A7%E5%B1%8F"><span class="toc-text">4.4 Dashboard⼤大屏</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-%E6%80%BB%E7%BB%93"><span class="toc-text">4.5 总结</span></a></li></ol></li></ol>
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/02/18/springSecurity/" rel="prev" title="springsecurity">
+      <i class="fa fa-chevron-left"></i> springsecurity
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
+      </footer>
+    
   </article>
   
   
-  <article class="card card-content categories-widget">
-    <div class="categories-card">
-  <div class="categories-header"><i class="iconfont icon-fenlei" style="padding-right: 2px;"></i>分类</div>
-  <div class="categories-list">
-    
-      <a href="/categories/工具类">
-        <div class="categories-list-item">
-          工具类
-          <span class="categories-list-item-badge">8</span>
-        </div>
-      </a>
-    
-      <a href="/categories/linux">
-        <div class="categories-list-item">
-          linux
-          <span class="categories-list-item-badge">3</span>
-        </div>
-      </a>
-    
-      <a href="/categories/mac">
-        <div class="categories-list-item">
-          mac
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/java">
-        <div class="categories-list-item">
-          java
-          <span class="categories-list-item-badge">18</span>
-        </div>
-      </a>
-    
-      <a href="/categories/springboot">
-        <div class="categories-list-item">
-          springboot
-          <span class="categories-list-item-badge">13</span>
-        </div>
-      </a>
-    
-      <a href="/categories/docker">
-        <div class="categories-list-item">
-          docker
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/版本控制">
-        <div class="categories-list-item">
-          版本控制
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/hello world">
-        <div class="categories-list-item">
-          hello world
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/mele">
-        <div class="categories-list-item">
-          mele
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/db">
-        <div class="categories-list-item">
-          db
-          <span class="categories-list-item-badge">7</span>
-        </div>
-      </a>
-    
-      <a href="/categories/springcloud">
-        <div class="categories-list-item">
-          springcloud
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/其他">
-        <div class="categories-list-item">
-          其他
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/bug">
-        <div class="categories-list-item">
-          bug
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/js">
-        <div class="categories-list-item">
-          js
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/mq">
-        <div class="categories-list-item">
-          mq
-          <span class="categories-list-item-badge">3</span>
-        </div>
-      </a>
-    
-      <a href="/categories/面试">
-        <div class="categories-list-item">
-          面试
-          <span class="categories-list-item-badge">2</span>
-        </div>
-      </a>
-    
-      <a href="/categories/日志">
-        <div class="categories-list-item">
-          日志
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-      <a href="/categories/springCloud">
-        <div class="categories-list-item">
-          springCloud
-          <span class="categories-list-item-badge">1</span>
-        </div>
-      </a>
-    
-  </div>
-</div>
-  </article>
   
-  <article class="card card-content tags-widget">
-    <div class="tags-card">
-  <div class="tags-header"><i class="iconfont icon-biaoqian" style="padding-right: 2px;"></i>热门标签</div>
-  <div class="tags-list">
-    
-    <a href="\tags\springboot" title="springboot"><div class="tags-list-item">springboot</div></a>
-    
-    <a href="\tags\java" title="java"><div class="tags-list-item">java</div></a>
-    
-    <a href="\tags\工具类" title="工具类"><div class="tags-list-item">工具类</div></a>
-    
-    <a href="\tags\mybatis" title="mybatis"><div class="tags-list-item">mybatis</div></a>
-    
-    <a href="\tags\ms" title="ms"><div class="tags-list-item">ms</div></a>
-    
-    <a href="\tags\tool" title="tool"><div class="tags-list-item">tool</div></a>
-    
-    <a href="\tags\日志" title="日志"><div class="tags-list-item">日志</div></a>
-    
-    <a href="\tags\git" title="git"><div class="tags-list-item">git</div></a>
-    
-    <a href="\tags\linux" title="linux"><div class="tags-list-item">linux</div></a>
-    
-    <a href="\tags\线程池" title="线程池"><div class="tags-list-item">线程池</div></a>
-    
-    <a href="\tags\mq" title="mq"><div class="tags-list-item">mq</div></a>
-    
-    <a href="\tags\常用" title="常用"><div class="tags-list-item">常用</div></a>
-    
-    <a href="\tags\bug" title="bug"><div class="tags-list-item">bug</div></a>
-    
-    <a href="\tags\分布式" title="分布式"><div class="tags-list-item">分布式</div></a>
-    
-    <a href="\tags\acid" title="acid"><div class="tags-list-item">acid</div></a>
-    
-    <a href="\tags\事务" title="事务"><div class="tags-list-item">事务</div></a>
-    
-  </div>
-</div>
-  </article>
-  
-  
-</div>
-          </aside>
-          <aside class="right-column">
-            <div class="sticky-widescreen">
-  
-  
-  <article class="card card-content toc-card">
-    <div class="toc-header"><i class="iconfont icon-menu" style="padding-right: 2px;"></i>目录</div>
-<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E3%80%81%E6%97%A5%E5%BF%97%E4%BD%93%E7%B3%BB"><span class="toc-text">1 、日志体系</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E4%BD%93%E7%B3%BB%E6%A6%82%E8%BF%B0"><span class="toc-text">1.1 体系概述</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%EF%BC%89%E6%97%A5%E5%BF%97%E6%8E%A5%E5%8F%A3"><span class="toc-text">1 ）日志接口</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%EF%BC%89%E2%BD%87%E5%BF%97%E5%AE%9E%E7%8E%B0"><span class="toc-text">2 ）⽇志实现</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B"><span class="toc-text">1.2 发展历程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%EF%BC%89%E5%8E%9F%E5%A7%8B%E8%BE%93%E5%87%BA"><span class="toc-text">1 ）原始输出</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%EF%BC%89%E5%BC%80%E5%88%9B%E5%85%88%E9%A9%B1"><span class="toc-text">2 ）开创先驱</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%EF%BC%89%E6%90%9E%E4%BA%8B%E6%83%85%E7%9A%84JUL"><span class="toc-text">3 ）搞事情的JUL</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%EF%BC%89-JCL%E5%BA%94%E8%BF%90%E2%BD%BD%E8%80%8C%E2%BD%A3%E7%94%9F"><span class="toc-text">4 ） JCL应运⽽而⽣生</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%EF%BC%89%E5%86%8D%E8%B5%B7%E6%B3%A2%E6%BE%9C"><span class="toc-text">5 ）再起波澜</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-%EF%BC%89%E5%86%8D%E5%BA%A6%E2%BB%98%E9%9D%92%E6%98%A5"><span class="toc-text">6 ）再度⻘青春</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E7%BB%8F%E9%AA%8C%E4%B9%8B%E8%B0%88"><span class="toc-text">1.3 经验之谈</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%EF%BC%89%E9%97%A8%E2%BE%AF%E7%BA%A6%E6%9D%9F"><span class="toc-text">1 ）门⾯约束</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%EF%BC%89%E5%8D%95%E2%BC%80%E4%B8%80%E5%8E%9F%E5%88%99"><span class="toc-text">2 ）单⼀一原则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%EF%BC%89-%E4%BE%9D%E8%B5%96%E7%BA%A6%E6%9D%9F"><span class="toc-text">3 ） 依赖约束</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%EF%BC%89-%E9%81%BF%E5%85%8D%E4%BC%A0%E9%80%92"><span class="toc-text">4 ） 避免传递</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%EF%BC%89-%E7%B2%BE%E7%AE%80%E2%BE%84%E8%87%B3%E4%B8%8A"><span class="toc-text">5 ） 精简⾄至上</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E3%80%81%E2%BD%87%E5%BF%97%E5%B9%B3%E5%8F%B0"><span class="toc-text">2 、⽇志平台</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">2.1 生命周期</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-%E5%8F%AF%E9%80%89%E2%BD%85%E6%96%B9%E6%A1%88"><span class="toc-text">2.1.1 可选⽅方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2-%E6%80%BB%E7%BB%93"><span class="toc-text">2.1.2 总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-kafka"><span class="toc-text">2.2 kafka</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-%E5%90%AF%E5%8A%A8"><span class="toc-text">2.2.1 启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-%E9%AA%8C%E8%AF%81"><span class="toc-text">2.2.2 验证</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-km"><span class="toc-text">2.3 km</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-%E5%90%AF%E5%8A%A8"><span class="toc-text">2.3.1 启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-%E9%AA%8C%E8%AF%81"><span class="toc-text">2.3.2 验证</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-elk"><span class="toc-text">2.4 elk</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-1-%E5%90%AF%E5%8A%A8"><span class="toc-text">2.4.1 启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-2-%E9%87%8D%E6%89%93%E9%95%9C%E5%83%8F"><span class="toc-text">2.4.2 重打镜像</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-3-kibana%E9%AA%8C%E8%AF%81"><span class="toc-text">2.4.3 kibana验证</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E3%80%81%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="toc-text">3 、架构设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E9%87%87%E9%9B%86%E8%A6%81%E6%B1%82"><span class="toc-text">3.1 采集要求</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-1-%E9%87%87%E9%9B%86%E7%BB%B4%E5%BA%A6"><span class="toc-text">3.1.1 采集维度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-2-%E9%87%87%E9%9B%86%E7%82%B9"><span class="toc-text">3.1.2 采集点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-3-%E4%BD%8E%E2%BC%8A%E5%85%A5%E4%BE%B5"><span class="toc-text">3.1.3 低⼊入侵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-4-%E6%97%B6%E6%95%88%E6%80%A7"><span class="toc-text">3.1.4 时效性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E7%B3%BB%E7%BB%9F%E7%97%9B%E7%82%B9"><span class="toc-text">3.2 系统痛点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-text">3.2.1 基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-2-%E6%80%8E%E4%B9%88%E4%BA%A7%E2%BD%A3%E7%94%9F"><span class="toc-text">3.2.2 怎么产⽣生</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-3-%E6%80%8E%E4%B9%88%E4%BC%A0%E9%80%92"><span class="toc-text">3.2.3 怎么传递</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-4-%E6%80%8E%E4%B9%88%E8%BE%93%E5%87%BA"><span class="toc-text">3.2.4 怎么输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-5-%E6%80%8E%E4%B9%88%E6%8B%A6%E6%88%AA"><span class="toc-text">3.2.5 怎么拦截</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E6%80%BB%E7%BB%93"><span class="toc-text">3.3 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E3%80%81%E9%A1%B9%E2%BD%AC%E7%9B%AE%E5%AE%9E%E6%96%BD"><span class="toc-text">4 、项⽬目实施</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E5%9F%BA%E6%9C%AC%E8%A7%84%E5%88%92"><span class="toc-text">4.1 基本规划</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-1-%E9%A1%B9%E2%BD%AC%E7%9B%AE%E6%A8%A1%E5%9D%97"><span class="toc-text">4.1.1 项⽬目模块</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%EF%BC%89nacos%E5%90%AF%E5%8A%A8%EF%BC%9A"><span class="toc-text">1 ）nacos启动：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%EF%BC%89%E9%A1%B9%E2%BD%AC%E7%9B%AE%E2%BD%AC%E7%9B%AE%E5%BD%95%EF%BC%9A"><span class="toc-text">2 ）项⽬目⽬目录：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-2-Kafka%E9%9B%86%E6%88%90"><span class="toc-text">4.1.2 Kafka集成</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E2%BD%87%E5%BF%97%E9%87%87%E9%9B%86"><span class="toc-text">4.2 ⽇志采集</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-1-%E6%9C%8D%E5%8A%A1%E5%86%85%E9%87%87%E9%9B%86"><span class="toc-text">4.2.1 服务内采集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-2-%E8%B7%A8%E6%9C%8D%E5%8A%A1%E9%87%87%E9%9B%86"><span class="toc-text">4.2.2 跨服务采集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-3-%E2%BE%83%E5%8A%A8%E9%87%87%E9%9B%86"><span class="toc-text">4.2.3 ⾃动采集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-4-%E9%99%84%EF%BC%9A"><span class="toc-text">4.2.4 附：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-%E2%BD%87%E5%BF%97%E5%88%86%E6%9E%90"><span class="toc-text">4.3 ⽇志分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-1-%E5%9F%BA%E6%9C%AC%E9%93%BE%E8%B7%AF%E8%B7%AF%E5%88%86%E6%9E%90"><span class="toc-text">4.3.1 基本链路路分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-2-%E6%85%A2%E8%AF%B7%E6%B1%82%E8%BF%BD%E8%B8%AA"><span class="toc-text">4.3.2 慢请求追踪</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-3-%E2%BD%A4%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E7%BB%9F%E8%AE%A1"><span class="toc-text">4.3.3 ⽤用户访问统计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-4-%E8%AF%B7%E6%B1%82%E8%B0%83%E2%BD%A4%E7%94%A8%E7%BB%9F%E8%AE%A1"><span class="toc-text">4.3.4 请求调⽤用统计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-5-%E8%AE%BF%E9%97%AE%E6%B5%81%E9%87%8F%E9%87%8F%E8%B6%8B%E5%8A%BF"><span class="toc-text">4.3.5 访问流量量趋势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-6-%E6%9C%8D%E5%8A%A1%E8%B0%83%E2%BD%A4%E7%94%A8%E5%8D%A0%E2%BD%90%E6%AF%94"><span class="toc-text">4.3.6 服务调⽤用占⽐比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-7-%E7%BB%88%E7%AB%AF%E5%8D%A0%E2%BD%90%E6%AF%94"><span class="toc-text">4.3.7 终端占⽐比</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-Dashboard%E2%BC%A4%E5%A4%A7%E5%B1%8F"><span class="toc-text">4.4 Dashboard⼤大屏</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-%E6%80%BB%E7%BB%93"><span class="toc-text">4.5 总结</span></a></li></ol></li></ol>
-  </article>
-  
-  
-  <article class="card card-content">
-    <div class="recent-posts-card">
-  <div class="recent-posts-header"><i class="iconfont icon-wenzhang_huaban" style="padding-right: 2px;"></i>最近文章</div>
-  <div class="recent-posts-list">
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-02-22</div>
-        <a href="/2021/02/22/集中化日志管理系统的应用/"><div class="recent-posts-item-content">集中化日志管理平台的应用</div></a>
-      </div>
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-02-18</div>
-        <a href="/2021/02/18/springSecurity/"><div class="recent-posts-item-content">springsecurity</div></a>
-      </div>
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-30</div>
-        <a href="/2021/01/30/java面试题/"><div class="recent-posts-item-content">java面试题</div></a>
-      </div>
-    
-      <div class="recent-posts-item">
-        <div class="recent-posts-item-title">2021-01-26</div>
-        <a href="/2021/01/26/编写优雅高效的java代码/"><div class="recent-posts-item-content">编写高效优雅java代码</div></a>
-      </div>
-    
-  </div>
-</div>
-  </article>
-  
-  
-</div>
-          </aside>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <footer class="footer">
-  <div class="footer-container">
-    <div>
-      <div class="footer-dsc">
-        <span>Copyright ©
+
+
+
+          </div>
           
-          2020 -
-          
-          2021
-        </span>
-        &nbsp;
-        <a href="/" class="footer-link">mele blog </a>
-      </div>
-    </div>
 
-    
-    <div class="footer-dsc">
-      
-      Powered by
-      <a href="https://hexo.io/" class="footer-link" target="_blank" rel="nofollow noopener noreferrer">&nbsp;Hexo </a>
-      
-      
-      <span>&nbsp;|&nbsp;</span>
-      
-      
-      Theme -
-      <a href="https://github.com/theme-kaze" class="footer-link" target="_blank"
-        rel="nofollow noopener noreferrer">&nbsp;Kaze</a>
-      
-    </div>
-    
-    
-    
-    
-</footer>
-  <a role="button" id="scrollbutton" class="basebutton"  aria-label="回到顶部">
-  <i class="iconfont icon-arrowleft button-icon"></i>
-</a>
-<a role="button" id="menubutton" class="basebutton">
-  <i class="iconfont icon-menu button-icon"></i>
-</a>
-<a role="button" id="popbutton" class="basebutton" aria-label="控制中心">
-  <i class="iconfont icon-expand button-icon"></i>
-</a>
-<a role="button" id="darkbutton" class="basebutton darkwidget" aria-label="夜色模式">
-  <i class="iconfont icon-weather button-icon"></i>
-</a>
-<a role="button" id="searchbutton" class="basebutton searchwidget" aria-label="搜索">
-  <i class="iconfont icon-search button-icon"></i>
-</a>
-
-  
-  
-  
-  <script>
-  var addImgLayout = function () {
-    var img = document.querySelectorAll('.post-content img');
-    var i;
-    for (i = 0; i < img.length; i++) {
-      var wrapper = document.createElement('a');
-      wrapper.setAttribute('href', img[i].getAttribute('data-src'));
-      wrapper.setAttribute('aria-label', 'illustration');
-      wrapper.style.cssText = 'width: 100%; display: flex; justify-content: center;';
-      if (img[i].alt) wrapper.dataset.caption = img[i].alt;
-      wrapper.dataset.nolink = true;
-      img[i].before(wrapper);
-      wrapper.append(img[i]);
-      var divWrap = document.createElement('div');
-      divWrap.classList.add('gallery');
-      wrapper.before(divWrap);
-      divWrap.append(wrapper);
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
     }
-    baguetteBox.run('.gallery');
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
-<script>loadScript("/js/lib/lightbox/baguetteBox.min.js", addImgLayout)</script>
+
+        </div>
+          
   
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E3%80%81%E6%97%A5%E5%BF%97%E4%BD%93%E7%B3%BB"><span class="nav-number">1.</span> <span class="nav-text">1 、日志体系</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E4%BD%93%E7%B3%BB%E6%A6%82%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 体系概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%EF%BC%89%E6%97%A5%E5%BF%97%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">1 ）日志接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%EF%BC%89%E2%BD%87%E5%BF%97%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">2 ）⽇志实现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 发展历程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%EF%BC%89%E5%8E%9F%E5%A7%8B%E8%BE%93%E5%87%BA"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">1 ）原始输出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%EF%BC%89%E5%BC%80%E5%88%9B%E5%85%88%E9%A9%B1"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">2 ）开创先驱</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%EF%BC%89%E6%90%9E%E4%BA%8B%E6%83%85%E7%9A%84JUL"><span class="nav-number">1.2.0.3.</span> <span class="nav-text">3 ）搞事情的JUL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%EF%BC%89-JCL%E5%BA%94%E8%BF%90%E2%BD%BD%E8%80%8C%E2%BD%A3%E7%94%9F"><span class="nav-number">1.2.0.4.</span> <span class="nav-text">4 ） JCL应运⽽而⽣生</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%EF%BC%89%E5%86%8D%E8%B5%B7%E6%B3%A2%E6%BE%9C"><span class="nav-number">1.2.0.5.</span> <span class="nav-text">5 ）再起波澜</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%EF%BC%89%E5%86%8D%E5%BA%A6%E2%BB%98%E9%9D%92%E6%98%A5"><span class="nav-number">1.2.0.6.</span> <span class="nav-text">6 ）再度⻘青春</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E7%BB%8F%E9%AA%8C%E4%B9%8B%E8%B0%88"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 经验之谈</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%EF%BC%89%E9%97%A8%E2%BE%AF%E7%BA%A6%E6%9D%9F"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">1 ）门⾯约束</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%EF%BC%89%E5%8D%95%E2%BC%80%E4%B8%80%E5%8E%9F%E5%88%99"><span class="nav-number">1.3.0.2.</span> <span class="nav-text">2 ）单⼀一原则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%EF%BC%89-%E4%BE%9D%E8%B5%96%E7%BA%A6%E6%9D%9F"><span class="nav-number">1.3.0.3.</span> <span class="nav-text">3 ） 依赖约束</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%EF%BC%89-%E9%81%BF%E5%85%8D%E4%BC%A0%E9%80%92"><span class="nav-number">1.3.0.4.</span> <span class="nav-text">4 ） 避免传递</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%EF%BC%89-%E7%B2%BE%E7%AE%80%E2%BE%84%E8%87%B3%E4%B8%8A"><span class="nav-number">1.3.0.5.</span> <span class="nav-text">5 ） 精简⾄至上</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E3%80%81%E2%BD%87%E5%BF%97%E5%B9%B3%E5%8F%B0"><span class="nav-number">2.</span> <span class="nav-text">2 、⽇志平台</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-%E5%8F%AF%E9%80%89%E2%BD%85%E6%96%B9%E6%A1%88"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1 可选⽅方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-%E6%80%BB%E7%BB%93"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.1.2 总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-kafka"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 kafka</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-%E5%90%AF%E5%8A%A8"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.2.1 启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-%E9%AA%8C%E8%AF%81"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2.2 验证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-km"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 km</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-%E5%90%AF%E5%8A%A8"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.3.1 启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-%E9%AA%8C%E8%AF%81"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.3.2 验证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-elk"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 elk</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-1-%E5%90%AF%E5%8A%A8"><span class="nav-number">2.4.1.</span> <span class="nav-text">2.4.1 启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-2-%E9%87%8D%E6%89%93%E9%95%9C%E5%83%8F"><span class="nav-number">2.4.2.</span> <span class="nav-text">2.4.2 重打镜像</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-3-kibana%E9%AA%8C%E8%AF%81"><span class="nav-number">2.5.</span> <span class="nav-text">2.4.3 kibana验证</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E3%80%81%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">3.</span> <span class="nav-text">3 、架构设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E9%87%87%E9%9B%86%E8%A6%81%E6%B1%82"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 采集要求</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-%E9%87%87%E9%9B%86%E7%BB%B4%E5%BA%A6"><span class="nav-number">3.1.1.</span> <span class="nav-text">3.1.1 采集维度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-%E9%87%87%E9%9B%86%E7%82%B9"><span class="nav-number">3.1.2.</span> <span class="nav-text">3.1.2 采集点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-3-%E4%BD%8E%E2%BC%8A%E5%85%A5%E4%BE%B5"><span class="nav-number">3.1.3.</span> <span class="nav-text">3.1.3 低⼊入侵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-4-%E6%97%B6%E6%95%88%E6%80%A7"><span class="nav-number">3.1.4.</span> <span class="nav-text">3.1.4 时效性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E7%B3%BB%E7%BB%9F%E7%97%9B%E7%82%B9"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 系统痛点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">3.2.1.</span> <span class="nav-text">3.2.1 基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2-%E6%80%8E%E4%B9%88%E4%BA%A7%E2%BD%A3%E7%94%9F"><span class="nav-number">3.2.2.</span> <span class="nav-text">3.2.2 怎么产⽣生</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-3-%E6%80%8E%E4%B9%88%E4%BC%A0%E9%80%92"><span class="nav-number">3.2.3.</span> <span class="nav-text">3.2.3 怎么传递</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-4-%E6%80%8E%E4%B9%88%E8%BE%93%E5%87%BA"><span class="nav-number">3.2.4.</span> <span class="nav-text">3.2.4 怎么输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-5-%E6%80%8E%E4%B9%88%E6%8B%A6%E6%88%AA"><span class="nav-number">3.2.5.</span> <span class="nav-text">3.2.5 怎么拦截</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E6%80%BB%E7%BB%93"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E3%80%81%E9%A1%B9%E2%BD%AC%E7%9B%AE%E5%AE%9E%E6%96%BD"><span class="nav-number">4.</span> <span class="nav-text">4 、项⽬目实施</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E5%9F%BA%E6%9C%AC%E8%A7%84%E5%88%92"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 基本规划</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-1-%E9%A1%B9%E2%BD%AC%E7%9B%AE%E6%A8%A1%E5%9D%97"><span class="nav-number">4.1.1.</span> <span class="nav-text">4.1.1 项⽬目模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%EF%BC%89nacos%E5%90%AF%E5%8A%A8%EF%BC%9A"><span class="nav-number">4.1.1.1.</span> <span class="nav-text">1 ）nacos启动：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%EF%BC%89%E9%A1%B9%E2%BD%AC%E7%9B%AE%E2%BD%AC%E7%9B%AE%E5%BD%95%EF%BC%9A"><span class="nav-number">4.1.1.2.</span> <span class="nav-text">2 ）项⽬目⽬目录：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-2-Kafka%E9%9B%86%E6%88%90"><span class="nav-number">4.1.2.</span> <span class="nav-text">4.1.2 Kafka集成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E2%BD%87%E5%BF%97%E9%87%87%E9%9B%86"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 ⽇志采集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-1-%E6%9C%8D%E5%8A%A1%E5%86%85%E9%87%87%E9%9B%86"><span class="nav-number">4.2.1.</span> <span class="nav-text">4.2.1 服务内采集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-2-%E8%B7%A8%E6%9C%8D%E5%8A%A1%E9%87%87%E9%9B%86"><span class="nav-number">4.2.2.</span> <span class="nav-text">4.2.2 跨服务采集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-3-%E2%BE%83%E5%8A%A8%E9%87%87%E9%9B%86"><span class="nav-number">4.2.3.</span> <span class="nav-text">4.2.3 ⾃动采集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-4-%E9%99%84%EF%BC%9A"><span class="nav-number">4.2.4.</span> <span class="nav-text">4.2.4 附：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-%E2%BD%87%E5%BF%97%E5%88%86%E6%9E%90"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 ⽇志分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-1-%E5%9F%BA%E6%9C%AC%E9%93%BE%E8%B7%AF%E8%B7%AF%E5%88%86%E6%9E%90"><span class="nav-number">4.3.1.</span> <span class="nav-text">4.3.1 基本链路路分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-2-%E6%85%A2%E8%AF%B7%E6%B1%82%E8%BF%BD%E8%B8%AA"><span class="nav-number">4.3.2.</span> <span class="nav-text">4.3.2 慢请求追踪</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-3-%E2%BD%A4%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E7%BB%9F%E8%AE%A1"><span class="nav-number">4.3.3.</span> <span class="nav-text">4.3.3 ⽤用户访问统计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-4-%E8%AF%B7%E6%B1%82%E8%B0%83%E2%BD%A4%E7%94%A8%E7%BB%9F%E8%AE%A1"><span class="nav-number">4.3.4.</span> <span class="nav-text">4.3.4 请求调⽤用统计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-5-%E8%AE%BF%E9%97%AE%E6%B5%81%E9%87%8F%E9%87%8F%E8%B6%8B%E5%8A%BF"><span class="nav-number">4.3.5.</span> <span class="nav-text">4.3.5 访问流量量趋势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-6-%E6%9C%8D%E5%8A%A1%E8%B0%83%E2%BD%A4%E7%94%A8%E5%8D%A0%E2%BD%90%E6%AF%94"><span class="nav-number">4.3.6.</span> <span class="nav-text">4.3.6 服务调⽤用占⽐比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-7-%E7%BB%88%E7%AB%AF%E5%8D%A0%E2%BD%90%E6%AF%94"><span class="nav-number">4.3.7.</span> <span class="nav-text">4.3.7 终端占⽐比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4-Dashboard%E2%BC%A4%E5%A4%A7%E5%B1%8F"><span class="nav-number">4.4.</span> <span class="nav-text">4.4 Dashboard⼤大屏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-5-%E6%80%BB%E7%BB%93"><span class="nav-number">4.5.</span> <span class="nav-text">4.5 总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">blydd</p>
+  <div class="site-description" itemprop="description">米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">95</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
   
-  
-<script src="/js/main.js"></script>
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">blydd</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
 
   
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
   
-  <script>
-    var addLazyload = function () {
-      var observer = lozad('.lozad', {
-        load: function (el) {
-          el.srcset = el.getAttribute('data-src');
-        },
-        loaded: function (el) {
-          el.classList.add('loaded');
-        }
-      });
-      observer.observe();
-    }
-  </script>
-  <script>loadScript("/js/lib/lozad.min.js", addLazyload)</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
+
   
+
 </body>
-
 </html>
