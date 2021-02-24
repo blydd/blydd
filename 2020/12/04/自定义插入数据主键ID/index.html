@@ -17,13 +17,13 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"www.mele.cool","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"mele.cool","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="mybatis自定义插入主键">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mybatis自定义插入主键">
-<meta property="og:url" content="https://www.mele.cool/2020/12/04/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE%E4%B8%BB%E9%94%AEID/index.html">
+<meta property="og:url" content="http://mele.cool/2020/12/04/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE%E4%B8%BB%E9%94%AEID/index.html">
 <meta property="og:site_name" content="米乐博客">
 <meta property="og:description" content="mybatis自定义插入主键">
 <meta property="og:locale" content="zh_CN">
@@ -36,7 +36,7 @@
 <meta property="article:tag" content="主键">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://www.mele.cool/2020/12/04/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE%E4%B8%BB%E9%94%AEID/">
+<link rel="canonical" href="http://mele.cool/2020/12/04/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE%E4%B8%BB%E9%94%AEID/">
 
 
 <script id="page-configurations">
@@ -165,7 +165,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://www.mele.cool/2020/12/04/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE%E4%B8%BB%E9%94%AEID/">
+    <link itemprop="mainEntityOfPage" href="http://mele.cool/2020/12/04/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE%E4%B8%BB%E9%94%AEID/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -216,7 +216,7 @@
         <blockquote>
 <p><strong>Order这个属性设为after,before这个执行顺序都是相对于下面的insert into这个sql的;<br>Order设为before:那么就先执行selectkey这个标签的sgl,再将这条sql生成的uuid set到User里面去,然后再执行insert into将这个已经带uuid为id的这个User insert到数据库中.</strong></p>
 </blockquote>
-<pre class="highlight"><span class="line"><span class="comment">&lt;!--自增主键之UUID--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">&quot;insertUser&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;com.test.mybatis.po.User&quot;</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!--只要不是自增主键,那么order都设置为before--&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">selectkey</span> <span class="attr">keyProperty</span>=<span class="string">&quot;id&quot;</span> <span class="attr">resultrype</span>=<span class="string">&quot;string&quot;</span> <span class="attr">order</span>=<span class="string">&quot;BEFORE&quot;</span>&gt;</span></span><br><span class="line">  	SELECT UUID()</span><br><span class="line">  <span class="tag">&lt;/<span class="name">selectkey</span>&gt;</span></span><br><span class="line">  INSERT INTO USER (ID,USERNAME,BIRTHDAY,SEX,ADDRESS)</span><br><span class="line">  VALUES (#&#123;id&#125;,#&#123;username&#125;,#&#123;birthday&#125;,#&#123;sex&#125;,#&#123;address&#125;)</span><br><span class="line"><span class="tag">&lt;/<span class="name">insert</span>&gt;</span></span><br></pre>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--自增主键之UUID--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">&quot;insertUser&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;com.test.mybatis.po.User&quot;</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!--只要不是自增主键,那么order都设置为before--&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">selectkey</span> <span class="attr">keyProperty</span>=<span class="string">&quot;id&quot;</span> <span class="attr">resultrype</span>=<span class="string">&quot;string&quot;</span> <span class="attr">order</span>=<span class="string">&quot;BEFORE&quot;</span>&gt;</span></span><br><span class="line">  	SELECT UUID()</span><br><span class="line">  <span class="tag">&lt;/<span class="name">selectkey</span>&gt;</span></span><br><span class="line">  INSERT INTO USER (ID,USERNAME,BIRTHDAY,SEX,ADDRESS)</span><br><span class="line">  VALUES (#&#123;id&#125;,#&#123;username&#125;,#&#123;birthday&#125;,#&#123;sex&#125;,#&#123;address&#125;)</span><br><span class="line"><span class="tag">&lt;/<span class="name">insert</span>&gt;</span></span><br></pre></td></tr></table></figure>
     </div>
 
     

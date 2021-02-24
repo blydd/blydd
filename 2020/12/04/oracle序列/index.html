@@ -17,13 +17,13 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"www.mele.cool","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"mele.cool","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="序列(SEQUENCE)是序列号生成器，可以为表中的行自动生成序列号，产生一组等间隔的数值(类型为数字)。不占用磁盘空间，占用内存。其主要用途是生成表的主键值，可以在插入语句中引用，也可以通过查询检查当前值，或使序列增至下一个值。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="oracle序列">
-<meta property="og:url" content="https://www.mele.cool/2020/12/04/oracle%E5%BA%8F%E5%88%97/index.html">
+<meta property="og:url" content="http://mele.cool/2020/12/04/oracle%E5%BA%8F%E5%88%97/index.html">
 <meta property="og:site_name" content="米乐博客">
 <meta property="og:description" content="序列(SEQUENCE)是序列号生成器，可以为表中的行自动生成序列号，产生一组等间隔的数值(类型为数字)。不占用磁盘空间，占用内存。其主要用途是生成表的主键值，可以在插入语句中引用，也可以通过查询检查当前值，或使序列增至下一个值。">
 <meta property="og:locale" content="zh_CN">
@@ -33,7 +33,7 @@
 <meta property="article:tag" content="oracle">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://www.mele.cool/2020/12/04/oracle%E5%BA%8F%E5%88%97/">
+<link rel="canonical" href="http://mele.cool/2020/12/04/oracle%E5%BA%8F%E5%88%97/">
 
 
 <script id="page-configurations">
@@ -162,7 +162,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://www.mele.cool/2020/12/04/oracle%E5%BA%8F%E5%88%97/">
+    <link itemprop="mainEntityOfPage" href="http://mele.cool/2020/12/04/oracle%E5%BA%8F%E5%88%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -214,7 +214,7 @@
 <p>其主要<strong>用途是生成表的主键值</strong>，可以在插入语句中引用，也可以通过查询检查当前值，或使序列增至下一个值。</p>
 <h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景:"></a>使用场景:</h2><p>  seq.nextval主要有以下两种使用场景：</p>
 <p>  (1). 如果一个事务中只是INSERT时需要序列，其他地方不会需要这个序列，那么只需要在INSERT … VALUES (seq.nextval …)语句中使用即可。</p>
-<pre class="highlight"><span class="line">INSERT INTO cd_mat_info</span><br><span class="line">          (row_id,</span><br><span class="line">           mat_code,</span><br><span class="line">           plant,</span><br><span class="line">           created_by,</span><br><span class="line">           last_upd_by)</span><br><span class="line">        VALUES</span><br><span class="line">          (seq_cd_mat_info.nextval,</span><br><span class="line">           #&#123;material_code&#125;,</span><br><span class="line">           #&#123;plant_code&#125;,</span><br><span class="line">           &#x27;SYS&#x27;,</span><br><span class="line">           &#x27;SYS&#x27;);</span><br></pre>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO cd_mat_info</span><br><span class="line">          (row_id,</span><br><span class="line">           mat_code,</span><br><span class="line">           plant,</span><br><span class="line">           created_by,</span><br><span class="line">           last_upd_by)</span><br><span class="line">        VALUES</span><br><span class="line">          (seq_cd_mat_info.nextval,</span><br><span class="line">           #&#123;material_code&#125;,</span><br><span class="line">           #&#123;plant_code&#125;,</span><br><span class="line">           &#x27;SYS&#x27;,</span><br><span class="line">           &#x27;SYS&#x27;);</span><br></pre></td></tr></table></figure>
 <p>  (2). 如果一个事务中INSERT一张表后，还需要插入时的主键ID值，作为外键插入其他表，那么就需要在INSERT第一张表前使用select seq.nextval from dual提前获取可用的ID保存到一个变量中，为后面使用。</p>
 <h2 id="语法"><a href="#语法" class="headerlink" title="语法:"></a>语法:</h2><p>创建序列需要CREATE SEQUENCE系统权限。序列的创建语法如下：</p>
 <p>　　CREATE SEQUENCE 序列名</p>
