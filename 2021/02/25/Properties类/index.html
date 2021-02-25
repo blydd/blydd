@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"mele.cool","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Properties 类的简介,及使用场景.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Properties 类">
+<meta property="og:url" content="http://mele.cool/2021/02/25/Properties%E7%B1%BB/index.html">
+<meta property="og:site_name" content="米乐博客">
+<meta property="og:description" content="Properties 类的简介,及使用场景.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/02/25/qZvy345eguMdnKs.png">
+<meta property="article:published_time" content="2021-02-25T14:23:17.000Z">
+<meta property="article:modified_time" content="2021-02-25T14:14:18.897Z">
+<meta property="article:author" content="blydd">
+<meta property="article:tag" content="java基础">
+<meta property="article:tag" content="Properties">
+<meta property="article:tag" content="java数据结构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/25/qZvy345eguMdnKs.png">
+
+<link rel="canonical" href="http://mele.cool/2021/02/25/Properties%E7%B1%BB/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Properties 类 | 米乐博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">米乐博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">积跬步至千里</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mele.cool/2021/02/25/Properties%E7%B1%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="blydd">
+      <meta itemprop="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="米乐博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Properties 类
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-02-25 22:23:17 / 修改时间：22:14:18" itemprop="dateCreated datePublished" datetime="2021-02-25T22:23:17+08:00">2021-02-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">Properties 类的简介,及使用场景.</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>Properties 继承于 Hashtable。表示一个持久的属性集.属性列表中每个键及其对应值都是一个字符串。</p>
+<p>Properties 类被许多 Java 类使用。例如，在获取环境变量时它就作为 System.getProperties() 方法的返回值。</p>
+</blockquote>
+<h1 id="定义方法"><a href="#定义方法" class="headerlink" title="定义方法"></a>定义方法</h1><table>
+<thead>
+<tr>
+<th><strong>String getProperty(String key)</strong></th>
+<th>用指定的键在此属性列表中搜索属性。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>String getProperty(String key, String defaultProperty)</strong></td>
+<td>用指定的键在属性列表中搜索属性。若不存在则返回defaultProperty</td>
+</tr>
+<tr>
+<td><strong>void list(PrintStream streamOut)</strong></td>
+<td>将属性列表输出到指定的输出流。</td>
+</tr>
+<tr>
+<td><strong>void list(PrintWriter streamOut)</strong></td>
+<td>将属性列表输出到指定的输出流。</td>
+</tr>
+<tr>
+<td><strong>void load(InputStream streamIn) throws IOException</strong></td>
+<td>从输入流中读取属性列表（键和元素对）。</td>
+</tr>
+<tr>
+<td><strong>Enumeration propertyNames( )</strong></td>
+<td>按简单的面向行的格式从输入字符流中读取属性列表（键和元素对）。</td>
+</tr>
+<tr>
+<td><strong>Object setProperty(String key, String value)</strong></td>
+<td>添加属性键值对</td>
+</tr>
+<tr>
+<td><strong>void store(OutputStream streamOut, String description)</strong></td>
+<td>以适合使用 load(InputStream)方法加载到 Properties 表中的格式，将此 Properties 表中的属性列表（键和元素对）写入输出流。</td>
+</tr>
+</tbody></table>
+<h1 id="简单实例"><a href="#简单实例" class="headerlink" title="简单实例"></a>简单实例</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PropDemo</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">      Properties capitals = <span class="keyword">new</span> Properties();</span><br><span class="line">      Set states;</span><br><span class="line">      String str;</span><br><span class="line">      </span><br><span class="line">      capitals.put(<span class="string">&quot;Illinois&quot;</span>, <span class="string">&quot;Springfield&quot;</span>);</span><br><span class="line">      capitals.put(<span class="string">&quot;Missouri&quot;</span>, <span class="string">&quot;Jefferson City&quot;</span>);</span><br><span class="line">      capitals.put(<span class="string">&quot;Washington&quot;</span>, <span class="string">&quot;Olympia&quot;</span>);</span><br><span class="line">      capitals.put(<span class="string">&quot;California&quot;</span>, <span class="string">&quot;Sacramento&quot;</span>);</span><br><span class="line">      capitals.put(<span class="string">&quot;Indiana&quot;</span>, <span class="string">&quot;Indianapolis&quot;</span>);</span><br><span class="line"> </span><br><span class="line">      <span class="comment">// Show all states and capitals in hashtable.</span></span><br><span class="line">      states = capitals.keySet(); <span class="comment">// get set-view of keys</span></span><br><span class="line">      Iterator itr = states.iterator();</span><br><span class="line">      <span class="keyword">while</span>(itr.hasNext()) &#123;</span><br><span class="line">         str = (String) itr.next();</span><br><span class="line">         System.out.println(<span class="string">&quot;The capital of &quot;</span> +</span><br><span class="line">            str + <span class="string">&quot; is &quot;</span> + capitals.getProperty(str) + <span class="string">&quot;.&quot;</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      System.out.println();</span><br><span class="line"> </span><br><span class="line">      <span class="comment">// look for state not in list -- specify default</span></span><br><span class="line">      str = capitals.getProperty(<span class="string">&quot;Florida&quot;</span>, <span class="string">&quot;Not Found&quot;</span>);</span><br><span class="line">      System.out.println(<span class="string">&quot;The capital of Florida is &quot;</span></span><br><span class="line">          + str + <span class="string">&quot;.&quot;</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="写入"><a href="#写入" class="headerlink" title="写入"></a>写入</h1><blockquote>
+<p>Properties类调用setProperty方法将键值对<strong>保存到内存</strong>中，此时可以通过getProperty方法读取，propertyNames方法进行遍历，但是并没有将键值对持久化到属性文件中，故<strong>需要调用store方法持久化键值对到属性文件中</strong>。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.FileNotFoundException;</span><br><span class="line"><span class="keyword">import</span> java.io.FileOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.OutputStream;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">import</span> java.util.Properties;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestProperties</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">writeProperties</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		Properties properties = <span class="keyword">new</span> Properties();</span><br><span class="line">		OutputStream output = <span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			output = <span class="keyword">new</span> FileOutputStream(<span class="string">&quot;config.properties&quot;</span>);</span><br><span class="line">			properties.setProperty(<span class="string">&quot;url&quot;</span>, <span class="string">&quot;jdbc:mysql://localhost:3306/&quot;</span>);</span><br><span class="line">			properties.setProperty(<span class="string">&quot;username&quot;</span>, <span class="string">&quot;root&quot;</span>);</span><br><span class="line">			properties.setProperty(<span class="string">&quot;password&quot;</span>, <span class="string">&quot;root&quot;</span>);</span><br><span class="line">			properties.setProperty(<span class="string">&quot;databases&quot;</span>, <span class="string">&quot;music_player&quot;</span>);</span><br><span class="line">			properties.store(output, <span class="string">&quot;Steven1997 modify&quot;</span> + <span class="keyword">new</span> Date().toString());</span><br><span class="line">		&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">			<span class="keyword">if</span>(output!=<span class="keyword">null</span>) &#123;</span><br><span class="line">				<span class="keyword">try</span> &#123;</span><br><span class="line">					output.close();</span><br><span class="line">				&#125;<span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">					e.printStackTrace();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		TestProperties t = <span class="keyword">new</span> TestProperties();</span><br><span class="line">		t.writeProperties();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>执行后，工程下面会出现一个config.properties文件，属性文件内容如下：</p>
+<p><img src="https://i.loli.net/2021/02/25/qZvy345eguMdnKs.png" alt="image-20210225221111804"></p>
+<h1 id="读取"><a href="#读取" class="headerlink" title="读取"></a>读取</h1><blockquote>
+<p>使用getProperty获取config.properties文件配置文件的各项属性。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> property;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.FileInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.FileNotFoundException;</span><br><span class="line"><span class="keyword">import</span> java.io.FileOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"><span class="keyword">import</span> java.util.Properties;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoadProperties</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadProperties</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		Properties properties = <span class="keyword">new</span> Properties();</span><br><span class="line">		InputStream inputStream = <span class="keyword">null</span>;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			inputStream = <span class="keyword">new</span> FileInputStream(<span class="string">&quot;config.properties&quot;</span>);</span><br><span class="line">			properties.load(inputStream);</span><br><span class="line">			System.out.println(<span class="string">&quot;url:&quot;</span> + properties.getProperty(<span class="string">&quot;url&quot;</span>));</span><br><span class="line">			System.out.println(<span class="string">&quot;username:&quot;</span> + properties.getProperty(<span class="string">&quot;username&quot;</span>));</span><br><span class="line">			System.out.println(<span class="string">&quot;password:&quot;</span> + properties.getProperty(<span class="string">&quot;password&quot;</span>));</span><br><span class="line">			System.out.println(<span class="string">&quot;database:&quot;</span> + properties.getProperty(<span class="string">&quot;database&quot;</span>));</span><br><span class="line">		&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">			<span class="keyword">if</span>(inputStream !=<span class="keyword">null</span>) &#123;</span><br><span class="line">				<span class="keyword">try</span> &#123;</span><br><span class="line">					inputStream.close();</span><br><span class="line">				&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">					e.printStackTrace();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		LoadProperties l = <span class="keyword">new</span> LoadProperties();</span><br><span class="line">		l.loadProperties();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//运行后的结果</span></span><br><span class="line">url:jdbc:mysql:<span class="comment">//localhost:3306/</span></span><br><span class="line">username:root</span><br><span class="line">password:root</span><br><span class="line">database:music_player</span><br></pre></td></tr></table></figure>
+<h1 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h1><blockquote>
+<p>遍历属性文件中的键值对</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> property;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"><span class="keyword">import</span> java.util.Enumeration;</span><br><span class="line"><span class="keyword">import</span> java.util.Map.Entry;</span><br><span class="line"><span class="keyword">import</span> java.util.Properties;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PropertiesTest</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printAll</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		Properties prop = <span class="keyword">new</span> Properties();</span><br><span class="line">		InputStream input = <span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			String file = <span class="string">&quot;config.properties&quot;</span>;</span><br><span class="line">			input = getClass().getClassLoader().getResourceAsStream(file);</span><br><span class="line">			<span class="keyword">if</span>(input == <span class="keyword">null</span>) &#123;</span><br><span class="line">				System.out.println(<span class="string">&quot;无法加载文件&quot;</span> + file);</span><br><span class="line">				<span class="keyword">return</span> ;</span><br><span class="line">			&#125;</span><br><span class="line">			prop.load(input);</span><br><span class="line">			<span class="comment">// 方法一</span></span><br><span class="line">			Set&lt;Object&gt; keys = prop.keySet();</span><br><span class="line">			<span class="keyword">for</span>(Object key:keys) &#123;</span><br><span class="line">				System.out.println(<span class="string">&quot;key:&quot;</span> + key.toString() + <span class="string">&quot;|&quot;</span> + <span class="string">&quot;value:&quot;</span> + prop.get(key));</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">//方法二：</span></span><br><span class="line">			Set&lt;Entry&lt;Object, Object&gt;&gt; entrys =	prop.entrySet();<span class="comment">//返回的属性键值对实体</span></span><br><span class="line">			<span class="keyword">for</span>(Entry&lt;Object, Object&gt; entry:entrys)&#123;</span><br><span class="line">				System.out.println(<span class="string">&quot;key:&quot;</span>+entry.getKey()+<span class="string">&quot;,value:&quot;</span>+entry.getValue());</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">//方法三：</span></span><br><span class="line">			Enumeration&lt;?&gt; e = prop.propertyNames();</span><br><span class="line">			<span class="keyword">while</span> (e.hasMoreElements()) &#123;</span><br><span class="line">				String key = (String) e.nextElement();</span><br><span class="line">				String value = prop.getProperty(key);</span><br><span class="line">				System.out.println(<span class="string">&quot;Key:&quot;</span> + key + <span class="string">&quot;,Value:&quot;</span> + value);</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">		&#125;<span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">			<span class="keyword">if</span>(input != <span class="keyword">null</span>) &#123;</span><br><span class="line">				<span class="keyword">try</span> &#123;</span><br><span class="line">					input.close();</span><br><span class="line">				&#125;<span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">					e.printStackTrace();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		PropertiesTest p = <span class="keyword">new</span> PropertiesTest();</span><br><span class="line">		p.printAll();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h1><blockquote>
+<p>properties文件默认的编码格式居然是ISO-8859-1，这样导致往配置文件里面写入中文的时候转换成另一种格式的编码，需要把properties 文件的编码格式改为UTF-8，这样才会让配置文件保存中文数据的时候不会出现转码的问题</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java%E5%9F%BA%E7%A1%80/" rel="tag"># java基础</a>
+              <a href="/tags/Properties/" rel="tag"># Properties</a>
+              <a href="/tags/java%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag"># java数据结构</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/02/25/%E6%9E%9A%E4%B8%BE/" rel="prev" title="枚举">
+      <i class="fa fa-chevron-left"></i> 枚举
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/02/25/java%E5%BA%8F%E5%88%97%E5%8C%96/" rel="next" title="java序列化">
+      java序列化 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">定义方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E5%AE%9E%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text">简单实例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%99%E5%85%A5"><span class="nav-number">3.</span> <span class="nav-text">写入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96"><span class="nav-number">4.</span> <span class="nav-text">读取</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%81%8D%E5%8E%86"><span class="nav-number">5.</span> <span class="nav-text">遍历</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F"><span class="nav-number">6.</span> <span class="nav-text">注意</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">blydd</p>
+  <div class="site-description" itemprop="description">米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">101</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">blydd</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
