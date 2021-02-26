@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"mele.cool","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="集中化日志管理平台的应用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java中request常用方法">
+<meta property="og:url" content="http://mele.cool/2021/02/23/httpServletRequest/index.html">
+<meta property="og:site_name" content="米乐博客">
+<meta property="og:description" content="集中化日志管理平台的应用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/02/26/9F1LgG4UbsnyhSx.png">
+<meta property="article:published_time" content="2021-02-23T14:10:17.000Z">
+<meta property="article:modified_time" content="2021-02-26T15:15:23.413Z">
+<meta property="article:author" content="blydd">
+<meta property="article:tag" content="java基础">
+<meta property="article:tag" content="request">
+<meta property="article:tag" content="HttpServletRequest">
+<meta property="article:tag" content="ServletContext">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/26/9F1LgG4UbsnyhSx.png">
+
+<link rel="canonical" href="http://mele.cool/2021/02/23/httpServletRequest/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>java中request常用方法 | 米乐博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">米乐博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">积跬步至千里</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mele.cool/2021/02/23/httpServletRequest/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="blydd">
+      <meta itemprop="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="米乐博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java中request常用方法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-02-23 22:10:17" itemprop="dateCreated datePublished" datetime="2021-02-23T22:10:17+08:00">2021-02-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-02-26 23:15:23" itemprop="dateModified" datetime="2021-02-26T23:15:23+08:00">2021-02-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">集中化日志管理平台的应用</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>HttpServletRequest对象代表客户端的请求，当客户端通过HTTP协议访问服务器时，HTTP请求头中的所有信息都封装在这个对象中，开发人员通过这个对象的方法，可以获得客户这些信息。</p>
+<p>request和response对象是由服务器创建的，供我们使用的。</p>
+<p>request对象是来获取请求消息，response对象是来设置响应消息。</p>
+<p>每次只要有请求进入 Tomcat 服务器，Tomcat 服务器就会把请求过来的 HTTP 协议信息解析好到 Request 对象中，每次请求都创建一个 Request 对象，请求完成后该对象就销毁了。</p>
+<p>然后传递到 service 方法（doGet 和 doPost）中供我们使用，通过 HttpServletRequest 对象，课获取到所有请求信息。</p>
+</blockquote>
+<h1 id="获取客户机环境信息常见方法："><a href="#获取客户机环境信息常见方法：" class="headerlink" title="获取客户机环境信息常见方法："></a>获取客户机环境信息常见方法：</h1><ol>
+<li>String getContextPath()：   获取虚拟目录[重要]</li>
+<li>String getServletPath()：   获取 servlet 路径</li>
+<li>String getQueryString()：   获取get方式请求参数</li>
+<li>String getProtocol()：       获取协议及版本</li>
+<li> getRequestURL            方法返回客户端发出请求时的完整URL。</li>
+<li> getRequestURI            方法返回请求行中的资源名部分。</li>
+<li> getQueryString            方法返回请求行的参数部分。</li>
+<li> getRemoteAddr            方法返回发出请求的客户机的IP地址。</li>
+<li> getRemoteHost            方法返回发出请求的客户机的完整主机名。</li>
+<li> getRemotePort            方法返回客户机所使用的网络端口号。</li>
+<li> getLocalAddr                方法返回WEB服务器的IP地址。</li>
+<li> getLocalName              方法返回WEB服务器的主机名。</li>
+<li> getMethod                   得到客户机请求方式。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//请求行数据 GET /servletDemo/demo1?name=zhangsan HTTP/1.1</span></span><br><span class="line"><span class="function">String <span class="title">getMethod</span><span class="params">()</span>:          <span class="comment">//获取到 GET</span></span></span><br><span class="line"><span class="function">String <span class="title">getContextPath</span><span class="params">()</span>:     <span class="comment">//获取到 /servletDemo</span></span></span><br><span class="line"><span class="function">String <span class="title">getServletPath</span><span class="params">()</span>:     <span class="comment">//获取到 /demo1</span></span></span><br><span class="line"><span class="function">String <span class="title">getQueryString</span><span class="params">()</span>:     <span class="comment">//获取到 name=zhangsan</span></span></span><br><span class="line"><span class="function">String <span class="title">getRequestURI</span><span class="params">()</span>:      <span class="comment">//获取到 /servletDemo/demo1</span></span></span><br><span class="line"><span class="function">StringBuffer <span class="title">getRequestURL</span><span class="params">()</span>:<span class="comment">//获取到 http://localhost/servletDemo/demo1</span></span></span><br><span class="line"><span class="function">String <span class="title">getProtocol</span><span class="params">()</span>:        <span class="comment">//获取到 HTTP/1.1</span></span></span><br><span class="line"><span class="function">String <span class="title">getRemoteAddr</span><span class="params">()</span>:      <span class="comment">//获取到 请求机器的IP地址</span></span></span><br></pre></td></tr></table></figure>
+<h1 id="获得客户机请求头："><a href="#获得客户机请求头：" class="headerlink" title="获得客户机请求头："></a><strong>获得客户机请求头</strong>：</h1><p> String getHeaderString name）通过请求头的名称获取请求头的值[重要]</p>
+<p> getHeaders（String name）方法</p>
+<p> <code>Enumeration&lt;String&gt;  getHeaderNames():</code> 获取所有的请求头名称</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yyz.request;</span><br><span class="line"> </span><br><span class="line"> <span class="keyword">import</span> java.io.IOException;</span><br><span class="line"> <span class="keyword">import</span> java.util.Enumeration;</span><br><span class="line"> </span><br><span class="line"> <span class="keyword">import</span> javax.servlet.ServletException;</span><br><span class="line"> <span class="keyword">import</span> javax.servlet.http.HttpServlet;</span><br><span class="line"> <span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"> <span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"> <span class="comment">//获取请求头</span></span><br><span class="line"> <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RequestDemo</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">             <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">         String head = request.getHeader(<span class="string">&quot;Accept-Encoding&quot;</span>);</span><br><span class="line">         <span class="comment">//有些浏览器不支持压缩数据</span></span><br><span class="line">         <span class="keyword">if</span>(head.contains(<span class="string">&quot;gzip&quot;</span>))&#123;</span><br><span class="line">             <span class="comment">//输出压缩数据</span></span><br><span class="line">         &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">             <span class="comment">//输出不压缩数据</span></span><br><span class="line">         &#125;</span><br><span class="line">         <span class="comment">//获取指定名称的头的所有值</span></span><br><span class="line">         Enumeration e = request.getHeaders(<span class="string">&quot;Accept-Encoding&quot;</span>);</span><br><span class="line">         <span class="keyword">while</span>(e.hasMoreElements())&#123;</span><br><span class="line">             String value = (String ) e.nextElement();</span><br><span class="line">             System.out.println(value);</span><br><span class="line">         &#125;</span><br><span class="line">         System.out.println(<span class="string">&quot;------------------------&quot;</span>);</span><br><span class="line">         <span class="comment">//获取所有的头和值</span></span><br><span class="line">         e = request.getHeaderNames();</span><br><span class="line">         <span class="keyword">while</span>(e.hasMoreElements())&#123;</span><br><span class="line">         String name = (String)e.nextElement();</span><br><span class="line">         String value = request.getHeader(name);</span><br><span class="line">         System.out.println(name+<span class="string">&quot;=&quot;</span>+value);</span><br><span class="line">         &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">             <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">         doGet(request,response);</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="获取请求体数据"><a href="#获取请求体数据" class="headerlink" title="获取请求体数据"></a><strong>获取请求体数据</strong></h1><blockquote>
+<p><strong>请求体：</strong>只有POST请求方式，才有请求体，在请求体重封装了POST请求的请求参数</p>
+</blockquote>
+<p><strong>步骤：</strong></p>
+<p>① 获取流对象  ② 从流对象中拿数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BufferedReader <span class="title">getReader</span><span class="params">()</span>：     		<span class="comment">//获取字符输入流，只能操作字符数据</span></span></span><br><span class="line"><span class="function">ServletInputStream <span class="title">getInputStream</span><span class="params">()</span>：<span class="comment">//获取字节输入流，可以操作所有类型数据</span></span></span><br></pre></td></tr></table></figure>
+<p>Demo：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        <span class="comment">//1.获取字符流</span></span><br><span class="line">        BufferedReader br = request.getReader();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//2.读取数据</span></span><br><span class="line">        String line = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">while</span>((line = br.readLine()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">            System.out.println(line);   <span class="comment">// 请求参数username=zs&amp;password=abc</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h1 id="获得客户机请求参数："><a href="#获得客户机请求参数：" class="headerlink" title="获得客户机请求参数："></a><strong>获得客户机请求参数：</strong></h1><blockquote>
+<p><strong>获取请求参数通用方式</strong>：无论是 get 方式还是 post 请求方式都可以使用下列方法来获取请求参数</p>
+<p><strong>常用方法</strong>：</p>
+</blockquote>
+<ol>
+<li>String getParameter(String name):      根据参数名称获取参数值  username=zs&amp;password=abc</li>
+<li>String[] getParameterValues(String name):  根据参数名称获取参数值的数组 hobby=java&amp;hobby=python</li>
+<li>Enumeration<String> getParameterNames():  获取所有请求的参数名称(相当于Iterator)</li>
+<li>Map&lt;String,String[]&gt; getParameterMap():   获取所有参数的map集合，可以根据键（参数名）获取值（参数值）,做框架时大量使用</li>
+</ol>
+<p><strong>注意：</strong></p>
+<p>　① get方式：Tomcat 8 已经将 get 方式乱码问题解决了</p>
+<p>​    ② post 方式：获取中文会产生乱码</p>
+<p>​        解决方式：在获取参数前，设置 request 的编码与页面编码一致即可</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">request.setCharacterEncoding(<span class="string">&quot;utf-8&quot;</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yyz.request;</span><br><span class="line"> <span class="keyword">import</span> java.io.IOException;</span><br><span class="line"> <span class="keyword">import</span> java.util.Enumeration;</span><br><span class="line"> <span class="keyword">import</span> java.util.Map;</span><br><span class="line"> <span class="keyword">import</span> java.util.Map.Entry;</span><br><span class="line"> <span class="keyword">import</span> javax.servlet.ServletException;</span><br><span class="line"> <span class="keyword">import</span> javax.servlet.http.HttpServlet;</span><br><span class="line"> <span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"> <span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"> <span class="comment">//获取请求数据</span></span><br><span class="line"> <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RequestDemo</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">       <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">     <span class="comment">//http://localhost:8080/test/servlet/RequestDemo?name=yyz</span></span><br><span class="line">     String value = request.getParameter(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">     System.out .println(value);</span><br><span class="line">     <span class="comment">//http://localhost:8080/test/servlet/RequestDemo?like=sing&amp;like=dance</span></span><br><span class="line">     String likes[] = request.getParameterValues(<span class="string">&quot;like&quot;</span>);</span><br><span class="line">     <span class="keyword">if</span>(likes!=<span class="keyword">null</span>)&#123;</span><br><span class="line">       <span class="keyword">for</span>(String like : likes)&#123;</span><br><span class="line">         System.out.println(like);</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="comment">//下面是这种遍历的专业写法,获取数组数据的方式（可避免空指针异常）</span></span><br><span class="line">     <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;likes!=<span class="keyword">null</span>&amp;&amp;i&lt;likes.length;i++)&#123;</span><br><span class="line">       System.out.println(likes[i]);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="comment">//获取所有名称，并根据名称获取值</span></span><br><span class="line">     Enumeration e = request.getParameterNames();</span><br><span class="line">     <span class="keyword">while</span>(e.hasMoreElements())&#123;</span><br><span class="line">       String name = (String) e.nextElement();</span><br><span class="line">       value = request.getParameter(name);</span><br><span class="line">       System.out.println(name+<span class="string">&quot;=&quot;</span>+value);</span><br><span class="line">     &#125;</span><br><span class="line">     System.out.println(<span class="string">&quot;----------------------&quot;</span>);</span><br><span class="line">     <span class="comment">//得到request对象中用来封装数据的Map集合</span></span><br><span class="line">     Map&lt;String,String[]&gt; map = request.getParameterMap();</span><br><span class="line">     <span class="keyword">for</span>(Entry&lt;String, String[]&gt; me : map.entrySet())&#123;</span><br><span class="line">       String name = me.getKey();</span><br><span class="line">       String [] v = me.getValue();</span><br><span class="line">       System.out.println(name+<span class="string">&quot;=&quot;</span>+v[<span class="number">0</span>]);</span><br><span class="line">     &#125;</span><br><span class="line"> &#125; </span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">       <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">     doGet(request,response);</span><br><span class="line"> &#125;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="作为域对象存取数据"><a href="#作为域对象存取数据" class="headerlink" title="作为域对象存取数据"></a>作为域对象存取数据</h1><blockquote>
+<p><strong>域对象：</strong>一个有作用范围的对象，可以在范围内共享数据；</p>
+<p><strong>Request 域</strong>：代表一次请求的范围，一般用于请求转发的多个资源中共享数据；</p>
+</blockquote>
+<p><strong>常用方法</strong>：</p>
+<ol>
+<li>void<code> </code>setAttribute(String name,Object obj):    存储数据到request中</li>
+<li>Object getAttitude(String name):                    通过键获取值</li>
+<li>void<code> </code>removeAttribute(String name):               通过键移除键值对</li>
+</ol>
+<h1 id="获取请求转发对象"><a href="#获取请求转发对象" class="headerlink" title="获取请求转发对象"></a>获取请求转发对象</h1><blockquote>
+<p>请求的转发：指的是服务器收到请求后，从一次资源跳转到另一个资源的操作叫请求转发。</p>
+<p><strong>注意：这是一种在服务器内部的资源跳转方式，无法跳转到外部的资源。</strong></p>
+</blockquote>
+<p><strong>实现步骤</strong>：　　　　　　</p>
+<p>​    ① 通过 request 对象获取请求转发器对象；</p>
+<p>​        RequestDispatcher getRequestDispatcher(String path)： 获取请求转发器对象，path为转发到的路径</p>
+<pre><code> ② 使用 RequestDispatcher 对象来进行转发
+</code></pre>
+<p>​        forward(ServletRequest request, ServletResponse response)：转发方法</p>
+<p> <strong>特点：</strong></p>
+<p>​    ① 浏览器地址栏路径不会发生变化；</p>
+<p>​    ② 只能转发到自己工程的内部资源；</p>
+<p>​    ③ 转发是一次请求，可以共享 Request 域中的数据；</p>
+<p>​    ④ 可以转发到 WEB-INF 目录下</p>
+<p><strong>注意</strong>：</p>
+<p>​    ① 从外部（浏览器）无法直接访问 WEB-INF 目录下的资源，但是可以通过请求转发访问到；</p>
+<p>​    ② 执行完跳转的 servlet 的业务后，然后再回来继续执行原来的 servlet 的业务。</p>
+<p><strong>原理图：</strong>　　　　　　</p>
+<p><img src="https://i.loli.net/2021/02/26/9F1LgG4UbsnyhSx.png" alt="image-20210226223211619"></p>
+<h1 id="获取-ServletContext-对象"><a href="#获取-ServletContext-对象" class="headerlink" title="获取 ServletContext 对象"></a>获取 ServletContext 对象</h1><blockquote>
+<p><strong>ServletContext对象</strong>：即上下文环境对象：对应整个web应用的。一个web应用只能有一个ServletContext对象： </p>
+<p><strong>诞生</strong>：web部署到服务器。启动服务器，此时上下文环境对象创建。只要<br>   是tomcat服务器不关闭，上下文环境对象一直存在。 </p>
+<p><strong>销毁：</strong>关闭服务器或者是从web服务器上卸载该程序的时候，该对象销毁。 </p>
+<p>**获取:**其中方式1和2本质相同</p>
+<ol>
+<li>this.getServletConfig（）的getServletContext（）;</li>
+<li> this.getServletContext（）;</li>
+<li> request.getServletContext（）;</li>
+</ol>
+<p><strong>作用:</strong></p>
+<ul>
+<li><strong>作为域对象的使用：</strong>  <pre><code>   域：本质上是一个map结构：存数据，取数据。  
+   域的作用范围：作用范围是：在整个web应用程序当中。 
+</code></pre>
+</li>
+</ul>
+<p>的servlet中一共有三大域对象，JSP中一共有四大域对象。一般情况下不往域对象中存数据，原因:1,生命周期太长;2,作用范围太广（一般是tomcat把数据存在这个域对象当中）<br>– <em>存数据的方法</em>：setAttribute（key，value）; 向域对象当中存放的键值对作为域的一个属性而存在。<br>– <em>取数据的方法</em>：getAttribute（key）; 通过给定的key获得key对应的值。<br>                         1）取出来的值一定是Object类型：需要强转<br>                         2）如果指定的属性的名称不存在，将获得一个null。 </p>
+<p>– <em>移除数据的方法</em>：removeAttribute（key）; 通过指定的密钥，将密钥和密钥对应的值移除。<br>– <em>获得所有的密钥的名称</em>：getAttributeNames（）; 返回的是一个枚举类型  </p>
+<ul>
+<li><p><strong>获得应用级别的初始化参数：</strong></p>
+<p>应用级别的初始化参数，可以在当前应用所有的servlet中访问</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 配置一个应用级别的初始化参数：  --&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">context-param</span>&gt;</span></span><br><span class="line"> 	     <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>encoding<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">     	<span class="tag">&lt;<span class="name">param-value</span>&gt;</span>gbk<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">context-param</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">context-param</span>&gt;</span></span><br><span class="line"> 	     <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>encoding1<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">     	<span class="tag">&lt;<span class="name">param-value</span>&gt;</span>utf-8<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">context-param</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获得应用级别的初始化参数： </span></span><br><span class="line">		</span><br><span class="line">		<span class="comment">//获得ServletContext对象： </span></span><br><span class="line">		ServletContext context = request.getServletContext();</span><br><span class="line">		</span><br><span class="line">		String value = context.getInitParameter(<span class="string">&quot;encoding&quot;</span>);<span class="comment">//gbk</span></span><br><span class="line">		System.out.println(<span class="string">&quot;context-initParam：&quot;</span>+value);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//获得所有的参数的名称： </span></span><br><span class="line">		Enumeration&lt;String&gt; names = context.getInitParameterNames();</span><br><span class="line">		<span class="keyword">while</span>(names.hasMoreElements())&#123;</span><br><span class="line">			String name = names.nextElement();</span><br><span class="line">			String val = context.getInitParameter(name);</span><br><span class="line">			System.out.println(name+<span class="string">&quot; &quot;</span>+val);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		request.setCharacterEncoding(value);</span><br><span class="line">		<span class="comment">//此处用value 而不写死，直接从web.xml中获取value值。</span></span><br><span class="line">		response.setContentType(<span class="string">&quot;text/html;charset=&quot;</span>+value+<span class="string">&quot;&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>能够获得资源的真实路径</strong></li>
+</ul>
+<p>真实的路径，<strong>是文件在tomcat上的真实的存放的位置</strong>。在文件上传和文件下载的时候，会使用到 .</p>
+<p>.getRealPath（“path” ）;</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">ServletContext context = <span class="keyword">this</span>.getServletContext();</span><br><span class="line">		String path = context.getRealPath(<span class="string">&quot;a.txt&quot;</span>);<span class="comment">//相对路径：  相对于当前的web 应用： </span></span><br><span class="line">		System.out.println(path);</span><br><span class="line">		<span class="comment">// C:\Users\Mrzhang\javaEE\javaEE-07\javaEE-01\apache-tomcat-7.0.42\webapps\javaEE-05\a.txt</span></span><br><span class="line">		</span><br><span class="line">		String path1 = context.getRealPath(<span class="string">&quot;/a.txt&quot;</span>);<span class="comment">//  / 相对路径： 相对于当前的web应用： </span></span><br><span class="line">		System.out.println(path1);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//获得web-inf下的文件的真实路径： </span></span><br><span class="line">		String path2=  context.getRealPath(<span class="string">&quot;/WEB-INF/b.txt&quot;</span>);</span><br><span class="line">		System.out.println(path2);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//获得com.yidongxueyuan.web.servlet包下的c.txt文件的真实路径： </span></span><br><span class="line">		String path3= context.getRealPath(<span class="string">&quot;/WEB-INF/classes/com/yidongxueyuan/web/servlet/c.txt&quot;</span>);</span><br><span class="line">		System.out.println(path3);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>能够获得指定目录下的所有的资源</strong><br>.getResourcePaths（“path”）;能够获得路径下的所有的文件。返回的是一个set集合。<br>案例：getResourcePaths（“/ WEB-INF”）; WEB-INF这个目录具有安全性该目录下的内容不会被外界浏览器直接访问                                                                                       </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;String&gt; paths = context.getResourcePaths(<span class="string">&quot;/WEB-INF&quot;</span>);</span><br><span class="line"><span class="comment">//能够获得web-inf下的所有的资源： web.xml classes lib a.txt</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//通过request 对象获取 servletcontext 对象</span></span><br><span class="line">ServletContext servletContext = request.getServletContext();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java%E5%9F%BA%E7%A1%80/" rel="tag"># java基础</a>
+              <a href="/tags/request/" rel="tag"># request</a>
+              <a href="/tags/HttpServletRequest/" rel="tag"># HttpServletRequest</a>
+              <a href="/tags/ServletContext/" rel="tag"># ServletContext</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/02/22/base64/" rel="prev" title="Base64">
+      <i class="fa fa-chevron-left"></i> Base64
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/02/25/%E6%9E%9A%E4%B8%BE/" rel="next" title="枚举">
+      枚举 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E5%AE%A2%E6%88%B7%E6%9C%BA%E7%8E%AF%E5%A2%83%E4%BF%A1%E6%81%AF%E5%B8%B8%E8%A7%81%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">获取客户机环境信息常见方法：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97%E5%AE%A2%E6%88%B7%E6%9C%BA%E8%AF%B7%E6%B1%82%E5%A4%B4%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">获得客户机请求头：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E8%AF%B7%E6%B1%82%E4%BD%93%E6%95%B0%E6%8D%AE"><span class="nav-number">3.</span> <span class="nav-text">获取请求体数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97%E5%AE%A2%E6%88%B7%E6%9C%BA%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%EF%BC%9A"><span class="nav-number">4.</span> <span class="nav-text">获得客户机请求参数：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%9C%E4%B8%BA%E5%9F%9F%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="nav-number">5.</span> <span class="nav-text">作为域对象存取数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E8%AF%B7%E6%B1%82%E8%BD%AC%E5%8F%91%E5%AF%B9%E8%B1%A1"><span class="nav-number">6.</span> <span class="nav-text">获取请求转发对象</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96-ServletContext-%E5%AF%B9%E8%B1%A1"><span class="nav-number">7.</span> <span class="nav-text">获取 ServletContext 对象</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">blydd</p>
+  <div class="site-description" itemprop="description">米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">73</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">107</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">blydd</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
