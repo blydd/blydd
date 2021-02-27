@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"mele.cool","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Spring Boot Shiro中使用缓存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Boot Shiro中使用缓存">
+<meta property="og:url" content="http://mele.cool/2020/12/04/Spring%20Boot%20Shiro%E4%B8%AD%E4%BD%BF%E7%94%A8%E7%BC%93%E5%AD%98/index.html">
+<meta property="og:site_name" content="米乐博客">
+<meta property="og:description" content="Spring Boot Shiro中使用缓存">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://mele.cool//20200728_10401288.png">
+<meta property="og:image" content="http://mele.cool//20200728_10395460.png">
+<meta property="og:image" content="http://mele.cool//20200728_1039319.png">
+<meta property="article:published_time" content="2020-12-04T02:10:17.000Z">
+<meta property="article:modified_time" content="2021-02-27T13:27:37.170Z">
+<meta property="article:author" content="blydd">
+<meta property="article:tag" content="springboot">
+<meta property="article:tag" content="shiro">
+<meta property="article:tag" content="缓存">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://mele.cool//20200728_10401288.png">
+
+<link rel="canonical" href="http://mele.cool/2020/12/04/Spring%20Boot%20Shiro%E4%B8%AD%E4%BD%BF%E7%94%A8%E7%BC%93%E5%AD%98/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Spring Boot Shiro中使用缓存 | 米乐博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">米乐博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">积跬步至千里</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mele.cool/2020/12/04/Spring%20Boot%20Shiro%E4%B8%AD%E4%BD%BF%E7%94%A8%E7%BC%93%E5%AD%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="blydd">
+      <meta itemprop="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="米乐博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Spring Boot Shiro中使用缓存
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-04 10:10:17" itemprop="dateCreated datePublished" datetime="2020-12-04T10:10:17+08:00">2020-12-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-02-27 21:27:37" itemprop="dateModified" datetime="2021-02-27T21:27:37+08:00">2021-02-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/shiro/" itemprop="url" rel="index"><span itemprop="name">shiro</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">Spring Boot Shiro中使用缓存</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在Shiro中加入缓存可以使权限相关操作尽可能快，避免频繁访问数据库获取权限信息，因为对于一个用户来说，其权限在短时间内基本是不会变化的。Shiro提供了Cache的抽象，其并没有直接提供相应的实现，因为这已经超出了一个安全框架的范围。在Shiro中可以集成常用的缓存实现，这里介绍基于Redis和Ehcache缓存的实现。</p>
+<p>在<a target="_blank" rel="noopener" href="http://59.110.212.214/blog/56">《Spring-Boot-shiro权限控制》</a>中，当用户访问”获取用户信息”、”新增用户”和”删除用户”的时候，后台输出了三次打印信息，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">用户mrbird获取权限-----ShiroRealm.doGetAuthorizationInfo</span><br><span class="line">用户mrbird获取权限-----ShiroRealm.doGetAuthorizationInfo</span><br><span class="line">用户mrbird获取权限-----ShiroRealm.doGetAuthorizationInfo</span><br></pre></td></tr></table></figure>
+
+
+<p>说明在这三次访问中，Shiro都会从数据库中获取用户的权限信息，通过Druid数据源SQL监控后台也可以证实这一点：</p>
+<p><img src="http://mele.cool//20200728_10401288.png"></p>
+<p>这对数据库来说是没必要的消耗。接下来使用缓存来解决这个问题。</p>
+<h2 id="一-Redis"><a href="#一-Redis" class="headerlink" title="一.Redis"></a>一.Redis</h2><h3 id="1-引入Redis依赖"><a href="#1-引入Redis依赖" class="headerlink" title="1.引入Redis依赖"></a>1.引入Redis依赖</h3><p>网络上已经有关于Shiro集成Redis的实现，我们引入即可：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- shiro-redis --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.crazycake<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>shiro-redis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.4.2.1-RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="2-配置Redis"><a href="#2-配置Redis" class="headerlink" title="2.配置Redis"></a>2.配置Redis</h3><p>我们在application.yml配置文件中加入Redis配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="attr">host:</span> <span class="string">localhost</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">6379</span></span><br><span class="line">    <span class="attr">pool:</span></span><br><span class="line">      <span class="attr">max-active:</span> <span class="number">8</span></span><br><span class="line">      <span class="attr">max-wait:</span> <span class="number">-1</span></span><br><span class="line">      <span class="attr">max-idle:</span> <span class="number">8</span></span><br><span class="line">      <span class="attr">min-idle:</span> <span class="number">0</span></span><br><span class="line">    <span class="attr">timeout:</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+
+<p>接着在ShiroConfig中配置Redis：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> RedisManager <span class="title">redisManager</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    RedisManager redisManager = <span class="keyword">new</span> RedisManager();</span><br><span class="line">    <span class="keyword">return</span> redisManager;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> RedisCacheManager <span class="title">cacheManager</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    RedisCacheManager redisCacheManager = <span class="keyword">new</span> RedisCacheManager();</span><br><span class="line">    redisCacheManager.setRedisManager(redisManager());</span><br><span class="line">    <span class="keyword">return</span> redisCacheManager;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>上面代码配置了RedisManager，并将其注入到了RedisCacheManager中，最后在SecurityManager中加入RedisCacheManager：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span>  </span><br><span class="line"><span class="function"><span class="keyword">public</span> SecurityManager <span class="title">securityManager</span><span class="params">()</span></span>&#123;  </span><br><span class="line">    DefaultWebSecurityManager securityManager =  <span class="keyword">new</span> DefaultWebSecurityManager();</span><br><span class="line">    ...</span><br><span class="line">    securityManager.setCacheManager(cacheManager());</span><br><span class="line">    <span class="keyword">return</span> securityManager;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>配置完毕启动项目，分别访问访问”获取用户信息”、”新增用户”和”删除用户”，可发现后台只打印一次获取权限信息：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用户mrbird获取权限-----ShiroRealm.doGetAuthorizationInfo</span><br></pre></td></tr></table></figure>
+
+
+<p>查看Druid数据源SQL监控：</p>
+<p><img src="http://mele.cool//20200728_10395460.png"></p>
+<p>源码：<a target="_blank" rel="noopener" href="https://github.com/wuyouzhuguli/Spring-Boot-Demos/tree/master/14.Spring-Boot-Shiro-Redis">https://github.com/wuyouzhuguli/Spring-Boot-Demos/tree/master/14.Spring-Boot-Shiro-Redis</a></p>
+<h2 id="二-Ehcache"><a href="#二-Ehcache" class="headerlink" title="二.Ehcache"></a>二.Ehcache</h2><h3 id="1-Ehcache依赖"><a href="#1-Ehcache依赖" class="headerlink" title="1.Ehcache依赖"></a>1.Ehcache依赖</h3><p>加入Ehcache相关依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- shiro ehcache --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.shiro<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>shiro-ehcache<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- ehchache --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-cache<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>net.sf.ehcache<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>ehcache<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="2-Ehcache配置"><a href="#2-Ehcache配置" class="headerlink" title="2.Ehcache配置"></a>2.Ehcache配置</h3><p>在src/main/resource/config路径下新增一个Ehcache配置——shiro-ehcache.xml：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ehcache</span> <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:noNamespaceSchemaLocation</span>=<span class="string">&quot;http://ehcache.org/ehcache.xsd&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">updateCheck</span>=<span class="string">&quot;false&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">diskStore</span> <span class="attr">path</span>=<span class="string">&quot;java.io.tmpdir/Tmp_EhCache&quot;</span> /&gt;</span></span><br><span class="line">    &lt;defaultCache</span><br><span class="line">        maxElementsInMemory=&quot;10000&quot;</span><br><span class="line">        eternal=&quot;false&quot;</span><br><span class="line">        timeToIdleSeconds=&quot;120&quot;</span><br><span class="line">        timeToLiveSeconds=&quot;120&quot;</span><br><span class="line">        overflowToDisk=&quot;false&quot;</span><br><span class="line">        diskPersistent=&quot;false&quot;</span><br><span class="line">        diskExpiryThreadIntervalSeconds=&quot;120&quot; /&gt;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">&lt;!-- 登录记录缓存锁定1小时 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">cache</span> </span></span><br><span class="line"><span class="tag">        <span class="attr">name</span>=<span class="string">&quot;passwordRetryCache&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">maxEntriesLocalHeap</span>=<span class="string">&quot;2000&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">eternal</span>=<span class="string">&quot;false&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">timeToIdleSeconds</span>=<span class="string">&quot;3600&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">timeToLiveSeconds</span>=<span class="string">&quot;0&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">overflowToDisk</span>=<span class="string">&quot;false&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">statistics</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ehcache</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="3-ShiroConfig配置Ehcache"><a href="#3-ShiroConfig配置Ehcache" class="headerlink" title="3.ShiroConfig配置Ehcache"></a>3.ShiroConfig配置Ehcache</h3><p>接着在ShiroConfig中注入Ehcache缓存：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> EhCacheManager <span class="title">getEhCacheManager</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    EhCacheManager em = <span class="keyword">new</span> EhCacheManager();</span><br><span class="line">    em.setCacheManagerConfigFile(<span class="string">&quot;classpath:config/shiro-ehcache.xml&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> em;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>将缓存对象注入到SecurityManager中：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span>  </span><br><span class="line"><span class="function"><span class="keyword">public</span> SecurityManager <span class="title">securityManager</span><span class="params">()</span></span>&#123;  </span><br><span class="line">    DefaultWebSecurityManager securityManager =  <span class="keyword">new</span> DefaultWebSecurityManager();</span><br><span class="line">    securityManager.setRealm(shiroRealm());</span><br><span class="line">    securityManager.setRememberMeManager(rememberMeManager());</span><br><span class="line">    securityManager.setCacheManager(getEhCacheManager());</span><br><span class="line">    <span class="keyword">return</span> securityManager;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>配置完毕启动项目，分别访问访问”获取用户信息”、”新增用户”和”删除用户”，可发现后台只打印一次获取权限信息：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用户mrbird获取权限-----ShiroRealm.doGetAuthorizationInfo</span><br></pre></td></tr></table></figure>
+
+
+<p>查看Druid数据源SQL监控：</p>
+<p><img src="http://mele.cool//20200728_1039319.png"></p>
+<p>SQL只执行了一次，说明缓存成功。</p>
+<p>源码连接：<a target="_blank" rel="noopener" href="https://github.com/wuyouzhuguli/Spring-Boot-Demos/tree/master/15.Spring-Boot-Shiro-Ehcache">https://github.com/wuyouzhuguli/Spring-Boot-Demos/tree/master/15.Spring-Boot-Shiro-Ehcache</a></p>
+<ul>
+<li><strong>本文作者：</strong> MrBird</li>
+<li><strong>本文链接：</strong> <a target="_blank" rel="noopener" href="http://mrbird.cc/Spring-Boot-Shiro">http://mrbird.cc/Spring-Boot-Shiro</a> cache.html</li>
+<li><strong>版权声明：</strong> 本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/springboot/" rel="tag"># springboot</a>
+              <a href="/tags/shiro/" rel="tag"># shiro</a>
+              <a href="/tags/%E7%BC%93%E5%AD%98/" rel="tag"># 缓存</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/04/Spring%20Boot%20Shiro%E5%9C%A8%E7%BA%BF%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86/" rel="prev" title="Spring Boot Shiro在线会话管理">
+      <i class="fa fa-chevron-left"></i> Spring Boot Shiro在线会话管理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/04/Spring%20Boot%20Shiro%20Remember%20Me/" rel="next" title="Spring Boot Shiro Remember Me">
+      Spring Boot Shiro Remember Me <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80-Redis"><span class="nav-number">1.</span> <span class="nav-text">一.Redis</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%BC%95%E5%85%A5Redis%E4%BE%9D%E8%B5%96"><span class="nav-number">1.1.</span> <span class="nav-text">1.引入Redis依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%85%8D%E7%BD%AERedis"><span class="nav-number">1.2.</span> <span class="nav-text">2.配置Redis</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C-Ehcache"><span class="nav-number">2.</span> <span class="nav-text">二.Ehcache</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Ehcache%E4%BE%9D%E8%B5%96"><span class="nav-number">2.1.</span> <span class="nav-text">1.Ehcache依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Ehcache%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">2.Ehcache配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-ShiroConfig%E9%85%8D%E7%BD%AEEhcache"><span class="nav-number">2.3.</span> <span class="nav-text">3.ShiroConfig配置Ehcache</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">blydd</p>
+  <div class="site-description" itemprop="description">米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">105</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">135</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">blydd</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

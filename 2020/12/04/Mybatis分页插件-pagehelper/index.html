@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"mele.cool","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="mybatis分页插件pagehelper">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mybatis分页插件pagehelper">
+<meta property="og:url" content="http://mele.cool/2020/12/04/Mybatis%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6-pagehelper/index.html">
+<meta property="og:site_name" content="米乐博客">
+<meta property="og:description" content="mybatis分页插件pagehelper">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-04T02:10:17.000Z">
+<meta property="article:modified_time" content="2021-02-27T13:31:15.891Z">
+<meta property="article:author" content="blydd">
+<meta property="article:tag" content="mybatis">
+<meta property="article:tag" content="pagehelper">
+<meta property="article:tag" content="分页">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://mele.cool/2020/12/04/Mybatis%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6-pagehelper/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>mybatis分页插件pagehelper | 米乐博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">米乐博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">积跬步至千里</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mele.cool/2020/12/04/Mybatis%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6-pagehelper/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="blydd">
+      <meta itemprop="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="米乐博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          mybatis分页插件pagehelper
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-04 10:10:17" itemprop="dateCreated datePublished" datetime="2020-12-04T10:10:17+08:00">2020-12-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-02-27 21:31:15" itemprop="dateModified" datetime="2021-02-27T21:31:15+08:00">2021-02-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">mybatis分页插件pagehelper</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="1-引入分页插件"><a href="#1-引入分页插件" class="headerlink" title="1. 引入分页插件"></a>1. 引入分页插件</h2><p>引入分页插件一共有下面2种方式，推荐使用Maven方式，这种方式方便更新。</p>
+<h4 id="1-引入Jar包"><a href="#1-引入Jar包" class="headerlink" title="1). 引入Jar包"></a>1). 引入Jar包</h4><p>如果你想使用本项目的jar包而不是直接引入类，你可以在这里下载各个版本的jar包（点击Download下的jar即可下载）</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://oss.sonatype.org/content/repositories/releases/com/github/pagehelper/pagehelper/">https://oss.sonatype.org/content/repositories/releases/com/github/pagehelper/pagehelper/</a></li>
+<li><a target="_blank" rel="noopener" href="http://repo1.maven.org/maven2/com/github/pagehelper/pagehelper/">http://repo1.maven.org/maven2/com/github/pagehelper/pagehelper/</a></li>
+</ul>
+<p>由于使用了sql解析工具，你还需要下载jsqlparser.jar（这个文件完全独立，不依赖其他）：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://repo1.maven.org/maven2/com/github/jsqlparser/jsqlparser/0.9.1/">http://repo1.maven.org/maven2/com/github/jsqlparser/jsqlparser/0.9.1/</a></li>
+<li><a target="_blank" rel="noopener" href="http://git.oschina.net/free/Mybatis_PageHelper/attach_files">http://git.oschina.net/free/Mybatis_PageHelper/attach_files</a></li>
+</ul>
+<h4 id="2-使用maven"><a href="#2-使用maven" class="headerlink" title="2). 使用maven"></a>2). 使用maven</h4><p>添加如下依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>当使用maven中央库中的快照版（带<code>&quot;-SNAPSHOT&quot;</code>的版本）时，需要在pom.xml中添加如下配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">repositories</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">id</span>&gt;</span>sonatype-nexus-snapshots<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">name</span>&gt;</span>Sonatype Nexus Snapshots<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://oss.sonatype.org/content/repositories/snapshots<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">releases</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>false<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">releases</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">snapshots</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>true<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">snapshots</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">repositories</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="2-在Mybatis配置xml中配置拦截器插件"><a href="#2-在Mybatis配置xml中配置拦截器插件" class="headerlink" title="2. 在Mybatis配置xml中配置拦截器插件:"></a>2. 在Mybatis配置xml中配置拦截器插件:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- </span></span><br><span class="line"><span class="comment">    plugins在配置文件中的位置必须符合要求，否则会报错，顺序如下:</span></span><br><span class="line"><span class="comment">    properties?, settings?, </span></span><br><span class="line"><span class="comment">    typeAliases?, typeHandlers?, </span></span><br><span class="line"><span class="comment">    objectFactory?,objectWrapperFactory?, </span></span><br><span class="line"><span class="comment">    plugins?, </span></span><br><span class="line"><span class="comment">    environments?, databaseIdProvider?, mappers?</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- com.github.pagehelper为PageHelper类所在包名 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugin</span> <span class="attr">interceptor</span>=<span class="string">&quot;com.github.pagehelper.PageHelper&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;dialect&quot;</span> <span class="attr">value</span>=<span class="string">&quot;mysql&quot;</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 该参数默认为false --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 设置为true时，会将RowBounds第一个参数offset当成pageNum页码使用 --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 和startPage中的pageNum效果一样--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;offsetAsPageNum&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 该参数默认为false --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 设置为true时，使用RowBounds分页会进行count查询 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;rowBoundsWithCount&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 设置为true时，如果pageSize=0或者RowBounds.limit = 0就会查询出全部的结果 --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- （相当于没有执行分页查询，但是返回结果仍然是Page类型）--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;pageSizeZero&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 3.3.0版本可用 - 分页参数合理化，默认false禁用 --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 启用合理化时，如果pageNum&lt;1会查询第一页，如果pageNum&gt;pages会查询最后一页 --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 禁用合理化时，如果pageNum&lt;1或pageNum&gt;pages会返回空数据 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;reasonable&quot;</span> <span class="attr">value</span>=<span class="string">&quot;false&quot;</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 3.5.0版本可用 - 为了支持startPage(Object params)方法 --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 增加了一个`params`参数来配置参数映射，用于从Map或ServletRequest中取值 --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 可以配置pageNum,pageSize,count,pageSizeZero,reasonable,不配置映射的用默认值 --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 不理解该含义的前提下，不要随便复制该配置 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;params&quot;</span> <span class="attr">value</span>=<span class="string">&quot;pageNum=start;pageSize=limit;&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="3-如何选择配置这些参数"><a href="#3-如何选择配置这些参数" class="headerlink" title="3. 如何选择配置这些参数"></a>3. 如何选择配置这些参数</h2><p>单独看每个参数的说明可能是一件让人不爽的事情，这里列举一些可能会用到某些参数的情。</p>
+<p>首先<code>dialect</code>属性是必须的，不需要解释。其他的参数一般情况下我们都不必去管，如果想了解何时使用合适，你可以参考以下场景：</p>
+<h4 id="场景一"><a href="#场景一" class="headerlink" title="场景一"></a>场景一</h4><p>如果你仍然在用类似ibatis式的命名空间调用方式，你也许会用到<code>rowBoundsWithCount</code>，分页插件对<code>RowBounds</code>支持和Mybatis默认的方式是一致，默认情况下不会进行count查询，如果你想在分页查询时进行count查询，以及使用更强大的<code>PageInfo</code>类，你需要设置该参数为<code>true</code>。</p>
+<h4 id="场景二"><a href="#场景二" class="headerlink" title="场景二"></a>场景二</h4><p>如果你仍然在用类似ibatis式的命名空间调用方式，你觉得RowBounds中的两个参数<code>offset,limit</code>不如<code>pageNum,pageSize</code>容易理解，你可以使用<code>offsetAsPageNum</code>参数，将该参数设置为<code>true</code>后，<code>offset</code>会当成<code>pageNum</code>使用，<code>limit</code>和<code>pageSize</code>含义相同。</p>
+<h4 id="场景三"><a href="#场景三" class="headerlink" title="场景三"></a>场景三</h4><p>如果觉得某个地方使用分页后，你仍然想通过控制参数查询全部的结果，你可以配置<code>pageSizeZero</code>为<code>true</code>，配置后，如可以通过设置<code>pageSize=0</code>或者<code>RowBounds.limit = 0</code>就会查询出全部的结果。</p>
+<h4 id="场景四"><a href="#场景四" class="headerlink" title="场景四"></a>场景四</h4><p>如果你分页插件使用于类似分页查看列表式的数据，如新闻列表，软件列表，你希望用户输入的页数不在合法范围（第一页到最后一页之外）时能够正确的响应到正确的结果页面，那么你可以配置<code>reasonable</code>为<code>true</code>，这时如果<code>pageNum&lt;1</code>会查询第一页，如果<code>pageNum&gt;总页数</code>会查询最后一页。</p>
+<h2 id="4-Spring配置方法"><a href="#4-Spring配置方法" class="headerlink" title="4. Spring配置方法"></a>4. Spring配置方法</h2><p>首先需要在Spring中配置<code>org.mybatis.spring.SqlSessionFactoryBean</code>。然后配置配置Mybatis的具体配置有两种方式，一种是用mybatis默认的xml配置，另一种就是完全使用spring的属性配置方式。</p>
+<h4 id="1-mybatis默认的xml配置"><a href="#1-mybatis默认的xml配置" class="headerlink" title="1.mybatis默认的xml配置"></a>1.mybatis默认的xml配置</h4><p>配置<code>configLocation</code>属性指向上面的<code>mybatis-config.xml</code>文件。有关分页插件的配置都在<code>mybatis-config.xml</code>，具体配置内容参考上面的<code>mybatis-config.xml</code>。</p>
+<h4 id="2-使用spring的属性配置方式"><a href="#2-使用spring的属性配置方式" class="headerlink" title="2.使用spring的属性配置方式"></a>2.使用spring的属性配置方式</h4><p><strong>注意：请不用同时使用spring配置方式和mybatis-config.xml配置方式，只需要选择其中一个就行。配置多个分页插件时，会抛出异常提示。</strong></p>
+<blockquote>
+<p>分页插件配置错误:请不要在系统中配置多个分页插件(使用Spring时,mybatis-config.xml和Spring配置方式，请选择其中一种，不要同时配置多个分页插件)！</p>
+</blockquote>
+<p>使用spring的属性配置方式，可以使用<code>plugins</code>属性像下面这样配置：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;sqlSessionFactory&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;dataSource&quot;</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;mapperLocations&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">value</span>&gt;</span>classpath:mapper/*.xml<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;typeAliasesPackage&quot;</span> <span class="attr">value</span>=<span class="string">&quot;com.isea533.ssm.model&quot;</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;plugins&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">&quot;com.github.pagehelper.PageHelper&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;properties&quot;</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">value</span>&gt;</span></span><br><span class="line">            dialect=hsqldb</span><br><span class="line">          <span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>属性配置按照上面的方式配置，每个配置独立一行即可。</p>
+<h2 id="5-如何在代码中使用"><a href="#5-如何在代码中使用" class="headerlink" title="5. 如何在代码中使用"></a>5. 如何在代码中使用</h2><p>首先该分页插件支持以下两种调用方式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//第一种，RowBounds方式的调用</span></span><br><span class="line">List list = sqlSession.selectList(<span class="string">&quot;x.y.selectIf&quot;</span>, <span class="keyword">null</span>, <span class="keyword">new</span> RowBounds(<span class="number">1</span>, <span class="number">10</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">//第二种，Mapper接口方式的调用，推荐这种使用方式。</span></span><br><span class="line">PageHelper.startPage(<span class="number">1</span>, <span class="number">10</span>);</span><br><span class="line">List list = countryMapper.selectIf(<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<p>下面分别对这两种方式进行详细介绍</p>
+<h4 id="1-RowBounds方式的调用"><a href="#1-RowBounds方式的调用" class="headerlink" title="1). RowBounds方式的调用"></a>1). RowBounds方式的调用</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List list = sqlSession.selectList(<span class="string">&quot;x.y.selectIf&quot;</span>, <span class="keyword">null</span>, <span class="keyword">new</span> RowBounds(<span class="number">1</span>, <span class="number">10</span>));</span><br></pre></td></tr></table></figure>
+<p>使用这种调用方式时，你可以使用RowBounds参数进行分页，这种方式侵入性最小，我们可以看到，通过RowBounds方式调用只是使用了这个参数，并没有增加其他任何内容。</p>
+<p>分页插件检测到使用了RowBounds参数时，就会对该查询进行<strong>物理分页</strong>。</p>
+<p>关于这种方式的调用，有两个特殊的参数是针对<code>RowBounds</code>的，你可以参看上面的<a target="_blank" rel="noopener" href="http://www.360doc.com/showweb/0/0/930947504.aspx">场景一</a>和<a target="_blank" rel="noopener" href="http://www.360doc.com/showweb/0/0/930947504.aspx">场景二</a></p>
+<p><strong>注：</strong>不只有命名空间方式可以用RowBounds，使用接口的时候也可以增加RowBounds参数，例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这种情况下也会进行物理分页查询</span></span><br><span class="line"><span class="function">List <span class="title">selectAll</span><span class="params">(RowBounds rowBounds)</span></span>;  </span><br></pre></td></tr></table></figure>
+<h4 id="2-PageHelper-startPage静态方法调用"><a href="#2-PageHelper-startPage静态方法调用" class="headerlink" title="2). PageHelper.startPage静态方法调用"></a>2). <code>PageHelper.startPage</code>静态方法调用</h4><p>在你需要进行分页的Mybatis方法前调用<code>PageHelper.startPage</code>静态方法即可，紧跟在这个方法后的第一个<strong>Mybatis查询方法</strong>会被进行分页。</p>
+<h5 id="例一："><a href="#例一：" class="headerlink" title="例一："></a>例一：</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">SqlSession sqlSession = MybatisHelper.getSqlSession();</span><br><span class="line">CountryMapper countryMapper = sqlSession.getMapper(CountryMapper.class);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//获取第1页，10条内容，默认查询总数count</span></span><br><span class="line">    PageHelper.startPage(<span class="number">1</span>, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//紧跟着的第一个select方法会被分页</span></span><br><span class="line">    List list = countryMapper.selectIf(<span class="number">1</span>);</span><br><span class="line">    assertEquals(<span class="number">2</span>, list.get(<span class="number">0</span>).getId());</span><br><span class="line">    assertEquals(<span class="number">10</span>, list.size());</span><br><span class="line">    <span class="comment">//分页时，实际返回的结果list类型是Page，如果想取出分页信息，需要强制转换为Pag，</span></span><br><span class="line">    <span class="comment">//或者使用PageInfo类（下面的例子有介绍）</span></span><br><span class="line">    assertEquals(<span class="number">182</span>, ((Page) list).getTotal());</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    sqlSession.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="例二："><a href="#例二：" class="headerlink" title="例二："></a>例二：</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">SqlSession sqlSession = MybatisHelper.getSqlSession();</span><br><span class="line">CountryMapper countryMapper = sqlSession.getMapper(CountryMapper.class);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//获取第1页，10条内容，默认查询总数count</span></span><br><span class="line">    PageHelper.startPage(<span class="number">1</span>, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//紧跟着的第一个select方法会被分页</span></span><br><span class="line">    List list = countryMapper.selectIf(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//后面的不会被分页，除非再次调用PageHelper.startPage</span></span><br><span class="line">    List list2 = countryMapper.selectIf(<span class="keyword">null</span>);</span><br><span class="line">    <span class="comment">//list1</span></span><br><span class="line">    assertEquals(<span class="number">2</span>, list.get(<span class="number">0</span>).getId());</span><br><span class="line">    assertEquals(<span class="number">10</span>, list.size());</span><br><span class="line">    <span class="comment">//分页时，实际返回的结果list类型是Page，如果想取出分页信息，需要强制转换为Page，</span></span><br><span class="line">    <span class="comment">//或者使用PageInfo类（下面的例子有介绍）</span></span><br><span class="line">    assertEquals(<span class="number">182</span>, ((Page) list).getTotal());</span><br><span class="line">    <span class="comment">//list2</span></span><br><span class="line">    assertEquals(<span class="number">1</span>, list2.get(<span class="number">0</span>).getId());</span><br><span class="line">    assertEquals(<span class="number">182</span>, list2.size());</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    sqlSession.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="例三，使用PageInfo的用法："><a href="#例三，使用PageInfo的用法：" class="headerlink" title="例三，使用PageInfo的用法："></a>例三，使用<code>PageInfo</code>的用法：</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取第1页，10条内容，默认查询总数count</span></span><br><span class="line">PageHelper.startPage(<span class="number">1</span>, <span class="number">10</span>);</span><br><span class="line">List list = countryMapper.selectAll();</span><br><span class="line"><span class="comment">//用PageInfo对结果进行包装</span></span><br><span class="line">PageInfo page = <span class="keyword">new</span> PageInfo(list);</span><br><span class="line"><span class="comment">//测试PageInfo全部属性</span></span><br><span class="line"><span class="comment">//PageInfo包含了非常全面的分页属性</span></span><br><span class="line">assertEquals(<span class="number">1</span>, page.getPageNum());</span><br><span class="line">assertEquals(<span class="number">10</span>, page.getPageSize());</span><br><span class="line">assertEquals(<span class="number">1</span>, page.getStartRow());</span><br><span class="line">assertEquals(<span class="number">10</span>, page.getEndRow());</span><br><span class="line">assertEquals(<span class="number">183</span>, page.getTotal());</span><br><span class="line">assertEquals(<span class="number">19</span>, page.getPages());</span><br><span class="line">assertEquals(<span class="number">1</span>, page.getFirstPage());</span><br><span class="line">assertEquals(<span class="number">8</span>, page.getLastPage());</span><br><span class="line">assertEquals(<span class="keyword">true</span>, page.isFirstPage());</span><br><span class="line">assertEquals(<span class="keyword">false</span>, page.isLastPage());</span><br><span class="line">assertEquals(<span class="keyword">false</span>, page.isHasPreviousPage());</span><br><span class="line">assertEquals(<span class="keyword">true</span>, page.isHasNextPage());</span><br></pre></td></tr></table></figure>
+<p>本项目中包含大量测试，您可以通过查看测试代码了解使用方法。</p>
+<p>测试代码地址：<a target="_blank" rel="noopener" href="http://git.oschina.net/free/Mybatis_PageHelper/tree/master/src/test/java/com/github/pagehelper/test">http://git.oschina.net/free/Mybatis_PageHelper/tree/master/src/test/java/com/github/pagehelper/test</a></p>
+<p>转自:  <a target="_blank" rel="noopener" href="http://www.360doc.com/showweb/0/0/930947504.aspx">http://www.360doc.com/showweb/0/0/930947504.aspx</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/mybatis/" rel="tag"># mybatis</a>
+              <a href="/tags/pagehelper/" rel="tag"># pagehelper</a>
+              <a href="/tags/%E5%88%86%E9%A1%B5/" rel="tag"># 分页</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/04/Spring%20Boot%20AOP%E8%AE%B0%E5%BD%95%E7%94%A8%E6%88%B7%E6%93%8D%E4%BD%9C%E6%97%A5%E5%BF%97/" rel="prev" title="Spring Boot AOP记录用户操作日志">
+      <i class="fa fa-chevron-left"></i> Spring Boot AOP记录用户操作日志
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/04/MyBatis%E9%80%9A%E7%94%A8Mapper%E5%92%8CPageHelper/" rel="next" title="mybatis通用mapper和分页插件pagehelper">
+      mybatis通用mapper和分页插件pagehelper <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%BC%95%E5%85%A5%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">1. 引入分页插件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%BC%95%E5%85%A5Jar%E5%8C%85"><span class="nav-number">1.0.1.</span> <span class="nav-text">1). 引入Jar包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E4%BD%BF%E7%94%A8maven"><span class="nav-number">1.0.2.</span> <span class="nav-text">2). 使用maven</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%9C%A8Mybatis%E9%85%8D%E7%BD%AExml%E4%B8%AD%E9%85%8D%E7%BD%AE%E6%8B%A6%E6%88%AA%E5%99%A8%E6%8F%92%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">2. 在Mybatis配置xml中配置拦截器插件:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%E9%85%8D%E7%BD%AE%E8%BF%99%E4%BA%9B%E5%8F%82%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">3. 如何选择配置这些参数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E4%B8%80"><span class="nav-number">3.0.1.</span> <span class="nav-text">场景一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E4%BA%8C"><span class="nav-number">3.0.2.</span> <span class="nav-text">场景二</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E4%B8%89"><span class="nav-number">3.0.3.</span> <span class="nav-text">场景三</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E5%9B%9B"><span class="nav-number">3.0.4.</span> <span class="nav-text">场景四</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Spring%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">4. Spring配置方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-mybatis%E9%BB%98%E8%AE%A4%E7%9A%84xml%E9%85%8D%E7%BD%AE"><span class="nav-number">4.0.1.</span> <span class="nav-text">1.mybatis默认的xml配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E4%BD%BF%E7%94%A8spring%E7%9A%84%E5%B1%9E%E6%80%A7%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F"><span class="nav-number">4.0.2.</span> <span class="nav-text">2.使用spring的属性配置方式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%A6%82%E4%BD%95%E5%9C%A8%E4%BB%A3%E7%A0%81%E4%B8%AD%E4%BD%BF%E7%94%A8"><span class="nav-number">5.</span> <span class="nav-text">5. 如何在代码中使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-RowBounds%E6%96%B9%E5%BC%8F%E7%9A%84%E8%B0%83%E7%94%A8"><span class="nav-number">5.0.1.</span> <span class="nav-text">1). RowBounds方式的调用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-PageHelper-startPage%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8"><span class="nav-number">5.0.2.</span> <span class="nav-text">2). PageHelper.startPage静态方法调用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BE%8B%E4%B8%80%EF%BC%9A"><span class="nav-number">5.0.2.1.</span> <span class="nav-text">例一：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BE%8B%E4%BA%8C%EF%BC%9A"><span class="nav-number">5.0.2.2.</span> <span class="nav-text">例二：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BE%8B%E4%B8%89%EF%BC%8C%E4%BD%BF%E7%94%A8PageInfo%E7%9A%84%E7%94%A8%E6%B3%95%EF%BC%9A"><span class="nav-number">5.0.2.3.</span> <span class="nav-text">例三，使用PageInfo的用法：</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">blydd</p>
+  <div class="site-description" itemprop="description">米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">105</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">135</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">blydd</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

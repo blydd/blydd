@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"mele.cool","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Spring Boot Thymeleaf中使用Shiro标签">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Boot Thymeleaf中使用Shiro标签">
+<meta property="og:url" content="http://mele.cool/2020/12/04/Spring%20Boot%20Thymeleaf%E4%B8%AD%E4%BD%BF%E7%94%A8Shiro%E6%A0%87%E7%AD%BE/index.html">
+<meta property="og:site_name" content="米乐博客">
+<meta property="og:description" content="Spring Boot Thymeleaf中使用Shiro标签">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://mele.cool//QQ%E6%88%AA%E5%9B%BE20171214150454.png">
+<meta property="og:image" content="http://mele.cool//QQ%E6%88%AA%E5%9B%BE20171214150617.png">
+<meta property="article:published_time" content="2020-12-04T02:10:17.000Z">
+<meta property="article:modified_time" content="2021-02-27T13:27:54.785Z">
+<meta property="article:author" content="blydd">
+<meta property="article:tag" content="springboot">
+<meta property="article:tag" content="shiro">
+<meta property="article:tag" content="标签">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://mele.cool//QQ%E6%88%AA%E5%9B%BE20171214150454.png">
+
+<link rel="canonical" href="http://mele.cool/2020/12/04/Spring%20Boot%20Thymeleaf%E4%B8%AD%E4%BD%BF%E7%94%A8Shiro%E6%A0%87%E7%AD%BE/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Spring Boot Thymeleaf中使用Shiro标签 | 米乐博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">米乐博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">积跬步至千里</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mele.cool/2020/12/04/Spring%20Boot%20Thymeleaf%E4%B8%AD%E4%BD%BF%E7%94%A8Shiro%E6%A0%87%E7%AD%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="blydd">
+      <meta itemprop="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="米乐博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Spring Boot Thymeleaf中使用Shiro标签
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-04 10:10:17" itemprop="dateCreated datePublished" datetime="2020-12-04T10:10:17+08:00">2020-12-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-02-27 21:27:54" itemprop="dateModified" datetime="2021-02-27T21:27:54+08:00">2021-02-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/springboot/" itemprop="url" rel="index"><span itemprop="name">springboot</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">Spring Boot Thymeleaf中使用Shiro标签</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在<a target="_blank" rel="noopener" href="http://59.110.212.214/blog/56">《Spring-Boot-shiro权限控制》</a>中，当用户访问没有权限的资源时，我们采取的做法是跳转到403页面，但在实际项目中更为常见的做法是只显示当前用户拥有访问权限的资源链接。配合Thymeleaf中的Shiro标签可以很简单的实现这个目标。</p>
+<p>实际上Thymeleaf官方并没有提供Shiro的标签，我们需要引入第三方实现，地址为<a target="_blank" rel="noopener" href="https://github.com/theborakompanioni/thymeleaf-extras-shiro%E3%80%82">https://github.com/theborakompanioni/thymeleaf-extras-shiro。</a></p>
+<h2 id="1-引入thymeleaf-extras-shiro"><a href="#1-引入thymeleaf-extras-shiro" class="headerlink" title="1.引入thymeleaf-extras-shiro"></a>1.引入thymeleaf-extras-shiro</h2><p>在pom中引入：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.theborakompanioni<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>thymeleaf-extras-shiro<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="2-ShiroConfig配置"><a href="#2-ShiroConfig配置" class="headerlink" title="2.ShiroConfig配置"></a>2.ShiroConfig配置</h2><p>引入依赖后，需要在ShiroConfig中配置该方言标签：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ShiroDialect <span class="title">shiroDialect</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ShiroDialect();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="3-首页改造"><a href="#3-首页改造" class="headerlink" title="3.首页改造"></a>3.首页改造</h2><p>更改index.html，用于测试Shiro标签的使用：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">xmlns:th</span>=<span class="string">&quot;http://www.thymeleaf.org&quot;</span> </span></span><br><span class="line"><span class="tag">      <span class="attr">xmlns:shiro</span>=<span class="string">&quot;http://www.pollix.at/thymeleaf/shiro&quot;</span> &gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>首页<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>你好！[[$&#123;user.userName&#125;]]<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">shiro:hasRole</span>=<span class="string">&quot;admin&quot;</span>&gt;</span>你的角色为超级管理员<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">shiro:hasRole</span>=<span class="string">&quot;test&quot;</span>&gt;</span>你的角色为测试账户<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">shiro:hasPermission</span>=<span class="string">&quot;user:user&quot;</span> <span class="attr">th:href</span>=<span class="string">&quot;@&#123;/user/list&#125;&quot;</span>&gt;</span>获取用户信息<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">shiro:hasPermission</span>=<span class="string">&quot;user:add&quot;</span> <span class="attr">th:href</span>=<span class="string">&quot;@&#123;/user/add&#125;&quot;</span>&gt;</span>新增用户<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">shiro:hasPermission</span>=<span class="string">&quot;user:delete&quot;</span> <span class="attr">th:href</span>=<span class="string">&quot;@&#123;/user/delete&#125;&quot;</span>&gt;</span>删除用户<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">th:href</span>=<span class="string">&quot;@&#123;/logout&#125;&quot;</span>&gt;</span>注销<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<blockquote>
+<p><strong>值得注意的是，在html页面中使用Shiro标签需要给html标签添加<code>xmlns:shiro=&quot;http://www.pollix.at/thymeleaf/shiro&quot;</code>。</strong></p>
+</blockquote>
+<h2 id="4-测试"><a href="#4-测试" class="headerlink" title="4.测试"></a>4.测试</h2><p>启动项目，使用mrbird（角色为admin，具有user:user，user:add，user:delete权限）账户登录：</p>
+<p><img src="http://mele.cool//QQ%E6%88%AA%E5%9B%BE20171214150454.png" alt="QQ截图20171214150454.png"></p>
+<p>使用tester（角色为tester，仅有user:user权限）账户登录：</p>
+<p><img src="http://mele.cool//QQ%E6%88%AA%E5%9B%BE20171214150617.png" alt="QQ截图20171214150617.png"></p>
+<h2 id="5-更多标签"><a href="#5-更多标签" class="headerlink" title="5.更多标签"></a>5.更多标签</h2><blockquote>
+<p>The following examples show how to integrate the tags in your Thymeleaf templates. These are all implementations of the examples given in the <a target="_blank" rel="noopener" href="http://shiro.apache.org/web.html#Web-JSP%2FGSPTagLibrary">JSP / GSP Tag Library Section</a> of the Apache Shiro documentation.</p>
+<p>以下示例显示了如何将标签集成到Thymeleaf模板中。<br>这些都是Apache Shiro文档的JSP / GSP标记库部分中给出的示例的全部实现。</p>
+<p>Tags can be written in attribute or element notation:</p>
+<p>标签可以用属性或元素符号表示：</p>
+</blockquote>
+<h4 id="Attribute"><a href="#Attribute" class="headerlink" title="Attribute"></a>Attribute</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">shiro:anyTag</span>&gt;</span></span><br><span class="line">  Goodbye cruel World!</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="Element"><a href="#Element" class="headerlink" title="Element"></a>Element</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">shiro:anyTag</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>Hello World!<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">shiro:anyTag</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="The-guest-tag"><a href="#The-guest-tag" class="headerlink" title="The guest tag"></a>The <code>guest</code> tag</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">shiro:guest</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">  Please <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;login.html&quot;</span>&gt;</span>Login<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="The-user-tag"><a href="#The-user-tag" class="headerlink" title="The user tag"></a>The <code>user</code> tag</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">shiro:user</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">  Welcome back John! Not John? Click <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;login.html&quot;</span>&gt;</span>here<span class="tag">&lt;<span class="name">a</span>&gt;</span> to login.</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="The-authenticated-tag"><a href="#The-authenticated-tag" class="headerlink" title="The authenticated tag"></a>The <code>authenticated</code> tag</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">shiro:authenticated</span>=<span class="string">&quot;&quot;</span> <span class="attr">href</span>=<span class="string">&quot;updateAccount.html&quot;</span>&gt;</span>Update your contact information<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="The-notAuthenticated-tag"><a href="#The-notAuthenticated-tag" class="headerlink" title="The notAuthenticated tag"></a>The <code>notAuthenticated</code> tag</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">shiro:notAuthenticated</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">  Please <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;login.html&quot;</span>&gt;</span>login<span class="tag">&lt;/<span class="name">a</span>&gt;</span> in order to update your credit card information.</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="The-principal-tag"><a href="#The-principal-tag" class="headerlink" title="The principal tag"></a>The <code>principal</code> tag</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Hello, <span class="tag">&lt;<span class="name">span</span> <span class="attr">shiro:principal</span>=<span class="string">&quot;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span>, how are you today?<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>or</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Hello, <span class="tag">&lt;<span class="name">shiro:principal</span>/&gt;</span>, how are you today?<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>Typed principal and principal property are also supported.</p>
+<h4 id="The-hasRole-tag"><a href="#The-hasRole-tag" class="headerlink" title="The hasRole tag"></a>The <code>hasRole</code> tag</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">shiro:hasRole</span>=<span class="string">&quot;administrator&quot;</span> <span class="attr">href</span>=<span class="string">&quot;admin.html&quot;</span>&gt;</span>Administer the system<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="The-lacksRole-tag"><a href="#The-lacksRole-tag" class="headerlink" title="The lacksRole tag"></a>The <code>lacksRole</code> tag</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">shiro:lacksRole</span>=<span class="string">&quot;administrator&quot;</span>&gt;</span></span><br><span class="line">  Sorry, you are not allowed to administer the system.</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="The-hasAllRoles-tag"><a href="#The-hasAllRoles-tag" class="headerlink" title="The hasAllRoles tag"></a>The <code>hasAllRoles</code> tag</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">shiro:hasAllRoles</span>=<span class="string">&quot;developer, project manager&quot;</span>&gt;</span></span><br><span class="line">  You are a developer and a project manager.</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="The-hasAnyRoles-tag"><a href="#The-hasAnyRoles-tag" class="headerlink" title="The hasAnyRoles tag"></a>The <code>hasAnyRoles</code> tag</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">shiro:hasAnyRoles</span>=<span class="string">&quot;developer, project manager, administrator&quot;</span>&gt;</span></span><br><span class="line">  You are a developer, project manager, or administrator.</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="The-hasPermission-tag"><a href="#The-hasPermission-tag" class="headerlink" title="The hasPermission tag"></a>The <code>hasPermission</code> tag</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">shiro:hasPermission</span>=<span class="string">&quot;user:create&quot;</span> <span class="attr">href</span>=<span class="string">&quot;createUser.html&quot;</span>&gt;</span>Create a new User<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="The-lacksPermission-tag"><a href="#The-lacksPermission-tag" class="headerlink" title="The lacksPermission tag"></a>The <code>lacksPermission</code> tag</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">shiro:lacksPermission</span>=<span class="string">&quot;user:delete&quot;</span>&gt;</span></span><br><span class="line">  Sorry, you are not allowed to delete user accounts.</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="The-hasAllPermissions-tag"><a href="#The-hasAllPermissions-tag" class="headerlink" title="The hasAllPermissions tag"></a>The <code>hasAllPermissions</code> tag</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">shiro:hasAllPermissions</span>=<span class="string">&quot;user:create, user:delete&quot;</span>&gt;</span></span><br><span class="line">  You can create and delete users.</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="The-hasAnyPermissions-tag"><a href="#The-hasAnyPermissions-tag" class="headerlink" title="The hasAnyPermissions tag"></a>The <code>hasAnyPermissions</code> tag</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">shiro:hasAnyPermissions</span>=<span class="string">&quot;user:create, user:delete&quot;</span>&gt;</span></span><br><span class="line">  You can create or delete users.</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/wuyouzhuguli/Spring-Boot-Demos/tree/master/16.Spring-Boot-Shiro-Thymeleaf-Tag">https://github.com/wuyouzhuguli/Spring-Boot-Demos/tree/master/16.Spring-Boot-Shiro-Thymeleaf-Tag</a></p>
+<ul>
+<li><strong>本文作者：</strong> MrBird</li>
+<li><strong>本文链接：</strong> <a target="_blank" rel="noopener" href="http://mrbird.cc/Spring-Boot-Themeleaf">http://mrbird.cc/Spring-Boot-Themeleaf</a> Shiro tag.html</li>
+<li><strong>版权声明：</strong> 本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/springboot/" rel="tag"># springboot</a>
+              <a href="/tags/shiro/" rel="tag"># shiro</a>
+              <a href="/tags/%E6%A0%87%E7%AD%BE/" rel="tag"># 标签</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/04/Spring%20Boot%20mybatis%E9%85%8D%E7%BD%AEDruid%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90/" rel="prev" title="Spring Boot mybatis配置Druid多数据源">
+      <i class="fa fa-chevron-left"></i> Spring Boot mybatis配置Druid多数据源
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/04/Spring%20Boot%20Shiro%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/" rel="next" title="Spring Boot Shiro权限控制">
+      Spring Boot Shiro权限控制 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%BC%95%E5%85%A5thymeleaf-extras-shiro"><span class="nav-number">1.</span> <span class="nav-text">1.引入thymeleaf-extras-shiro</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-ShiroConfig%E9%85%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">2.ShiroConfig配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E9%A6%96%E9%A1%B5%E6%94%B9%E9%80%A0"><span class="nav-number">3.</span> <span class="nav-text">3.首页改造</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%B5%8B%E8%AF%95"><span class="nav-number">4.</span> <span class="nav-text">4.测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%9B%B4%E5%A4%9A%E6%A0%87%E7%AD%BE"><span class="nav-number">5.</span> <span class="nav-text">5.更多标签</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Attribute"><span class="nav-number">5.0.1.</span> <span class="nav-text">Attribute</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Element"><span class="nav-number">5.0.2.</span> <span class="nav-text">Element</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-guest-tag"><span class="nav-number">5.0.3.</span> <span class="nav-text">The guest tag</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-user-tag"><span class="nav-number">5.0.4.</span> <span class="nav-text">The user tag</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-authenticated-tag"><span class="nav-number">5.0.5.</span> <span class="nav-text">The authenticated tag</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-notAuthenticated-tag"><span class="nav-number">5.0.6.</span> <span class="nav-text">The notAuthenticated tag</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-principal-tag"><span class="nav-number">5.0.7.</span> <span class="nav-text">The principal tag</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-hasRole-tag"><span class="nav-number">5.0.8.</span> <span class="nav-text">The hasRole tag</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-lacksRole-tag"><span class="nav-number">5.0.9.</span> <span class="nav-text">The lacksRole tag</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-hasAllRoles-tag"><span class="nav-number">5.0.10.</span> <span class="nav-text">The hasAllRoles tag</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-hasAnyRoles-tag"><span class="nav-number">5.0.11.</span> <span class="nav-text">The hasAnyRoles tag</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-hasPermission-tag"><span class="nav-number">5.0.12.</span> <span class="nav-text">The hasPermission tag</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-lacksPermission-tag"><span class="nav-number">5.0.13.</span> <span class="nav-text">The lacksPermission tag</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-hasAllPermissions-tag"><span class="nav-number">5.0.14.</span> <span class="nav-text">The hasAllPermissions tag</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-hasAnyPermissions-tag"><span class="nav-number">5.0.15.</span> <span class="nav-text">The hasAnyPermissions tag</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">blydd</p>
+  <div class="site-description" itemprop="description">米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">105</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">135</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">blydd</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

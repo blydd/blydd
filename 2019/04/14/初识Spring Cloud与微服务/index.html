@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"mele.cool","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="为了解决单体应用变得庞大脯肿之后产生的难以维护的问题，微服务架构便出现在了大家的视线里。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初识springCloud与微服务">
+<meta property="og:url" content="http://mele.cool/2019/04/14/%E5%88%9D%E8%AF%86Spring%20Cloud%E4%B8%8E%E5%BE%AE%E6%9C%8D%E5%8A%A1/index.html">
+<meta property="og:site_name" content="米乐博客">
+<meta property="og:description" content="为了解决单体应用变得庞大脯肿之后产生的难以维护的问题，微服务架构便出现在了大家的视线里。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/01/30/xly36ZitHpvqwdK.png">
+<meta property="article:published_time" content="2019-04-14T15:10:17.000Z">
+<meta property="article:modified_time" content="2021-02-27T13:34:07.664Z">
+<meta property="article:author" content="blydd">
+<meta property="article:tag" content="springCloud">
+<meta property="article:tag" content="微服务">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/01/30/xly36ZitHpvqwdK.png">
+
+<link rel="canonical" href="http://mele.cool/2019/04/14/%E5%88%9D%E8%AF%86Spring%20Cloud%E4%B8%8E%E5%BE%AE%E6%9C%8D%E5%8A%A1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>初识springCloud与微服务 | 米乐博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">米乐博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">积跬步至千里</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mele.cool/2019/04/14/%E5%88%9D%E8%AF%86Spring%20Cloud%E4%B8%8E%E5%BE%AE%E6%9C%8D%E5%8A%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="blydd">
+      <meta itemprop="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="米乐博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          初识springCloud与微服务
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-14 23:10:17" itemprop="dateCreated datePublished" datetime="2019-04-14T23:10:17+08:00">2019-04-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-02-27 21:34:07" itemprop="dateModified" datetime="2021-02-27T21:34:07+08:00">2021-02-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/springCloud/" itemprop="url" rel="index"><span itemprop="name">springCloud</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">为了解决单体应用变得庞大脯肿之后产生的难以维护的问题，微服务架构便出现在了大家的视线里。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>  在传统的软件架构中，我们通常采用的是单体应用来构建一个系统，一个单体应用糅合了各种业务模块。起初在业务规模不是很大的情况下，对于单体应用的开发维护也相对容易。但随着企业的发展，业务规模与日递增，单体应用变得愈发臃肿。由于单体应用将各种业务模块聚合在一起，并且部署在一个进程内，所以通常我们对其中一个业务模块的修改也必须将整个应用重新打包上线。为了解决单体应用变得庞大脯肿之后产生的难以维护的问题，微服务架构便出现在了大家的视线里。</p>
+</blockquote>
+<h2 id="什么是微服务"><a href="#什么是微服务" class="headerlink" title="什么是微服务"></a>什么是微服务</h2><p>微服务 (Microservices) 是一种软件架构风格，起源于Peter Rodgers博士于 2005 年度云端运算博览会提出的微 Web 服务 (Micro-Web-Service) 。微服务主旨是将一个原本独立的系统 拆分成多个小型服务，这些小型服务都在各自独立的进程中运行，服务之间通过基于HTTP的RESTful API进行通信协作。下图展示了单体应用和微服务之间的区别：</p>
+<p><img src="https://i.loli.net/2021/01/30/xly36ZitHpvqwdK.png" alt="20200728_14021734"></p>
+<p>在微服务的架构下，单体应用的各个业务模块被拆分为一个个单独的服务并部署在单独的进程里，每个服务都可以单独的部署和升级。这种去中心化的模式使得后期维护和开发变得更加灵活和方便。由于各个服务单独部署，所以可以使用不同的语句来开发各个业务服务模块。</p>
+<h2 id="什么是Spring-Cloud"><a href="#什么是Spring-Cloud" class="headerlink" title="什么是Spring Cloud"></a>什么是Spring Cloud</h2><p><a target="_blank" rel="noopener" href="https://projects.spring.io/spring-cloud/">Spring Cloud</a>是一个基千Spring Boot实现的微服务架构开发工具。它为微服务架构中涉及的配置管理、服务治理、断路器、智能路由、微代理、控制总线、全局锁、决策竞选、分布式会话和集群状态管理等操作提供了一种简单的开发方式。Spring Cloud的诞生并不是为了解决微服务中的某一个问题，而是提供了一套解决微服务架构实施的综合性解决方案。</p>
+<p>Spring Cloud是一个由各个独立项目组成的综合项目，每个独立项目有着不同的发布节奏，为了管理每个版本的子项目清单，避免Spring Cloud的版本号与其子项目的版本号相混淆，没有采用版本号的方式，而是通过命名的方式。这些版本的名字采用了伦敦地铁站的名字，根据字母表的顺序来对应版本时间顺序。比如”Angel”是Spring Cloud的第一个发行版名称, “Brixton”是Spring Cloud的第二个发行版名称。当一个版本的Spring Cloud项目的发布内容积累到临界点或者一个严重bug解决可用后，就会发布一个”service releases”版本，简称SRX版本，其中X是一个递增的数字，所以Brixton.SR5就是Brixton的第5个Release版本。</p>
+<p>截至2018年4月02日，Spring Cloud已经发布了代号为Finchley的快照版本，采用的Spring Boot版本为2.0.1.RELEASE。Spring Cloud的版本和Spring Boot的版本关系可以查看官网给的例子。</p>
+<p>以下是Spring Cloud版本与各个独立项目版本对应关系表：</p>
+<table>
+<thead>
+<tr>
+<th align="left">Component</th>
+<th align="left">Edgware.SR3</th>
+<th align="left">Finchley.RC1</th>
+<th align="left">Finchley.BUILD-SNAPSHOT</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">spring-cloud-aws</td>
+<td align="left">1.2.2.RELEASE</td>
+<td align="left">2.0.0.RC1</td>
+<td align="left">2.0.0.BUILD-SNAPSHOT</td>
+</tr>
+<tr>
+<td align="left">spring-cloud-bus</td>
+<td align="left">1.3.2.RELEASE</td>
+<td align="left">2.0.0.RC1</td>
+<td align="left">2.0.0.BUILD-SNAPSHOT</td>
+</tr>
+<tr>
+<td align="left">spring-cloud-cli</td>
+<td align="left">1.4.1.RELEASE</td>
+<td align="left">2.0.0.RC1</td>
+<td align="left">2.0.0.BUILD-SNAPSHOT</td>
+</tr>
+<tr>
+<td align="left">spring-cloud-commons</td>
+<td align="left">1.3.3.RELEASE</td>
+<td align="left">2.0.0.RC1</td>
+<td align="left">2.0.0.BUILD-SNAPSHOT</td>
+</tr>
+<tr>
+<td align="left">spring-cloud-contract</td>
+<td align="left">1.2.4.RELEASE</td>
+<td align="left">2.0.0.RC1</td>
+<td align="left">2.0.0.BUILD-SNAPSHOT</td>
+</tr>
+<tr>
+<td align="left">spring-cloud-config</td>
+<td align="left">1.4.3.RELEASE</td>
+<td align="left">2.0.0.RC1</td>
+<td align="left">2.0.0.BUILD-SNAPSHOT</td>
+</tr>
+<tr>
+<td align="left">spring-cloud-netflix</td>
+<td align="left">1.4.4.RELEASE</td>
+<td align="left">2.0.0.RC1</td>
+<td align="left">2.0.0.BUILD-SNAPSHOT</td>
+</tr>
+<tr>
+<td align="left">spring-cloud-security</td>
+<td align="left">1.2.2.RELEASE</td>
+<td align="left">2.0.0.RC1</td>
+<td align="left">2.0.0.BUILD-SNAPSHOT</td>
+</tr>
+<tr>
+<td align="left">spring-cloud-cloudfoundry</td>
+<td align="left">1.1.1.RELEASE</td>
+<td align="left">2.0.0.RC1</td>
+<td align="left">2.0.0.BUILD-SNAPSHOT</td>
+</tr>
+<tr>
+<td align="left">spring-cloud-consul</td>
+<td align="left">1.3.3.RELEASE</td>
+<td align="left">2.0.0.RC1</td>
+<td align="left">2.0.0.BUILD-SNAPSHOT</td>
+</tr>
+<tr>
+<td align="left">spring-cloud-sleuth</td>
+<td align="left">1.3.3.RELEASE</td>
+<td align="left">2.0.0.RC1</td>
+<td align="left">2.0.0.BUILD-SNAPSHOT</td>
+</tr>
+<tr>
+<td align="left">spring-cloud-stream</td>
+<td align="left">Ditmars.SR3</td>
+<td align="left">Elmhurst.RELEASE</td>
+<td align="left">Elmhurst.BUILD-SNAPSHOT</td>
+</tr>
+<tr>
+<td align="left">spring-cloud-zookeeper</td>
+<td align="left">1.2.1.RELEASE</td>
+<td align="left">2.0.0.RC1</td>
+<td align="left">2.0.0.BUILD-SNAPSHOT</td>
+</tr>
+<tr>
+<td align="left">spring-boot</td>
+<td align="left">1.5.10.RELEASE</td>
+<td align="left">2.0.1.RELEASE</td>
+<td align="left">2.0.0.BUILD-SNAPSHOT</td>
+</tr>
+<tr>
+<td align="left">spring-cloud-task</td>
+<td align="left">1.2.2.RELEASE</td>
+<td align="left">2.0.0.RC1</td>
+<td align="left">2.0.0.RELEASE</td>
+</tr>
+<tr>
+<td align="left">spring-cloud-vault</td>
+<td align="left">1.1.0.RELEASE</td>
+<td align="left">2.0.0.RC1</td>
+<td align="left">2.0.0.BUILD-SNAPSHOT</td>
+</tr>
+<tr>
+<td align="left">spring-cloud-gateway</td>
+<td align="left">1.0.1.RELEASE</td>
+<td align="left">2.0.0.RC1</td>
+<td align="left">2.0.0.BUILD-SNAPSHOT</td>
+</tr>
+<tr>
+<td align="left">spring-cloud-openfeign</td>
+<td align="left"></td>
+<td align="left">2.0.0.RC1</td>
+<td align="left">2.0.0.BUILD-SNAPSHOT</td>
+</tr>
+</tbody></table>
+<p>Finchley使用Spring Boot 2.0.x构建，不建议与Spring Boot 1.5.x一起使用。</p>
+<p>Dalston和Edgware发行版建立在Spring Boot 1.5.x之上，不建议与Spring Boot 2.0.x一起使用。</p>
+<p>之后博文的例子将采用<a target="_blank" rel="noopener" href="http://cloud.spring.io/spring-cloud-static/Edgware.SR3/multi/multi_spring-cloud.html">Spring Cloud Edgware SR3</a>版本，对应的Spring Boot版本为1.5.13.RELEASE。</p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ol>
+<li><a target="_blank" rel="noopener" href="http://blog.cuicc.com/blog/2015/07/22/microservices/">http://blog.cuicc.com/blog/2015/07/22/microservices/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/community/blogs/3302cc3b-074e-44da-90b1-5055f1dc0d9c/entry/%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84_%E4%B8%80_%E4%BB%80%E4%B9%88%E6%98%AF%E5%BE%AE%E6%9C%8D%E5%8A%A1?lang=en_us">https://www.ibm.com/developerworks/community/blogs/</a></li>
+<li><a target="_blank" rel="noopener" href="https://projects.spring.io/spring-cloud/">https://projects.spring.io/spring-cloud/</a></li>
+<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/27025912/">《Spring Cloud微服务实战》</a></li>
+</ol>
+<ul>
+<li><strong>本文作者：</strong> MrBird</li>
+<li><strong>本文链接：</strong> <a target="_blank" rel="noopener" href="http://mrbird.cc/Spring-Cloud">http://mrbird.cc/Spring-Cloud</a> and MicroService.html</li>
+<li><strong>版权声明：</strong> 本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/springCloud/" rel="tag"># springCloud</a>
+              <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag"># 微服务</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/02/hello-world/" rel="next" title="Hello World">
+      Hello World <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%BE%AE%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.</span> <span class="nav-text">什么是微服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFSpring-Cloud"><span class="nav-number">2.</span> <span class="nav-text">什么是Spring Cloud</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-number">3.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">blydd</p>
+  <div class="site-description" itemprop="description">米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">105</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">135</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">blydd</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
