@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"mele.cool","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="集合框架,用于存储数据的容器。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java集合">
+<meta property="og:url" content="http://mele.cool/2020/12/04/%E9%9B%86%E5%90%88/index.html">
+<meta property="og:site_name" content="米乐博客">
+<meta property="og:description" content="集合框架,用于存储数据的容器。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/01/30/k9lSzZDQjKCgsa4.png">
+<meta property="article:published_time" content="2020-12-04T02:10:17.000Z">
+<meta property="article:modified_time" content="2021-02-27T13:19:44.413Z">
+<meta property="article:author" content="blydd">
+<meta property="article:tag" content="java基础">
+<meta property="article:tag" content="集合">
+<meta property="article:tag" content="list">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/01/30/k9lSzZDQjKCgsa4.png">
+
+<link rel="canonical" href="http://mele.cool/2020/12/04/%E9%9B%86%E5%90%88/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>java集合 | 米乐博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">米乐博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">积跬步至千里</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mele.cool/2020/12/04/%E9%9B%86%E5%90%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="blydd">
+      <meta itemprop="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="米乐博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java集合
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-04 10:10:17" itemprop="dateCreated datePublished" datetime="2020-12-04T10:10:17+08:00">2020-12-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-02-27 21:19:44" itemprop="dateModified" datetime="2021-02-27T21:19:44+08:00">2021-02-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">集合框架,用于存储数据的容器。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><strong>集合框架</strong>：用于存储数据的容器。</p>
+<h3 id="一-集合和数组的区别"><a href="#一-集合和数组的区别" class="headerlink" title="一. 集合和数组的区别"></a>一. 集合和数组的区别</h3><p>1.数组是固定长度的；集合可变长度的。</p>
+<p>2.数组可以存储基本数据类型，也可以存储引用数据类型；集合只能存储引用数据类型。</p>
+<p>3.数组存储的元素必须是同一个数据类型；集合存储的对象可以是不同数据类型。</p>
+<h3 id="二-常用的集合类有哪些？"><a href="#二-常用的集合类有哪些？" class="headerlink" title="二. 常用的集合类有哪些？"></a>二. 常用的集合类有哪些？</h3><p>Map接口和Collection接口是所有集合框架的父接口：</p>
+<p>1.Collection接口的子接口包括：Set接口和List接口</p>
+<p>2.Map接口的实现类主要有：HashMap、TreeMap、Hashtable、ConcurrentHashMap以及Properties等</p>
+<p>3.Set接口的实现类主要有：HashSet、TreeSet、LinkedHashSet等</p>
+<p>4.List接口的实现类主要有：ArrayList、LinkedList、Stack以及Vector等</p>
+<h3 id="三-List-Set-Map用法"><a href="#三-List-Set-Map用法" class="headerlink" title="三. List Set Map用法:"></a><img src="https://i.loli.net/2021/01/30/k9lSzZDQjKCgsa4.png" alt="20200806_17183541">三. List Set Map用法:</h3><p>Collection集合主要有List和Set两大接口</p>
+<p>1.List：一个有序（元素存入集合的顺序和取出的顺序一致）容器，元素可以重复，可以插入多个null元素，元素都有索引。常用的实现类有 ArrayList、LinkedList 和 Vector。</p>
+<p>2.Set：一个无序（存入和取出顺序有可能不一致）容器，不可以存储重复元素，只允许存入一个null元素，必须保证元素唯一性。Set 接口常用实现类是 HashSet、LinkedHashSet 以及 TreeSet。</p>
+<p>Map是一个键值对集合，存储键、值和之间的映射。Key无序，唯一；value 不要求有序，允许重复。Map没有继承于Collection接口，从Map集合中检索元素时，只要给出键对象，就会返回对应的值对象。</p>
+<p>Map 的常用实现类：HashMap、TreeMap、HashTable、LinkedHashMap、ConcurrentHashMap</p>
+<h3 id="四-集合框架底层数据结构"><a href="#四-集合框架底层数据结构" class="headerlink" title="四. 集合框架底层数据结构"></a>四. 集合框架底层数据结构</h3><ul>
+<li><strong>Collection</strong></li>
+</ul>
+<p><strong>1.List</strong></p>
+<p><u><strong>Arraylist：Object数组</strong></u></p>
+<p>Vector：Object数组</p>
+<p>LinkedList：双向循环链表</p>
+<p><strong>2.Set</strong></p>
+<p><strong>HashSet（无序，唯一）：基于 HashMap 实现的，底层采用 HashMap 来保存元素</strong></p>
+<p>LinkedHashSet：LinkedHashSet 继承与 HashSet，并且其内部是通过 LinkedHashMap 来实现的。有点类似于我们之前说的LinkedHashMap 其内部是基于 Hashmap 实现一样，不过还是有一点点区别的。</p>
+<p>TreeSet（有序，唯一）：红黑树(自平衡的排序二叉树。)</p>
+<ul>
+<li><strong>Map</strong></li>
+</ul>
+<p><strong>HashMap</strong>：JDK1.8之前HashMap由数组+链表组成的，数组是HashMap的主体，链表则是主要为了解决哈希冲突而存在的（“拉链法”解决冲突）.JDK1.8以后在解决哈希冲突时有了较大的变化，当链表长度大于阈值（默认为8）时，将链表转化为红黑树，以减少搜索时间</p>
+<p><strong>LinkedHashMap</strong>：LinkedHashMap 继承自 HashMap，所以它的底层仍然是基于拉链式散列结构即由数组和链表或红黑树组成。另外，LinkedHashMap 在上面结构的基础上，增加了一条双向链表，使得上面的结构可以保持键值对的插入顺序。同时通过对链表进行相应的操作，实现了访问顺序相关逻辑。</p>
+<p><strong>HashTable</strong>：数组+链表组成的，数组是 HashMap 的主体，链表则是主要为了解决哈希冲突而存在的</p>
+<p><strong>TreeMap</strong>：红黑树（自平衡的排序二叉树）</p>
+<h3 id="五-哪些集合类是线程安全的？"><a href="#五-哪些集合类是线程安全的？" class="headerlink" title="五. 哪些集合类是线程安全的？"></a>五. 哪些集合类是线程安全的？</h3><p><strong>vector</strong>：就比arraylist多了个同步化机制（线程安全），因为效率较低，现在已经不太建议使用。在web应用中，特别是前台页面，往往效率（页面响应速度）是优先考虑的。</p>
+<p><strong>statck</strong>：堆栈类，先进后出。</p>
+<p><strong>hashtable</strong>：就比hashmap多了个线程安全。</p>
+<p><strong>enumeration</strong>：枚举，相当于迭代器。</p>
+<h3 id="六-怎么确保一个集合不能被修改？"><a href="#六-怎么确保一个集合不能被修改？" class="headerlink" title="六. 怎么确保一个集合不能被修改？"></a>六. 怎么确保一个集合不能被修改？</h3><p>可以使用 Collections. unmodifiableCollection(Collection c) 方法来创建一个只读集合，这样改变集合的任何操作都会抛出 Java. lang. UnsupportedOperationException 异常。</p>
+<p>示例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">list.add(<span class="string">&quot;x&quot;</span>);</span><br><span class="line">Collection&lt;String&gt; clist = Collections.unmodifiableCollection(list);</span><br><span class="line">clist.add(<span class="string">&quot;y&quot;</span>);<span class="comment">//运行时此行报错</span></span><br><span class="line">System.out.println(list.size());</span><br></pre></td></tr></table></figure>
+<h3 id="七-迭代器-Iterator"><a href="#七-迭代器-Iterator" class="headerlink" title="七. 迭代器 Iterator"></a>七. 迭代器 Iterator</h3><p>是什么?</p>
+<blockquote>
+<p>terator 接口提供遍历任何 Collection 的接口。我们可以从一个 Collection 中使用迭代器方法来获取迭代器实例。迭代器取代了 Java 集合框架中的 Enumeration，迭代器允许调用者在迭代过程中移除元素。</p>
+</blockquote>
+<p>怎么用?</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">Iterator&lt;string&gt; it =list.iterator();</span><br><span class="line"><span class="keyword">while</span>(it. hasNext())&#123;</span><br><span class="line">	String obj = it. next();</span><br><span class="line">	System.out.println(obj);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>特点?</p>
+<blockquote>
+<p>Iterator 的特点是只能单向遍历，但是更加安全，因为它可以确保，在当前遍历的集合元素被更改的时候，就会抛出 ConcurrentModificationException 异常。</p>
+</blockquote>
+<p>边遍历边修改 Collection 的唯一正确方式?</p>
+<blockquote>
+<p>使用 Iterator.remove() 方法</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//正确</span></span><br><span class="line">Iterator&lt;Integer&gt; it = list.iterator();</span><br><span class="line"><span class="keyword">while</span>(it.hasNext())&#123;</span><br><span class="line">  <span class="comment">// do something</span></span><br><span class="line">	it.remove();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//错误</span></span><br><span class="line"><span class="comment">//运行以下错误代码会报 ConcurrentModificationException 异常。这是因为当使用 foreach(for(Integer i : list)) 语句时，会自动生成一个iterator 来遍历该 list，但同时该 list 正在被 Iterator.remove() 修改。Java 一般不允许一个线程在遍历 Collection 时另一个线程修改它。</span></span><br><span class="line"><span class="keyword">for</span>(Integer i : list)&#123; </span><br><span class="line">  list.remove(i)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="八-遍历一个-List-有哪些不同的方式？每种方法的实现原理是什么？Java-中-List-遍历的最佳实践是什么？"><a href="#八-遍历一个-List-有哪些不同的方式？每种方法的实现原理是什么？Java-中-List-遍历的最佳实践是什么？" class="headerlink" title="八. 遍历一个 List 有哪些不同的方式？每种方法的实现原理是什么？Java 中 List 遍历的最佳实践是什么？"></a>八. 遍历一个 List 有哪些不同的方式？每种方法的实现原理是什么？Java 中 List 遍历的最佳实践是什么？</h3><p>遍历方式有以下几种：</p>
+<p><strong>1.for 循环遍历</strong>，基于计数器。在集合外部维护一个计数器，然后依次读取每一个位置的元素，当读取到最后一个元素后停止。</p>
+<p><strong>2.迭代器遍历</strong>，Iterator。Iterator 是面向对象的一个设计模式，目的是屏蔽不同数据集合的特点，统一遍历集合的接口。Java 在 Collections 中支持了 Iterator 模式。</p>
+<p><strong>3.foreach 循环遍历</strong>。foreach 内部也是采用了 Iterator 的方式实现，使用时不需要显式声明 Iterator 或计数器。优点是代码简洁，不易出错；缺点是只能做简单的遍历，不能在遍历过程中操作数据集合，例如删除、替换。</p>
+<p><strong>最佳实践</strong>：Java Collections 框架中提供了一个 RandomAccess 接口，用来标记 List 实现是否支持 Random Access。</p>
+<p>如果一个数据集合实现了该接口，就意味着它支持 Random Access，按位置读取元素的平均时间复杂度为 O(1)，如ArrayList。</p>
+<p>如果没有实现该接口，表示不支持 Random Access，如LinkedList。</p>
+<p><strong>推荐的做法就是</strong>，支持 Random Access 的列表可用 for 循环遍历，否则建议用 Iterator 或 foreach 遍历。</p>
+<h3 id="九-如何实现数组和-List-之间的转换？"><a href="#九-如何实现数组和-List-之间的转换？" class="headerlink" title="九. 如何实现数组和 List 之间的转换？"></a>九. 如何实现数组和 List 之间的转换？</h3><ul>
+<li><strong>数组转 List</strong>：使用 Arrays. asList(array) 进行转换。</li>
+<li><strong>List 转数组</strong>：使用 List 自带的 toArray() 方法。</li>
+</ul>
+<h3 id="十-ArrayList-和-LinkedList-的区别是什么？"><a href="#十-ArrayList-和-LinkedList-的区别是什么？" class="headerlink" title="十. ArrayList 和 LinkedList 的区别是什么？"></a>十. ArrayList 和 LinkedList 的区别是什么？</h3><ul>
+<li><p><strong>数据结构实现</strong>：ArrayList 是动态数组的数据结构实现，而 LinkedList 是双向链表的数据结构实现。</p>
+</li>
+<li><p><strong>随机访问效率</strong>：ArrayList 比 LinkedList 在随机访问的时候效率要高，因为 LinkedList 是线性的数据存储方式，所以需要移动指针从前往后依次查找。</p>
+</li>
+<li><p><strong>增加和删除效率</strong>：在非首尾的增加和删除操作，LinkedList 要比 ArrayList 效率要高，因为 ArrayList 增删操作要影响数组内的其他数据的下标。</p>
+</li>
+<li><p><strong>内存空间占用</strong>：LinkedList 比 ArrayList 更占内存，因为 LinkedList 的节点除了存储数据，还存储了两个引用，一个指向前一个元素，一个指向后一个元素。</p>
+</li>
+<li><p><strong>线程安全</strong>：ArrayList 和 LinkedList 都是不同步的，也就是不保证线程安全；</p>
+</li>
+</ul>
+<blockquote>
+<p><u>综合来说，在需要频繁读取集合中的元素时，更推荐使用 ArrayList，而在插入和删除操作较多时，更推荐使用 LinkedList。</u></p>
+</blockquote>
+<p><strong>补充：数据结构基础之双向链表</strong></p>
+<blockquote>
+<p>双向链表也叫双链表，是链表的一种，它的每个数据结点中都有两个指针，分别指向直接后继和直接前驱。所以，从双向链表中的任意一个结点开始，都可以很方便地访问它的前驱结点和后继结点。</p>
+</blockquote>
+<h3 id="十一-ArrayList-和-Vector-的区别是什么？"><a href="#十一-ArrayList-和-Vector-的区别是什么？" class="headerlink" title="十一. ArrayList 和 Vector 的区别是什么？"></a>十一. ArrayList 和 Vector 的区别是什么？</h3><ul>
+<li><p>这两个类都实现了 List 接口（List 接口继承了 Collection 接口），他们<strong>都是有序集合</strong></p>
+</li>
+<li><p><strong>线程安全</strong>：Vector 使用了 Synchronized 来实现线程同步，是线程安全的，而 ArrayList 是非线程安全的。</p>
+</li>
+<li><p><strong>性能</strong>：ArrayList 在性能方面要优于 Vector。</p>
+</li>
+<li><p><strong>扩容</strong>：ArrayList 和 Vector 都会根据实际的需要动态的调整容量，只不过在 Vector 扩容每次会增加 1 倍，而 ArrayList 只会增加 50%。</p>
+</li>
+</ul>
+<p>Vector类的所有方法都是同步的。可以由两个线程安全地访问一个Vector对象、但是一个线程访问Vector的话代码要在同步操作上耗费大量的时间。</p>
+<p>Arraylist不是同步的，所以在不需要保证线程安全时时建议使用Arraylist。</p>
+<h3 id="十二-多线程场景下如何使用-ArrayList？"><a href="#十二-多线程场景下如何使用-ArrayList？" class="headerlink" title="十二. 多线程场景下如何使用 ArrayList？"></a>十二. 多线程场景下如何使用 ArrayList？</h3><p>ArrayList 不是线程安全的，如果遇到多线程场景，可以通过 Collections 的 synchronizedList 方法将其转换成线程安全的容器后再使用。例如像下面这样：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">List&lt;string&gt; synchronizedList = Collections.synchronizedList(list);</span><br><span class="line">synchronizedList.add(<span class="string">&quot;aaa&quot;</span>);</span><br><span class="line">synchronizedList.add(<span class="string">&quot;bbb&quot;</span>);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i-<span class="number">8</span>; i &lt; synchronizedList.size(); i++) &#123; </span><br><span class="line">  System.out.println(synchronizedList.get(i));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="十三-说一下-HashMap-的实现原理？"><a href="#十三-说一下-HashMap-的实现原理？" class="headerlink" title="十三. 说一下 HashMap 的实现原理？"></a>十三. 说一下 HashMap 的实现原理？</h3><p><strong>HashMap概述</strong>：HashMap是基于哈希表的Map接口的非同步实现。此实现提供所有可选的映射操作，并允许使用null值和null键。此类不保证映射的顺序，特别是它不保证该顺序恒久不变。</p>
+<p><strong>HashMap的数据结构</strong>：在Java编程语言中，最基本的结构就是两种，一个是数组，另外一个是模拟指针（引用），所有的数据结构都可以用这两个基本结构来构造的，HashMap也不例外。HashMap实际上是一个“链表散列”的数据结构，即数组和链表的结合体。</p>
+<p><strong>HashMap 基于 Hash 算法实现的</strong></p>
+<p>1.当我们往Hashmap中put元素时，利用key的hashCode重新hash计算出当前对象的元素在数组中的下标</p>
+<p>2.存储时，如果出现hash值相同的key，此时有两种情况。(1)如果key相同，则覆盖原始值；(2)如果key不同（出现冲突），则将当前的key-value放入链表中</p>
+<p>3.获取时，直接找到hash值对应的下标，在进一步判断key是否相同，从而找到对应值。</p>
+<p>4.理解了以上过程就不难明白HashMap是如何解决hash冲突的问题，核心就是使用了数组的存储方式，然后将冲突的key的对象放入链表中，一旦发现冲突就在链表中做进一步的对比。</p>
+<p>需要注意Jdk 1.8中对HashMap的实现做了优化，当链表中的节点数据超过八个之后，该链表会转为红黑树来提高查询效率，从原来的O(n)到O(logn)</p>
+<h3 id="十四-为什么HashMap中String、Integer这样的包装类适合作为K？"><a href="#十四-为什么HashMap中String、Integer这样的包装类适合作为K？" class="headerlink" title="十四. 为什么HashMap中String、Integer这样的包装类适合作为K？"></a>十四. 为什么HashMap中String、Integer这样的包装类适合作为K？</h3><p>答：String、Integer等包装类的特性能够保证Hash值的不可更改性和计算准确性，能够有效的减少Hash碰撞的几率</p>
+<p>都是final类型，即不可变性，保证key的不可更改性，不会存在获取hash值不同的情况</p>
+<p>内部已重写了equals()、hashCode()等方法，遵守了HashMap内部的规范（不清楚可以去上面看看putValue的过程），不容易出现Hash值计算错误的情况；</p>
+<p>转载:<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/MvdGDLm2qhwbgz6GxEV5vQ">https://mp.weixin.qq.com/s/MvdGDLm2qhwbgz6GxEV5vQ</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java%E5%9F%BA%E7%A1%80/" rel="tag"># java基础</a>
+              <a href="/tags/%E9%9B%86%E5%90%88/" rel="tag"># 集合</a>
+              <a href="/tags/list/" rel="tag"># list</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/04/oracle%E5%AE%9E%E7%8E%B0%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2/" rel="prev" title="oracle实现分页查询">
+      <i class="fa fa-chevron-left"></i> oracle实现分页查询
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/04/maven%20settings.xml/" rel="next" title="maven settings.xml">
+      maven settings.xml <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80-%E9%9B%86%E5%90%88%E5%92%8C%E6%95%B0%E7%BB%84%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.</span> <span class="nav-text">一. 集合和数组的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C-%E5%B8%B8%E7%94%A8%E7%9A%84%E9%9B%86%E5%90%88%E7%B1%BB%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">二. 常用的集合类有哪些？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89-List-Set-Map%E7%94%A8%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">三. List Set Map用法:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B-%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">4.</span> <span class="nav-text">四. 集合框架底层数据结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%94-%E5%93%AA%E4%BA%9B%E9%9B%86%E5%90%88%E7%B1%BB%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%EF%BC%9F"><span class="nav-number">5.</span> <span class="nav-text">五. 哪些集合类是线程安全的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AD-%E6%80%8E%E4%B9%88%E7%A1%AE%E4%BF%9D%E4%B8%80%E4%B8%AA%E9%9B%86%E5%90%88%E4%B8%8D%E8%83%BD%E8%A2%AB%E4%BF%AE%E6%94%B9%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">六. 怎么确保一个集合不能被修改？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%83-%E8%BF%AD%E4%BB%A3%E5%99%A8-Iterator"><span class="nav-number">7.</span> <span class="nav-text">七. 迭代器 Iterator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AB-%E9%81%8D%E5%8E%86%E4%B8%80%E4%B8%AA-List-%E6%9C%89%E5%93%AA%E4%BA%9B%E4%B8%8D%E5%90%8C%E7%9A%84%E6%96%B9%E5%BC%8F%EF%BC%9F%E6%AF%8F%E7%A7%8D%E6%96%B9%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9FJava-%E4%B8%AD-List-%E9%81%8D%E5%8E%86%E7%9A%84%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">8.</span> <span class="nav-text">八. 遍历一个 List 有哪些不同的方式？每种方法的实现原理是什么？Java 中 List 遍历的最佳实践是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B9%9D-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E6%95%B0%E7%BB%84%E5%92%8C-List-%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2%EF%BC%9F"><span class="nav-number">9.</span> <span class="nav-text">九. 如何实现数组和 List 之间的转换？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%81-ArrayList-%E5%92%8C-LinkedList-%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">10.</span> <span class="nav-text">十. ArrayList 和 LinkedList 的区别是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%81%E4%B8%80-ArrayList-%E5%92%8C-Vector-%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">11.</span> <span class="nav-text">十一. ArrayList 和 Vector 的区别是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%81%E4%BA%8C-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%9C%BA%E6%99%AF%E4%B8%8B%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-ArrayList%EF%BC%9F"><span class="nav-number">12.</span> <span class="nav-text">十二. 多线程场景下如何使用 ArrayList？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%81%E4%B8%89-%E8%AF%B4%E4%B8%80%E4%B8%8B-HashMap-%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%EF%BC%9F"><span class="nav-number">13.</span> <span class="nav-text">十三. 说一下 HashMap 的实现原理？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%81%E5%9B%9B-%E4%B8%BA%E4%BB%80%E4%B9%88HashMap%E4%B8%ADString%E3%80%81Integer%E8%BF%99%E6%A0%B7%E7%9A%84%E5%8C%85%E8%A3%85%E7%B1%BB%E9%80%82%E5%90%88%E4%BD%9C%E4%B8%BAK%EF%BC%9F"><span class="nav-number">14.</span> <span class="nav-text">十四. 为什么HashMap中String、Integer这样的包装类适合作为K？</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">blydd</p>
+  <div class="site-description" itemprop="description">米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">116</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">blydd</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

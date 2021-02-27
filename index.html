@@ -158,6 +158,108 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mele.cool/2021/02/26/jekins/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="blydd">
+      <meta itemprop="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="米乐博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/02/26/jekins/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-02-26 23:45:31" itemprop="dateCreated datePublished" datetime="2021-02-26T23:45:31+08:00">2021-02-26</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>用Jenkins自动化搭建测试环境</p>
+<h2 id="1-下载安装"><a href="#1-下载安装" class="headerlink" title="1.下载安装"></a>1.下载安装</h2><p>启动访问端口默认:8080</p>
+<p>安装默认的插件.</p>
+<p>创建admin用户</p>
+<p>安装插件:推荐rebuilder用于重新构建,少输入很多参数.</p>
+<p>Safe restart:帮助重启</p>
+<h3 id="基础配置"><a href="#基础配置" class="headerlink" title="基础配置"></a>基础配置</h3><ul>
+<li><p>全局安全性</p>
+<p>系统管理–congigure global security–授权策略安全矩阵给admin添加全部权限.创建另外一个用户,添加除系统管理(administrater)之外的权限.</p>
+</li>
+<li><p>linux服务器环境准备</p>
+<p>ip,用户名密码</p>
+<p>确认ssh连接可用:<code>netstat -anp | grep 22</code>,看到22端口表示可用.</p>
+<p><code>service sshd start</code>命令用于启动ssh服务</p>
+<p>关闭防火墙:<code>service iptables stop </code></p>
+<p>查看防火墙状态:<code>service iptables status</code>,看到<code>stopped IPv4 firewall with iptables</code>表示防火墙已关闭.</p>
+</li>
+<li><p>安装java环境</p>
+<p><code>yum install java</code>  centos</p>
+</li>
+<li><p>安装配置git</p>
+<p><code>yum install git</code></p>
+<p><code>git version</code> 验证安装</p>
+<p>全局配置:<code>git config --global user.name &quot;bgt&quot;</code></p>
+<p>`git config –global user.email “<a href="mailto:&#98;&#x67;&#116;&#64;&#113;&#113;&#x2e;&#99;&#x6f;&#109;">&#98;&#x67;&#116;&#64;&#113;&#113;&#x2e;&#99;&#x6f;&#109;</a>“</p>
+<p>生成证书:<code>ssh-keygen -t rsa -C &quot;bgt@qq.com&quot;</code></p>
+<p>将公钥配置到github,保证linux和github可连通.</p>
+<p>验证配置是否生效:<code>ssh git@github.com</code>,输入yes.</p>
+</li>
+<li><p>安装配置maven</p>
+<p>下载maven,复制链接下载地址,进入linux 输入<code>wget 地址</code></p>
+<p>解压缩:<code>unzip 压缩包</code></p>
+<p>配置/etc/profile,配置完后执行<code>./etc/profile</code>加载配置,验证:<code>mvn -version</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export MAVEN_HOME=/root/apache-maven-3.5.3 </span><br><span class="line">export PATH=$MAVEN_HOME/bin:$PATH</span><br></pre></td></tr></table></figure></li>
+<li><p>安装tomcat</p>
+<p>选择zip,wget下载.</p>
+<p>解压缩<code>unzip</code></p>
+<p>配置:进入安装路径,对tomcat下所有执行文件赋予权限:<code>chmod a+x -R *</code></p>
+<p>配置端口:修改配置文件server.xml,防止端口冲突.</p>
+<p>新建节点:</p>
+</li>
+</ul>
+<p>系统管理–管理节点–新建节点</p>
+<p>配置<img src="https://i.loli.net/2021/02/10/hrNkGOp5TtHFRwa.png" alt="image-20210210101200235"></p>
+<p> 新建Job验证Jenkins任务可以远程运行在Linux服务上</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://mele.cool/2021/02/25/java%E5%BA%8F%E5%88%97%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -331,10 +433,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-02-25 21:23:17 / 修改时间：21:27:10" itemprop="dateCreated datePublished" datetime="2021-02-25T21:23:17+08:00">2021-02-25</time>
+              <time title="创建时间：2021-02-25 21:23:17" itemprop="dateCreated datePublished" datetime="2021-02-25T21:23:17+08:00">2021-02-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-02-26 23:46:38" itemprop="dateModified" datetime="2021-02-26T23:46:38+08:00">2021-02-26</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -414,7 +522,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-26 23:15:23" itemprop="dateModified" datetime="2021-02-26T23:15:23+08:00">2021-02-26</time>
+                <time title="修改时间：2021-02-26 23:38:19" itemprop="dateModified" datetime="2021-02-26T23:38:19+08:00">2021-02-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -437,7 +545,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>集中化日志管理平台的应用</p>
+          <p>java中request常用方法</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/02/23/httpServletRequest/">
@@ -495,7 +603,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-26 23:24:54" itemprop="dateModified" datetime="2021-02-26T23:24:54+08:00">2021-02-26</time>
+                <time title="修改时间：2021-02-26 23:38:47" itemprop="dateModified" datetime="2021-02-26T23:38:47+08:00">2021-02-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -576,7 +684,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-23 22:49:56" itemprop="dateModified" datetime="2021-02-23T22:49:56+08:00">2021-02-23</time>
+                <time title="修改时间：2021-02-26 23:45:08" itemprop="dateModified" datetime="2021-02-26T23:45:08+08:00">2021-02-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -657,7 +765,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-22 22:06:42" itemprop="dateModified" datetime="2021-02-22T22:06:42+08:00">2021-02-22</time>
+                <time title="修改时间：2021-02-26 23:44:59" itemprop="dateModified" datetime="2021-02-26T23:44:59+08:00">2021-02-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -730,10 +838,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-01-30 22:56:17 / 修改时间：09:38:39" itemprop="dateCreated datePublished" datetime="2021-01-30T22:56:17+08:00">2021-01-30</time>
+              <time title="创建时间：2021-01-30 22:56:17" itemprop="dateCreated datePublished" datetime="2021-01-30T22:56:17+08:00">2021-01-30</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-02-26 23:46:55" itemprop="dateModified" datetime="2021-02-26T23:46:55+08:00">2021-02-26</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -1043,91 +1157,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mele.cool/2021/01/23/redis%E6%95%99%E7%A8%8B%E6%95%88%E7%8E%87%E7%89%88/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="blydd">
-      <meta itemprop="description" content="米乐博客,拿来主义的搬运工,搬着搬着就是自己的了.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="米乐博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/23/redis%E6%95%99%E7%A8%8B%E6%95%88%E7%8E%87%E7%89%88/" class="post-title-link" itemprop="url">redis入门效率版</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-01-23 23:10:17" itemprop="dateCreated datePublished" datetime="2021-01-23T23:10:17+08:00">2021-01-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-30 10:02:08" itemprop="dateModified" datetime="2021-01-30T10:02:08+08:00">2021-01-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/db/" itemprop="url" rel="index"><span itemprop="name">db</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>redis五种数据类型,持久化,事务,通用命令等.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/01/23/redis%E6%95%99%E7%A8%8B%E6%95%88%E7%8E%87%E7%89%88/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1193,7 +1226,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">73</span>
+          <span class="site-state-item-count">84</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1206,7 +1239,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">107</span>
+        <span class="site-state-item-count">116</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
